@@ -61,6 +61,9 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
   },
   manifest: "/manifest.json",
+  verification: {
+    google: "Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc",
+  },
 };
 
 export const viewport = {
