@@ -1,16 +1,13 @@
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // إعدادات خاصة بالتطوير المحلي
-  ...(process.env.NODE_ENV === 'development' && {
-    experimental: {
-      turbo: {
-        resolveAlias: {
-          canvas: './empty-module.js',
-        },
+  experimental: {
+    turbo: {
+      resolveAlias: {
+        canvas: './empty-module.js',
       },
     },
-  }),
+  },
   serverExternalPackages: ['@prisma/client'],
   images: {
     remotePatterns: [
