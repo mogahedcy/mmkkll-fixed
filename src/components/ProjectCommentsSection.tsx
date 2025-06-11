@@ -245,7 +245,7 @@ export default function ProjectCommentsSection({
                 {averageRating}
               </div>
               <div className="flex justify-center mb-2">
-                {renderStars(Math.round(parseFloat(averageRating)))}
+                {renderStars(Math.round(Number.parseFloat(averageRating)))}
               </div>
               <p className="text-gray-600">
                 من أصل {comments.length} تقييم
@@ -426,7 +426,7 @@ export default function ProjectCommentsSection({
                 <span className="text-sm text-gray-600">تصفية:</span>
                 <select
                   value={filterByRating || ''}
-                  onChange={(e) => setFilterByRating(e.target.value ? parseInt(e.target.value) : null)}
+                  onChange={(e) => setFilterByRating(e.target.value ? Number.parseInt(e.target.value) : null)}
                   className="text-sm border border-gray-300 rounded px-2 py-1"
                 >
                   <option value="">جميع التقييمات</option>

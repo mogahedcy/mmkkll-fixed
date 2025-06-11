@@ -61,7 +61,7 @@ export default function ReviewsPageClient() {
       distribution[review.rating as keyof typeof distribution]++;
     });
 
-    return { average: parseFloat(average), distribution };
+    return { average: Number.parseFloat(average), distribution };
   };
 
   const renderStars = (rating: number, size = 'w-5 h-5') => {
@@ -204,7 +204,7 @@ export default function ReviewsPageClient() {
               {/* تصفية حسب التقييم */}
               <select
                 value={filterRating || ''}
-                onChange={(e) => setFilterRating(e.target.value ? parseInt(e.target.value) : null)}
+                onChange={(e) => setFilterRating(e.target.value ? Number.parseInt(e.target.value) : null)}
                 className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
               >
                 <option value="">جميع التقييمات</option>

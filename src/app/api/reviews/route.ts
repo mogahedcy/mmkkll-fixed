@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const sortBy = searchParams.get('sortBy') || 'newest';
 
     // إعداد شروط التصفية
-    const whereCondition = rating ? { rating: parseInt(rating) } : {};
+    const whereCondition = rating ? { rating: Number.parseInt(rating) } : {};
 
     // إعداد الترتيب
     let orderBy: any = { createdAt: 'desc' };
