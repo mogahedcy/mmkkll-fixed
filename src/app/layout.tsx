@@ -61,9 +61,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
   },
   manifest: "/manifest.json",
-  verification: {
-    google: "Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc",
-  },
 };
 
 export const viewport = {
@@ -133,6 +130,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className={notoSansArabic.variable}>
       <head>
+        <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
         <link rel="canonical" href="https://aldeyarksa.tech" />
         <StructuredDataScript data={structuredData} />
       </head>
