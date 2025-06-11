@@ -24,8 +24,11 @@ export async function GET() {
     { url: '/terms', priority: '0.3', changefreq: 'yearly' },
   ];
 
-  // جلب جميع المشاريع مع الوسائط
-  const projects = await prisma.project.findMany({
+  let projects = [];
+
+  // جلب جميع المشاريع مع الوسائط مع معالجة الأخطاء
+  try {
+    projects = await prisma.project.findMany({
     select: {
       id: true,
       title: true,
@@ -45,6 +48,11 @@ export async function GET() {
       updatedAt: 'desc'
     }
   });
+  } catch (error) {
+    console.error('خطأ في جلب المشاريع للخريطة:', error);
+    // استخدام مصفوفة فارغة في حالة فشل الاتصال بقاعدة البيانات
+    projects = [];
+  }
 
   const staticSitemap = staticPages
     .map(
