@@ -61,22 +61,9 @@ export default function LoginForm() {
       console.log('Login response:', data); // تصحيح
 
       if (response.ok) {
-        // تأكد من تخزين الكوكيز قبل التحويل
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
-        // تحقق من الجلسة قبل التحويل
-        const verifyResponse = await fetch('/api/auth/verify', {
-          method: 'GET',
-          credentials: 'include'
-        });
-        
-        if (verifyResponse.ok) {
-          console.log('Session verified, redirecting...');
-          window.location.href = '/dashboard';
-        } else {
-          console.error('Session verification failed');
-          setError('مشكلة في إنشاء الجلسة، حاول مرة أخرى');
-        }
+        console.log('Login successful, redirecting...');
+        // إعادة توجيه فورية بعد نجاح تسجيل الدخول
+        window.location.href = '/dashboard';
       } else {
         setError(data.error || 'حدث خطأ في تسجيل الدخول');
       }
