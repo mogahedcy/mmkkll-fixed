@@ -1,9 +1,7 @@
-
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { type Metric, onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 interface PerformanceOptimizerProps {
   children: React.ReactNode;
@@ -82,47 +80,14 @@ class PerformanceMonitor {
   }
 
   private initializeMetrics() {
-    // Navigation timing
-    if (typeof window !== 'undefined') {
-      this.metrics.navigationStart = performance.timeOrigin;
+    if (typeof window === 'undefined') return;
 
-      // First Contentful Paint
-      new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.name === 'first-contentful-paint') {
-            this.metrics.firstContentfulPaint = entry.startTime;
-          }
-        }
-      }).observe({ entryTypes: ['paint'] });
+    this.metrics.navigationStart = performance.timeOrigin;
 
-      // Largest Contentful Paint
-      new PerformanceObserver((list) => {
-        const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1];
-        this.metrics.largestContentfulPaint = lastEntry.startTime;
-      }).observe({ entryTypes: ['largest-contentful-paint'] });
-
-      // Cumulative Layout Shift
-      new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (!(entry as any).hadRecentInput) {
-            this.metrics.cumulativeLayoutShift += (entry as any).value;
-          }
-        }
-      }).observe({ entryTypes: ['layout-shift'] });
-
-      // Interaction to Next Paint (replaces First Input Delay)
-      new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          this.metrics.firstInputDelay = (entry as any).processingStart - entry.startTime;
-        }
-      }).observe({ entryTypes: ['first-input'] });
-
-      // Load complete
-      window.addEventListener('load', () => {
-        this.metrics.loadComplete = performance.now();
-      });
-    }
+    // Load complete
+    window.addEventListener('load', () => {
+      this.metrics.loadComplete = performance.now();
+    });
   }
 
   getMetrics() {
@@ -132,10 +97,6 @@ class PerformanceMonitor {
   logMetrics() {
     if (process.env.NODE_ENV === 'development') {
       console.group('🚀 Performance Metrics');
-      console.log('First Contentful Paint:', this.metrics.firstContentfulPaint.toFixed(2), 'ms');
-      console.log('Largest Contentful Paint:', this.metrics.largestContentfulPaint.toFixed(2), 'ms');
-      console.log('Cumulative Layout Shift:', this.metrics.cumulativeLayoutShift.toFixed(4));
-      console.log('First Input Delay:', this.metrics.firstInputDelay.toFixed(2), 'ms');
       console.log('Load Complete:', this.metrics.loadComplete.toFixed(2), 'ms');
       console.log('Image Cache Size:', imageCache.getCacheSize());
       console.groupEnd();
@@ -235,7 +196,7 @@ interface PerformanceMetrics {
   fcp: number;
   lcp: number;
   cls: number;
-  inp: number; // INP instead of FID
+  inp: number;
   ttfb: number;
   loadComplete: number;
 }
@@ -261,27 +222,6 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
   useEffect(() => {
     if (!isClient) return;
 
-    const handleMetric = (metric: Metric) => {
-      const metricName = metric.name.toLowerCase();
-      // Map FID to INP for backward compatibility
-      const mappedName = metricName === 'fid' ? 'inp' : metricName;
-      setMetrics(prev => ({
-        ...prev,
-        [mappedName]: metric.value
-      }));
-    };
-
-    // Collect Web Vitals metrics
-    try {
-      onCLS(handleMetric);
-      onFCP(handleMetric);
-      onINP(handleMetric); // INP replaced FID in newer versions
-      onLCP(handleMetric);
-      onTTFB(handleMetric);
-    } catch (error) {
-      console.warn('Web Vitals library not available:', error);
-    }
-
     const handleLoad = () => {
       const loadTime = performance.now() - loadStartTimeRef.current;
       setMetrics(prev => ({ ...prev, loadComplete: loadTime }));
@@ -303,10 +243,6 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
 
     const logPerformance = () => {
       console.group('🚀 Performance Metrics');
-      console.log('First Contentful Paint:', metrics.fcp.toFixed(2), 'ms');
-      console.log('Largest Contentful Paint:', metrics.lcp.toFixed(2), 'ms');
-      console.log('Cumulative Layout Shift:', metrics.cls.toFixed(4));
-      console.log('Interaction to Next Paint:', metrics.inp.toFixed(2), 'ms');
       console.log('Load Complete:', metrics.loadComplete.toFixed(2), 'ms');
       console.log('Image Cache Size:', imageCache.getCacheSize());
       console.groupEnd();
@@ -327,7 +263,10 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
         const used = (memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
         const total = (memory.totalJSHeapSize / 1024 / 1024).toFixed(2);
         const limit = (memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2);
-        console.log(`Memory: ${used}MB / ${total}MB (Limit: ${limit}MB)`);
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Memory: ${used}MB / ${total}MB (Limit: ${limit}MB)`);
+        }
 
         // Auto cleanup if memory usage is high
         if (parseFloat(used) / parseFloat(limit) > 0.8) {
@@ -337,7 +276,7 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
       }
     };
 
-    const memoryInterval = setInterval(monoryMemory, 30000);
+    const memoryInterval = setInterval(monitorMemory, 30000);
 
     return () => clearInterval(memoryInterval);
   }, [isClient]);
@@ -349,8 +288,7 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
     // Preload critical resources
     const criticalImages = [
       '/favicon.svg',
-      '/favicon-16x16.png',
-      '/favicon-32x32.png'
+      '/favicon-16x16.png'
     ];
     preloadCriticalResources(criticalImages);
 
