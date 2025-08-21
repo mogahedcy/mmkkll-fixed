@@ -1,3 +1,4 @@
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable ESLint and TypeScript during builds to fix Vercel deployment
@@ -70,45 +71,13 @@ const nextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            value: 'origin-when-cross-origin',
           },
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
         ],
-      },
-      {
-        source: '/favicon.ico',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/:all*(svg|jpg|jpeg|png|webp|gif|ico)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-    ];
-  },
-  async redirects() {
-    return [
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/services',
-        destination: '/#services',
-        permanent: true,
       },
     ];
   },
