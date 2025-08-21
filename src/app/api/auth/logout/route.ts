@@ -25,3 +25,47 @@ export async function POST() {
     );
   }
 }
+import { NextRequest, NextResponse } from 'next/server';
+import { sessionManager, auditLogger, getClientIP } from '@/lib/security';
+
+export async function POST(request: NextRequest) {
+  try {
+    const sessionId = request.cookies.get('session-id')?.value;
+    
+    if (sessionId) {
+      const session = sessionManager.validateSession(sessionId);
+      if (session) {
+        // تسجيل تسجيل الخروج
+        auditLogger.log({
+          adminId: session.adminId,
+          action: 'LOGOUT',
+          resource: 'auth',
+          ipAddress: getClientIP(request),
+          userAgent: request.headers.get('user-agent') || 'unknown',
+          success: true
+        });
+
+        // إنهاء الجلسة
+        sessionManager.destroySession(sessionId);
+      }
+    }
+
+    // إنشاء response ومسح cookies
+    const response = NextResponse.json(
+      { success: true, message: 'تم تسجيل الخروج بنجاح' }
+    );
+
+    // مسح cookies
+    response.cookies.delete('admin-token');
+    response.cookies.delete('session-id');
+
+    return response;
+
+  } catch (error) {
+    console.error('خطأ في تسجيل الخروج:', error);
+    return NextResponse.json(
+      { error: 'حدث خطأ في الخادم' },
+      { status: 500 }
+    );
+  }
+}

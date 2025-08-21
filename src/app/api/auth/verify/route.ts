@@ -50,3 +50,48 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+import { NextRequest, NextResponse } from 'next/server';
+import { verifyToken, sessionManager } from '@/lib/security';
+
+export async function GET(request: NextRequest) {
+  try {
+    const token = request.cookies.get('admin-token')?.value;
+    const sessionId = request.cookies.get('session-id')?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'لا يوجد token' },
+        { status: 401 }
+      );
+    }
+
+    // التحقق من صحة الtoken
+    const decoded = verifyToken(token);
+
+    // التحقق من صحة الجلسة
+    if (sessionId) {
+      const session = sessionManager.validateSession(sessionId);
+      if (!session || session.adminId !== decoded.adminId) {
+        return NextResponse.json(
+          { error: 'جلسة غير صالحة' },
+          { status: 401 }
+        );
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: decoded.adminId,
+        username: decoded.username
+      }
+    });
+
+  } catch (error) {
+    console.error('خطأ في التحقق من المصادقة:', error);
+    return NextResponse.json(
+      { error: 'token غير صالح' },
+      { status: 401 }
+    );
+  }
+}

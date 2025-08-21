@@ -73,10 +73,16 @@ export default function DashboardPage() {
         setIsAuthenticated(true);
         await loadDashboardData();
       } else {
+        // مسح الكوكيز وإعادة التوجيه
+        document.cookie = 'admin-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'session-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         router.push('/login');
       }
     } catch (error) {
       console.error('Authentication error:', error);
+      // مسح الكوكيز وإعادة التوجيه
+      document.cookie = 'admin-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie = 'session-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       router.push('/login');
     } finally {
       setIsLoading(false);
@@ -192,6 +198,21 @@ export default function DashboardPage() {
               >
                 <Settings className="h-4 w-4" />
                 الإعدادات
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={async () => {
+                  try {
+                    await fetch('/api/auth/logout', { method: 'POST' });
+                    router.push('/login');
+                  } catch (error) {
+                    console.error('خطأ في تسجيل الخروج:', error);
+                  }
+                }}
+                className="flex items-center gap-2 text-red-600 hover:text-red-700"
+              >
+                تسجيل الخروج
               </Button>
               <Button
                 onClick={() => router.push('/dashboard/projects/add')}

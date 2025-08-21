@@ -138,3 +138,132 @@ export async function PUT(request: NextRequest) {
     );
   }
 }
+import { NextRequest, NextResponse } from 'next/server';
+import { comparePassword, generateToken, sessionManager, auditLogger, getClientIP } from '@/lib/security';
+import { sanitizeInput } from '@/lib/security';
+import { cookies } from 'next/headers';
+
+// بيانات المدير الافتراضية (في الإنتاج، يجب أن تكون في قاعدة البيانات)
+const ADMIN_CREDENTIALS = {
+  id: 'admin-1',
+  username: process.env.ADMIN_USERNAME || 'admin',
+  passwordHash: '$2a$14$8K.QK5K5K5K5K5K5K5K5K5u' // This should be the hash of 'aldeyar2024'
+};
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { username, password } = body;
+
+    // تنظيف المدخلات
+    const cleanUsername = sanitizeInput(username);
+    const cleanPassword = sanitizeInput(password);
+
+    if (!cleanUsername || !cleanPassword) {
+      return NextResponse.json(
+        { error: 'اسم المستخدم وكلمة المرور مطلوبان' },
+        { status: 400 }
+      );
+    }
+
+    // التحقق من بيانات الدخول
+    if (cleanUsername !== ADMIN_CREDENTIALS.username) {
+      // تسجيل محاولة فاشلة
+      auditLogger.log({
+        adminId: 'unknown',
+        action: 'LOGIN_FAILED',
+        resource: 'auth',
+        ipAddress: getClientIP(request),
+        userAgent: request.headers.get('user-agent') || 'unknown',
+        success: false,
+        details: { reason: 'invalid_username', username: cleanUsername }
+      });
+
+      return NextResponse.json(
+        { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' },
+        { status: 401 }
+      );
+    }
+
+    // للبساطة، سنتحقق من كلمة المرور مباشرة (في الإنتاج، استخدم hash)
+    if (cleanPassword !== (process.env.ADMIN_PASSWORD || 'aldeyar2024')) {
+      // تسجيل محاولة فاشلة
+      auditLogger.log({
+        adminId: ADMIN_CREDENTIALS.id,
+        action: 'LOGIN_FAILED',
+        resource: 'auth',
+        ipAddress: getClientIP(request),
+        userAgent: request.headers.get('user-agent') || 'unknown',
+        success: false,
+        details: { reason: 'invalid_password' }
+      });
+
+      return NextResponse.json(
+        { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' },
+        { status: 401 }
+      );
+    }
+
+    // إنشاء JWT token
+    const token = generateToken({
+      adminId: ADMIN_CREDENTIALS.id,
+      username: ADMIN_CREDENTIALS.username
+    });
+
+    // إنشاء جلسة
+    const sessionId = sessionManager.createSession(
+      ADMIN_CREDENTIALS.id,
+      getClientIP(request),
+      request.headers.get('user-agent') || 'unknown'
+    );
+
+    // تسجيل نجاح الدخول
+    auditLogger.log({
+      adminId: ADMIN_CREDENTIALS.id,
+      action: 'LOGIN_SUCCESS',
+      resource: 'auth',
+      ipAddress: getClientIP(request),
+      userAgent: request.headers.get('user-agent') || 'unknown',
+      success: true
+    });
+
+    // إنشاء response وإضافة cookies
+    const response = NextResponse.json(
+      { 
+        success: true, 
+        message: 'تم تسجيل الدخول بنجاح',
+        user: {
+          id: ADMIN_CREDENTIALS.id,
+          username: ADMIN_CREDENTIALS.username
+        }
+      },
+      { status: 200 }
+    );
+
+    // إضافة cookies آمنة
+    response.cookies.set('admin-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60, // 24 ساعة
+      path: '/'
+    });
+
+    response.cookies.set('session-id', sessionId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60, // 24 ساعة
+      path: '/'
+    });
+
+    return response;
+
+  } catch (error) {
+    console.error('خطأ في تسجيل الدخول:', error);
+    return NextResponse.json(
+      { error: 'حدث خطأ في الخادم' },
+      { status: 500 }
+    );
+  }
+}
