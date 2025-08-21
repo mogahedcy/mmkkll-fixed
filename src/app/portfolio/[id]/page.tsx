@@ -40,9 +40,11 @@ async function getProject(id: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   try {
-    const project = await getProject(params.id);
+    const { id } = await params;
+    // جلب بيانات المشروع
+    const project = await getProject(id);
 
     if (!project) {
       return {
@@ -74,7 +76,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         title: seoTitle,
         description: seoDescription,
         type: 'article',
-        url: `https://aldeyarksa.tech/portfolio/${params.id}`,
+        url: `https://aldeyarksa.tech/portfolio/${id}`,
         siteName: 'محترفين الديار العالمية',
         locale: 'ar_SA',
         images: project.mediaItems?.filter(item => item.type === 'IMAGE').map(item => ({
@@ -92,7 +94,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         images: mainImage ? [mainImage.src] : []
       },
       alternates: {
-        canonical: `https://aldeyarksa.tech/portfolio/${params.id}`
+        canonical: `https://aldeyarksa.tech/portfolio/${id}`
       },
       robots: {
         index: true,
@@ -175,7 +177,7 @@ export default async function ProjectDetailsPage({ params }: Props) {
         }}
       />
       <Navbar />
-      <ProjectDetailsClient project={project} />
+      <ProjectDetailsClient project={project} projectId={id} />
       <Footer />
     </>
   );
