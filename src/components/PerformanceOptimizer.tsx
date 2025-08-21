@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
@@ -336,29 +337,10 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
       }
     };
 
-    const memoryInterval = setInterval(monitorMemory, 30000);
+    const memoryInterval = setInterval(monoryMemory, 30000);
 
     return () => clearInterval(memoryInterval);
   }, [isClient]);
-
-  // Route change optimization
-  useEffect(() => {
-    const handleRouteChange = () => {
-      // Clear old image cache on route change to prevent memory leaks
-      // Also clear any pending cleanup tasks
-      memoryManager.performCleanup();
-      imageCache.clearCache();
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-      // Ensure cleanup is performed on component unmount as well
-      memoryManager.performCleanup();
-      imageCache.clearCache();
-    };
-  }, [router]);
 
   // Initialize performance monitoring on client-side
   useEffect(() => {
@@ -377,19 +359,21 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
       performanceMonitor.logMetrics();
     }, 3000);
 
-    window.addEventListener('scroll', () => {
+    const handleScroll = () => {
       requestAnimationFrame(() => {
         // Additional scroll logic if needed
       });
-    }, { passive: true });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       clearTimeout(timeout);
+      window.removeEventListener('scroll', handleScroll);
       // Cleanup on unmount
       memoryManager.performCleanup();
     };
   }, [isClient]);
-
 
   return <>{children}</>;
 }
