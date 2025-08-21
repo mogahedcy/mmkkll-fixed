@@ -235,6 +235,8 @@ export default function EditProjectPage() {
         const formData = new FormData();
         formData.append('file', mediaFile.file);
 
+        console.log('🔄 رفع ملف جديد:', mediaFile.file.name);
+
         const response = await fetch('/api/upload', {
           method: 'POST',
           body: formData,
@@ -242,19 +244,35 @@ export default function EditProjectPage() {
 
         if (response.ok) {
           const data = await response.json();
-          const uploadedFile = data.files[0];
+          console.log('✅ تم رفع الملف:', data);
+          
+          const uploadedFile = data.files?.[0];
+          
+          if (!uploadedFile) {
+            throw new Error('لم يتم الحصول على بيانات الملف المرفوع');
+          }
+          
+          const fileUrl = uploadedFile.src || uploadedFile.url;
+          
+          if (!fileUrl) {
+            throw new Error('لم يتم الحصول على رابط الملف');
+          }
           
           uploadedMedia.push({
             id: Math.random().toString(36).substr(2, 9),
             type: mediaFile.type.toUpperCase() as 'IMAGE' | 'VIDEO',
-            src: uploadedFile.src || uploadedFile.url,
+            src: fileUrl,
             title: mediaFile.title,
             description: '',
             order: uploadedMedia.length
           });
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'فشل في رفع الملف');
         }
       } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error('❌ خطأ في رفع الملف:', error);
+        alert(`خطأ في رفع الملف ${mediaFile.file.name}: ${error.message}`);
       }
     }
 

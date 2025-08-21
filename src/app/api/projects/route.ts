@@ -152,14 +152,18 @@ export async function POST(request: NextRequest) {
             console.log(`📁 معالجة ملف ${index + 1}:`, item);
 
             // التحقق من وجود src المطلوب
-            if (!item.src) {
+            if (!item.src && !item.url) {
+              console.error('❌ بيانات الملف المفقودة:', item);
               throw new Error(`الملف ${index + 1} لا يحتوي على رابط صحيح`);
             }
 
+            // استخدام src أو url
+            const fileUrl = item.src || item.url;
+
             return {
               type: item.type,
-              src: item.src,
-              thumbnail: item.thumbnail || item.src,
+              src: fileUrl,
+              thumbnail: item.thumbnail || fileUrl,
               title: item.title || `ملف ${index + 1}`,
               description: item.description || '',
               duration: item.duration || null,

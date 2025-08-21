@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
@@ -58,7 +57,7 @@ const suggestedTags = [
 export default function AddProjectPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   // Form state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -69,14 +68,14 @@ export default function AddProjectPage() {
   const [featured, setFeatured] = useState(false);
   const [projectDuration, setProjectDuration] = useState('');
   const [projectCost, setProjectCost] = useState('');
-  
+
   // Media and tags
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [materials, setMaterials] = useState<string[]>([]);
   const [materialInput, setMaterialInput] = useState('');
-  
+
   // UI state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -84,12 +83,12 @@ export default function AddProjectPage() {
   // Handle file selection
   const handleFileSelect = useCallback((files: FileList) => {
     const newFiles: MediaFile[] = [];
-    
+
     Array.from(files).forEach((file) => {
       if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
         const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
         const preview = URL.createObjectURL(file);
-        
+
         newFiles.push({
           id,
           file,
@@ -100,7 +99,7 @@ export default function AddProjectPage() {
         });
       }
     });
-    
+
     setMediaFiles(prev => [...prev, ...newFiles]);
   }, []);
 
@@ -118,7 +117,7 @@ export default function AddProjectPage() {
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setDragActive(false);
-    
+
     const files = e.dataTransfer.files;
     if (files?.length > 0) {
       handleFileSelect(files);
@@ -176,15 +175,17 @@ export default function AddProjectPage() {
   };
 
   // Upload media files
-  const uploadMediaFiles = async () => {
+  const uploadMediaFiles = async (): Promise<Array<{ type: string; src: string; thumbnail?: string; title: string; description: string }>> => {
     const uploadedMedia = [];
-    
+
     for (const mediaFile of mediaFiles) {
       const formData = new FormData();
       formData.append('file', mediaFile.file);
       formData.append('folder', 'portfolio');
 
       try {
+        console.log('🔄 رفع ملف:', mediaFile.file.name);
+
         const response = await fetch('/api/upload', {
           method: 'POST',
           body: formData
@@ -192,37 +193,62 @@ export default function AddProjectPage() {
 
         if (response.ok) {
           const result = await response.json();
+          console.log('✅ تم رفع الملف:', result);
+
+          // التأكد من الحصول على الرابط الصحيح
+          const fileUrl = result.files?.[0]?.src || result.files?.[0]?.url || result.secure_url || result.url;
+
+          if (!fileUrl) {
+            throw new Error('لم يتم الحصول على رابط الملف');
+          }
+
           uploadedMedia.push({
             type: mediaFile.type.toUpperCase(),
-            src: result.secure_url,
-            thumbnail: result.thumbnail || result.secure_url,
+            src: fileUrl,
+            thumbnail: fileUrl,
             title: mediaFile.title,
             description: mediaFile.description
           });
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'فشل في رفع الملف');
         }
       } catch (error) {
         console.error('خطأ في رفع الملف:', error);
-        throw new Error(`فشل في رفع الملف: ${mediaFile.file.name}`);
+        throw new Error(`فشل في رفع الملف: ${mediaFile.file.name} - ${error.message}`);
       }
     }
-    
+
     return uploadedMedia;
   };
 
   // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!title || !description || !category || !location) {
       alert('يرجى ملء جميع الحقول المطلوبة');
+      return;
+    }
+
+    if (mediaFiles.length === 0) {
+      alert('يرجى إضافة صورة واحدة على الأقل للمشروع');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
+      console.log('🚀 بدء إضافة المشروع...');
+
       // Upload media files first
       const uploadedMedia = await uploadMediaFiles();
+
+      console.log('📁 الملفات المرفوعة:', uploadedMedia);
+
+      if (uploadedMedia.length === 0) {
+        throw new Error('لم يتم رفع أي ملفات');
+      }
 
       // Create project
       const projectData = {
@@ -240,24 +266,29 @@ export default function AddProjectPage() {
         materials: materials.map(material => ({ name: material }))
       };
 
+      console.log('📊 بيانات المشروع:', projectData);
+
       const response = await fetch('/api/projects', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(projectData)
+        body: JSON.stringify(projectData),
       });
 
+      const result = await response.json();
+
       if (response.ok) {
-        const result = await response.json();
+        console.log('✅ تم إضافة المشروع بنجاح');
         alert('تم إضافة المشروع بنجاح!');
         router.push('/dashboard/projects');
       } else {
-        throw new Error('فشل في إضافة المشروع');
+        console.error('❌ خطأ في إضافة المشروع:', result);
+        alert(`خطأ: ${result.error || 'فشل في إضافة المشروع'}`);
       }
     } catch (error) {
-      console.error('خطأ في إضافة المشروع:', error);
-      alert('حدث خطأ في إضافة المشروع');
+      console.error('❌ خطأ في إضافة المشروع:', error);
+      alert(`خطأ في إضافة المشروع: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -416,7 +447,7 @@ export default function AddProjectPage() {
                   onChange={(e) => e.target.files && handleFileSelect(e.target.files)}
                   className="hidden"
                 />
-                
+
                 <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
                   اسحب الملفات هنا أو اختر ملفات
@@ -459,7 +490,7 @@ export default function AddProjectPage() {
                             </div>
                           </div>
                         )}
-                        
+
                         <Button
                           type="button"
                           variant="destructive"
