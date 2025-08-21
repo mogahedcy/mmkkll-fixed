@@ -6,33 +6,34 @@ const prisma = new PrismaClient();
 
 async function createAdmin() {
   try {
-    // التحقق من وجود حساب إدارة مسبقاً
-    const existingAdmin = await prisma.admin.findFirst();
-    
-    if (existingAdmin) {
-      console.log('✅ يوجد حساب إدارة مسبقاً');
-      console.log(`📧 اسم المستخدم: ${existingAdmin.username}`);
-      return;
-    }
+    const username = 'admin';
+    const password = 'aldeyar2024';
+    const email = 'admin@aldeyarksa.tech';
 
-    // إنشاء حساب إدارة جديد
-    const hashedPassword = await bcrypt.hash('admin123', 12);
-    
+    // تشفير كلمة المرور
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // إنشاء حساب المدير
     const admin = await prisma.admin.create({
       data: {
-        username: 'admin',
+        username,
         password: hashedPassword,
-        email: 'admin@aldeyar.com'
+        email
       }
     });
 
-    console.log('🎉 تم إنشاء حساب الإدارة بنجاح!');
-    console.log('📧 اسم المستخدم: admin');
-    console.log('🔑 كلمة المرور: admin123');
-    console.log('⚠️  يُرجى تغيير كلمة المرور بعد تسجيل الدخول');
+    console.log('✅ تم إنشاء حساب المدير بنجاح:');
+    console.log(`👤 اسم المستخدم: ${admin.username}`);
+    console.log(`🔑 كلمة المرور: ${password}`);
+    console.log(`📧 الإيميل: ${admin.email}`);
+    console.log(`🆔 المعرف: ${admin.id}`);
 
   } catch (error) {
-    console.error('❌ خطأ في إنشاء حساب الإدارة:', error);
+    if (error.code === 'P2002') {
+      console.log('⚠️ المدير موجود بالفعل');
+    } else {
+      console.error('❌ خطأ في إنشاء المدير:', error);
+    }
   } finally {
     await prisma.$disconnect();
   }

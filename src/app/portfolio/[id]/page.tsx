@@ -122,8 +122,7 @@ export function generateViewport() {
 }
 
 export default async function ProjectDetailsPage({ params }: Props) {
-  const resolvedParams = await params;
-  const { id } = await resolvedParams;
+  const { id } = await params;
   const project = await getProject(id);
 
   if (!project) {

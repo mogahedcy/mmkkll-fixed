@@ -1,30 +1,4 @@
-import { NextResponse } from 'next/server';
 
-export async function POST() {
-  try {
-    const response = NextResponse.json({
-      success: true,
-      message: 'تم تسجيل الخروج بنجاح'
-    });
-
-    // حذف كوكيز التوثيق
-    response.cookies.set('admin-token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 0 // انتهاء فوري
-    });
-
-    return response;
-
-  } catch (error) {
-    console.error('خطأ في تسجيل الخروج:', error);
-    return NextResponse.json(
-      { error: 'حدث خطأ في تسجيل الخروج' },
-      { status: 500 }
-    );
-  }
-}
 import { NextRequest, NextResponse } from 'next/server';
 import { sessionManager, auditLogger, getClientIP } from '@/lib/security';
 
@@ -33,29 +7,27 @@ export async function POST(request: NextRequest) {
     const sessionId = request.cookies.get('session-id')?.value;
     
     if (sessionId) {
-      const session = sessionManager.validateSession(sessionId);
-      if (session) {
-        // تسجيل تسجيل الخروج
-        auditLogger.log({
-          adminId: session.adminId,
-          action: 'LOGOUT',
-          resource: 'auth',
-          ipAddress: getClientIP(request),
-          userAgent: request.headers.get('user-agent') || 'unknown',
-          success: true
-        });
-
-        // إنهاء الجلسة
-        sessionManager.destroySession(sessionId);
-      }
+      // تدمير الجلسة
+      sessionManager.destroySession(sessionId);
     }
 
-    // إنشاء response ومسح cookies
-    const response = NextResponse.json(
-      { success: true, message: 'تم تسجيل الخروج بنجاح' }
-    );
+    // تسجيل الخروج في السجل
+    auditLogger.log({
+      adminId: 'unknown',
+      action: 'LOGOUT',
+      resource: 'auth',
+      ipAddress: getClientIP(request),
+      userAgent: request.headers.get('user-agent') || 'unknown',
+      success: true
+    });
 
-    // مسح cookies
+    // إنشاء الاستجابة وإزالة الكوكيز
+    const response = NextResponse.json({
+      success: true,
+      message: 'تم تسجيل الخروج بنجاح'
+    });
+
+    // إزالة الكوكيز
     response.cookies.delete('admin-token');
     response.cookies.delete('session-id');
 
@@ -64,7 +36,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('خطأ في تسجيل الخروج:', error);
     return NextResponse.json(
-      { error: 'حدث خطأ في الخادم' },
+      { error: 'حدث خطأ في تسجيل الخروج' },
       { status: 500 }
     );
   }
