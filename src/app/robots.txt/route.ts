@@ -1,8 +1,19 @@
+
 export async function GET() {
   const robotsTxt = `User-agent: *
 Allow: /
+Allow: /sitemap.xml
+Allow: /images/
+Allow: /uploads/
+Allow: /portfolio/
+Allow: /services/
+Allow: /articles/
+Allow: /api/sitemap/
+
+# منع فهرسة المناطق الحساسة
 Disallow: /dashboard/
-Disallow: /api/
+Disallow: /api/auth/
+Disallow: /api/upload/
 Disallow: /login/
 Disallow: /_next/
 Disallow: /test-*
@@ -10,43 +21,62 @@ Disallow: /.well-known/
 Disallow: /*?*utm_*
 Disallow: /*?*fbclid*
 Disallow: /*?*gclid*
+Disallow: /*?*ref=*
+Disallow: /*?*source=*
 
-# Allow specific API endpoints that are safe for indexing
-Allow: /api/sitemap/
-
-# Google Bot
+# السماح لمحركات البحث الرئيسية بالفهرسة المكثفة
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
+Crawl-delay: 0.5
+Request-rate: 1/1s
+Visit-time: 0600-2300
 Disallow: /dashboard/
-Disallow: /api/
+Disallow: /api/auth/
 Disallow: /login/
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /images/
+Allow: /uploads/
+Crawl-delay: 0.5
+
+User-agent: Googlebot-Video
+Allow: /
+Allow: /uploads/
+Crawl-delay: 0.5
 
 # Bing Bot
 User-agent: bingbot
 Allow: /
-Crawl-delay: 1
+Crawl-delay: 0.5
+Request-rate: 1/1s
 Disallow: /dashboard/
-Disallow: /api/
+Disallow: /api/auth/
 Disallow: /login/
 
 # Yandex Bot
 User-agent: YandexBot
 Allow: /
-Crawl-delay: 2
+Crawl-delay: 1
+Request-rate: 1/2s
 Disallow: /dashboard/
-Disallow: /api/
+Disallow: /api/auth/
 Disallow: /login/
 
-# Baidu Bot
+# Baidu Bot للأسواق الآسيوية
 User-agent: Baiduspider
 Allow: /
-Crawl-delay: 2
+Crawl-delay: 1
 Disallow: /dashboard/
-Disallow: /api/
+Disallow: /api/auth/
 Disallow: /login/
 
-# Block unwanted bots
+# DuckDuckGo Bot
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# حظر البوتات الضارة وغير المرغوب فيها
 User-agent: AhrefsBot
 Disallow: /
 
@@ -59,19 +89,46 @@ Disallow: /
 User-agent: CCBot
 Disallow: /
 
-# Sitemaps
-Sitemap: https://www.aldeyarksa.tech/sitemap.xml
+User-agent: GPTBot
+Disallow: /
 
-# Host directive (helps with canonical URL)
-Host: https://www.aldeyarksa.tech`;
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ZoomBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MauiBot
+Disallow: /
+
+# محركات البحث العربية
+User-agent: *
+Allow: /ar/
+Allow: /arabic/
+
+# خرائط المواقع المتعددة
+Sitemap: https://www.aldeyarksa.tech/sitemap.xml
+Sitemap: https://www.aldeyarksa.tech/sitemap-images.xml
+Sitemap: https://www.aldeyarksa.tech/sitemap-videos.xml
+
+# توجيه canonical المضيف
+Host: https://www.aldeyarksa.tech
+
+# معلومات إضافية للمطورين
+# Contact: info@aldeyarksa.tech
+# Website: https://www.aldeyarksa.tech`;
 
   return new Response(robotsTxt, {
     status: 200,
     headers: {
-      'Content-Type': 'text/plain',
-      'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-      'CDN-Cache-Control': 'max-age=86400',
-      'Vercel-CDN-Cache-Control': 'max-age=86400',
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, max-age=43200, s-maxage=43200', // 12 ساعة
+      'CDN-Cache-Control': 'max-age=43200',
+      'Vercel-CDN-Cache-Control': 'max-age=43200',
+      'X-Robots-Tag': 'index, follow',
     },
   });
 }
