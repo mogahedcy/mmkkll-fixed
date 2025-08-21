@@ -1,28 +1,25 @@
-
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { verifyToken } from '@/lib/security';
+import jwt from 'jsonwebtoken';
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // المسارات المحمية
-  if (pathname.startsWith('/dashboard')) {
+  console.log('Middleware: Processing request for', request.nextUrl.pathname);
+  // التحقق من المسارات المحمية
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
     const token = request.cookies.get('admin-token')?.value;
+    console.log('Middleware: Token found:', !!token);
 
     if (!token) {
+      console.log('Middleware: No token, redirecting to login');
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
     try {
-      verifyToken(token);
-      return NextResponse.next();
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      console.log('Middleware: Token verified for admin:', (decoded as any).adminId);
     } catch (error) {
-      // Token غير صالح، إعادة توجيه لصفحة الدخول
-      const response = NextResponse.redirect(new URL('/login', request.url));
-      response.cookies.delete('admin-token');
-      response.cookies.delete('session-id');
-      return response;
+      console.log('Middleware: Token verification failed:', error);
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
