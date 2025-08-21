@@ -27,6 +27,7 @@
     "cloudinary": "^2.6.1",
     "clsx": "^2.1.1",
     "dompurify": "^3.2.6",
+    "express-rate-limit": "^8.0.1",
     "framer-motion": "^12.15.0",
     "isomorphic-dompurify": "^2.25.0",
     "jsonwebtoken": "^9.0.2",

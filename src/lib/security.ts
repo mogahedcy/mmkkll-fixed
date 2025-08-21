@@ -1,29 +1,75 @@
+
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import type { NextRequest } from 'next/server';
-import rateLimit from 'express-rate-limit';
 
-// Rate limiting configuration
-export const createRateLimit = (windowMs: number, max: number) => {
-  return rateLimit({
-    windowMs,
-    max,
-    message: {
-      error: 'تم تجاوز الحد المسموح من المحاولات. يرجى المحاولة مرة أخرى لاحقاً',
-      retryAfter: Math.ceil(windowMs / 1000)
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-  });
-};
+// نظام Rate Limiting مخصص للـ Edge Runtime
+class EdgeRateLimit {
+  private attempts = new Map<string, { count: number; resetTime: number }>();
+  private readonly windowMs: number;
+  private readonly maxAttempts: number;
 
-// Login rate limiting: 5 attempts per 15 minutes
-export const loginRateLimit = createRateLimit(15 * 60 * 1000, 5);
+  constructor(windowMs: number, maxAttempts: number) {
+    this.windowMs = windowMs;
+    this.maxAttempts = maxAttempts;
+  }
 
-// API rate limiting: 100 requests per 15 minutes
-export const apiRateLimit = createRateLimit(15 * 60 * 1000, 100);
+  check(identifier: string): { allowed: boolean; remaining: number; resetTime: number } {
+    const now = Date.now();
+    const record = this.attempts.get(identifier);
 
-// Password validation
+    if (!record || now > record.resetTime) {
+      // إنشاء سجل جديد أو إعادة تعيين
+      this.attempts.set(identifier, {
+        count: 1,
+        resetTime: now + this.windowMs
+      });
+      return {
+        allowed: true,
+        remaining: this.maxAttempts - 1,
+        resetTime: now + this.windowMs
+      };
+    }
+
+    if (record.count >= this.maxAttempts) {
+      return {
+        allowed: false,
+        remaining: 0,
+        resetTime: record.resetTime
+      };
+    }
+
+    record.count++;
+    return {
+      allowed: true,
+      remaining: this.maxAttempts - record.count,
+      resetTime: record.resetTime
+    };
+  }
+
+  cleanup() {
+    const now = Date.now();
+    for (const [key, record] of this.attempts.entries()) {
+      if (now > record.resetTime) {
+        this.attempts.delete(key);
+      }
+    }
+  }
+}
+
+// إنشاء محدد معدل للدخول: 5 محاولات كل 15 دقيقة
+export const loginRateLimit = new EdgeRateLimit(15 * 60 * 1000, 5);
+
+// محدد معدل للـ API: 100 طلب كل 15 دقيقة
+export const apiRateLimit = new EdgeRateLimit(15 * 60 * 1000, 100);
+
+// تنظيف دوري كل 30 دقيقة
+setInterval(() => {
+  loginRateLimit.cleanup();
+  apiRateLimit.cleanup();
+}, 30 * 60 * 1000);
+
+// التحقق من صحة كلمة المرور
 export const validatePassword = (password: string): { valid: boolean; errors: string[] } => {
   const errors: string[] = [];
 
@@ -53,18 +99,18 @@ export const validatePassword = (password: string): { valid: boolean; errors: st
   };
 };
 
-// Enhanced password hashing
+// تشفير كلمة المرور المحسن
 export const hashPassword = async (password: string): Promise<string> => {
-  const saltRounds = 14; // Higher salt rounds for better security
+  const saltRounds = 14; // مستوى تشفير عالي للأمان
   return await bcrypt.hash(password, saltRounds);
 };
 
-// Secure password comparison
+// مقارنة كلمة المرور الآمنة
 export const comparePassword = async (password: string, hash: string): Promise<boolean> => {
   return await bcrypt.compare(password, hash);
 };
 
-// JWT token generation with enhanced security
+// إنتاج JWT token مع أمان محسن
 export const generateToken = (payload: any, expiresIn = '24h'): string => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
@@ -75,7 +121,7 @@ export const generateToken = (payload: any, expiresIn = '24h'): string => {
     {
       ...payload,
       iat: Math.floor(Date.now() / 1000),
-      jti: generateSecureId(), // JWT ID for token blacklisting
+      jti: generateSecureId(), // JWT ID لإلغاء الرموز
     },
     secret,
     {
@@ -87,7 +133,7 @@ export const generateToken = (payload: any, expiresIn = '24h'): string => {
   );
 };
 
-// JWT token verification
+// التحقق من JWT token
 export const verifyToken = (token: string): any => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
@@ -104,7 +150,7 @@ export const verifyToken = (token: string): any => {
   }
 };
 
-// Generate secure random ID
+// إنتاج معرف آمن عشوائي
 export const generateSecureId = (): string => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -114,25 +160,24 @@ export const generateSecureId = (): string => {
   return result;
 };
 
-// Input sanitization
+// تنظيف البيانات المدخلة
 export const sanitizeInput = (input: unknown): string => {
   if (typeof input !== 'string') return '';
 
   return input
     .trim()
-    .replace(/[<>\"']/g, '') // Remove potentially dangerous characters
-    .replace(/\s+/g, ' ') // Normalize whitespace
-    .slice(0, 1000); // Limit length
+    .replace(/[<>\"']/g, '') // إزالة الأحرف الخطيرة
+    .replace(/\s+/g, ' ') // تطبيع المسافات
+    .slice(0, 1000); // حد الطول
 };
 
-// SQL injection prevention (for raw queries)
+// منع SQL injection (للاستعلامات المباشرة)
 export const escapeSQL = (input: string): string => {
   if (typeof input !== 'string') return '';
-
   return input.replace(/'/g, "''");
 };
 
-// XSS protection
+// حماية XSS
 export const escapeHtml = (unsafe: string): string => {
   if (typeof unsafe !== 'string') return '';
 
@@ -144,7 +189,7 @@ export const escapeHtml = (unsafe: string): string => {
     .replace(/'/g, '&#039;');
 };
 
-// CSRF token generation and validation
+// إنتاج والتحقق من CSRF token
 export const generateCSRFToken = (): string => {
   return generateSecureId();
 };
@@ -153,7 +198,7 @@ export const validateCSRFToken = (token: string, storedToken: string): boolean =
   return token === storedToken;
 };
 
-// Session management
+// إدارة الجلسات
 interface Session {
   id: string;
   adminId: string;
@@ -165,14 +210,14 @@ interface Session {
 
 class SessionManager {
   private sessions = new Map<string, Session>();
-  private readonly maxSessions = 5; // Max concurrent sessions per admin
-  private readonly sessionTimeout = 24 * 60 * 60 * 1000; // 24 hours
+  private readonly maxSessions = 5; // أقصى عدد جلسات متزامنة لكل مدير
+  private readonly sessionTimeout = 24 * 60 * 60 * 1000; // 24 ساعة
 
   createSession(adminId: string, ipAddress: string, userAgent: string): string {
     const sessionId = generateSecureId();
     const now = new Date();
 
-    // Remove old sessions for this admin
+    // إزالة الجلسات القديمة لهذا المدير
     this.cleanupAdminSessions(adminId);
 
     const session: Session = {
@@ -192,13 +237,13 @@ class SessionManager {
     const session = this.sessions.get(sessionId);
     if (!session) return null;
 
-    // Check if session is expired
+    // فحص انتهاء صلاحية الجلسة
     if (Date.now() - session.lastActivity.getTime() > this.sessionTimeout) {
       this.sessions.delete(sessionId);
       return null;
     }
 
-    // Update last activity
+    // تحديث آخر نشاط
     session.lastActivity = new Date();
     return session;
   }
@@ -220,7 +265,7 @@ class SessionManager {
       .filter(([_, session]) => session.adminId === adminId)
       .sort(([_, a], [__, b]) => b.lastActivity.getTime() - a.lastActivity.getTime());
 
-    // Keep only the most recent sessions
+    // الاحتفاظ بالجلسات الأحدث فقط
     if (adminSessions.length >= this.maxSessions) {
       const sessionsToRemove = adminSessions.slice(this.maxSessions - 1);
       for (const [sessionId] of sessionsToRemove) {
@@ -241,39 +286,25 @@ class SessionManager {
 
 export const sessionManager = new SessionManager();
 
-// Request validation
+// التحقق من صحة الطلب
 export const validateRequest = (request: NextRequest) => {
   const contentType = request.headers.get('content-type');
   const userAgent = request.headers.get('user-agent');
-  const referer = request.headers.get('referer');
 
-  // Validate content type for POST/PUT requests
+  // التحقق من نوع المحتوى للطلبات POST/PUT
   if (['POST', 'PUT', 'PATCH'].includes(request.method)) {
     if (!contentType || !contentType.includes('application/json')) {
       throw new Error('Invalid content type');
     }
   }
 
-  // Validate user agent
+  // التحقق من user agent
   if (!userAgent || userAgent.length < 10) {
     throw new Error('Invalid user agent');
   }
-
-  // Validate referer for sensitive operations
-  if (process.env.NODE_ENV === 'production' && referer) {
-    const allowedDomains = [
-      process.env.NEXT_PUBLIC_BASE_URL,
-      'localhost:3000'
-    ];
-
-    const refererDomain = new URL(referer).origin;
-    if (!allowedDomains.some(domain => refererDomain.includes(domain || ''))) {
-      throw new Error('Invalid referer');
-    }
-  }
 };
 
-// IP address extraction
+// استخراج عنوان IP
 export const getClientIP = (request: NextRequest): string => {
   const forwarded = request.headers.get('x-forwarded-for');
   const realIP = request.headers.get('x-real-ip');
@@ -294,7 +325,7 @@ export const getClientIP = (request: NextRequest): string => {
   return 'unknown';
 };
 
-// Audit logging
+// سجل التدقيق
 interface AuditLog {
   timestamp: Date;
   adminId: string;
@@ -318,12 +349,12 @@ class AuditLogger {
 
     this.logs.push(auditEntry);
 
-    // Keep only recent logs
+    // الاحتفاظ بالسجلات الحديثة فقط
     if (this.logs.length > this.maxLogs) {
       this.logs = this.logs.slice(-this.maxLogs);
     }
 
-    // In production, you would save this to a database
+    // في الإنتاج، يجب حفظ هذا في قاعدة البيانات
     if (process.env.NODE_ENV === 'development') {
       console.log('Audit Log:', auditEntry);
     }
@@ -344,7 +375,7 @@ class AuditLogger {
 
 export const auditLogger = new AuditLogger();
 
-// Middleware helper for authentication
+// مساعد التحقق من المصادقة
 export const authenticateAdmin = async (request: NextRequest): Promise<any> => {
   const token = request.cookies.get('admin-token')?.value;
 
@@ -355,7 +386,7 @@ export const authenticateAdmin = async (request: NextRequest): Promise<any> => {
   try {
     const decoded = verifyToken(token);
 
-    // Validate session
+    // التحقق من الجلسة
     const sessionId = request.cookies.get('session-id')?.value;
     if (sessionId) {
       const session = sessionManager.validateSession(sessionId);
@@ -370,7 +401,7 @@ export const authenticateAdmin = async (request: NextRequest): Promise<any> => {
   }
 };
 
-// Security headers
+// رؤوس الأمان
 export const securityHeaders = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
@@ -394,5 +425,7 @@ export default {
   authenticateAdmin,
   securityHeaders,
   getClientIP,
-  validateRequest
+  validateRequest,
+  loginRateLimit,
+  apiRateLimit
 };

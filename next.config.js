@@ -9,11 +9,9 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   // إعدادات خاصة بالتطوير المحلي
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        canvas: './empty-module.js',
-      },
+  turbopack: {
+    resolveAlias: {
+      canvas: './empty-module.js',
     },
   },
   serverExternalPackages: ['@prisma/client'],
@@ -47,6 +45,7 @@ const nextConfig = {
       },
     ],
     formats: ['image/webp', 'image/avif'],
+    qualities: [16, 32, 48, 64, 75, 90, 100],
     minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -56,6 +55,11 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   trailingSlash: false,
+  allowedDevOrigins: [
+    '0dac51ea-bd85-4abc-b3a1-d0966b509cd0-00-1giwgs087ibbs.pike.replit.dev',
+    'localhost',
+    '127.0.0.1'
+  ],
   async headers() {
     return [
       {

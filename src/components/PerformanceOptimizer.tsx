@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { type Metric, getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
 
 interface PerformanceOptimizerProps {
   children: React.ReactNode;
@@ -229,33 +230,136 @@ export const useVirtualization = (items: any[], containerHeight: number, itemHei
   };
 };
 
+interface PerformanceMetrics {
+  fcp: number;
+  lcp: number;
+  cls: number;
+  fid: number;
+  ttfb: number;
+  loadComplete: number;
+}
+
 export default function PerformanceOptimizer({ children }: PerformanceOptimizerProps) {
   const router = useRouter();
+  const [metrics, setMetrics] = useState<PerformanceMetrics>({
+    fcp: 0,
+    lcp: 0,
+    cls: 0,
+    fid: 0,
+    ttfb: 0,
+    loadComplete: 0
+  });
+  const [isClient, setIsClient] = useState(false);
+  const loadStartTimeRef = useRef(0);
 
   useEffect(() => {
-    // تحسين التمرير
-    const handleScroll = () => {
-      requestAnimationFrame(() => {
-        // أي منطق تمرير إضافي
-      });
+    setIsClient(true);
+    loadStartTimeRef.current = performance.now();
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    const handleMetric = (metric: Metric) => {
+      setMetrics(prev => ({
+        ...prev,
+        [metric.name.toLowerCase()]: metric.value
+      }));
     };
 
-    // تحسين تحميل الصور
-    if ('loading' in HTMLImageElement.prototype) {
-      const images = document.querySelectorAll('img[loading="lazy"]');
-      images.forEach((img) => {
-        if (img instanceof HTMLImageElement) {
-          img.loading = 'lazy';
-        }
-      });
+    // Collect Web Vitals metrics
+    try {
+      getCLS(handleMetric);
+      getFCP(handleMetric);
+      getFID(handleMetric);
+      getLCP(handleMetric);
+      getTTFB(handleMetric);
+    } catch (error) {
+      console.warn('Web Vitals library not available:', error);
     }
 
-    // تحسين الخطوط
-    if ('fonts' in document) {
-      document.fonts.ready.then(() => {
-        document.body.classList.add('fonts-loaded');
-      });
+    const handleLoad = () => {
+      const loadTime = performance.now() - loadStartTimeRef.current;
+      setMetrics(prev => ({ ...prev, loadComplete: loadTime }));
+    };
+
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
     }
+
+    return () => {
+      window.removeEventListener('load', handleLoad);
+    };
+  }, [isClient]);
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    const logPerformance = () => {
+      console.group('🚀 Performance Metrics');
+      console.log('First Contentful Paint:', metrics.fcp.toFixed(2), 'ms');
+      console.log('Largest Contentful Paint:', metrics.lcp.toFixed(2), 'ms');
+      console.log('Cumulative Layout Shift:', metrics.cls.toFixed(4));
+      console.log('First Input Delay:', metrics.fid.toFixed(2), 'ms');
+      console.log('Load Complete:', metrics.loadComplete.toFixed(2), 'ms');
+      console.log('Image Cache Size:', imageCache.getCacheSize());
+      console.groupEnd();
+    };
+
+    if (metrics.loadComplete > 0) {
+      logPerformance();
+    }
+  }, [metrics, isClient]);
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    // Monitor memory usage
+    const monitorMemory = () => {
+      if ('memory' in performance) {
+        const memory = (performance as any).memory;
+        const used = (memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
+        const total = (memory.totalJSHeapSize / 1024 / 1024).toFixed(2);
+        const limit = (memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2);
+        console.log(`Memory: ${used}MB / ${total}MB (Limit: ${limit}MB)`);
+
+        // Auto cleanup if memory usage is high
+        if (parseFloat(used) / parseFloat(limit) > 0.8) {
+          memoryManager.performCleanup();
+          imageCache.clearCache();
+        }
+      }
+    };
+
+    const memoryInterval = setInterval(monitorMemory, 30000);
+
+    return () => clearInterval(memoryInterval);
+  }, [isClient]);
+
+  // Route change optimization
+  useEffect(() => {
+    const handleRouteChange = () => {
+      // Clear old image cache on route change to prevent memory leaks
+      // Also clear any pending cleanup tasks
+      memoryManager.performCleanup();
+      imageCache.clearCache();
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+      // Ensure cleanup is performed on component unmount as well
+      memoryManager.performCleanup();
+      imageCache.clearCache();
+    };
+  }, [router]);
+
+  // Initialize performance monitoring on client-side
+  useEffect(() => {
+    if (!isClient) return;
 
     // Preload critical resources
     const criticalImages = [
@@ -263,60 +367,26 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
       '/favicon-16x16.png',
       '/favicon-32x32.png'
     ];
-
     preloadCriticalResources(criticalImages);
-
-    // Monitor performance
-    const interval = setInterval(() => {
-      memoryManager.monitorMemory();
-    }, 30000); // Check every 30 seconds
 
     // Log performance metrics after page load
     const timeout = setTimeout(() => {
       performanceMonitor.logMetrics();
-
-      // إضافة تتبع Core Web Vitals
-      try {
-        import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-          if (process.env.NODE_ENV === 'development') {
-            getCLS((metric) => console.log('CLS:', metric));
-            getFID((metric) => console.log('FID:', metric));
-            getFCP((metric) => console.log('FCP:', metric));
-            getLCP((metric) => console.log('LCP:', metric));
-            getTTFB((metric) => console.log('TTFB:', metric));
-          }
-        }).catch((error) => {
-          console.warn('Web Vitals library not available:', error);
-        });
-      } catch (error) {
-        console.warn('Failed to load web-vitals:', error);
-      }
     }, 3000);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(() => {
+        // Additional scroll logic if needed
+      });
+    }, { passive: true });
 
-    // Cleanup on unmount
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearInterval(interval);
       clearTimeout(timeout);
+      // Cleanup on unmount
       memoryManager.performCleanup();
     };
-  }, []);
+  }, [isClient]);
 
-  // Route change optimization
-  useEffect(() => {
-    const handleRouteChange = () => {
-      // Clear old image cache on route change to prevent memory leaks
-      setTimeout(() => {
-        memoryManager.performCleanup();
-      }, 1000);
-    };
-
-    return () => {
-      memoryManager.performCleanup();
-    };
-  }, [router]);
 
   return <>{children}</>;
 }
