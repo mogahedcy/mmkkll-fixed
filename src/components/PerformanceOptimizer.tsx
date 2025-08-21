@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { type Metric, getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
+import { type Metric, onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 interface PerformanceOptimizerProps {
   children: React.ReactNode;
@@ -110,7 +110,7 @@ class PerformanceMonitor {
         }
       }).observe({ entryTypes: ['layout-shift'] });
 
-      // First Input Delay
+      // Interaction to Next Paint (replaces First Input Delay)
       new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           this.metrics.firstInputDelay = (entry as any).processingStart - entry.startTime;
@@ -234,7 +234,7 @@ interface PerformanceMetrics {
   fcp: number;
   lcp: number;
   cls: number;
-  fid: number;
+  inp: number; // INP instead of FID
   ttfb: number;
   loadComplete: number;
 }
@@ -245,7 +245,7 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
     fcp: 0,
     lcp: 0,
     cls: 0,
-    fid: 0,
+    inp: 0,
     ttfb: 0,
     loadComplete: 0
   });
@@ -261,19 +261,22 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
     if (!isClient) return;
 
     const handleMetric = (metric: Metric) => {
+      const metricName = metric.name.toLowerCase();
+      // Map FID to INP for backward compatibility
+      const mappedName = metricName === 'fid' ? 'inp' : metricName;
       setMetrics(prev => ({
         ...prev,
-        [metric.name.toLowerCase()]: metric.value
+        [mappedName]: metric.value
       }));
     };
 
     // Collect Web Vitals metrics
     try {
-      getCLS(handleMetric);
-      getFCP(handleMetric);
-      getFID(handleMetric);
-      getLCP(handleMetric);
-      getTTFB(handleMetric);
+      onCLS(handleMetric);
+      onFCP(handleMetric);
+      onINP(handleMetric); // INP replaced FID in newer versions
+      onLCP(handleMetric);
+      onTTFB(handleMetric);
     } catch (error) {
       console.warn('Web Vitals library not available:', error);
     }
@@ -302,7 +305,7 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
       console.log('First Contentful Paint:', metrics.fcp.toFixed(2), 'ms');
       console.log('Largest Contentful Paint:', metrics.lcp.toFixed(2), 'ms');
       console.log('Cumulative Layout Shift:', metrics.cls.toFixed(4));
-      console.log('First Input Delay:', metrics.fid.toFixed(2), 'ms');
+      console.log('Interaction to Next Paint:', metrics.inp.toFixed(2), 'ms');
       console.log('Load Complete:', metrics.loadComplete.toFixed(2), 'ms');
       console.log('Image Cache Size:', imageCache.getCacheSize());
       console.groupEnd();
