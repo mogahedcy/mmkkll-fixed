@@ -1,591 +1,390 @@
+
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { 
   Upload, 
   X, 
-  Eye, 
-  Save, 
-  ArrowLeft, 
   Image as ImageIcon, 
   Video, 
+  MapPin, 
+  Calendar,
+  Star,
+  Tag,
+  Save,
+  Eye,
+  Loader2,
+  Plus,
   Trash2,
-  CheckCircle,
-  Image
+  Play
 } from 'lucide-react';
 
 interface MediaFile {
   id: string;
   file: File;
-  preview: string;
   type: 'image' | 'video';
+  preview: string;
   title: string;
+  description: string;
+  uploading?: boolean;
+  uploaded?: boolean;
+  uploadedUrl?: string;
 }
+
+const categories = [
+  'مظلات',
+  'برجولات', 
+  'سواتر',
+  'ساندوتش بانل',
+  'تنسيق حدائق',
+  'خيام ملكية',
+  'بيوت شعر',
+  'ترميم'
+];
+
+const suggestedTags = [
+  'جدة', 'السعودية', 'تصميم حديث', 'جودة عالية', 'احترافي',
+  'مقاوم للطقس', 'عزل حراري', 'صديق للبيئة', 'ضمان طويل',
+  'تركيب سريع', 'صيانة سهلة', 'تصميم مخصص'
+];
 
 export default function AddProjectPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: 'مظلات',
-    location: '',
-    client: '',
-    projectDuration: '',
-    projectCost: '',
-    completionDate: '',
-    featured: false
-  });
-
+  
+  // Form state
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [location, setLocation] = useState('');
+  const [completionDate, setCompletionDate] = useState('');
+  const [client, setClient] = useState('');
+  const [featured, setFeatured] = useState(false);
+  const [projectDuration, setProjectDuration] = useState('');
+  const [projectCost, setProjectCost] = useState('');
+  
+  // Media and tags
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState('');
   const [materials, setMaterials] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState('');
-  const [newMaterial, setNewMaterial] = useState('');
+  const [materialInput, setMaterialInput] = useState('');
+  
+  // UI state
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [previewMode, setPreviewMode] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
 
-  const categories = [
-    'مظلات',
-    'برجولات',
-    'سواتر',
-    'ساندوتش بانل',
-    'تنسيق حدائق',
-    'خيام ملكية',
-    'بيوت شعر',
-    'ترميم'
-  ];
-
-  useEffect(() => {
-    checkAuth();
+  // Handle file selection
+  const handleFileSelect = useCallback((files: FileList) => {
+    const newFiles: MediaFile[] = [];
+    
+    Array.from(files).forEach((file) => {
+      if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+        const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+        const preview = URL.createObjectURL(file);
+        
+        newFiles.push({
+          id,
+          file,
+          type: file.type.startsWith('image/') ? 'image' : 'video',
+          preview,
+          title: file.name.split('.')[0],
+          description: ''
+        });
+      }
+    });
+    
+    setMediaFiles(prev => [...prev, ...newFiles]);
   }, []);
 
-  const checkAuth = async () => {
-    try {
-      const response = await fetch('/api/auth/verify', {
-        credentials: 'include'
-      });
+  // Drag and drop handlers
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(true);
+  }, []);
 
-      if (!response.ok) {
-        router.push('/login');
-      }
-    } catch (error) {
-      console.error('Authentication error:', error);
-      router.push('/login');
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setDragActive(false);
+    
+    const files = e.dataTransfer.files;
+    if (files?.length > 0) {
+      handleFileSelect(files);
     }
-  };
+  }, [handleFileSelect]);
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-
-    console.log(`📁 تم اختيار ${files.length} ملف`);
-
-    // التحقق من الملفات والتأكد من صحتها
-    Array.from(files).forEach((file, index) => {
-      console.log(`🔍 معالجة الملف ${index + 1}: ${file.name} (${file.type}, ${(file.size / 1024 / 1024).toFixed(2)}MB)`);
-
-      // التحقق من نوع الملف
-      const isImage = file.type.startsWith('image/');
-      const isVideo = file.type.startsWith('video/');
-
-      if (!isImage && !isVideo) {
-        alert(`نوع الملف غير مدعوم: ${file.name}`);
-        return;
-      }
-
-      // التحقق من حجم الملف
-      const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024; // 100MB للفيديو، 10MB للصور
-      if (file.size > maxSize) {
-        const maxSizeMB = (maxSize / 1024 / 1024).toFixed(0);
-        alert(`حجم الملف ${file.name} كبير جداً. الحد الأقصى: ${maxSizeMB}MB`);
-        return;
-      }
-
-      const mediaType = isImage ? 'image' : 'video';
-      const mediaFile: MediaFile = {
-        id: `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        file,
-        preview: URL.createObjectURL(file),
-        type: mediaType,
-        title: file.name.split('.')[0]
-      };
-
-      setMediaFiles(prev => [...prev, mediaFile]);
-    });
-
-    // إعادة تعيين input الملفات
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
+  // Remove media file
   const removeMediaFile = (id: string) => {
     setMediaFiles(prev => {
-      const fileToRemove = prev.find(f => f.id === id);
-      if (fileToRemove) {
-        URL.revokeObjectURL(fileToRemove.preview);
+      const file = prev.find(f => f.id === id);
+      if (file?.preview) {
+        URL.revokeObjectURL(file.preview);
       }
       return prev.filter(f => f.id !== id);
     });
   };
 
-  const updateMediaTitle = (id: string, newTitle: string) => {
+  // Update media file info
+  const updateMediaFile = (id: string, field: 'title' | 'description', value: string) => {
     setMediaFiles(prev => prev.map(file => 
-      file.id === id ? { ...file, title: newTitle } : file
+      file.id === id ? { ...file, [field]: value } : file
     ));
   };
 
+  // Handle tag input
   const addTag = () => {
-    if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags(prev => [...prev, newTag.trim()]);
-      setNewTag('');
+    const trimmedTag = tagInput.trim();
+    if (trimmedTag && !tags.includes(trimmedTag)) {
+      setTags([...tags, trimmedTag]);
+      setTagInput('');
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(prev => prev.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
+  const addSuggestedTag = (tag: string) => {
+    if (!tags.includes(tag)) {
+      setTags([...tags, tag]);
+    }
+  };
+
+  // Handle materials
   const addMaterial = () => {
-    if (newMaterial.trim() && !materials.includes(newMaterial.trim())) {
-      setMaterials(prev => [...prev, newMaterial.trim()]);
-      setNewMaterial('');
+    const trimmedMaterial = materialInput.trim();
+    if (trimmedMaterial && !materials.includes(trimmedMaterial)) {
+      setMaterials([...materials, trimmedMaterial]);
+      setMaterialInput('');
     }
   };
 
   const removeMaterial = (materialToRemove: string) => {
-    setMaterials(prev => prev.filter(material => material !== materialToRemove));
+    setMaterials(materials.filter(material => material !== materialToRemove));
   };
 
-  const uploadToCloudinary = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append('file', file);
+  // Upload media files
+  const uploadMediaFiles = async () => {
+    const uploadedMedia = [];
+    
+    for (const mediaFile of mediaFiles) {
+      const formData = new FormData();
+      formData.append('file', mediaFile.file);
+      formData.append('folder', 'portfolio');
 
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    });
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'فشل في رفع الملف');
+        if (response.ok) {
+          const result = await response.json();
+          uploadedMedia.push({
+            type: mediaFile.type.toUpperCase(),
+            src: result.secure_url,
+            thumbnail: result.thumbnail || result.secure_url,
+            title: mediaFile.title,
+            description: mediaFile.description
+          });
+        }
+      } catch (error) {
+        console.error('خطأ في رفع الملف:', error);
+        throw new Error(`فشل في رفع الملف: ${mediaFile.file.name}`);
+      }
     }
-
-    const data = await response.json();
-    console.log('🔍 نتيجة الرفع:', data);
-
-    // التحقق من وجود الملفات المرفوعة
-    if (!data.files || data.files.length === 0) {
-      throw new Error('لم يتم إرجاع أي ملفات من الخادم');
-    }
-
-    // إرجاع رابط الملف الأول
-    const uploadedFile = data.files[0];
-    if (!uploadedFile.src && !uploadedFile.url) {
-      throw new Error('لم يتم إرجاع رابط صحيح للملف');
-    }
-
-    return uploadedFile.src || uploadedFile.url;
+    
+    return uploadedMedia;
   };
 
+  // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!title || !description || !category || !location) {
+      alert('يرجى ملء جميع الحقول المطلوبة');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // التحقق من البيانات الأساسية
-      if (!formData.title || !formData.description || !formData.category) {
-        alert('يرجى ملء جميع الحقول المطلوبة');
-        setIsSubmitting(false);
-        return;
-      }
+      // Upload media files first
+      const uploadedMedia = await uploadMediaFiles();
 
-      // التحقق من وجود ملفات للرفع
-      if (mediaFiles.length === 0) {
-        alert('يرجى إضافة صورة واحدة على الأقل للمشروع');
-        setIsSubmitting(false);
-        return;
-      }
-
-      console.log(`🚀 بدء رفع ${mediaFiles.length} ملف...`);
-
-      // رفع الملفات باستخدام API
-      const uploadedMedia = [];
-      let failedUploads = 0;
-
-      for (let i = 0; i < mediaFiles.length; i++) {
-        const mediaFile = mediaFiles[i];
-        try {
-          console.log(`📤 رفع الملف ${i + 1}/${mediaFiles.length}: ${mediaFile.file.name}`);
-
-          // إنشاء FormData للملف
-          const formData = new FormData();
-          formData.append('file', mediaFile.file);
-
-          // استدعاء API الرفع
-          const uploadResponse = await fetch('/api/upload', {
-            method: 'POST',
-            body: formData
-          });
-
-          if (!uploadResponse.ok) {
-            const errorData = await uploadResponse.json();
-            throw new Error(errorData.error || `فشل في رفع الملف: ${uploadResponse.status}`);
-          }
-
-          const uploadResult = await uploadResponse.json();
-          console.log('🔍 نتيجة الرفع:', uploadResult);
-
-          // التحقق من وجود الملفات المرفوعة
-          if (!uploadResult.files || uploadResult.files.length === 0) {
-            throw new Error('لم يتم إرجاع أي ملفات من خادم الرفع');
-          }
-
-          const uploadedFile = uploadResult.files[0];
-          if (!uploadedFile.src && !uploadedFile.url) {
-            throw new Error('لم يتم إرجاع رابط صحيح للملف');
-          }
-
-          console.log(`✅ تم رفع الملف بنجاح: ${mediaFile.file.name}`);
-
-          // إضافة الملف المرفوع إلى قائمة الوسائط
-          uploadedMedia.push({
-            type: mediaFile.type.toUpperCase(),
-            src: uploadedFile.src || uploadedFile.url,
-            thumbnail: uploadedFile.src || uploadedFile.url,
-            title: mediaFile.title || mediaFile.file.name.split('.')[0],
-            description: '',
-            order: uploadedMedia.length
-          });
-
-        } catch (uploadError) {
-          failedUploads++;
-          console.error(`❌ خطأ في رفع الملف ${mediaFile.file.name}:`, uploadError);
-
-          const errorMessage = uploadError instanceof Error ? uploadError.message : 'خطأ غير معروف';
-          alert(`فشل في رفع الملف: ${mediaFile.file.name}\nالخطأ: ${errorMessage}`);
-          setIsSubmitting(false);
-          return;
-        }
-      }
-
-      if (uploadedMedia.length === 0) {
-        alert('لم يتم رفع أي ملفات بنجاح. يرجى المحاولة مرة أخرى.');
-        setIsSubmitting(false);
-        return;
-      }
-
-      console.log(`📊 نتيجة الرفع: ${uploadedMedia.length} ملف نجح، ${failedUploads} ملف فشل`);
-
-      // إنشاء المشروع مع الملفات المرفوعة
+      // Create project
       const projectData = {
-        ...formData,
+        title,
+        description,
+        category,
+        location,
+        completionDate: completionDate || new Date().toISOString(),
+        client,
+        featured,
+        projectDuration,
+        projectCost,
         mediaItems: uploadedMedia,
-        tags: tags,
-        materials: materials,
-        completionDate: new Date(formData.completionDate).toISOString()
+        tags: tags.map(tag => ({ name: tag })),
+        materials: materials.map(material => ({ name: material }))
       };
-
-      console.log('📝 إرسال بيانات المشروع:', projectData);
 
       const response = await fetch('/api/projects', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(projectData),
-        credentials: 'include'
+        body: JSON.stringify(projectData)
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log('✅ تم إنشاء المشروع بنجاح:', result);
-        alert('تم إضافة المشروع بنجاح! 🎉');
-        router.push(`/dashboard/projects/${result.project.id}`);
+        alert('تم إضافة المشروع بنجاح!');
+        router.push('/dashboard/projects');
       } else {
-        const error = await response.json();
-        console.error('❌ خطأ في API المشاريع:', error);
-        alert(`خطأ في إضافة المشروع: ${error.error || 'خطأ غير معروف'}`);
+        throw new Error('فشل في إضافة المشروع');
       }
     } catch (error) {
-      console.error('❌ خطأ عام في إنشاء المشروع:', error);
-      alert(`حدث خطأ في إنشاء المشروع: ${error instanceof Error ? error.message : 'خطأ غير معروف'}`);
+      console.error('خطأ في إضافة المشروع:', error);
+      alert('حدث خطأ في إضافة المشروع');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (previewMode) {
-    return (
-      <div className="min-h-screen bg-gray-50" dir="rtl">
-        <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-6">
-              <h1 className="text-2xl font-bold text-gray-900">معاينة المشروع</h1>
-              <Button variant="outline" onClick={() => setPreviewMode(false)}>
-                <ArrowLeft className="h-4 w-4 ml-2" />
-                العودة للتحرير
-              </Button>
-            </div>
-          </div>
-        </header>
-
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>{formData.title || 'عنوان المشروع'}</CardTitle>
-              <CardDescription>
-                {formData.category} • {formData.location} • {formData.completionDate}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {/* Media Gallery */}
-                {mediaFiles.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {mediaFiles.map((media) => (
-                      <div key={media.id} className="aspect-video rounded-lg overflow-hidden">
-                        {media.type === 'image' ? (
-                          <img 
-                            src={media.preview} 
-                            alt={media.title}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <video 
-                            src={media.preview} 
-                            className="w-full h-full object-cover"
-                            controls
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Description */}
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">وصف المشروع</h3>
-                  <p className="text-gray-600">{formData.description || 'لا يوجد وصف متاح'}</p>
-                </div>
-
-                {/* Project Details */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-medium mb-2">تفاصيل المشروع</h4>
-                    <div className="space-y-1 text-sm text-gray-600">
-                      <p><strong>العميل:</strong> {formData.client || 'غير محدد'}</p>
-                      <p><strong>المدة:</strong> {formData.projectDuration || 'غير محدد'}</p>
-                      <p><strong>التكلفة:</strong> {formData.projectCost || 'غير محدد'}</p>
-                    </div>
-                  </div>
-
-                  {/* Tags */}
-                  {tags.length > 0 && (
-                    <div>
-                      <h4 className="font-medium mb-2">العلامات</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {tags.map((tag) => (
-                          <span key={tag} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Materials */}
-                {materials.length > 0 && (
-                  <div>
-                    <h4 className="font-medium mb-2">المواد المستخدمة</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {materials.map((material) => (
-                        <span key={material} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
-                          {material}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => router.push('/dashboard/projects')}
-              >
-                <ArrowLeft className="h-4 w-4 ml-2" />
-                العودة
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">إضافة مشروع جديد</h1>
-                <p className="text-sm text-gray-500">إنشاء مشروع جديد في معرض الأعمال</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setPreviewMode(true)}
-                disabled={!formData.title}
-              >
-                <Eye className="h-4 w-4 ml-2" />
-                معاينة
-              </Button>
-              <Button
-                type="submit"
-                form="project-form"
-                disabled={isSubmitting || !formData.title}
-                className="bg-green-600 hover:bg-green-700"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    حفظ...
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Save className="h-4 w-4" />
-                    حفظ المشروع
-                  </div>
-                )}
-              </Button>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gray-50 py-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">إضافة مشروع جديد</h1>
+          <p className="text-gray-600">أضف مشروع جديد إلى معرض الأعمال</p>
         </div>
-      </header>
 
-      <form id="project-form" onSubmit={handleSubmit} className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-8">
-          {/* Basic Information */}
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Basic Info */}
           <Card>
             <CardHeader>
-              <CardTitle>المعلومات الأساسية</CardTitle>
-              <CardDescription>أدخل المعلومات الأساسية للمشروع</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <Save className="w-5 h-5" />
+                المعلومات الأساسية
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="md:col-span-2">
+                <div>
                   <label className="block text-sm font-medium mb-2">عنوان المشروع *</label>
                   <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="مظلات فيلا فاخرة في جدة..."
                     required
-                    value={formData.title}
-                    onChange={(e) => handleInputChange('title', e.target.value)}
-                    placeholder="مثال: مظلة سيارات فيلا الرياض"
                   />
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium mb-2">الفئة *</label>
                   <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
-                    value={formData.category}
-                    onChange={(e) => handleInputChange('category', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
-                    {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
+                    <option value="">اختر الفئة</option>
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
                     ))}
                   </select>
                 </div>
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium mb-2">وصف المشروع *</label>
+                <Textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="وصف تفصيلي عن المشروع وما تم إنجازه..."
+                  rows={4}
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-sm font-medium mb-2">الموقع *</label>
-                  <Input
-                    required
-                    value={formData.location}
-                    onChange={(e) => handleInputChange('location', e.target.value)}
-                    placeholder="مثال: جدة - حي الروضة"
-                  />
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <Input
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      placeholder="جدة، السعودية"
+                      className="pl-10"
+                      required
+                    />
+                  </div>
                 </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">تاريخ الإنجاز</label>
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <Input
+                      type="date"
+                      value={completionDate}
+                      onChange={(e) => setCompletionDate(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <label className="flex items-center space-x-2 space-x-reverse">
+                    <input
+                      type="checkbox"
+                      checked={featured}
+                      onChange={(e) => setFeatured(e.target.checked)}
+                      className="rounded"
+                    />
+                    <span className="text-sm font-medium flex items-center gap-1">
+                      <Star className="w-4 h-4" />
+                      مشروع مميز
+                    </span>
+                  </label>
+                </div>
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-sm font-medium mb-2">العميل</label>
                   <Input
-                    value={formData.client}
-                    onChange={(e) => handleInputChange('client', e.target.value)}
+                    value={client}
+                    onChange={(e) => setClient(e.target.value)}
                     placeholder="اسم العميل (اختياري)"
                   />
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">تاريخ الإنجاز *</label>
-                  <Input
-                    type="date"
-                    required
-                    value={formData.completionDate}
-                    onChange={(e) => handleInputChange('completionDate', e.target.value)}
-                  />
-                </div>
-
                 <div>
                   <label className="block text-sm font-medium mb-2">مدة التنفيذ</label>
                   <Input
-                    value={formData.projectDuration}
-                    onChange={(e) => handleInputChange('projectDuration', e.target.value)}
-                    placeholder="مثال: 5 أيام"
+                    value={projectDuration}
+                    onChange={(e) => setProjectDuration(e.target.value)}
+                    placeholder="15 يوم"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium mb-2">التكلفة التقريبية</label>
+                  <label className="block text-sm font-medium mb-2">تكلفة المشروع</label>
                   <Input
-                    value={formData.projectCost}
-                    onChange={(e) => handleInputChange('projectCost', e.target.value)}
-                    placeholder="مثال: 15,000 ريال"
+                    value={projectCost}
+                    onChange={(e) => setProjectCost(e.target.value)}
+                    placeholder="25000 ريال"
                   />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium mb-2">وصف المشروع *</label>
-                  <Textarea
-                    required
-                    rows={4}
-                    value={formData.description}
-                    onChange={(e) => handleInputChange('description', e.target.value)}
-                    placeholder="وصف تفصيلي للمشروع والمواد المستخدمة..."
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={formData.featured}
-                      onChange={(e) => handleInputChange('featured', e.target.checked)}
-                      className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                    />
-                    <span className="text-sm font-medium">مشروع مميز (يظهر في الصفحة الرئيسية)</span>
-                  </label>
                 </div>
               </div>
             </CardContent>
@@ -594,193 +393,233 @@ export default function AddProjectPage() {
           {/* Media Upload */}
           <Card>
             <CardHeader>
-              <CardTitle>الصور والفيديوهات</CardTitle>
-              <CardDescription>ارفع صور وفيديوهات المشروع (يُنصح برفع 5-10 صور على الأقل)</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <ImageIcon className="w-5 h-5" />
+                الصور والفيديوهات
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-6">
-                {/* Upload Area */}
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 hover:border-green-500 transition-colors">
-                  <div className="text-center">
-                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                    <h3 className="mt-2 text-lg font-medium text-gray-900">رفع صور وفيديوهات المشروع</h3>
-                    <p className="mt-1 text-sm text-gray-600">اختر الملفات من جهازك</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      الصيغ المدعومة: JPG, PNG, WebP, MP4, MOV, AVI (حد أقصى: 100MB للفيديو، 10MB للصور)
-                    </p>
+              {/* Upload Area */}
+              <div
+                className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                  dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                }`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept="image/*,video/*"
+                  onChange={(e) => e.target.files && handleFileSelect(e.target.files)}
+                  className="hidden"
+                />
+                
+                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  اسحب الملفات هنا أو اختر ملفات
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  يدعم الصور والفيديوهات (JPG, PNG, MP4, MOV)
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Plus className="w-4 h-4 ml-2" />
+                  اختر ملفات
+                </Button>
+              </div>
 
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      multiple
-                      accept="image/jpeg,image/jpg,image/png,image/webp,video/mp4,video/mov,video/avi,video/webm"
-                      onChange={handleFileSelect}
-                      className="hidden"
-                      id="file-upload"
-                    />
-
-                    <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
-                      <label
-                        htmlFor="file-upload"
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 cursor-pointer transition-colors"
-                      >
-                        <ImageIcon className="w-4 h-4 ml-2" />
-                        اختيار الملفات
-                      </label>
-                    </div>
-
-                    {/* عداد الملفات المختارة */}
-                    {mediaFiles.length > 0 && (
-                      <div className="mt-3 text-sm text-green-600 font-medium">
-                        تم اختيار {mediaFiles.length} ملف
+              {/* Media Files */}
+              {mediaFiles.length > 0 && (
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {mediaFiles.map((mediaFile, index) => (
+                    <div key={mediaFile.id} className="bg-white border rounded-lg p-4">
+                      <div className="relative aspect-video mb-4 bg-gray-100 rounded-lg overflow-hidden">
+                        {mediaFile.type === 'image' ? (
+                          <Image
+                            src={mediaFile.preview}
+                            alt={mediaFile.title}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="relative w-full h-full">
+                            <video
+                              src={mediaFile.preview}
+                              className="w-full h-full object-cover"
+                              controls={false}
+                            />
+                            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                              <Play className="w-12 h-12 text-white" />
+                            </div>
+                          </div>
+                        )}
+                        
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2"
+                          onClick={() => removeMediaFile(mediaFile.id)}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
                       </div>
-                    )}
-                  </div>
+
+                      <div className="space-y-3">
+                        <Input
+                          value={mediaFile.title}
+                          onChange={(e) => updateMediaFile(mediaFile.id, 'title', e.target.value)}
+                          placeholder="عنوان الملف"
+                        />
+                        <Textarea
+                          value={mediaFile.description}
+                          onChange={(e) => updateMediaFile(mediaFile.id, 'description', e.target.value)}
+                          placeholder="وصف الملف"
+                          rows={2}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Tags */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Tag className="w-5 h-5" />
+                الكلمات المفتاحية
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex gap-2">
+                  <Input
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    placeholder="أضف كلمة مفتاحية..."
+                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                  />
+                  <Button type="button" onClick={addTag}>
+                    إضافة
+                  </Button>
                 </div>
 
-                {/* Media Preview */}
-                {mediaFiles.length > 0 && (
-                  <div className="space-y-4">
-                    <h4 className="font-medium">الملفات المرفوعة ({mediaFiles.length})</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {mediaFiles.map((media) => (
-                        <div key={media.id} className="border rounded-lg p-4 space-y-3">
-                          <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
-                            {media.type === 'image' ? (
-                              <img 
-                                src={media.preview} 
-                                alt={media.title}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <video 
-                                src={media.preview} 
-                                className="w-full h-full object-cover"
-                                controls
-                              />
-                            )}
-                          </div>
+                {/* Current tags */}
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                        #{tag}
+                        <button
+                          type="button"
+                          onClick={() => removeTag(tag)}
+                          className="text-gray-500 hover:text-red-500"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
 
-                          <div className="flex items-center gap-2">
-                            {media.type === 'image' ? (
-                              <ImageIcon className="h-4 w-4 text-blue-500" />
-                            ) : (
-                              <Video className="h-4 w-4 text-green-500" />
-                            )}
-                            <Input
-                              size="sm"
-                              value={media.title}
-                              onChange={(e) => updateMediaTitle(media.id, e.target.value)}
-                              placeholder="عنوان الملف"
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => removeMediaFile(media.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                {/* Suggested tags */}
+                <div>
+                  <p className="text-sm font-medium mb-2">اقتراحات:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {suggestedTags.filter(tag => !tags.includes(tag)).map((tag) => (
+                      <Button
+                        key={tag}
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => addSuggestedTag(tag)}
+                      >
+                        #{tag}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Materials */}
+          <Card>
+            <CardHeader>
+              <CardTitle>المواد المستخدمة</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex gap-2">
+                  <Input
+                    value={materialInput}
+                    onChange={(e) => setMaterialInput(e.target.value)}
+                    placeholder="أضف مادة مستخدمة..."
+                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addMaterial())}
+                  />
+                  <Button type="button" onClick={addMaterial}>
+                    إضافة
+                  </Button>
+                </div>
+
+                {materials.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {materials.map((material) => (
+                      <Badge key={material} variant="outline" className="flex items-center gap-1">
+                        {material}
+                        <button
+                          type="button"
+                          onClick={() => removeMaterial(material)}
+                          className="text-gray-500 hover:text-red-500"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </Badge>
+                    ))}
                   </div>
                 )}
               </div>
             </CardContent>
           </Card>
 
-          {/* Tags and Materials */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Tags */}
-            <Card>
-              <CardHeader>
-                <CardTitle>العلامات</CardTitle>
-                <CardDescription>أضف كلمات مفتاحية للمشروع</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex gap-2">
-                    <Input
-                      value={newTag}
-                      onChange={(e) => setNewTag(e.target.value)}
-                      placeholder="أضف علامة جديدة"
-                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                    />
-                    <Button type="button" onClick={addTag} variant="outline">
-                      إضافة
-                    </Button>
-                  </div>
-
-                  {tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
-                        >
-                          {tag}
-                          <button
-                            type="button"
-                            onClick={() => removeTag(tag)}
-                            className="hover:text-blue-600"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Materials */}
-            <Card>
-              <CardHeader>
-                <CardTitle>المواد المستخدمة</CardTitle>
-                <CardDescription>أضف قائمة بالمواد المستخدمة</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex gap-2">
-                    <Input
-                      value={newMaterial}
-                      onChange={(e) => setNewMaterial(e.target.value)}
-                      placeholder="أضف مادة جديدة"
-                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addMaterial())}
-                    />
-                    <Button type="button" onClick={addMaterial} variant="outline">
-                      إضافة
-                    </Button>
-                  </div>
-
-                  {materials.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {materials.map((material) => (
-                        <span
-                          key={material}
-                          className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full"
-                        >
-                          {material}
-                          <button
-                            type="button"
-                            onClick={() => removeMaterial(material)}
-                            className="hover:text-green-600"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+          {/* Submit */}
+          <div className="flex justify-end gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.back()}
+            >
+              إلغاء
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="min-w-[120px]"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin ml-2" />
+                  جاري الحفظ...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 ml-2" />
+                  حفظ المشروع
+                </>
+              )}
+            </Button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
