@@ -22,10 +22,13 @@ export default function LoginForm() {
   useEffect(() => {
     const checkExistingSession = async () => {
       try {
-        const response = await fetch('/api/auth/verify');
+        const response = await fetch('/api/auth/verify', {
+          method: 'GET',
+          credentials: 'include'
+        });
         if (response.ok) {
           // المستخدم مسجل دخوله بالفعل، إعادة توجيه
-          router.push('/dashboard');
+          window.location.href = '/dashboard';
         }
       } catch (error) {
         // لا توجد جلسة صالحة
@@ -56,8 +59,8 @@ export default function LoginForm() {
       const data = await response.json();
 
       if (response.ok) {
-        // نجح تسجيل الدخول
-        router.push('/dashboard');
+        // نجح تسجيل الدخول - إعادة توجيه فورية
+        window.location.href = '/dashboard';
       } else {
         setError(data.error || 'حدث خطأ في تسجيل الدخول');
       }
