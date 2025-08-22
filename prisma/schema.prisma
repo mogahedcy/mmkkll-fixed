@@ -1,7 +1,4 @@
 
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -25,14 +22,26 @@ model Project {
   views            Int        @default(0)
   likes            Int        @default(0)
   rating           Float      @default(0)
+  status           String     @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
+  
+  // SEO fields
+  slug             String?    @unique
+  metaTitle        String?
+  metaDescription  String?
+  keywords         String?
+  
+  // Timestamps
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  publishedAt      DateTime? @default(now())
 
   // Relations
   mediaItems       MediaItem[]
   tags             ProjectTag[]
   materials        ProjectMaterial[]
   comments         Comment[]
+  likes_users      ProjectLike[]
+  views_users      ProjectView[]
 
   @@map("projects")
 }
@@ -46,7 +55,14 @@ model MediaItem {
   title       String?
   description String?
   duration    String?   // For videos
+  fileSize    Int?      // File size in bytes
+  mimeType    String?
   order       Int       @default(0)
+  
+  // SEO fields
+  alt         String?
+  caption     String?
+  
   createdAt   DateTime  @default(now())
 
   // Relations
@@ -84,14 +100,62 @@ model Comment {
   id        String   @id @default(cuid())
   projectId String
   name      String
+  email     String?
   message   String
   rating    Int      @default(5)
+  status    String   @default("APPROVED") // PENDING, APPROVED, REJECTED
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  replies   CommentReply[]
+
+  @@map("comments")
+}
+
+model CommentReply {
+  id        String   @id @default(cuid())
+  commentId String
+  name      String
+  message   String
+  status    String   @default("APPROVED")
+  createdAt DateTime @default(now())
+
+  // Relations
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@map("comment_replies")
+}
+
+model ProjectLike {
+  id        String   @id @default(cuid())
+  projectId String
+  ip        String
+  userAgent String?
   createdAt DateTime @default(now())
 
   // Relations
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  @@map("comments")
+  @@unique([projectId, ip])
+  @@map("project_likes")
+}
+
+model ProjectView {
+  id        String   @id @default(cuid())
+  projectId String
+  ip        String
+  userAgent String?
+  source    String?  // direct, google, social, etc.
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_views")
 }
 
 model Admin {
@@ -99,11 +163,34 @@ model Admin {
   username    String   @unique
   password    String   // هاش كلمة المرور
   email       String?  @unique
+  fullName    String?
+  avatar      String?
+  role        String   @default("ADMIN") // ADMIN, SUPER_ADMIN
+  status      String   @default("ACTIVE") // ACTIVE, INACTIVE
   lastLogin   DateTime?
+  loginCount  Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Relations
+  sessions    AdminSession[]
+
   @@map("admins")
+}
+
+model AdminSession {
+  id        String   @id @default(cuid())
+  adminId   String
+  token     String   @unique
+  ip        String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("admin_sessions")
 }
 
 enum MediaType {
