@@ -1,4 +1,3 @@
-
 export async function GET() {
   const robotsTxt = `User-agent: *
 Allow: /
@@ -110,16 +109,16 @@ Allow: /ar/
 Allow: /arabic/
 
 # خرائط المواقع المتعددة
-Sitemap: https://www.aldeyarksa.tech/sitemap.xml
-Sitemap: https://www.aldeyarksa.tech/sitemap-images.xml
-Sitemap: https://www.aldeyarksa.tech/sitemap-videos.xml
+Sitemap: https://aldeyarksa.tech/sitemap.xml
+Sitemap: https://aldeyarksa.tech/sitemap-images.xml
+Sitemap: https://aldeyarksa.tech/sitemap-videos.xml
 
 # توجيه canonical المضيف
-Host: https://www.aldeyarksa.tech
+Host: https://aldeyarksa.tech
 
 # معلومات إضافية للمطورين
 # Contact: info@aldeyarksa.tech
-# Website: https://www.aldeyarksa.tech`;
+# Website: https://aldeyarksa.tech`;
 
   return new Response(robotsTxt, {
     status: 200,

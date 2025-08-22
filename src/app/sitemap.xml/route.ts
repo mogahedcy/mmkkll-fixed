@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/prisma';
 
 // بيانات المقالات المحدثة مع كلمات مفتاحية غنية
@@ -78,7 +77,7 @@ const articlesData = [
 ];
 
 export async function GET() {
-  const baseUrl = 'https://www.aldeyarksa.tech';
+  const baseUrl = 'https://aldeyarksa.tech';
 
   // الصفحات الثابتة مع أولوية SEO محسنة وكلمات مفتاحية
   const staticPages = [

@@ -5,6 +5,15 @@ import type { NextRequest } from 'next/server';
 export const runtime = 'nodejs';
 
 export function middleware(request: NextRequest) {
+  // إضافة headers أمان إضافية للدومين الجديد
+  const response = NextResponse.next();
+  
+  // تعيين headers CSP للأمان
+  if (request.nextUrl.hostname === 'aldeyarksa.tech' || request.nextUrl.hostname === 'www.aldeyarksa.tech') {
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    response.headers.set('X-Robots-Tag', 'index, follow');
+  }
+  
   console.log('Middleware: Processing request for', request.nextUrl.pathname);
   
   // التحقق من المسارات المحمية

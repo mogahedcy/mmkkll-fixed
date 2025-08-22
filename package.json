@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack",
-    "dev:local": "next dev --turbopack",
-    "build": "prisma generate && next build",
-    "start": "next start",
+    "build": "npm run db:prepare && next build",
+    "start": "next start -H 0.0.0.0",
     "lint": "bunx biome lint --write && bunx tsc --noEmit",
     "format": "bunx biome format --write",
     "vercel-build": "prisma generate && next build",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:prepare": "node scripts/prepare-database.js",
+    "db:seed": "node scripts/add-more-projects.js"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",

@@ -56,7 +56,9 @@ const nextConfig = {
   generateEtags: true,
   trailingSlash: false,
   allowedDevOrigins: [
-    '0dac51ea-bd85-4abc-b3a1-d0966b509cd0-00-1giwgs087ibbs.pike.replit.dev',
+    'aldeyarksa.tech',
+    'www.aldeyarksa.tech',
+    '*.replit.dev',
     'localhost',
     '127.0.0.1'
   ],
