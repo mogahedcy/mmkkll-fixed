@@ -242,7 +242,7 @@ export default function AuditPage() {
                       </h4>
                       <ul className="text-sm text-yellow-600 space-y-1">
                         {data.warnings.map((warning, index) => (
-                          <li key={index}>• {warning}</li>
+                          <li key={`warning-${index}-${warning.substring(0, 10)}`}>• {warning}</li>
                         ))}
                       </ul>
                     </div>

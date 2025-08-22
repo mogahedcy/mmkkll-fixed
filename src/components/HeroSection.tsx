@@ -62,7 +62,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0">
         {slides.map((slide, index) => (
           <div
-            key={index}
+            key={`slide-${slide.url}-${index}`}
             className={`absolute inset-0 transition-opacity duration-1000 ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
@@ -70,10 +70,11 @@ export default function HeroSection() {
             <Image
               src={slide.url}
               alt={slide.alt}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               quality={90}
-              priority={true}
+              priority={index === 0}
+              sizes="100vw"
             />
           </div>
         ))}

@@ -460,7 +460,7 @@ export default function PortfolioPageClient() {
               {/* Categories */}
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => (
-                  <motion.div key={category.value} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div key={`category-${category.value}`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Button
                       variant={selectedCategory === category.value ? 'default' : 'outline'}
                       size="sm"
@@ -482,7 +482,7 @@ export default function PortfolioPageClient() {
                   className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   {sortOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <option key={`sort-${option.value}`} value={option.value}>
                       {option.label}
                     </option>
                   ))}
@@ -672,7 +672,7 @@ export default function PortfolioPageClient() {
                         {project.tags?.length > 0 && (
                           <div className="flex flex-wrap gap-1 mb-4">
                             {project.tags.slice(0, 2).map((tag, index) => (
-                              <span key={index} className="bg-blue-50 text-blue-600 px-2 py-1 rounded-full text-xs">
+                              <span key={`tag-${project.id}-${tag.name}-${index}`} className="bg-blue-50 text-blue-600 px-2 py-1 rounded-full text-xs">
                                 #{tag.name}
                               </span>
                             ))}

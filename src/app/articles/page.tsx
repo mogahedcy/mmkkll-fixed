@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useCallback } from 'react';
@@ -7,6 +6,7 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ArrowLeft, BookOpen, TrendingUp, Eye, Heart, Clock, Tag, Star, Brain, Zap, Calendar, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge'; // Assuming Badge component is available
 
 // بيانات المقالات الموسعة والشاملة
 const articles = [
@@ -202,7 +202,7 @@ export default function ArticlesPage() {
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
-    
+
     if (!query.trim()) {
       if (selectedCategory === 'الكل') {
         setFilteredArticles(articles);
@@ -227,7 +227,7 @@ export default function ArticlesPage() {
 
   const handleCategoryFilter = useCallback((category: string) => {
     setSelectedCategory(category);
-    
+
     let baseArticles = articles;
     if (searchQuery.trim()) {
       const searchTerms = searchQuery.toLowerCase().split(' ');
@@ -351,7 +351,7 @@ export default function ArticlesPage() {
                         <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
                           {article.title}
                         </h3>
-                        
+
                         <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
                           {article.excerpt}
                         </p>
@@ -403,13 +403,10 @@ export default function ArticlesPage() {
 
                         {/* Tags */}
                         <div className="flex flex-wrap gap-2 mb-5">
-                          {article.tags.slice(0, 3).map((tag) => (
-                            <span 
-                              key={tag} 
-                              className="bg-gradient-to-r from-gray-100 to-gray-50 text-gray-600 px-3 py-1 rounded-full text-xs font-medium hover:from-accent/10 hover:to-accent/5 hover:text-accent transition-all duration-300"
-                            >
+                          {article.tags.slice(0, 3).map((tag, index) => (
+                            <Badge key={`article-tag-${article.id}-${tag}-${index}`} variant="secondary" className="text-xs">
                               #{tag}
-                            </span>
+                            </Badge>
                           ))}
                         </div>
 
@@ -457,7 +454,7 @@ export default function ArticlesPage() {
                         <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
                           {article.title}
                         </h3>
-                        
+
                         <p className="text-gray-600 mb-4 line-clamp-2 text-sm">
                           {article.excerpt}
                         </p>
