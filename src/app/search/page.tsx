@@ -1,529 +1,622 @@
 
 'use client';
 
-import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import AdvancedSearch from '@/components/AdvancedSearch';
-import SearchResults from '@/components/SearchResults';
-import { Search, BookOpen, TrendingUp, Filter, Bookmark, Clock, Zap, Star } from 'lucide-react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Search, Filter, X, Calendar, MapPin, Tag, Star, Eye, MessageCircle, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import AdvancedFilters from '@/components/AdvancedFilters';
+import SearchResults from '@/components/SearchResults';
+import SavedSearches from '@/components/SavedSearches';
 
-// Dynamic imports لتحسين الأداء
-const SavedSearches = dynamic(() => import('@/components/SavedSearches'), {
-  ssr: false,
-  loading: () => <div className="w-32 h-8 bg-gray-200 animate-pulse rounded-lg" />
-});
-
-// بيانات المقالات مع معرفات فريدة
-const articles = [
-  {
-    id: 'article-1',
-    slug: 'best-car-shades-jeddah-2024',
-    title: 'أفضل أنواع مظلات السيارات في جدة 2024',
-    excerpt: 'دليل شامل لاختيار أفضل مظلة لسيارتك في مناخ جدة الساحلي. تعرف على المواد والتصاميم المختلفة ونصائح الاختيار.',
-    content: 'محتوى شامل عن مظلات السيارات...',
-    category: 'مظلات سيارات',
-    author: 'فريق محترفين الديار',
-    authorAvatar: 'https://ui-avatars.com/api/?name=فريق+محترفين+الديار&background=0f172a&color=fff',
-    date: '15 نوفمبر 2024',
-    readTime: '5 دقائق',
-    image: '/uploads/mazallat-1.webp',
-    tags: ['مظلات', 'سيارات', 'جدة', 'دليل'],
-    featured: true,
-    views: 1250,
-    likes: 89,
-    rating: 4.8,
-    commentsCount: 12,
-    keywords: ['مظلات سيارات', 'حماية السيارات', 'المناخ الساحلي', 'جودة المواد']
-  },
-  {
-    id: 'article-2',
-    slug: 'wooden-pergola-maintenance-coastal-climate',
-    title: 'كيفية صيانة البرجولة الخشبية في المناخ الساحلي',
-    excerpt: 'نصائح مهمة للحفاظ على برجولتك الخشبية من آثار الرطوبة والملوحة في جدة. جدول صيانة شهري وسنوي.',
-    content: 'محتوى شامل عن صيانة البرجولات...',
-    category: 'برجولات',
-    author: 'المهندس أحمد الديار',
-    authorAvatar: 'https://ui-avatars.com/api/?name=أحمد+الديار&background=059669&color=fff',
-    date: '10 نوفمبر 2024',
-    readTime: '4 دقائق',
-    image: '/uploads/pergola-1.jpg',
-    tags: ['برجولات', 'صيانة', 'خشب', 'نصائح'],
-    featured: false,
-    views: 890,
-    likes: 67,
-    rating: 4.6,
-    commentsCount: 8,
-    keywords: ['برجولات خشبية', 'صيانة الحدائق', 'المناخ الرطب', 'العناية بالخشب']
-  },
-  {
-    id: 'article-3',
-    slug: 'sandwich-panel-thermal-insulation-saudi',
-    title: 'ساندوتش بانل: الحل الأمثل للعزل الحراري في السعودية',
-    excerpt: 'لماذا يعتبر الساندوتش بانل الخيار الأول للمباني التجارية والصناعية؟ فوائد العزل الحراري وتوفير الطاقة.',
-    content: 'محتوى شامل عن الساندوتش بانل...',
-    category: 'ساندوتش بانل',
-    author: 'المهندس سعد التقني',
-    authorAvatar: 'https://ui-avatars.com/api/?name=سعد+التقني&background=dc2626&color=fff',
-    date: '5 نوفمبر 2024',
-    readTime: '6 دقائق',
-    image: '/uploads/sandwich-panel-1.jpg',
-    tags: ['ساندوتش بانل', 'عزل حراري', 'توفير طاقة'],
-    featured: true,
-    views: 2100,
-    likes: 145,
-    rating: 4.9,
-    commentsCount: 18,
-    keywords: ['عزل حراري', 'مباني تجارية', 'توفير الطاقة', 'ساندوتش بانل']
-  },
-  {
-    id: 'article-4',
-    slug: 'smart-fences-privacy-elegance',
-    title: 'السواتر الذكية: خصوصية وأناقة في آن واحد',
-    excerpt: 'تعرف على أحدث أنواع السواتر التي تجمع بين الجمال والوظيفة. سواتر متحركة وأتوماتيكية وصديقة للبيئة.',
-    content: 'محتوى شامل عن السواتر الذكية...',
-    category: 'سواتر',
-    author: 'مصمم السواتر عمر',
-    authorAvatar: 'https://ui-avatars.com/api/?name=عمر&background=ea580c&color=fff',
-    date: '25 أكتوبر 2024',
-    readTime: '3 دقائق',
-    image: '/uploads/sawater-1.webp',
-    tags: ['سواتر', 'خصوصية', 'تقنية ذكية'],
-    featured: true,
-    views: 1890,
-    likes: 127,
-    rating: 4.8,
-    commentsCount: 22,
-    keywords: ['سواتر ذكية', 'خصوصية المنزل', 'التحكم الآلي', 'تقنيات حديثة']
-  },
-  {
-    id: 'article-5',
-    slug: 'royal-tents-luxury-occasions-guide',
-    title: 'خيام ملكية فاخرة: دليل التصميم للمناسبات الخاصة',
-    excerpt: 'كيف تختار الخيمة الملكية المثالية لمناسباتك؟ أنواع الأقمشة والتصاميم والإكسسوارات لكل مناسبة.',
-    content: 'محتوى شامل عن الخيام الملكية...',
-    category: 'خيام ملكية',
-    author: 'خبير الضيافة محمد',
-    authorAvatar: 'https://ui-avatars.com/api/?name=محمد&background=7c3aed&color=fff',
-    date: '20 أكتوبر 2024',
-    readTime: '6 دقائق',
-    image: '/uploads/khayyam-1.webp',
-    tags: ['خيام ملكية', 'مناسبات', 'فخامة'],
-    featured: false,
-    views: 980,
-    likes: 73,
-    rating: 4.7,
-    commentsCount: 15,
-    keywords: ['خيام فاخرة', 'مناسبات اجتماعية', 'التراث السعودي', 'ضيافة']
-  },
-  {
-    id: 'article-6',
-    slug: 'traditional-hair-houses-heritage-modern',
-    title: 'بيوت الشعر التراثية: جمع الأصالة والحداثة',
-    excerpt: 'كيف تحافظ على الطابع التراثي لبيت الشعر مع إضافة لمسات عصرية؟ مواد تقليدية بتقنيات حديثة.',
-    content: 'محتوى شامل عن بيوت الشعر...',
-    category: 'بيوت شعر',
-    author: 'أستاذ التراث عبدالله',
-    authorAvatar: 'https://ui-avatars.com/api/?name=عبدالله&background=16a34a&color=fff',
-    date: '18 أكتوبر 2024',
-    readTime: '5 دقائق',
-    image: '/uploads/byoot-shaar-1.webp',
-    tags: ['بيوت شعر', 'تراث', 'أصالة'],
-    featured: false,
-    views: 1340,
-    likes: 91,
-    rating: 4.5,
-    commentsCount: 19,
-    keywords: ['التراث السعودي', 'بيوت شعر', 'ثقافة بدوية', 'تصميم تراثي']
-  },
-  {
-    id: 'article-7',
-    slug: 'garden-design-trends-saudi-2024',
-    title: 'اتجاهات تصميم الحدائق في المملكة 2024',
-    excerpt: 'أحدث صيحات تنسيق الحدائق المناسبة للمناخ السعودي. نباتات محلية وأنظمة ري ذكية وتصاميم مستدامة.',
-    content: 'محتوى شامل عن تنسيق الحدائق...',
-    category: 'تنسيق حدائق',
-    author: 'أخصائي التنسيق فيصل',
-    authorAvatar: 'https://ui-avatars.com/api/?name=فيصل&background=16a34a&color=fff',
-    date: '1 نوفمبر 2024',
-    readTime: '5 دقائق',
-    image: '/uploads/landscaping-1.webp',
-    tags: ['تنسيق حدائق', 'نباتات محلية', 'تصميم'],
-    featured: false,
-    views: 1560,
-    likes: 98,
-    rating: 4.7,
-    commentsCount: 15,
-    keywords: ['تنسيق حدائق', 'نباتات صحراوية', 'ري ذكي', 'استدامة']
-  },
-  {
-    id: 'article-8',
-    slug: 'renovation-secrets-modern-techniques',
-    title: 'أسرار ترميم الملحقات بأحدث التقنيات',
-    excerpt: 'كيف تعيد الحياة لملحقاتك القديمة؟ تقنيات حديثة في الترميم والعزل وإضافة اللمسات العصرية.',
-    content: 'محتوى شامل عن الترميم...',
-    category: 'ترميم',
-    author: 'مقاول الترميم خالد',
-    authorAvatar: 'https://ui-avatars.com/api/?name=خالد&background=7c3aed&color=fff',
-    date: '28 أكتوبر 2024',
-    readTime: '4 دقائق',
-    image: '/uploads/renovation-1.jpg',
-    tags: ['ترميم', 'ملحقات', 'تجديد'],
-    featured: false,
-    views: 750,
-    likes: 52,
-    rating: 4.5,
-    commentsCount: 6,
-    keywords: ['ترميم منازل', 'تطوير ملحقات', 'تقنيات حديثة', 'عزل متطور']
-  },
-  {
-    id: 'article-9',
-    slug: 'modern-shades-innovative-designs',
-    title: 'مظلات عصرية بتصاميم مبتكرة للحدائق الحديثة',
-    excerpt: 'اكتشف أحدث تصاميم المظلات العصرية التي تجمع بين الوظيفة والجمال. حلول مبتكرة للحدائق والمساحات الخارجية.',
-    content: 'محتوى شامل عن المظلات العصرية...',
-    category: 'مظلات سيارات',
-    author: 'فريق محترفين الديار',
-    authorAvatar: 'https://ui-avatars.com/api/?name=فريق+محترفين+الديار&background=0f172a&color=fff',
-    date: '12 نوفمبر 2024',
-    readTime: '4 دقائق',
-    image: '/uploads/mazallat-2.webp',
-    tags: ['مظلات', 'تصميم', 'حدائق', 'عصري'],
-    featured: false,
-    views: 1120,
-    likes: 84,
-    rating: 4.6,
-    commentsCount: 11,
-    keywords: ['مظلات حدائق', 'تصاميم عصرية', 'مساحات خارجية', 'حلول مبتكرة']
-  },
-  {
-    id: 'article-10',
-    slug: 'sustainable-pergolas-eco-friendly',
-    title: 'برجولات مستدامة: حلول صديقة للبيئة',
-    excerpt: 'كيف تختار برجولة صديقة للبيئة؟ مواد مستدامة وتقنيات توفير الطاقة لحديقة خضراء.',
-    content: 'محتوى شامل عن البرجولات المستدامة...',
-    category: 'برجولات',
-    author: 'المهندس أحمد الديار',
-    authorAvatar: 'https://ui-avatars.com/api/?name=أحمد+الديار&background=059669&color=fff',
-    date: '8 نوفمبر 2024',
-    readTime: '5 دقائق',
-    image: '/uploads/pergola-2.jpg',
-    tags: ['برجولات', 'استدامة', 'بيئة', 'توفير طاقة'],
-    featured: false,
-    views: 945,
-    likes: 72,
-    rating: 4.7,
-    commentsCount: 9,
-    keywords: ['برجولات مستدامة', 'مواد بيئية', 'توفير طاقة', 'حديقة خضراء']
-  }
-];
-
-function SearchPageContent() {
-  const searchParams = useSearchParams();
-  const [searchResults, setSearchResults] = useState(articles);
-  const [isLoading, setIsLoading] = useState(false);
-  const [initialLoad, setInitialLoad] = useState(true);
-  const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
-
-  // Get initial search query from URL
-  const initialQuery = searchParams.get('q') || '';
-
-  // Memoized calculations for better performance
-  const popularSearches = useMemo(() => [
-    'مظلات السيارات',
-    'برجولات خشبية',
-    'ساندوتش بانل',
-    'سواتر الحدائق',
-    'خيام ملكية',
-    'بيوت شعر',
-    'تنسيق حدائق',
-    'ترميم ملحقات'
-  ], []);
-
-  const trendingTopics = useMemo(() => [
-    { id: 'trend-1', topic: 'مظلات مقاومة للرياح', count: 156 },
-    { id: 'trend-2', topic: 'برجولات للمناخ الساحلي', count: 143 },
-    { id: 'trend-3', topic: 'عزل حراري متطور', count: 128 },
-    { id: 'trend-4', topic: 'سواتر ذكية', count: 115 },
-    { id: 'trend-5', topic: 'خيام فاخرة', count: 98 }
-  ], []);
-
-  const featuredArticles = useMemo(() => 
-    articles.filter(article => article.featured).slice(0, 3)
-  , []);
-
-  const searchStats = useMemo(() => ({
-    totalArticles: articles.length,
-    totalViews: articles.reduce((sum, article) => sum + article.views, 0),
-    avgRating: (articles.reduce((sum, article) => sum + article.rating, 0) / articles.length).toFixed(1)
-  }), []);
-
-  useEffect(() => {
-    if (initialQuery) {
-      setIsLoading(true);
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-        setInitialLoad(false);
-      }, 800);
-      return () => clearTimeout(timer);
-    } else {
-      setInitialLoad(false);
-    }
-  }, [initialQuery]);
-
-  const handleSearchResults = useCallback((results: typeof articles) => {
-    setSearchResults(results);
-  }, []);
-
-  const handleQuickSearch = useCallback((searchTerm: string) => {
-    const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
-    if (searchInput) {
-      searchInput.value = searchTerm;
-      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-  }, []);
-
-  return (
-    <>
-      <Navbar />
-
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-        {/* Enhanced Header Section */}
-        <section className="py-20 bg-gradient-to-r from-primary via-accent to-primary text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/10" />
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-20" />
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6 backdrop-blur-sm">
-              <Search className="w-10 h-10" />
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              البحث المتقدم في المقالات
-            </h1>
-            <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed opacity-90 mb-8">
-              اكتشف المعرفة المتخصصة في عالم المظلات والبرجولات والساندوتش بانل مع نظام البحث الذكي
-            </p>
-
-            {/* Search Stats */}
-            <div className="flex flex-wrap items-center justify-center gap-8 mt-8">
-              <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <BookOpen className="w-5 h-5 ml-2" />
-                <span className="font-medium">{searchStats.totalArticles} مقال</span>
-              </div>
-              <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <TrendingUp className="w-5 h-5 ml-2" />
-                <span className="font-medium">أكثر من {searchStats.totalViews.toLocaleString()} مشاهدة</span>
-              </div>
-              <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <Star className="w-5 h-5 ml-2 text-yellow-300" />
-                <span className="font-medium">تقييم {searchStats.avgRating}/5</span>
-              </div>
-              <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <Zap className="w-5 h-5 ml-2 text-yellow-300" />
-                <span className="font-medium">مدعوم بالذكاء الاصطناعي</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          {/* Advanced Search Component */}
-          <div className="mb-16 relative">
-            <AdvancedSearch
-              articles={articles}
-              onSearchResults={handleSearchResults}
-              className="mb-8"
-            />
-
-            {/* View Toggle and Saved Searches */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center bg-white rounded-lg p-1 shadow-sm border">
-                <button
-                  onClick={() => setViewType('grid')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    viewType === 'grid'
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'text-gray-600 hover:text-primary'
-                  }`}
-                >
-                  شبكة
-                </button>
-                <button
-                  onClick={() => setViewType('list')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    viewType === 'list'
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'text-gray-600 hover:text-primary'
-                  }`}
-                >
-                  قائمة
-                </button>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <SavedSearches />
-                <div className="text-sm text-gray-600">
-                  {searchResults.length} من {articles.length} مقال
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Featured Articles Showcase */}
-          {initialLoad && !initialQuery && (
-            <div className="mb-16">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-primary">المقالات المميزة</h2>
-                <div className="flex items-center text-sm text-gray-600">
-                  <Star className="w-4 h-4 ml-2 text-yellow-500" />
-                  أفضل المحتويات
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {featuredArticles.map((article) => (
-                  <div
-                    key={article.id}
-                    className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group"
-                  >
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={article.image}
-                        alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <span className="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-                          مميز
-                        </span>
-                      </div>
-                    </div>
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-full">
-                          {article.category}
-                        </span>
-                        <div className="flex items-center text-xs text-gray-500">
-                          <Star className="w-3 h-3 ml-1 text-yellow-500" />
-                          {article.rating}
-                        </div>
-                      </div>
-                      <h3 className="font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                        {article.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                        {article.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{article.readTime}</span>
-                        <span>{article.views.toLocaleString()} مشاهدة</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Trending & Popular Searches Sidebar */}
-          {initialLoad && !initialQuery && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-              {/* Popular Searches */}
-              <div className="lg:col-span-2">
-                <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
-                  <h3 className="text-xl font-bold text-primary mb-4 flex items-center">
-                    <TrendingUp className="w-6 h-6 ml-2 text-accent" />
-                    الموضوعات الأكثر بحثاً
-                  </h3>
-                  <div className="space-y-3">
-                    {trendingTopics.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer group"
-                        onClick={() => handleQuickSearch(item.topic)}
-                      >
-                        <span className="font-medium text-gray-700 group-hover:text-primary transition-colors">
-                          {item.topic}
-                        </span>
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <span className="bg-accent/10 text-accent px-2 py-1 rounded-full text-xs font-medium">
-                            {item.count} بحث
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Access */}
-              <div>
-                <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 mb-6">
-                  <h3 className="text-xl font-bold text-primary mb-4 flex items-center">
-                    <Bookmark className="w-6 h-6 ml-2 text-accent" />
-                    بحث سريع
-                  </h3>
-                  <div className="space-y-2">
-                    {popularSearches.slice(0, 6).map((search, index) => (
-                      <button
-                        key={`popular-search-${index}`}
-                        className="w-full text-right p-3 bg-gray-50 hover:bg-accent/10 rounded-lg text-sm font-medium text-gray-700 hover:text-accent transition-all duration-300"
-                        onClick={() => handleQuickSearch(search)}
-                      >
-                        {search}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quick Tips */}
-                <div className="bg-gradient-to-br from-accent/5 to-primary/5 border border-accent/20 rounded-xl p-6">
-                  <h4 className="text-lg font-bold text-primary mb-3 flex items-center">
-                    <Zap className="w-5 h-5 ml-2 text-accent" />
-                    نصائح البحث
-                  </h4>
-                  <ul className="text-sm text-gray-600 space-y-2">
-                    <li>• استخدم كلمات مفتاحية محددة</li>
-                    <li>• جرب الفلاتر لتضييق النتائج</li>
-                    <li>• احفظ البحثات المفيدة</li>
-                    <li>• استخدم علامات التبويب للتنظيم</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Search Results */}
-          <SearchResults
-            articles={searchResults}
-            isLoading={isLoading}
-            searchQuery={initialQuery}
-            viewType={viewType}
-          />
-        </div>
-      </div>
-
-      <Footer />
-    </>
-  );
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  location: string;
+  completionDate: string;
+  client: string;
+  featured: boolean;
+  slug: string;
+  views: number;
+  likes: number;
+  _count: {
+    comments: number;
+  };
+  mediaItems: Array<{
+    id: string;
+    type: string;
+    src: string;
+    alt: string;
+    title: string;
+  }>;
 }
 
+interface SearchFilters {
+  category: string;
+  location: string;
+  featured: boolean | null;
+  dateFrom: string;
+  dateTo: string;
+  sortBy: string;
+  sortOrder: 'asc' | 'desc';
+}
+
+const categories = [
+  { id: '', name: 'جميع الفئات' },
+  { id: 'مظلات', name: 'المظلات' },
+  { id: 'برجولات', name: 'البرجولات' },
+  { id: 'سواتر', name: 'السواتر' },
+  { id: 'تنسيق حدائق', name: 'تنسيق الحدائق' },
+  { id: 'ترميم', name: 'الترميم' },
+  { id: 'ساندوتش بانل', name: 'الساندوتش بانل' },
+  { id: 'بيوت شعر', name: 'بيوت الشعر' },
+  { id: 'خيام', name: 'الخيام' }
+];
+
+const locations = [
+  { id: '', name: 'جميع المواقع' },
+  { id: 'جدة', name: 'جدة' },
+  { id: 'مكة', name: 'مكة المكرمة' },
+  { id: 'الرياض', name: 'الرياض' },
+  { id: 'الطائف', name: 'الطائف' },
+  { id: 'المدينة', name: 'المدينة المنورة' }
+];
+
+const sortOptions = [
+  { id: 'newest', name: 'الأحدث' },
+  { id: 'oldest', name: 'الأقدم' },
+  { id: 'popular', name: 'الأكثر شعبية' },
+  { id: 'featured', name: 'المميزة' },
+  { id: 'alphabetical', name: 'أبجدياً' }
+];
+
 export default function SearchPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [totalResults, setTotalResults] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  
+  const [filters, setFilters] = useState<SearchFilters>({
+    category: '',
+    location: '',
+    featured: null,
+    dateFrom: '',
+    dateTo: '',
+    sortBy: 'newest',
+    sortOrder: 'desc'
+  });
+
+  const itemsPerPage = 12;
+
+  // Initialize from URL params
+  useEffect(() => {
+    const query = searchParams.get('q') || '';
+    const category = searchParams.get('category') || '';
+    const location = searchParams.get('location') || '';
+    
+    setSearchQuery(query);
+    setFilters(prev => ({
+      ...prev,
+      category,
+      location
+    }));
+
+    if (query || category || location) {
+      setHasSearched(true);
+    }
+
+    // Load recent searches from localStorage
+    const saved = localStorage.getItem('recentSearches');
+    if (saved) {
+      setRecentSearches(JSON.parse(saved));
+    }
+  }, [searchParams]);
+
+  // Load projects
+  const loadProjects = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (searchQuery) params.append('search', searchQuery);
+      if (filters.category) params.append('category', filters.category);
+      if (filters.location) params.append('location', filters.location);
+      if (filters.featured !== null) params.append('featured', filters.featured.toString());
+      if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+      if (filters.dateTo) params.append('dateTo', filters.dateTo);
+      params.append('sort', filters.sortBy);
+      params.append('order', filters.sortOrder);
+      params.append('limit', '100'); // Get more results for client-side pagination
+
+      const response = await fetch(`/api/projects?${params.toString()}`);
+      const data = await response.json();
+      
+      if (response.ok) {
+        setProjects(data.projects || []);
+        setTotalResults(data.projects?.length || 0);
+      }
+    } catch (error) {
+      console.error('Error loading projects:', error);
+      setProjects([]);
+      setTotalResults(0);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchQuery, filters]);
+
+  // Search effect
+  useEffect(() => {
+    if (hasSearched) {
+      loadProjects();
+    }
+  }, [loadProjects, hasSearched]);
+
+  // Paginated results
+  const paginatedProjects = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return projects.slice(startIndex, endIndex);
+  }, [projects, currentPage]);
+
+  const totalPages = Math.ceil(totalResults / itemsPerPage);
+
+  // Search handler
+  const handleSearch = (query?: string) => {
+    const searchTerm = query !== undefined ? query : searchQuery;
+    
+    if (searchTerm.trim()) {
+      // Save to recent searches
+      const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)].slice(0, 5);
+      setRecentSearches(updated);
+      localStorage.setItem('recentSearches', JSON.stringify(updated));
+    }
+
+    setHasSearched(true);
+    setCurrentPage(1);
+
+    // Update URL
+    const params = new URLSearchParams();
+    if (searchTerm) params.append('q', searchTerm);
+    if (filters.category) params.append('category', filters.category);
+    if (filters.location) params.append('location', filters.location);
+    
+    router.push(`/search?${params.toString()}`);
+  };
+
+  // Filter handlers
+  const handleFilterChange = (newFilters: Partial<SearchFilters>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+    setCurrentPage(1);
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      category: '',
+      location: '',
+      featured: null,
+      dateFrom: '',
+      dateTo: '',
+      sortBy: 'newest',
+      sortOrder: 'desc'
+    });
+    setCurrentPage(1);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setHasSearched(false);
+    setProjects([]);
+    setCurrentPage(1);
+    router.push('/search');
+  };
+
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-primary mb-2">جاري تحميل صفحة البحث</h2>
-          <p className="text-gray-600">يرجى الانتظار لحظات...</p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              البحث في مشاريعنا
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              ابحث في مجموعة مشاريعنا المتنوعة واعثر على ما يناسب احتياجاتك
+            </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className="max-w-4xl mx-auto">
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="ابحث عن المشاريع، الخدمات، المواقع..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                className="text-lg py-4 px-6 pl-12 pr-20"
+              />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex gap-2">
+                {searchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearSearch}
+                    className="px-2"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+                <Button onClick={() => handleSearch()} className="px-6">
+                  بحث
+                </Button>
+              </div>
+            </div>
+
+            {/* Recent Searches */}
+            {!hasSearched && recentSearches.length > 0 && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-2">عمليات البحث الأخيرة:</p>
+                <div className="flex flex-wrap gap-2">
+                  {recentSearches.map((search, index) => (
+                    <Button
+                      key={`recent-${index}`}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSearchQuery(search);
+                        handleSearch(search);
+                      }}
+                      className="text-xs"
+                    >
+                      {search}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    }>
-      <SearchPageContent />
-    </Suspense>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          
+          {/* Sidebar Filters */}
+          <div className="lg:w-80">
+            <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">تصفية النتائج</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="lg:hidden"
+                >
+                  <Filter className="w-4 h-4" />
+                </Button>
+              </div>
+
+              <div className={`space-y-6 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+                {/* Category Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    الفئة
+                  </label>
+                  <select
+                    value={filters.category}
+                    onChange={(e) => handleFilterChange({ category: e.target.value })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  >
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Location Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    الموقع
+                  </label>
+                  <select
+                    value={filters.location}
+                    onChange={(e) => handleFilterChange({ location: e.target.value })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  >
+                    {locations.map((location) => (
+                      <option key={location.id} value={location.id}>
+                        {location.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Sort Options */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    ترتيب النتائج
+                  </label>
+                  <select
+                    value={filters.sortBy}
+                    onChange={(e) => handleFilterChange({ sortBy: e.target.value })}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  >
+                    {sortOptions.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Featured Filter */}
+                <div>
+                  <label className="flex items-center space-x-2 space-x-reverse">
+                    <input
+                      type="checkbox"
+                      checked={filters.featured === true}
+                      onChange={(e) => handleFilterChange({ featured: e.target.checked ? true : null })}
+                      className="rounded border-gray-300 text-orange-600 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                    />
+                    <span className="text-sm font-medium text-gray-700">المشاريع المميزة فقط</span>
+                  </label>
+                </div>
+
+                {/* Clear Filters */}
+                <Button
+                  variant="outline"
+                  onClick={clearFilters}
+                  className="w-full"
+                  disabled={!Object.values(filters).some(v => v !== '' && v !== null && v !== 'newest' && v !== 'desc')}
+                >
+                  مسح الفلاتر
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Results Header */}
+            {hasSearched && (
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    نتائج البحث
+                    {searchQuery && (
+                      <span className="text-orange-600"> عن "{searchQuery}"</span>
+                    )}
+                  </h2>
+                  <p className="text-gray-600 mt-1">
+                    {isLoading ? 'جاري البحث...' : `${totalResults} نتيجة`}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Active Filters */}
+            {hasSearched && (filters.category || filters.location || filters.featured) && (
+              <div className="mb-6">
+                <div className="flex flex-wrap gap-2">
+                  {filters.category && (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      <Tag className="w-3 h-3" />
+                      {categories.find(c => c.id === filters.category)?.name}
+                      <button
+                        onClick={() => handleFilterChange({ category: '' })}
+                        className="ml-1 hover:text-red-600"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {filters.location && (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      <MapPin className="w-3 h-3" />
+                      {locations.find(l => l.id === filters.location)?.name}
+                      <button
+                        onClick={() => handleFilterChange({ location: '' })}
+                        className="ml-1 hover:text-red-600"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Badge>
+                  )}
+                  {filters.featured && (
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      <Star className="w-3 h-3" />
+                      مميز
+                      <button
+                        onClick={() => handleFilterChange({ featured: null })}
+                        className="ml-1 hover:text-red-600"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Results */}
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <Card key={`skeleton-${i}`} className="overflow-hidden">
+                    <div className="aspect-[4/3] bg-gray-200 animate-pulse" />
+                    <CardContent className="p-4">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse mb-2" />
+                      <div className="h-3 bg-gray-200 rounded animate-pulse mb-4" />
+                      <div className="flex justify-between">
+                        <div className="h-3 w-16 bg-gray-200 rounded animate-pulse" />
+                        <div className="h-3 w-20 bg-gray-200 rounded animate-pulse" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : hasSearched && totalResults === 0 ? (
+              <div className="text-center py-12">
+                <div className="max-w-md mx-auto">
+                  <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    لم نجد أي نتائج
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    حاول استخدام كلمات مختلفة أو تعديل الفلاتر
+                  </p>
+                  <Button onClick={clearFilters}>
+                    مسح جميع الفلاتر
+                  </Button>
+                </div>
+              </div>
+            ) : hasSearched ? (
+              <>
+                {/* Results Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedProjects.map((project) => (
+                    <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                      <Link href={`/portfolio/${project.id}`}>
+                        <div className="aspect-[4/3] relative">
+                          {project.mediaItems?.[0] ? (
+                            <Image
+                              src={project.mediaItems[0].src}
+                              alt={project.mediaItems[0].alt || project.title}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                              <span className="text-gray-400">لا توجد صورة</span>
+                            </div>
+                          )}
+                          {project.featured && (
+                            <Badge className="absolute top-2 right-2 bg-orange-600">
+                              <Star className="w-3 h-3 mr-1" />
+                              مميز
+                            </Badge>
+                          )}
+                        </div>
+                      </Link>
+                      
+                      <CardContent className="p-4">
+                        <Link href={`/portfolio/${project.id}`}>
+                          <h3 className="font-semibold text-gray-900 mb-2 hover:text-orange-600 transition-colors">
+                            {project.title}
+                          </h3>
+                        </Link>
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                          {project.description}
+                        </p>
+                        
+                        <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                          <div className="flex items-center gap-1">
+                            <Tag className="w-3 h-3" />
+                            <span>{project.category}</span>
+                          </div>
+                          {project.location && (
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              <span>{project.location}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-1">
+                              <Eye className="w-3 h-3" />
+                              <span>{project.views || 0}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <MessageCircle className="w-3 h-3" />
+                              <span>{project._count?.comments || 0}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            <span>
+                              {new Date(project.completionDate).toLocaleDateString('ar-SA')}
+                            </span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center mt-8">
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      >
+                        السابق
+                      </Button>
+                      
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                          const pageNum = Math.max(1, Math.min(totalPages, currentPage - 2 + i));
+                          return (
+                            <Button
+                              key={pageNum}
+                              variant={currentPage === pageNum ? 'default' : 'outline'}
+                              size="sm"
+                              onClick={() => setCurrentPage(pageNum)}
+                              className="w-10"
+                            >
+                              {pageNum}
+                            </Button>
+                          );
+                        })}
+                      </div>
+                      
+                      <Button
+                        variant="outline"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                      >
+                        التالي
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  ابدأ بالبحث
+                </h3>
+                <p className="text-gray-600">
+                  استخدم مربع البحث أعلاه للعثور على المشاريع التي تهمك
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
