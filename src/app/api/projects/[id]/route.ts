@@ -148,20 +148,27 @@ export async function PUT(
           })) || []
         },
         tags: {
-          create: tags?.map((tag: string | { name: string }) => ({ 
-            name: typeof tag === 'string' ? tag : tag.name 
+          create: tags?.map((tag: string | { name: string }) => ({
+            name: typeof tag === 'string' ? tag : tag.name
           })) || []
         },
         materials: {
-          create: materials?.map((material: string | { name: string }) => ({ 
-            name: typeof material === 'string' ? material : material.name 
+          create: materials?.map((material: string | { name: string }) => ({
+            name: typeof material === 'string' ? material : material.name
           })) || []
         }
       },
       include: {
         mediaItems: true,
         tags: true,
-        materials: true
+        materials: true,
+        _count: {
+          select: {
+            comments: true,
+            likes_users: true,
+            views_users: true
+          }
+        }
       }
     });
 

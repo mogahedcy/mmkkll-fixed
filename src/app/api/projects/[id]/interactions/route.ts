@@ -1,4 +1,3 @@
-
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
@@ -179,11 +178,12 @@ export async function POST(
 // GET - جلب إحصائيات التفاعل للمستخدم الحالي
 export async function GET(
   request: NextRequest,
-  { params }: InteractionParams
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: projectId } = params;
-    const headersList = headers();
+    const resolvedParams = await params;
+    const { id: projectId } = resolvedParams;
+    const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
 
     // التحقق من وجود المشروع

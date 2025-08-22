@@ -154,7 +154,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const headersList = headers();
+    const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || 'unknown';
 
     const {
@@ -224,21 +224,10 @@ export async function POST(request: NextRequest) {
             order: index
           })) || []
         },
-        tags: {
-          create: tags?.map((tag: string | { name: string }) => ({ 
-            name: typeof tag === 'string' ? tag : tag.name 
-          })) || []
-        },
-        materials: {
-          create: materials?.map((material: string | { name: string }) => ({ 
-            name: typeof material === 'string' ? material : material.name 
-          })) || []
-        }
+        
       },
       include: {
         mediaItems: true,
-        tags: true,
-        materials: true,
         _count: {
           select: {
             comments: true,
