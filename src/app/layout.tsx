@@ -128,7 +128,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" className={notoSansArabic.variable}>
+    <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={notoSansArabic.variable}>
       <head>
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
         <link rel="canonical" href="https://aldeyarksa.tech" />

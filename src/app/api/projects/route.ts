@@ -24,8 +24,7 @@ export async function GET(request: NextRequest) {
 
     if (category && category !== 'all') {
       where.category = {
-        contains: category,
-        mode: 'insensitive'
+        contains: category
       };
     }
 
@@ -34,14 +33,15 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
+      const searchLower = search.toLowerCase();
       where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { location: { contains: search, mode: 'insensitive' } },
+        { title: { contains: search } },
+        { description: { contains: search } },
+        { location: { contains: search } },
         {
           tags: {
             some: {
-              name: { contains: search, mode: 'insensitive' }
+              name: { contains: search }
             }
           }
         }

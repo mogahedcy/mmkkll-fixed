@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -218,7 +217,7 @@ export default function PortfolioPageClient() {
 
       if (response.ok) {
         const data = await response.json();
-        
+
         // تحديث الحالة المحلية
         setLikedProjects(prev => {
           const newSet = new Set(prev);
@@ -253,7 +252,7 @@ export default function PortfolioPageClient() {
     event.preventDefault();
     event.stopPropagation();
 
-    const url = `${window.location.origin}/portfolio/${project.slug}`;
+    const url = `${window.location.origin}/portfolio/${project.id}`;
     const text = `شاهد هذا المشروع الرائع: ${project.title}`;
 
     if (navigator.share) {
@@ -525,7 +524,7 @@ export default function PortfolioPageClient() {
                       {/* Project Image/Video */}
                       <div className="relative aspect-square group-hover:scale-105 transition-transform duration-500 overflow-hidden">
                         <Link 
-                          href={`/portfolio/${project.slug}`}
+                          href={`/portfolio/${project.id}`}
                           onClick={() => registerView(project.id)}
                         >
                           {mainMedia ? (
@@ -604,7 +603,7 @@ export default function PortfolioPageClient() {
                           >
                             <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
                           </motion.button>
-                          
+
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
@@ -632,7 +631,7 @@ export default function PortfolioPageClient() {
                         </div>
 
                         <Link 
-                          href={`/portfolio/${project.slug}`}
+                          href={`/portfolio/${project.id}`}
                           onClick={() => registerView(project.id)}
                         >
                           <h3 className="font-bold text-gray-900 line-clamp-2 mb-2 text-lg hover:text-blue-600 transition-colors">
@@ -688,7 +687,7 @@ export default function PortfolioPageClient() {
                               {formatNumber(interactions.comments || project.commentsCount)}
                             </motion.span>
                           </div>
-                          
+
                           {project.rating > 0 && (
                             <div className="flex items-center gap-1">
                               <Star className="w-4 h-4 text-yellow-400 fill-current" />
@@ -700,7 +699,7 @@ export default function PortfolioPageClient() {
                         {/* CTA */}
                         <Button asChild className="w-full group">
                           <Link 
-                            href={`/portfolio/${project.slug}`}
+                            href={`/portfolio/${project.id}`}
                             onClick={() => registerView(project.id)}
                           >
                             عرض التفاصيل
@@ -722,7 +721,7 @@ export default function PortfolioPageClient() {
                         {/* Thumbnail */}
                         <div className="relative w-32 h-32 rounded-lg overflow-hidden flex-shrink-0">
                           <Link 
-                            href={`/portfolio/${project.slug}`}
+                            href={`/portfolio/${project.id}`}
                             onClick={() => registerView(project.id)}
                           >
                             {mainMedia ? (
@@ -767,7 +766,7 @@ export default function PortfolioPageClient() {
                                 </Badge>
                               )}
                             </div>
-                            
+
                             <div className="flex items-center gap-2">
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
@@ -781,7 +780,7 @@ export default function PortfolioPageClient() {
                               >
                                 <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
                               </motion.button>
-                              
+
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
@@ -794,7 +793,7 @@ export default function PortfolioPageClient() {
                           </div>
 
                           <Link 
-                            href={`/portfolio/${project.slug}`}
+                            href={`/portfolio/${project.id}`}
                             onClick={() => registerView(project.id)}
                           >
                             <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
@@ -833,7 +832,7 @@ export default function PortfolioPageClient() {
 
                             <Button asChild>
                               <Link 
-                                href={`/portfolio/${project.slug}`}
+                                href={`/portfolio/${project.id}`}
                                 onClick={() => registerView(project.id)}
                               >
                                 عرض التفاصيل
