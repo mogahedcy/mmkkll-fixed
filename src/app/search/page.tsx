@@ -1,18 +1,26 @@
+
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdvancedSearch from '@/components/AdvancedSearch';
 import SearchResults from '@/components/SearchResults';
-import { Search, BookOpen, TrendingUp, Filter, Bookmark, Clock, Zap } from 'lucide-react';
+import { Search, BookOpen, TrendingUp, Filter, Bookmark, Clock, Zap, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Extended articles data with local images and comprehensive information
+// Dynamic imports لتحسين الأداء
+const SavedSearches = dynamic(() => import('@/components/SavedSearches'), {
+  ssr: false,
+  loading: () => <div className="w-32 h-8 bg-gray-200 animate-pulse rounded-lg" />
+});
+
+// بيانات المقالات مع معرفات فريدة
 const articles = [
   {
-    id: 1,
+    id: 'article-1',
     slug: 'best-car-shades-jeddah-2024',
     title: 'أفضل أنواع مظلات السيارات في جدة 2024',
     excerpt: 'دليل شامل لاختيار أفضل مظلة لسيارتك في مناخ جدة الساحلي. تعرف على المواد والتصاميم المختلفة ونصائح الاختيار.',
@@ -32,7 +40,7 @@ const articles = [
     keywords: ['مظلات سيارات', 'حماية السيارات', 'المناخ الساحلي', 'جودة المواد']
   },
   {
-    id: 2,
+    id: 'article-2',
     slug: 'wooden-pergola-maintenance-coastal-climate',
     title: 'كيفية صيانة البرجولة الخشبية في المناخ الساحلي',
     excerpt: 'نصائح مهمة للحفاظ على برجولتك الخشبية من آثار الرطوبة والملوحة في جدة. جدول صيانة شهري وسنوي.',
@@ -52,7 +60,7 @@ const articles = [
     keywords: ['برجولات خشبية', 'صيانة الحدائق', 'المناخ الرطب', 'العناية بالخشب']
   },
   {
-    id: 3,
+    id: 'article-3',
     slug: 'sandwich-panel-thermal-insulation-saudi',
     title: 'ساندوتش بانل: الحل الأمثل للعزل الحراري في السعودية',
     excerpt: 'لماذا يعتبر الساندوتش بانل الخيار الأول للمباني التجارية والصناعية؟ فوائد العزل الحراري وتوفير الطاقة.',
@@ -72,7 +80,7 @@ const articles = [
     keywords: ['عزل حراري', 'مباني تجارية', 'توفير الطاقة', 'ساندوتش بانل']
   },
   {
-    id: 4,
+    id: 'article-4',
     slug: 'smart-fences-privacy-elegance',
     title: 'السواتر الذكية: خصوصية وأناقة في آن واحد',
     excerpt: 'تعرف على أحدث أنواع السواتر التي تجمع بين الجمال والوظيفة. سواتر متحركة وأتوماتيكية وصديقة للبيئة.',
@@ -92,7 +100,7 @@ const articles = [
     keywords: ['سواتر ذكية', 'خصوصية المنزل', 'التحكم الآلي', 'تقنيات حديثة']
   },
   {
-    id: 5,
+    id: 'article-5',
     slug: 'royal-tents-luxury-occasions-guide',
     title: 'خيام ملكية فاخرة: دليل التصميم للمناسبات الخاصة',
     excerpt: 'كيف تختار الخيمة الملكية المثالية لمناسباتك؟ أنواع الأقمشة والتصاميم والإكسسوارات لكل مناسبة.',
@@ -112,7 +120,7 @@ const articles = [
     keywords: ['خيام فاخرة', 'مناسبات اجتماعية', 'التراث السعودي', 'ضيافة']
   },
   {
-    id: 6,
+    id: 'article-6',
     slug: 'traditional-hair-houses-heritage-modern',
     title: 'بيوت الشعر التراثية: جمع الأصالة والحداثة',
     excerpt: 'كيف تحافظ على الطابع التراثي لبيت الشعر مع إضافة لمسات عصرية؟ مواد تقليدية بتقنيات حديثة.',
@@ -132,7 +140,7 @@ const articles = [
     keywords: ['التراث السعودي', 'بيوت شعر', 'ثقافة بدوية', 'تصميم تراثي']
   },
   {
-    id: 7,
+    id: 'article-7',
     slug: 'garden-design-trends-saudi-2024',
     title: 'اتجاهات تصميم الحدائق في المملكة 2024',
     excerpt: 'أحدث صيحات تنسيق الحدائق المناسبة للمناخ السعودي. نباتات محلية وأنظمة ري ذكية وتصاميم مستدامة.',
@@ -152,7 +160,7 @@ const articles = [
     keywords: ['تنسيق حدائق', 'نباتات صحراوية', 'ري ذكي', 'استدامة']
   },
   {
-    id: 8,
+    id: 'article-8',
     slug: 'renovation-secrets-modern-techniques',
     title: 'أسرار ترميم الملحقات بأحدث التقنيات',
     excerpt: 'كيف تعيد الحياة لملحقاتك القديمة؟ تقنيات حديثة في الترميم والعزل وإضافة اللمسات العصرية.',
@@ -172,7 +180,7 @@ const articles = [
     keywords: ['ترميم منازل', 'تطوير ملحقات', 'تقنيات حديثة', 'عزل متطور']
   },
   {
-    id: 9,
+    id: 'article-9',
     slug: 'modern-shades-innovative-designs',
     title: 'مظلات عصرية بتصاميم مبتكرة للحدائق الحديثة',
     excerpt: 'اكتشف أحدث تصاميم المظلات العصرية التي تجمع بين الوظيفة والجمال. حلول مبتكرة للحدائق والمساحات الخارجية.',
@@ -192,7 +200,7 @@ const articles = [
     keywords: ['مظلات حدائق', 'تصاميم عصرية', 'مساحات خارجية', 'حلول مبتكرة']
   },
   {
-    id: 10,
+    id: 'article-10',
     slug: 'sustainable-pergolas-eco-friendly',
     title: 'برجولات مستدامة: حلول صديقة للبيئة',
     excerpt: 'كيف تختار برجولة صديقة للبيئة؟ مواد مستدامة وتقنيات توفير الطاقة لحديقة خضراء.',
@@ -218,29 +226,13 @@ function SearchPageContent() {
   const [searchResults, setSearchResults] = useState(articles);
   const [isLoading, setIsLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
 
   // Get initial search query from URL
   const initialQuery = searchParams.get('q') || '';
 
-  useEffect(() => {
-    // If there's an initial query, perform search
-    if (initialQuery) {
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        setInitialLoad(false);
-      }, 500);
-    } else {
-      setInitialLoad(false);
-    }
-  }, [initialQuery]);
-
-  const handleSearchResults = (results: typeof articles) => {
-    setSearchResults(results);
-  };
-
-  // Popular searches for suggestions
-  const popularSearches = [
+  // Memoized calculations for better performance
+  const popularSearches = useMemo(() => [
     'مظلات السيارات',
     'برجولات خشبية',
     'ساندوتش بانل',
@@ -249,16 +241,50 @@ function SearchPageContent() {
     'بيوت شعر',
     'تنسيق حدائق',
     'ترميم ملحقات'
-  ];
+  ], []);
 
-  // Recent trending topics
-  const trendingTopics = [
-    { topic: 'مظلات مقاومة للرياح', count: 156 },
-    { topic: 'برجولات للمناخ الساحلي', count: 143 },
-    { topic: 'عزل حراري متطور', count: 128 },
-    { topic: 'سواتر ذكية', count: 115 },
-    { topic: 'خيام فاخرة', count: 98 }
-  ];
+  const trendingTopics = useMemo(() => [
+    { id: 'trend-1', topic: 'مظلات مقاومة للرياح', count: 156 },
+    { id: 'trend-2', topic: 'برجولات للمناخ الساحلي', count: 143 },
+    { id: 'trend-3', topic: 'عزل حراري متطور', count: 128 },
+    { id: 'trend-4', topic: 'سواتر ذكية', count: 115 },
+    { id: 'trend-5', topic: 'خيام فاخرة', count: 98 }
+  ], []);
+
+  const featuredArticles = useMemo(() => 
+    articles.filter(article => article.featured).slice(0, 3)
+  , []);
+
+  const searchStats = useMemo(() => ({
+    totalArticles: articles.length,
+    totalViews: articles.reduce((sum, article) => sum + article.views, 0),
+    avgRating: (articles.reduce((sum, article) => sum + article.rating, 0) / articles.length).toFixed(1)
+  }), []);
+
+  useEffect(() => {
+    if (initialQuery) {
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        setInitialLoad(false);
+      }, 800);
+      return () => clearTimeout(timer);
+    } else {
+      setInitialLoad(false);
+    }
+  }, [initialQuery]);
+
+  const handleSearchResults = useCallback((results: typeof articles) => {
+    setSearchResults(results);
+  }, []);
+
+  const handleQuickSearch = useCallback((searchTerm: string) => {
+    const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = searchTerm;
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  }, []);
 
   return (
     <>
@@ -285,11 +311,15 @@ function SearchPageContent() {
             <div className="flex flex-wrap items-center justify-center gap-8 mt-8">
               <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
                 <BookOpen className="w-5 h-5 ml-2" />
-                <span className="font-medium">{articles.length} مقال</span>
+                <span className="font-medium">{searchStats.totalArticles} مقال</span>
               </div>
               <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
                 <TrendingUp className="w-5 h-5 ml-2" />
-                <span className="font-medium">أكثر من 12,000 مشاهدة</span>
+                <span className="font-medium">أكثر من {searchStats.totalViews.toLocaleString()} مشاهدة</span>
+              </div>
+              <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                <Star className="w-5 h-5 ml-2 text-yellow-300" />
+                <span className="font-medium">تقييم {searchStats.avgRating}/5</span>
               </div>
               <div className="flex items-center bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
                 <Zap className="w-5 h-5 ml-2 text-yellow-300" />
@@ -301,11 +331,103 @@ function SearchPageContent() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Advanced Search Component */}
-          <AdvancedSearch
-            articles={articles}
-            onSearchResults={handleSearchResults}
-            className="mb-16"
-          />
+          <div className="mb-16 relative">
+            <AdvancedSearch
+              articles={articles}
+              onSearchResults={handleSearchResults}
+              className="mb-8"
+            />
+
+            {/* View Toggle and Saved Searches */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center bg-white rounded-lg p-1 shadow-sm border">
+                <button
+                  onClick={() => setViewType('grid')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    viewType === 'grid'
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'text-gray-600 hover:text-primary'
+                  }`}
+                >
+                  شبكة
+                </button>
+                <button
+                  onClick={() => setViewType('list')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    viewType === 'list'
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'text-gray-600 hover:text-primary'
+                  }`}
+                >
+                  قائمة
+                </button>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <SavedSearches />
+                <div className="text-sm text-gray-600">
+                  {searchResults.length} من {articles.length} مقال
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Featured Articles Showcase */}
+          {initialLoad && !initialQuery && (
+            <div className="mb-16">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-primary">المقالات المميزة</h2>
+                <div className="flex items-center text-sm text-gray-600">
+                  <Star className="w-4 h-4 ml-2 text-yellow-500" />
+                  أفضل المحتويات
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {featuredArticles.map((article) => (
+                  <div
+                    key={article.id}
+                    className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group"
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={article.image}
+                        alt={article.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-4 right-4">
+                        <span className="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-medium">
+                          مميز
+                        </span>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs font-medium text-accent bg-accent/10 px-2 py-1 rounded-full">
+                          {article.category}
+                        </span>
+                        <div className="flex items-center text-xs text-gray-500">
+                          <Star className="w-3 h-3 ml-1 text-yellow-500" />
+                          {article.rating}
+                        </div>
+                      </div>
+                      <h3 className="font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                        {article.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        {article.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span>{article.readTime}</span>
+                        <span>{article.views.toLocaleString()} مشاهدة</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Trending & Popular Searches Sidebar */}
           {initialLoad && !initialQuery && (
@@ -318,9 +440,15 @@ function SearchPageContent() {
                     الموضوعات الأكثر بحثاً
                   </h3>
                   <div className="space-y-3">
-                    {trendingTopics.map((item, index) => (
-                      <div key={`trending-${item.topic}-${index}`} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                        <span className="font-medium text-gray-700">{item.topic}</span>
+                    {trendingTopics.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer group"
+                        onClick={() => handleQuickSearch(item.topic)}
+                      >
+                        <span className="font-medium text-gray-700 group-hover:text-primary transition-colors">
+                          {item.topic}
+                        </span>
                         <div className="flex items-center text-sm text-muted-foreground">
                           <span className="bg-accent/10 text-accent px-2 py-1 rounded-full text-xs font-medium">
                             {item.count} بحث
@@ -334,23 +462,17 @@ function SearchPageContent() {
 
               {/* Quick Access */}
               <div>
-                <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6">
+                <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 mb-6">
                   <h3 className="text-xl font-bold text-primary mb-4 flex items-center">
                     <Bookmark className="w-6 h-6 ml-2 text-accent" />
                     بحث سريع
                   </h3>
                   <div className="space-y-2">
-                    {popularSearches.slice(0, 6).map((search) => (
+                    {popularSearches.slice(0, 6).map((search, index) => (
                       <button
-                        key={`popular-${search}`}
+                        key={`popular-search-${index}`}
                         className="w-full text-right p-3 bg-gray-50 hover:bg-accent/10 rounded-lg text-sm font-medium text-gray-700 hover:text-accent transition-all duration-300"
-                        onClick={() => {
-                          const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
-                          if (searchInput) {
-                            searchInput.value = search;
-                            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                          }
-                        }}
+                        onClick={() => handleQuickSearch(search)}
                       >
                         {search}
                       </button>
@@ -359,7 +481,7 @@ function SearchPageContent() {
                 </div>
 
                 {/* Quick Tips */}
-                <div className="bg-gradient-to-br from-accent/5 to-primary/5 border border-accent/20 rounded-xl p-6 mt-6">
+                <div className="bg-gradient-to-br from-accent/5 to-primary/5 border border-accent/20 rounded-xl p-6">
                   <h4 className="text-lg font-bold text-primary mb-3 flex items-center">
                     <Zap className="w-5 h-5 ml-2 text-accent" />
                     نصائح البحث
@@ -380,6 +502,7 @@ function SearchPageContent() {
             articles={searchResults}
             isLoading={isLoading}
             searchQuery={initialQuery}
+            viewType={viewType}
           />
         </div>
       </div>
@@ -392,10 +515,11 @@ function SearchPageContent() {
 export default function SearchPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-lg text-muted-foreground">جاري تحميل صفحة البحث...</p>
+          <h2 className="text-xl font-bold text-primary mb-2">جاري تحميل صفحة البحث</h2>
+          <p className="text-gray-600">يرجى الانتظار لحظات...</p>
         </div>
       </div>
     }>

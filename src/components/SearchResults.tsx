@@ -28,10 +28,12 @@ interface Article {
 
 interface SearchResultsProps {
   articles: Article[];
-  isLoading?: boolean;
+  isLoading: boolean;
+  searchQuery: string;
+  viewType?: 'grid' | 'list';
 }
 
-export default function SearchResults({ articles, isLoading = false }: SearchResultsProps) {
+export default function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }: SearchResultsProps) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -64,15 +66,15 @@ export default function SearchResults({ articles, isLoading = false }: SearchRes
         </h2>
       </div>
 
-      {/* Articles Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Articles Grid/List */}
+      <div className={`grid ${viewType === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-8`}>
         {articles.map((article) => (
-          <Link 
+          <Link
             key={`search-result-${article.id}`}
             href={`/articles/${article.slug}`}
             className="group"
           >
-            <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
+            <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
               {/* Article Image */}
               <div className="relative h-48 overflow-hidden">
                 <img
@@ -95,7 +97,7 @@ export default function SearchResults({ articles, isLoading = false }: SearchRes
               </div>
 
               {/* Content */}
-              <div className="p-6">
+              <div className="p-6 flex-grow">
                 <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
                   {article.title}
                 </h3>
@@ -141,7 +143,7 @@ export default function SearchResults({ articles, isLoading = false }: SearchRes
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {article.tags.slice(0, 3).map((tag, index) => (
-                    <span 
+                    <span
                       key={`${article.id}-tag-${index}`}
                       className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
                     >
