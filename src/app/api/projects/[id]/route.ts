@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 // GET - جلب مشروع واحد
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -62,10 +62,11 @@ export async function GET(
 // PUT - تعديل مشروع
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = params.id;
+    const resolvedParams = await params;
+    const projectId = resolvedParams.id;
     const data = await request.json();
     console.log('🔧 تعديل المشروع:', projectId, data);
 
@@ -201,10 +202,11 @@ export async function PUT(
 // DELETE - حذف مشروع
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = params.id;
+    const resolvedParams = await params;
+    const projectId = resolvedParams.id;
 
     // التحقق من وجود المشروع
     const existingProject = await prisma.project.findUnique({

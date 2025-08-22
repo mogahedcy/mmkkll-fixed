@@ -9,12 +9,13 @@ interface InteractionParams {
 // POST - تسجيل تفاعل (مشاهدة أو إعجاب)
 export async function POST(
   request: NextRequest,
-  { params }: InteractionParams
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: projectId } = params;
+    const resolvedParams = await params;
+    const { id: projectId } = resolvedParams;
     const { type, action } = await request.json();
-    const headersList = headers();
+    const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
     const userAgent = headersList.get('user-agent') || 'unknown';
     const referrer = headersList.get('referer') || 'direct';

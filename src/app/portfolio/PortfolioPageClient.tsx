@@ -142,24 +142,32 @@ export default function PortfolioPageClient() {
       const response = await fetch(`/api/projects?${params}`);
       const data = await response.json();
 
-      if (data.success) {
+      if (data.success && data.projects) {
         if (reset || page === 1) {
-          setProjects(data.projects);
+          setProjects(data.projects || []);
         } else {
-          setProjects(prev => [...prev, ...data.projects]);
+          setProjects(prev => [...prev, ...(data.projects || [])]);
         }
 
-        setStats(data.stats);
-        setHasMore(data.pagination.hasMore);
+        setStats(data.stats || { total: 0, featured: 0, categories: [] });
+        setHasMore(data.pagination?.hasMore || false);
 
         // جلب حالات التفاعل للمشاريع
-        await fetchInteractions(data.projects);
+        if (data.projects && data.projects.length > 0) {
+          await fetchInteractions(data.projects);
+        }
       } else {
-        setError('فشل في جلب المشاريع');
+        console.warn('استجابة غير متوقعة من API:', data);
+        setError(data.error || 'فشل في جلب المشاريع');
       }
     } catch (error) {
       console.error('خطأ في جلب المشاريع:', error);
       setError('حدث خطأ في جلب المشاريع');
+      // في حالة الخطأ، تعيين قيم افتراضية
+      if (reset) {
+        setProjects([]);
+        setStats({ total: 0, featured: 0, categories: [] });
+      }
     } finally {
       setLoading(false);
       setLoadingMore(false);
@@ -168,21 +176,27 @@ export default function PortfolioPageClient() {
 
   // جلب حالات التفاعل
   const fetchInteractions = async (projectList: Project[]) => {
+    if (!projectList || projectList.length === 0) return;
+    
     const interactions = new Map();
     const liked = new Set<string>();
 
     for (const project of projectList) {
+      if (!project?.id) continue;
+      
       try {
         const response = await fetch(`/api/projects/${project.id}/interactions`);
         if (response.ok) {
           const data = await response.json();
-          interactions.set(project.id, data.interactions);
-          if (data.interactions.isLiked) {
-            liked.add(project.id);
+          if (data.success && data.interactions) {
+            interactions.set(project.id, data.interactions);
+            if (data.interactions.isLiked) {
+              liked.add(project.id);
+            }
           }
         }
       } catch (error) {
-        console.warn('فشل في جلب تفاعلات المشروع:', project.id);
+        console.warn('فشل في جلب تفاعلات المشروع:', project.id, error);
       }
     }
 
@@ -274,15 +288,17 @@ export default function PortfolioPageClient() {
   }, [selectedCategory, sortBy, searchTerm]);
 
   useEffect(() => {
-    if (searchTerm) {
+    if (searchTerm && searchTerm.trim()) {
       const filtered = projects.filter(project => {
-        const searchLower = searchTerm.toLowerCase();
+        const searchLower = searchTerm.toLowerCase().trim();
         return (
-          project.title.toLowerCase().includes(searchLower) ||
-          project.description.toLowerCase().includes(searchLower) ||
-          project.location.toLowerCase().includes(searchLower) ||
-          project.category.toLowerCase().includes(searchLower) ||
-          project.tags.some(tag => tag.name.toLowerCase().includes(searchLower))
+          project.title?.toLowerCase().includes(searchLower) ||
+          project.description?.toLowerCase().includes(searchLower) ||
+          project.excerpt?.toLowerCase().includes(searchLower) ||
+          project.location?.toLowerCase().includes(searchLower) ||
+          project.category?.toLowerCase().includes(searchLower) ||
+          project.client?.toLowerCase().includes(searchLower) ||
+          project.tags?.some(tag => tag.name?.toLowerCase().includes(searchLower))
         );
       });
       setFilteredProjects(filtered);
@@ -304,7 +320,11 @@ export default function PortfolioPageClient() {
 
   const handleSearchChange = (search: string) => {
     setSearchTerm(search);
-    updateURL({ search });
+    if (search.trim()) {
+      updateURL({ search: search.trim(), page: '1' });
+    } else {
+      updateURL({ search: '', page: '1' });
+    }
   };
 
   const updateURL = (params: Record<string, string>) => {

@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { headers } from 'next/headers';
 
 // نموذج التحقق من بيانات التعليق
 interface CommentRequest {
@@ -121,7 +122,7 @@ export async function POST(
     const validation = validateComment(body);
     if (!validation.valid) {
       return NextResponse.json(
-        { 
+        {
           error: 'بيانات غير صحيحة',
           details: validation.errors
         },
