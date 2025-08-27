@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* إعدادات أساسية لتجنب مشاكل الـ hydration */
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 /* تحسين تحميل الخطوط */
 .font-arabic {
   font-display: swap;

@@ -9,13 +9,11 @@ interface ClientBodyProps {
 }
 
 export default function ClientBody({ children }: ClientBodyProps) {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
-  // تجنب مشاكل hydration
-  const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -39,21 +37,23 @@ export default function ClientBody({ children }: ClientBodyProps) {
   };
 
   useEffect(() => {
-    if (!mounted) return;
-  }, [mounted, pathname]);
+    // هذا الشرط لم يكن له أي تأثير فعلي وتمت إزالته
+    // if (!isMounted) return;
+  }, [isMounted, pathname]); // تم تحديث الاعتماديات لتشمل isMounted
 
   const PerformanceOptimizer = dynamic(() => import('@/components/PerformanceOptimizer'), {
     ssr: false
   });
 
   if (!isMounted) {
-    return null;
+    // أثناء الـ hydration، نعرض نفس المحتوى
+    return <div style={{ visibility: 'hidden' }}>{children}</div>;
   }
 
   return (
     <div suppressHydrationWarning>
-      {mounted ? children : <div style={{ visibility: 'hidden' }}>{children}</div>}
-      {mounted && <PerformanceOptimizer />}
+      {children}
+      {isMounted && <PerformanceOptimizer />}
     </div>
   );
 }

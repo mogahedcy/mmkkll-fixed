@@ -21,7 +21,7 @@ localPort = 3002
 externalPort = 3002
 
 [workflows]
-runButton = "Start Development Server"
+runButton = "Simple Dev Server"
 
 [[workflows.workflow]]
 name = "Build and Start"
@@ -138,6 +138,15 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npx prisma generate"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Simple Dev Server"
+author = 46950257
+mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"

@@ -134,7 +134,7 @@ export default function RootLayout({
         <link rel="canonical" href="https://aldeyarksa.tech" />
         <StructuredDataScript data={structuredData} />
       </head>
-      <body suppressHydrationWarning className="antialiased font-arabic">
+      <body className="antialiased font-arabic" suppressHydrationWarning={true}>
         <ClientBody>{children}</ClientBody>
       </body>
     </html>

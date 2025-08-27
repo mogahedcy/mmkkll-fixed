@@ -8,6 +8,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // إعدادات الخادم
+  experimental: {
+    outputStandalone: true,
+  },
   // إعدادات خاصة بالتطوير المحلي
   turbopack: {
     resolveAlias: {
