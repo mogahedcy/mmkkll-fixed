@@ -1,6 +1,46 @@
 
 import { prisma } from '@/lib/prisma';
 
+// مقالات الخدمات المحسنة لـ SEO
+const serviceArticlesData = [
+  {
+    id: 'mazallat-guide',
+    slug: 'complete-car-shades-guide-jeddah-2024',
+    title: 'دليل مظلات السيارات الشامل في جدة 2024 - أنواع وأسعار وتركيب',
+    lastModified: '2024-12-22T10:00:00.000Z',
+    priority: '0.95',
+    changefreq: 'weekly',
+    keywords: 'مظلات سيارات جدة، أسعار مظلات السيارات، تركيب مظلات جدة، مظلات PVC، مظلات حديد'
+  },
+  {
+    id: 'pergolas-guide',
+    slug: 'wooden-pergolas-design-installation-jeddah',
+    title: 'البرجولات الخشبية في جدة: التصميم والتركيب والصيانة',
+    lastModified: '2024-12-22T09:00:00.000Z',
+    priority: '0.95',
+    changefreq: 'weekly',
+    keywords: 'برجولات خشبية جدة، تصميم برجولات، برجولات حدائق، تركيب برجولات جدة'
+  },
+  {
+    id: 'sawater-guide',
+    slug: 'privacy-screens-installation-jeddah-2024',
+    title: 'السواتر في جدة: أفضل الأنواع والأسعار والتركيب المحترف',
+    lastModified: '2024-12-22T08:00:00.000Z',
+    priority: '0.95',
+    changefreq: 'weekly',
+    keywords: 'سواتر جدة، سواتر خصوصية، سواتر حديد، سواتر قماش، تركيب سواتر'
+  },
+  {
+    id: 'landscaping-guide',
+    slug: 'garden-landscaping-jeddah-complete-guide',
+    title: 'تنسيق الحدائق في جدة: دليل شامل للتصميم والتنفيذ',
+    lastModified: '2024-12-22T07:00:00.000Z',
+    priority: '0.9',
+    changefreq: 'weekly',
+    keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية'
+  }
+];
+
 // بيانات المقالات المحدثة مع كلمات مفتاحية غنية
 const articlesData = [
   {
@@ -257,8 +297,35 @@ export async function GET() {
     )
     .join('');
 
-  // إنشاء sitemap للمقالات مع البيانات المنظمة الغنية
-  const articlesSitemap = articlesData
+  // إنشاء sitemap للمقالات العامة
+  const generalArticlesSitemap = articlesData
+    .map(
+      (article) => `
+  <url>
+    <loc>${baseUrl}/articles/${article.slug}</loc>
+    <lastmod>${article.lastModified}</lastmod>
+    <changefreq>${article.changefreq}</changefreq>
+    <priority>${article.priority}</priority>
+    <news:news>
+      <news:publication>
+        <news:name>محترفين الديار العالمية</news:name>
+        <news:language>ar</news:language>
+      </news:publication>
+      <news:publication_date>${article.lastModified}</news:publication_date>
+      <news:title><![CDATA[${article.title}]]></news:title>
+      <news:keywords><![CDATA[${article.keywords}]]></news:keywords>
+    </news:news>
+    <image:image>
+      <image:loc>${baseUrl}/images/articles/${article.slug}-main.webp</image:loc>
+      <image:caption><![CDATA[${article.title}]]></image:caption>
+      <image:title><![CDATA[${article.title}]]></image:title>
+    </image:image>
+  </url>`
+    )
+    .join('');
+
+  // إنشاء sitemap لمقالات الخدمات
+  const serviceArticlesSitemap = serviceArticlesData
     .map(
       (article) => `
   <url>
@@ -334,7 +401,8 @@ export async function GET() {
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   ${staticSitemap}
-  ${articlesSitemap}
+  ${generalArticlesSitemap}
+  ${serviceArticlesSitemap}
   ${projectsSitemap}
 </urlset>`;
 

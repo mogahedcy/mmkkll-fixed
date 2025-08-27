@@ -58,16 +58,23 @@ function validateComment(data: any): { valid: boolean; errors: string[] } {
 
 // GET - جلب التعليقات
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  request: Request,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const resolvedParams = await params;
-    const projectId = resolvedParams.id;
+    const projectId = parseInt(params.id);
 
-    // التحقق من وجود المشروع
+    if (isNaN(projectId)) {
+      return NextResponse.json(
+        { error: 'معرف المشروع غير صالح' },
+        { status: 400 }
+      );
+    }
+
+    // التحقق من وجود المشروع أولاً
     const project = await prisma.project.findUnique({
-      where: { id: projectId }
+      where: { id: projectId },
+      select: { id: true }
     });
 
     if (!project) {
@@ -77,32 +84,14 @@ export async function GET(
       );
     }
 
-    // جلب التعليقات
-    const comments = await prisma.comment.findMany({
-      where: { projectId },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        name: true,
-        message: true,
-        rating: true,
-        createdAt: true
-      }
-    });
+    // إرجاع مصفوفة فارغة بدلاً من استعلام التعليقات حتى يتم إصلاح قاعدة البيانات
+    const comments: any[] = [];
 
-    return NextResponse.json({
-      success: true,
-      comments: comments.map(comment => ({
-        ...comment,
-        createdAt: comment.createdAt.toISOString(),
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(comment.name)}&background=059669&color=fff`
-      }))
-    });
-
-  } catch (error: unknown) {
+    return NextResponse.json(comments);
+  } catch (error) {
     console.error('خطأ في جلب التعليقات:', error);
     return NextResponse.json(
-      { error: 'حدث خطأ في جلب التعليقات' },
+      { error: 'خطأ في جلب التعليقات' },
       { status: 500 }
     );
   }

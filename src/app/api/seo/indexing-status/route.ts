@@ -1,8 +1,7 @@
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const checkUrls = searchParams.get('urls')?.split(',') || [];
-  
+
   const defaultUrls = [
     'https://aldeyarksa.tech/',
     'https://aldeyarksa.tech/services/mazallat/',
@@ -27,7 +26,7 @@ export async function GET(request: Request) {
     try {
       // فحص فهرسة Google مع User-Agent محسن
       const googleSearchUrl = `https://www.google.com/search?q=site:${encodeURIComponent(url.replace('https://', '').replace('http://', ''))}`;
-      
+
       const googleCheck = await fetch(googleSearchUrl, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -37,7 +36,7 @@ export async function GET(request: Request) {
 
       // فحص فهرسة Bing
       const bingSearchUrl = `https://www.bing.com/search?q=site:${encodeURIComponent(url.replace('https://', '').replace('http://', ''))}`;
-      
+
       const bingCheck = await fetch(bingSearchUrl, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'

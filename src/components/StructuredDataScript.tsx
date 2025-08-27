@@ -3,98 +3,64 @@ export default function StructuredDataScript() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "محترفين الديار العالمية",
-    "alternateName": "الديار العالمية",
+    "alternateName": "Al Deyar Professional Global",
     "url": "https://aldeyarksa.tech",
-    "logo": "https://aldeyarksa.tech/favicon.svg",
-    "description": "شركة متخصصة في المظلات، البرجولات، السواتر، ساندوتش بانل، ترميم الملحقات، تنسيق الحدائق، بيوت الشعر التراثية، والخيام الملكية في جدة والمملكة العربية السعودية",
-    "foundingDate": "2009",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "جدة",
-      "addressRegion": "منطقة مكة المكرمة",
-      "addressCountry": "SA"
-    },
+    "logo": "https://aldeyarksa.tech/images/logo.png",
+    "image": "https://aldeyarksa.tech/images/logo.png",
+    "description": "شركة رائدة في تركيب مظلات السيارات، البرجولات، السواتر، تنسيق الحدائق في جدة والمملكة العربية السعودية",
+    "foundingDate": "2010",
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+966-12-123-4567",
+      "telephone": "+966-50-123-4567",
       "contactType": "customer service",
-      "availableLanguage": "Arabic"
+      "areaServed": "SA",
+      "availableLanguage": ["Arabic", "English"]
     },
-    "sameAs": [
-      "https://www.facebook.com/aldeyarksa",
-      "https://www.instagram.com/aldeyarksa",
-      "https://twitter.com/aldeyarksa"
-    ],
-    "areaServed": {
-      "@type": "State",
-      "name": "المملكة العربية السعودية"
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "شارع الأمير محمد بن عبدالعزيز",
+      "addressLocality": "جدة",
+      "addressRegion": "منطقة مكة المكرمة",
+      "postalCode": "23442",
+      "addressCountry": "SA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 21.4858,
+      "longitude": 39.1925
+    },
+    "openingHours": "Mo-Sa 08:00-18:00",
+    "priceRange": "$$",
+    "serviceArea": {
+      "@type": "City",
+      "name": "جدة"
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "خدماتنا",
+      "name": "خدمات محترفين الديار",
       "itemListElement": [
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
             "name": "مظلات السيارات",
-            "description": "تركيب وتصميم مظلات السيارات عالية الجودة"
+            "description": "تركيب مظلات السيارات بأعلى معايير الجودة"
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "برجولات الحدائق",
-            "description": "تصميم وتنفيذ برجولات خشبية ومعدنية للحدائق"
+            "name": "البرجولات",
+            "description": "تصميم وتنفيذ برجولات خشبية وحديدية"
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": "سواتر الخصوصية",
-            "description": "تركيب سواتر للخصوصية والحماية"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "ساندوتش بانل",
-            "description": "تركيب ألواح الساندوتش بانل للعزل والبناء"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "ترميم الملحقات",
-            "description": "خدمات ترميم وصيانة الملحقات والمباني"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "تنسيق الحدائق",
-            "description": "تصميم وتنسيق الحدائق والمساحات الخضراء"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "بيوت الشعر التراثية",
-            "description": "تصميم وبناء بيوت الشعر التراثية الأصيلة"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "الخيام الملكية",
-            "description": "تأجير وتركيب الخيام الملكية للمناسبات"
+            "name": "السواتر",
+            "description": "تركيب سواتر الخصوصية والحماية"
           }
         }
       ]

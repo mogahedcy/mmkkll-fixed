@@ -1,4 +1,3 @@
-
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
@@ -224,7 +223,7 @@ export async function POST(request: NextRequest) {
             order: index
           })) || []
         },
-        
+
       },
       include: {
         mediaItems: true,
@@ -291,18 +290,18 @@ function generateSlug(title: string, id?: string): string {
     .replace(/\s+/g, '-') // استبدال المسافات بشرطات
     .toLowerCase()
     .trim();
-  
+
   return id ? `${slug}-${id}` : slug;
 }
 
 async function notifyGoogleNewContent(slug: string): Promise<void> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
   const url = `${baseUrl}/portfolio/${slug}`;
-  
+
   try {
     // إشعار Google بالصفحة الجديدة
     await fetch('https://www.google.com/ping?sitemap=' + encodeURIComponent(`${baseUrl}/sitemap.xml`));
-    
+
     // يمكن إضافة Google Search Console API هنا
     console.log('✅ تم إشعار Google بالمحتوى الجديد:', url);
   } catch (error) {
