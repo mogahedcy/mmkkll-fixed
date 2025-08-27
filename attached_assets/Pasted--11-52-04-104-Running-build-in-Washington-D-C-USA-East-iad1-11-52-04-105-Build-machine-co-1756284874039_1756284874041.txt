@@ -1,0 +1,90 @@
+[11:52:04.104] Running build in Washington, D.C., USA (East) – iad1
+[11:52:04.105] Build machine configuration: 2 cores, 8 GB
+[11:52:04.144] Cloning github.com/mogahedcy/mmkkll-fixed (Branch: main, Commit: 22cc2de)
+[11:52:04.161] Skipping build cache, deployment was triggered without cache.
+[11:52:04.816] Cloning completed: 672.000ms
+[11:52:04.867] Found .vercelignore
+[11:52:04.875] Removed 35 ignored files defined in .vercelignore
+[11:52:04.875]   /.same/add-project-examples.md
+[11:52:04.875]   /.same/cloudinary-setup-guide.md
+[11:52:04.875]   /.same/competitor-analysis.md
+[11:52:04.875]   /.same/competitor-keywords-analysis.md
+[11:52:04.875]   /.same/comprehensive-seo-analysis-2024.md
+[11:52:04.876]   /.same/content-strategy.md
+[11:52:04.876]   /.same/final-fixes-summary.md
+[11:52:04.876]   /.same/footer-improvements.md
+[11:52:04.876]   /.same/immediate-seo-fixes.md
+[11:52:04.876]   /.same/navbar-improvements.md
+[11:52:05.215] Running "vercel build"
+[11:52:05.614] Vercel CLI 46.0.3
+[11:52:05.961] Installing dependencies...
+[11:52:09.174] npm warn deprecated q@1.5.1: You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+[11:52:09.174] npm warn deprecated
+[11:52:09.174] npm warn deprecated (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
+[11:52:11.062] npm warn deprecated @types/dompurify@3.2.0: This is a stub types definition. dompurify provides its own type definitions, so you do not need this installed.
+[11:52:11.063] npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+[11:52:30.111] 
+[11:52:30.112] > aldeyar-global-jeddah@0.1.0 postinstall
+[11:52:30.113] > prisma generate
+[11:52:30.113] 
+[11:52:31.728] Prisma schema loaded from prisma/schema.prisma
+[11:52:32.024] 
+[11:52:32.025] ✔ Generated Prisma Client (v6.14.0) to ./node_modules/@prisma/client in 128ms
+[11:52:32.025] 
+[11:52:32.025] Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+[11:52:32.025] 
+[11:52:32.025] Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+[11:52:32.025] 
+[11:52:32.054] 
+[11:52:32.055] added 580 packages in 26s
+[11:52:32.055] 
+[11:52:32.055] 175 packages are looking for funding
+[11:52:32.055]   run `npm fund` for details
+[11:52:32.103] Detected Next.js version: 15.5.0
+[11:52:32.110] Running "npm run vercel-build"
+[11:52:32.230] 
+[11:52:32.230] > aldeyar-global-jeddah@0.1.0 vercel-build
+[11:52:32.230] > prisma generate && next build
+[11:52:32.230] 
+[11:52:33.730] Prisma schema loaded from prisma/schema.prisma
+[11:52:34.080] 
+[11:52:34.081] ✔ Generated Prisma Client (v6.14.0) to ./node_modules/@prisma/client in 137ms
+[11:52:34.082] 
+[11:52:34.082] Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+[11:52:34.082] 
+[11:52:34.082] Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+[11:52:34.083] 
+[11:52:34.747] Attention: Next.js now collects completely anonymous telemetry regarding usage.
+[11:52:34.747] This information is used to shape Next.js' roadmap and prioritize features.
+[11:52:34.748] You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[11:52:34.748] https://nextjs.org/telemetry
+[11:52:34.748] 
+[11:52:34.804]    ▲ Next.js 15.5.0
+[11:52:34.804] 
+[11:52:34.907]    Creating an optimized production build ...
+[11:53:02.704]  ✓ Compiled successfully in 24.5s
+[11:53:02.711]    Skipping validation of types
+[11:53:02.711]    Skipping linting
+[11:53:02.983]    Collecting page data ...
+[11:53:03.661] ✅ Cloudinary configured successfully with cloud: dj6gk4wmy
+[11:53:07.344]    Generating static pages (0/50) ...
+[11:53:08.310]    Generating static pages (12/50) 
+[11:53:08.395] ✅ Cloudinary configured successfully with cloud: dj6gk4wmy
+[11:53:08.396] خطأ في جلب المشاريع للخريطة: TypeError: Cannot read properties of undefined (reading 'findMany')
+[11:53:08.396]     at x (.next/server/app/sitemap.xml/route.js:1:5260)
+[11:53:08.771]    Generating static pages (24/50) 
+[11:53:09.163]  ⨯ useSearchParams() should be wrapped in a suspense boundary at page "/search". Read more: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+[11:53:09.163]     at g (/vercel/path0/.next/server/chunks/9318.js:1:80475)
+[11:53:09.163]     at m (/vercel/path0/.next/server/chunks/9318.js:9:13476)
+[11:53:09.163]     at z (/vercel/path0/.next/server/app/search/page.js:1:2794)
+[11:53:09.164]     at n3 (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:2:82831)
+[11:53:09.164]     at n6 (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:2:84601)
+[11:53:09.164]     at n5 (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:2:104801)
+[11:53:09.164]     at n7 (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:2:102219)
+[11:53:09.164]     at n8 (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:2:83183)
+[11:53:09.164]     at n6 (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:2:84647)
+[11:53:09.164]     at n6 (/vercel/path0/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:2:101560)
+[11:53:09.169] Error occurred prerendering page "/search". Read more: https://nextjs.org/docs/messages/prerender-error
+[11:53:09.170] Export encountered an error on /search/page: /search, exiting the build.
+[11:53:09.177]  ⨯ Next.js build worker exited with code: 1 and signal: null
+[11:53:09.215] Error: Command "npm run vercel-build" exited with 1
