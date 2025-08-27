@@ -5,7 +5,8 @@ run = "npm run dev"
 channel = "stable-25_05"
 
 [deployment]
-run = ["sh", "-c", "npm run dev"]
+run = ["sh", "-c", "npm start"]
+build = ["sh", "-c", "npm install && npx prisma generate && npm run build"]
 
 [[ports]]
 localPort = 3000
@@ -20,7 +21,7 @@ localPort = 3002
 externalPort = 3002
 
 [workflows]
-runButton = "Database Setup & Development"
+runButton = "Start Development Server"
 
 [[workflows.workflow]]
 name = "Build and Start"
@@ -128,3 +129,16 @@ args = "npm run build"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm start"
+
+[[workflows.workflow]]
+name = "Start Development Server"
+author = 46950257
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx prisma generate"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
