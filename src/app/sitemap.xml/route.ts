@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/prisma';
 
 // مقالات الخدمات المحسنة لـ SEO
