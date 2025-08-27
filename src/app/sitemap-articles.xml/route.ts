@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 
 // بيانات المقالات العامة المحسنة لـ SEO

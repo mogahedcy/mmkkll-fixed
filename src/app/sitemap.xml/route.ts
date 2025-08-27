@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
 // مقالات الخدمات المحسنة لـ SEO
 const serviceArticlesData = [
@@ -247,30 +247,13 @@ export async function GET() {
 
   // جلب المشاريع مع معالجة الأخطاء
   try {
-    projects = await prisma.project.findMany({
+    // استيراد مؤجل لتجنب مشاكل البناء
+    const { prisma } = await import('@/lib/prisma');
+    projects = await prisma.projects.findMany({
+      where: { status: 'PUBLISHED' },
       select: {
-        id: true,
-        title: true,
-        description: true,
-        updatedAt: true,
-        createdAt: true,
-        category: true,
-        location: true,
-        featured: true,
-        mediaItems: {
-          select: {
-            src: true,
-            type: true,
-            title: true,
-            description: true,
-            alt: true,
-            updatedAt: true
-          },
-          take: 10 // تحديد عدد الوسائط لتحسين الأداء
-        }
-      },
-      orderBy: {
-        updatedAt: 'desc'
+        slug: true,
+        updatedAt: true
       }
     });
   } catch (error) {
