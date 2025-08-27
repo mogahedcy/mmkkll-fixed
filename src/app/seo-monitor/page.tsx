@@ -56,11 +56,34 @@ export default function SEOMonitorPage() {
     try {
       const response = await fetch('/api/sitemap/refresh', { method: 'POST' });
       const data = await response.json();
-      alert(data.message || 'تم إشعار محركات البحث بنجاح');
+      
+      if (data.success) {
+        alert(`✅ ${data.message}\n\nتفاصيل الإشعارات:\n${data.notifications.map((n: any) => `${n.engine}: ${n.message}`).join('\n')}`);
+      } else {
+        alert(`❌ ${data.message}`);
+      }
     } catch (error) {
-      alert('خطأ في إشعار محركات البحث');
+      alert('❌ خطأ في إشعار محركات البحث');
     }
     setRefreshing(false);
+  };
+
+  const testAutoRefresh = async () => {
+    try {
+      const response = await fetch('/api/sitemap/auto-refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          secret: 'default-secret-change-me', // يجب تغييرها في الإنتاج
+          sitemaps: ['https://aldeyarksa.tech/sitemap.xml']
+        })
+      });
+      
+      const data = await response.json();
+      alert(data.success ? `✅ ${data.message}` : `❌ ${data.message}`);
+    } catch (error) {
+      alert('❌ خطأ في اختبار الإشعار التلقائي');
+    }
   };
 
   useEffect(() => {
@@ -111,6 +134,60 @@ export default function SEOMonitorPage() {
         </div>
 
         {/* أزرار التحكم */}
+        <div className="flex flex-wrap gap-4 justify-center mb-8">
+          <Button 
+            onClick={checkIndexingStatus} 
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            {loading ? 'جاري الفحص...' : 'فحص حالة الأرشفة'}
+          </Button>
+          <Button 
+            onClick={refreshSitemap} 
+            disabled={refreshing}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            {refreshing ? 'جاري الإشعار...' : 'إشعار محركات البحث'}
+          </Button>
+          <Button 
+            onClick={testAutoRefresh}
+            className="bg-purple-600 hover:bg-purple-700"
+          >
+            اختبار الإشعار التلقائي
+          </Button>
+        </div>
+
+        {/* معلومات APIs */}
+        <div className="bg-gray-50 p-6 rounded-lg mb-8">
+          <h3 className="text-lg font-semibold mb-4">🔧 APIs المتاحة للاستخدام:</h3>
+          <div className="grid md:grid-cols-2 gap-4 text-sm">
+            <div className="bg-white p-4 rounded border">
+              <h4 className="font-medium text-green-600 mb-2">🔄 إشعار يدوي</h4>
+              <code className="bg-gray-100 p-2 rounded block">
+                POST /api/sitemap/refresh
+              </code>
+              <p className="mt-2 text-gray-600">لإشعار محركات البحث يدوياً</p>
+            </div>
+            <div className="bg-white p-4 rounded border">
+              <h4 className="font-medium text-blue-600 mb-2">⚡ إشعار تلقائي</h4>
+              <code className="bg-gray-100 p-2 rounded block">
+                POST /api/sitemap/auto-refresh
+              </code>
+              <p className="mt-2 text-gray-600">للاستخدام مع المهام المجدولة</p>
+            </div>
+          </div>
+        </div>
+
+        {/* معلومات Webhook */}
+        <div className="bg-blue-50 p-6 rounded-lg mb-8">
+          <h3 className="text-lg font-semibold mb-4">🎣 Webhook التحديث التلقائي:</h3>
+          <p className="mb-2">يمكن ربط النظام بـ webhook لإشعار محركات البحث تلقائياً عند تحديث المحتوى:</p>
+          <code className="bg-white p-3 rounded block text-sm">
+            POST /api/webhook/content-updated<br/>
+            Header: x-webhook-signature: sha256=your-secret
+          </code>
+        </div>
+
         <div className="flex gap-4 justify-center mb-8">
           <Button 
             onClick={checkIndexingStatus} 
