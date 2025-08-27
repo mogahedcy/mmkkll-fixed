@@ -1,11 +1,10 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { sessionManager, auditLogger, getClientIP } from '@/lib/security';
 
 export async function POST(request: NextRequest) {
   try {
     const sessionId = request.cookies.get('session-id')?.value;
-    
+
     if (sessionId) {
       // تدمير الجلسة
       sessionManager.destroySession(sessionId);
@@ -41,7 +40,6 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-import { type NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const response = NextResponse.redirect(new URL('/login', request.url));
