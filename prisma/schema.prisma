@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,189 +7,144 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Project {
-  id               String   @id @default(cuid())
-  title            String
-  description      String
-  category         String
-  location         String
-  completionDate   DateTime   @default(now())
-  client           String?
-  featured         Boolean    @default(false)
-  projectDuration  String?
-  projectCost      String?
-  views            Int        @default(0)
-  likes            Int        @default(0)
-  rating           Float      @default(0)
-  status           String     @default("PUBLISHED") // DRAFT, PUBLISHED, ARCHIVED
-  
-  // SEO fields
-  slug             String?    @unique
-  metaTitle        String?
-  metaDescription  String?
-  keywords         String?
-  
-  // Timestamps
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  publishedAt      DateTime? @default(now())
-
-  // Relations
-  mediaItems       MediaItem[]
-  tags             ProjectTag[]
-  materials        ProjectMaterial[]
-  comments         Comment[]
-  likes_users      ProjectLike[]
-  views_users      ProjectView[]
-
-  @@map("projects")
-}
-
-model MediaItem {
-  id          String    @id @default(cuid())
-  projectId   String
-  type        MediaType
-  src         String
-  thumbnail   String?
-  title       String?
-  description String?
-  duration    String?   // For videos
-  fileSize    Int?      // File size in bytes
-  mimeType    String?
-  order       Int       @default(0)
-  
-  // SEO fields
-  alt         String?
-  caption     String?
-  
-  createdAt   DateTime  @default(now())
-
-  // Relations
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@map("media_items")
-}
-
-model ProjectTag {
-  id        String   @id @default(cuid())
-  projectId String
-  name      String
-  createdAt DateTime @default(now())
-
-  // Relations
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@unique([projectId, name])
-  @@map("project_tags")
-}
-
-model ProjectMaterial {
-  id        String   @id @default(cuid())
-  projectId String
-  name      String
-  createdAt DateTime @default(now())
-
-  // Relations
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@map("project_materials")
-}
-
-model Comment {
-  id        String   @id @default(cuid())
-  projectId String
-  name      String
-  email     String?
-  message   String
-  rating    Int      @default(5)
-  status    String   @default("APPROVED") // PENDING, APPROVED, REJECTED
-  ip        String?
-  userAgent String?
-  createdAt DateTime @default(now())
-
-  // Relations
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  replies   CommentReply[]
-
-  @@map("comments")
-}
-
-model CommentReply {
-  id        String   @id @default(cuid())
-  commentId String
-  name      String
-  message   String
-  status    String   @default("APPROVED")
-  createdAt DateTime @default(now())
-
-  // Relations
-  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
-
-  @@map("comment_replies")
-}
-
-model ProjectLike {
-  id        String   @id @default(cuid())
-  projectId String
-  ip        String
-  userAgent String?
-  createdAt DateTime @default(now())
-
-  // Relations
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@unique([projectId, ip])
-  @@map("project_likes")
-}
-
-model ProjectView {
-  id        String   @id @default(cuid())
-  projectId String
-  ip        String
-  userAgent String?
-  source    String?  // direct, google, social, etc.
-  referrer  String?
-  createdAt DateTime @default(now())
-
-  // Relations
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@map("project_views")
-}
-
-model Admin {
-  id          String   @id @default(cuid())
-  username    String   @unique
-  password    String   // هاش كلمة المرور
-  email       String?  @unique
-  fullName    String?
-  avatar      String?
-  role        String   @default("ADMIN") // ADMIN, SUPER_ADMIN
-  status      String   @default("ACTIVE") // ACTIVE, INACTIVE
-  lastLogin   DateTime?
-  loginCount  Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  sessions    AdminSession[]
-
-  @@map("admins")
-}
-
-model AdminSession {
-  id        String   @id @default(cuid())
+model admin_sessions {
+  id        String   @id
   adminId   String
   token     String   @unique
   ip        String?
   userAgent String?
   expiresAt DateTime
   createdAt DateTime @default(now())
+  admins    admins   @relation(fields: [adminId], references: [id], onDelete: Cascade)
+}
 
-  // Relations
-  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+model admins {
+  id             String           @id
+  username       String           @unique
+  password       String
+  email          String?          @unique
+  fullName       String?
+  avatar         String?
+  role           String           @default("ADMIN")
+  status         String           @default("ACTIVE")
+  lastLogin      DateTime?
+  loginCount     Int              @default(0)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  admin_sessions admin_sessions[]
+}
 
-  @@map("admin_sessions")
+model comment_replies {
+  id        String   @id
+  commentId String
+  name      String
+  message   String
+  status    String   @default("APPROVED")
+  createdAt DateTime @default(now())
+  comments  comments @relation(fields: [commentId], references: [id], onDelete: Cascade)
+}
+
+model comments {
+  id              String            @id
+  projectId       String
+  name            String
+  email           String?
+  message         String
+  rating          Int               @default(5)
+  status          String            @default("APPROVED")
+  ip              String?
+  userAgent       String?
+  createdAt       DateTime          @default(now())
+  comment_replies comment_replies[]
+  projects        projects          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model media_items {
+  id          String    @id
+  projectId   String
+  type        MediaType
+  src         String
+  thumbnail   String?
+  title       String?
+  description String?
+  duration    String?
+  fileSize    Int?
+  mimeType    String?
+  order       Int       @default(0)
+  alt         String?
+  caption     String?
+  createdAt   DateTime  @default(now())
+  projects    projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model project_likes {
+  id        String   @id
+  projectId String
+  ip        String
+  userAgent String?
+  createdAt DateTime @default(now())
+  projects  projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, ip])
+}
+
+model project_materials {
+  id        String   @id
+  projectId String
+  name      String
+  createdAt DateTime @default(now())
+  projects  projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model project_tags {
+  id        String   @id
+  projectId String
+  name      String
+  createdAt DateTime @default(now())
+  projects  projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, name])
+}
+
+model project_views {
+  id        String   @id
+  projectId String
+  ip        String
+  userAgent String?
+  source    String?
+  referrer  String?
+  createdAt DateTime @default(now())
+  projects  projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model projects {
+  id                String              @id
+  title             String
+  description       String
+  category          String
+  location          String
+  completionDate    DateTime            @default(now())
+  client            String?
+  featured          Boolean             @default(false)
+  projectDuration   String?
+  projectCost       String?
+  views             Int                 @default(0)
+  likes             Int                 @default(0)
+  rating            Float               @default(0)
+  status            String              @default("PUBLISHED")
+  slug              String?             @unique
+  metaTitle         String?
+  metaDescription   String?
+  keywords          String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  publishedAt       DateTime?           @default(now())
+  comments          comments[]
+  media_items       media_items[]
+  project_likes     project_likes[]
+  project_materials project_materials[]
+  project_tags      project_tags[]
+  project_views     project_views[]
 }
 
 enum MediaType {
