@@ -1,7 +1,7 @@
 
-import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import jwt from 'jsonwebtoken';
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,38 +9,45 @@ export async function GET(request: NextRequest) {
 
     if (!token) {
       return NextResponse.json(
-        { error: 'غير مصرح لك بالوصول' },
+        { error: 'غير مصرح لك بالدخول' },
         { status: 401 }
       );
     }
 
-    // التحقق من JWT
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as any;
+    // فك تشفير الـ token
+    const decoded = jwt.verify(
+      token, 
+      process.env.JWT_SECRET || 'default-secret-key-change-in-production'
+    ) as any;
 
-    // التحقق من وجود المدير في قاعدة البيانات
-    const admin = await prisma.admin.findUnique({
-      where: { id: decoded.adminId }
+    // البحث عن المدير
+    const admin = await prisma.admins.findUnique({
+      where: { id: decoded.adminId },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        fullName: true,
+        role: true,
+        status: true
+      }
     });
 
-    if (!admin) {
+    if (!admin || admin.status !== 'ACTIVE') {
       return NextResponse.json(
-        { error: 'المدير غير موجود' },
+        { error: 'الحساب غير نشط أو غير موجود' },
         { status: 401 }
       );
     }
 
     return NextResponse.json({
       success: true,
-      admin: {
-        id: admin.id,
-        username: admin.username,
-        email: admin.email
-      }
+      admin
     });
+
   } catch (error) {
-    console.error('Authentication error:', error);
     return NextResponse.json(
-      { error: 'غير مصرح' },
+      { error: 'جلسة غير صالحة' },
       { status: 401 }
     );
   }

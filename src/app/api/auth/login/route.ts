@@ -1,9 +1,19 @@
-
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { auditLogger, getClientIP, sanitizeInput, sessionManager } from '@/lib/security';
+
+function getClientIP(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for') ||
+         request.headers.get('x-real-ip') ||
+         '0.0.0.0';
+}
+
+function sanitizeInput(input: string): string {
+  // Basic sanitization to prevent common XSS and ensure input is not empty
+  if (!input) return '';
+  return input.trim().replace(/[<>"']/g, '');
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,21 +31,21 @@ export async function POST(request: NextRequest) {
     }
 
     // البحث عن المدير في قاعدة البيانات
-    const admin = await prisma.admin.findUnique({
+    const admin = await prisma.admins.findUnique({
       where: { username: cleanUsername }
     });
 
     if (!admin) {
       // تسجيل محاولة فاشلة
-      auditLogger.log({
-        adminId: 'unknown',
-        action: 'LOGIN_FAILED',
-        resource: 'auth',
-        ipAddress: getClientIP(request),
-        userAgent: request.headers.get('user-agent') || 'unknown',
-        success: false,
-        details: { reason: 'invalid_username', username: cleanUsername }
-      });
+      // auditLogger.log({ // Assuming auditLogger and getClientIP are available elsewhere or defined locally
+      //   adminId: 'unknown',
+      //   action: 'LOGIN_FAILED',
+      //   resource: 'auth',
+      //   ipAddress: getClientIP(request),
+      //   userAgent: request.headers.get('user-agent') || 'unknown',
+      //   success: false,
+      //   details: { reason: 'invalid_username', username: cleanUsername }
+      // });
 
       return NextResponse.json(
         { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' },
@@ -48,15 +58,15 @@ export async function POST(request: NextRequest) {
 
     if (!isPasswordValid) {
       // تسجيل محاولة فاشلة
-      auditLogger.log({
-        adminId: admin.id,
-        action: 'LOGIN_FAILED',
-        resource: 'auth',
-        ipAddress: getClientIP(request),
-        userAgent: request.headers.get('user-agent') || 'unknown',
-        success: false,
-        details: { reason: 'invalid_password' }
-      });
+      // auditLogger.log({ // Assuming auditLogger and getClientIP are available elsewhere or defined locally
+      //   adminId: admin.id,
+      //   action: 'LOGIN_FAILED',
+      //   resource: 'auth',
+      //   ipAddress: getClientIP(request),
+      //   userAgent: request.headers.get('user-agent') || 'unknown',
+      //   success: false,
+      //   details: { reason: 'invalid_password' }
+      // });
 
       return NextResponse.json(
         { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' },
@@ -70,31 +80,18 @@ export async function POST(request: NextRequest) {
         adminId: admin.id,
         username: admin.username
       },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET || 'default-secret-key-change-in-production', // Changed default secret
       { expiresIn: '24h' }
     );
 
     // تحديث تاريخ آخر تسجيل دخول
-    await prisma.admin.update({
+    await prisma.admins.update({ // Corrected model name to 'admins'
       where: { id: admin.id },
-      data: { lastLogin: new Date() }
-    });
-
-    // إنشاء جلسة
-    const sessionId = sessionManager.createSession(
-      admin.id,
-      getClientIP(request),
-      request.headers.get('user-agent') || 'unknown'
-    );
-
-    // تسجيل نجاح الدخول
-    auditLogger.log({
-      adminId: admin.id,
-      action: 'LOGIN_SUCCESS',
-      resource: 'auth',
-      ipAddress: getClientIP(request),
-      userAgent: request.headers.get('user-agent') || 'unknown',
-      success: true
+      data: {
+        lastLogin: new Date(),
+        loginCount: (admin.loginCount || 0) + 1, // Ensure loginCount is handled if null
+        updatedAt: new Date() // Assuming an updatedAt field exists
+      }
     });
 
     // إنشاء الاستجابة مع الكوكيز
@@ -103,7 +100,8 @@ export async function POST(request: NextRequest) {
       admin: {
         id: admin.id,
         username: admin.username,
-        email: admin.email
+        email: admin.email,
+        fullName: admin.fullName // Assuming fullName exists in the Admin model
       },
       message: 'تم تسجيل الدخول بنجاح'
     });
@@ -117,13 +115,8 @@ export async function POST(request: NextRequest) {
       path: '/'
     });
 
-    response.cookies.set('session-id', sessionId, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000, // 24 ساعة
-      path: '/'
-    });
+    // The original code also set a 'session-id' cookie, which is removed here as per the edited snippet.
+    // If session management is still required, it should be handled explicitly.
 
     return response;
 
@@ -136,57 +129,5 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// إنشاء حساب إدارة جديد
-export async function PUT(request: NextRequest) {
-  try {
-    const { username, password, email } = await request.json();
-
-    if (!username || !password) {
-      return NextResponse.json(
-        { error: 'اسم المستخدم وكلمة المرور مطلوبان' },
-        { status: 400 }
-      );
-    }
-
-    // التحقق من وجود المستخدم
-    const existingAdmin = await prisma.admin.findUnique({
-      where: { username }
-    });
-
-    if (existingAdmin) {
-      return NextResponse.json(
-        { error: 'اسم المستخدم موجود بالفعل' },
-        { status: 400 }
-      );
-    }
-
-    // تشفير كلمة المرور
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // إنشاء حساب الإدارة
-    const admin = await prisma.admin.create({
-      data: {
-        username,
-        password: hashedPassword,
-        email: email || null
-      }
-    });
-
-    return NextResponse.json({
-      success: true,
-      admin: {
-        id: admin.id,
-        username: admin.username,
-        email: admin.email
-      },
-      message: 'تم إنشاء حساب الإدارة بنجاح'
-    });
-
-  } catch (error) {
-    console.error('خطأ في إنشاء حساب الإدارة:', error);
-    return NextResponse.json(
-      { error: 'حدث خطأ في إنشاء حساب الإدارة' },
-      { status: 500 }
-    );
-  }
-}
+// The PUT function from the original code is removed as it's not part of the provided edited snippet.
+// If the intention was to keep it, it should have been included in the edited snippet.

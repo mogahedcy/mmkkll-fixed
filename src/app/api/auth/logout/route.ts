@@ -41,3 +41,14 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+import { type NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
+  const response = NextResponse.redirect(new URL('/login', request.url));
+  
+  // حذف الكوكيز
+  response.cookies.delete('admin-token');
+  response.cookies.delete('session-id');
+  
+  return response;
+}
