@@ -1,3 +1,4 @@
+
 export async function GET() {
   const robotsTxt = `User-agent: *
 Allow: /
@@ -9,7 +10,7 @@ Allow: /services/
 Allow: /articles/
 Allow: /api/sitemap/
 
-# منع فهرسة المناطق الحساسة
+# منع فهرسة المناطق الحساسة والإدارية
 Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /api/upload/
@@ -22,6 +23,8 @@ Disallow: /*?*fbclid*
 Disallow: /*?*gclid*
 Disallow: /*?*ref=*
 Disallow: /*?*source=*
+Disallow: /*?*campaign=*
+Disallow: /api/dashboard/
 
 # السماح لمحركات البحث الرئيسية بالفهرسة المكثفة
 User-agent: Googlebot
@@ -44,7 +47,7 @@ Allow: /
 Allow: /uploads/
 Crawl-delay: 0.5
 
-# Bing Bot
+# Bing Bot - محرك البحث الثاني في السعودية
 User-agent: bingbot
 Allow: /
 Crawl-delay: 0.5
@@ -53,7 +56,7 @@ Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /login/
 
-# Yandex Bot
+# Yandex Bot - مهم للأسواق الدولية
 User-agent: YandexBot
 Allow: /
 Crawl-delay: 1
@@ -62,7 +65,7 @@ Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /login/
 
-# Baidu Bot للأسواق الآسيوية
+# Baidu Bot للأسواق الآسيوية والعمالة الآسيوية في السعودية
 User-agent: Baiduspider
 Allow: /
 Crawl-delay: 1
@@ -70,10 +73,15 @@ Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /login/
 
-# DuckDuckGo Bot
+# DuckDuckGo Bot - محرك بحث صاعد
 User-agent: DuckDuckBot
 Allow: /
 Crawl-delay: 1
+
+# محركات البحث العربية المحلية
+User-agent: *
+Allow: /ar/
+Allow: /arabic/
 
 # حظر البوتات الضارة وغير المرغوب فيها
 User-agent: AhrefsBot
@@ -103,22 +111,25 @@ Disallow: /
 User-agent: MauiBot
 Disallow: /
 
-# محركات البحث العربية
-User-agent: *
-Allow: /ar/
-Allow: /arabic/
+User-agent: PetalBot
+Disallow: /
 
-# خرائط المواقع المتعددة
+User-agent: Bytespider
+Disallow: /
+
+# خرائط المواقع المتعددة والمحدثة
 Sitemap: https://aldeyarksa.tech/sitemap.xml
 Sitemap: https://aldeyarksa.tech/sitemap-images.xml
-Sitemap: https://aldeyarksa.tech/sitemap-videos.xml
 
 # توجيه canonical المضيف
 Host: https://aldeyarksa.tech
 
-# معلومات إضافية للمطورين
+# معلومات إضافية للمطورين ومحركات البحث
 # Contact: info@aldeyarksa.tech
-# Website: https://aldeyarksa.tech`;
+# Website: https://aldeyarksa.tech
+# Company: محترفين الديار العالمية
+# Location: جدة، المملكة العربية السعودية
+# Services: مظلات، برجولات، سواتر، تنسيق حدائق`;
 
   return new Response(robotsTxt, {
     status: 200,
@@ -128,6 +139,7 @@ Host: https://aldeyarksa.tech
       'CDN-Cache-Control': 'max-age=43200',
       'Vercel-CDN-Cache-Control': 'max-age=43200',
       'X-Robots-Tag': 'index, follow',
+      'Last-Modified': new Date().toUTCString(),
     },
   });
 }

@@ -1,3 +1,4 @@
+
 import { prisma } from '@/lib/prisma';
 
 // بيانات المقالات المحدثة مع كلمات مفتاحية غنية
@@ -6,7 +7,7 @@ const articlesData = [
     id: 1,
     slug: 'best-car-shades-jeddah-2024',
     title: 'أفضل أنواع مظلات السيارات في جدة 2024 - دليل شامل للاختيار والتركيب',
-    lastModified: '2024-12-15T10:00:00.000Z',
+    lastModified: '2024-12-20T10:00:00.000Z',
     priority: '0.9',
     changefreq: 'weekly',
     keywords: 'مظلات سيارات جدة، أفضل مظلات السيارات، تركيب مظلات جدة، مظلات حديد، مظلات قماش'
@@ -15,7 +16,7 @@ const articlesData = [
     id: 2,
     slug: 'wooden-pergola-maintenance-coastal-climate',
     title: 'صيانة البرجولة الخشبية في المناخ الساحلي - نصائح من خبراء جدة',
-    lastModified: '2024-12-10T10:00:00.000Z',
+    lastModified: '2024-12-18T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'weekly',
     keywords: 'برجولة خشبية جدة، صيانة برجولات، برجولات حدائق، تصميم برجولات جدة'
@@ -24,7 +25,7 @@ const articlesData = [
     id: 3,
     slug: 'sandwich-panel-thermal-insulation-saudi',
     title: 'ساندوتش بانل: الحل الأمثل للعزل الحراري في السعودية',
-    lastModified: '2024-12-05T10:00:00.000Z',
+    lastModified: '2024-12-16T10:00:00.000Z',
     priority: '0.9',
     changefreq: 'weekly',
     keywords: 'ساندوتش بانل جدة، عزل حراري، ألواح ساندوتش بانل، تركيب ساندوتش بانل السعودية'
@@ -33,7 +34,7 @@ const articlesData = [
     id: 4,
     slug: 'smart-fences-privacy-elegance',
     title: 'السواتر الذكية في جدة: خصوصية وأناقة وتقنية حديثة',
-    lastModified: '2024-12-01T10:00:00.000Z',
+    lastModified: '2024-12-14T10:00:00.000Z',
     priority: '0.9',
     changefreq: 'weekly',
     keywords: 'سواتر جدة، سواتر خصوصية، سواتر حديد، تركيب سواتر، سواتر قماش جدة'
@@ -42,7 +43,7 @@ const articlesData = [
     id: 5,
     slug: 'royal-tents-luxury-occasions-guide',
     title: 'خيام ملكية فاخرة في جدة: دليل التصميم والتنفيذ للمناسبات الخاصة',
-    lastModified: '2024-11-25T10:00:00.000Z',
+    lastModified: '2024-12-12T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
     keywords: 'خيام ملكية جدة، خيام فاخرة، تأجير خيام، خيام مناسبات جدة'
@@ -51,7 +52,7 @@ const articlesData = [
     id: 6,
     slug: 'traditional-hair-houses-heritage-modern',
     title: 'بيوت الشعر التراثية في جدة: تجسيد الأصالة مع لمسة عصرية',
-    lastModified: '2024-11-20T10:00:00.000Z',
+    lastModified: '2024-12-10T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
     keywords: 'بيوت شعر جدة، خيام تراثية، بيوت شعر تراثية، خيام بدوية جدة'
@@ -60,7 +61,7 @@ const articlesData = [
     id: 7,
     slug: 'garden-design-trends-saudi-2024',
     title: 'أحدث اتجاهات تصميم وتنسيق الحدائق في جدة والمملكة 2024',
-    lastModified: '2024-12-12T10:00:00.000Z',
+    lastModified: '2024-12-08T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'weekly',
     keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية جدة'
@@ -69,10 +70,28 @@ const articlesData = [
     id: 8,
     slug: 'renovation-secrets-modern-techniques',
     title: 'أسرار ترميم الملحقات بأحدث التقنيات - دليل شامل من خبراء جدة',
-    lastModified: '2024-12-08T10:00:00.000Z',
+    lastModified: '2024-12-06T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
     keywords: 'ترميم ملحقات جدة، تجديد ملحقات، شركة ترميم، ترميم منازل جدة'
+  },
+  {
+    id: 9,
+    slug: 'pergola-materials-comparison-jeddah',
+    title: 'مقارنة شاملة لمواد البرجولات في جدة: الخشب مقابل الحديد مقابل الألومنيوم',
+    lastModified: '2024-12-04T10:00:00.000Z',
+    priority: '0.8',
+    changefreq: 'monthly',
+    keywords: 'برجولات خشبية جدة، برجولات حديد، برجولات ألومنيوم، مقارنة مواد البرجولات'
+  },
+  {
+    id: 10,
+    slug: 'seasonal-garden-maintenance-saudi',
+    title: 'صيانة الحدائق الموسمية في السعودية: دليل العناية الشاملة',
+    lastModified: '2024-12-02T10:00:00.000Z',
+    priority: '0.7',
+    changefreq: 'monthly',
+    keywords: 'صيانة حدائق جدة، العناية بالحدائق، تنسيق حدائق موسمي، ري الحدائق'
   }
 ];
 
@@ -207,7 +226,8 @@ export async function GET() {
             description: true,
             alt: true,
             updatedAt: true
-          }
+          },
+          take: 10 // تحديد عدد الوسائط لتحسين الأداء
         }
       },
       orderBy: {
@@ -270,7 +290,7 @@ export async function GET() {
       (project) => {
         const images = project.mediaItems
           ?.filter(media => media.type === 'IMAGE')
-          .slice(0, 15) // زيادة عدد الصور المفهرسة
+          .slice(0, 5) // تقليل عدد الصور لتحسين الأداء
           .map(media => `
       <image:image>
         <image:loc>${media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`}</image:loc>
@@ -282,7 +302,7 @@ export async function GET() {
 
         const videos = project.mediaItems
           ?.filter(media => media.type === 'VIDEO')
-          .slice(0, 8) // زيادة عدد الفيديوهات
+          .slice(0, 3) // تقليل عدد الفيديوهات
           .map(media => `
       <video:video>
         <video:content_loc>${media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`}</video:content_loc>

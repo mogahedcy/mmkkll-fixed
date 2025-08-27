@@ -4,12 +4,20 @@ export async function GET(request: Request) {
   const checkUrls = searchParams.get('urls')?.split(',') || [];
   
   const defaultUrls = [
-    'https://www.aldeyarksa.tech/',
-    'https://www.aldeyarksa.tech/services/mazallat/',
-    'https://www.aldeyarksa.tech/services/pergolas/',
-    'https://www.aldeyarksa.tech/services/sawater/',
-    'https://www.aldeyarksa.tech/portfolio/',
-    'https://www.aldeyarksa.tech/articles/'
+    'https://aldeyarksa.tech/',
+    'https://aldeyarksa.tech/services/mazallat/',
+    'https://aldeyarksa.tech/services/pergolas/',
+    'https://aldeyarksa.tech/services/sawater/',
+    'https://aldeyarksa.tech/services/sandwich-panel/',
+    'https://aldeyarksa.tech/services/landscaping/',
+    'https://aldeyarksa.tech/services/renovation/',
+    'https://aldeyarksa.tech/services/byoot-shaar/',
+    'https://aldeyarksa.tech/services/khayyam/',
+    'https://aldeyarksa.tech/portfolio/',
+    'https://aldeyarksa.tech/articles/',
+    'https://aldeyarksa.tech/about/',
+    'https://aldeyarksa.tech/contact/',
+    'https://aldeyarksa.tech/quote/'
   ];
 
   const urlsToCheck = checkUrls.length > 0 ? checkUrls : defaultUrls;
@@ -17,26 +25,42 @@ export async function GET(request: Request) {
 
   for (const url of urlsToCheck) {
     try {
-      // فحص فهرسة Google
-      const googleCheck = await fetch(`https://www.google.com/search?q=site:${encodeURIComponent(url)}`, {
+      // فحص فهرسة Google مع User-Agent محسن
+      const googleSearchUrl = `https://www.google.com/search?q=site:${encodeURIComponent(url.replace('https://', '').replace('http://', ''))}`;
+      
+      const googleCheck = await fetch(googleSearchUrl, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; SEO-Checker/1.0)'
-        }
-      });
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        timeout: 10000
+      }).catch(() => ({ ok: false, url: googleSearchUrl }));
 
       // فحص فهرسة Bing
-      const bingCheck = await fetch(`https://www.bing.com/search?q=site:${encodeURIComponent(url)}`, {
+      const bingSearchUrl = `https://www.bing.com/search?q=site:${encodeURIComponent(url.replace('https://', '').replace('http://', ''))}`;
+      
+      const bingCheck = await fetch(bingSearchUrl, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; SEO-Checker/1.0)'
-        }
-      });
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        timeout: 10000
+      }).catch(() => ({ ok: false, url: bingSearchUrl }));
+
+      // تحليل النتائج
+      const googleIndexed = googleCheck.ok && !googleCheck.url.includes('no-results') && !googleCheck.url.includes('did+not+match');
+      const bingIndexed = bingCheck.ok && !bingCheck.url.includes('no-results') && !bingCheck.url.includes('did+not+match');
 
       results.push({
         url,
-        google_indexed: googleCheck.ok && !googleCheck.url.includes('no-results'),
-        bing_indexed: bingCheck.ok && !bingCheck.url.includes('no-results'),
+        google_indexed: googleIndexed,
+        bing_indexed: bingIndexed,
         last_checked: new Date().toISOString(),
-        status: googleCheck.ok && bingCheck.ok ? 'good' : 'needs_attention'
+        status: googleIndexed && bingIndexed ? 'excellent' : 
+                googleIndexed || bingIndexed ? 'good' : 'needs_attention',
+        recommendation: !googleIndexed && !bingIndexed ? 
+          'يحتاج إلى إعادة إرسال للأرشفة' : 
+          googleIndexed && bingIndexed ? 
+          'مفهرس بشكل ممتاز' : 
+          'مفهرس جزئياً - راقب النتائج'
       });
 
     } catch (error) {
@@ -46,7 +70,8 @@ export async function GET(request: Request) {
         bing_indexed: 'unknown',
         error: error instanceof Error ? error.message : 'خطأ في الفحص',
         last_checked: new Date().toISOString(),
-        status: 'error'
+        status: 'error',
+        recommendation: 'أعد المحاولة لاحقاً'
       });
     }
   }
@@ -55,8 +80,10 @@ export async function GET(request: Request) {
     total_urls: results.length,
     google_indexed: results.filter(r => r.google_indexed === true).length,
     bing_indexed: results.filter(r => r.bing_indexed === true).length,
+    fully_indexed: results.filter(r => r.google_indexed === true && r.bing_indexed === true).length,
     needs_attention: results.filter(r => r.status === 'needs_attention').length,
-    last_update: new Date().toISOString()
+    last_update: new Date().toISOString(),
+    indexing_rate: Math.round((results.filter(r => r.google_indexed === true || r.bing_indexed === true).length / results.length) * 100)
   };
 
   return Response.json({
@@ -64,14 +91,18 @@ export async function GET(request: Request) {
     summary,
     results,
     recommendations: [
-      'استخدم /api/sitemap/refresh لإشعار محركات البحث',
-      'تأكد من تحديث المحتوى بانتظام',
-      'راجع Google Search Console للمزيد من التفاصيل'
+      summary.indexing_rate < 70 ? 'ينصح بإعادة إرسال الـ sitemap لمحركات البحث' : 'معدل الأرشفة جيد',
+      'استخدم /api/sitemap/refresh لإشعار محركات البحث بالتحديثات',
+      'راجع Google Search Console للحصول على تفاصيل أكثر',
+      'تأكد من تحديث المحتوى بانتظام لتحسين الأرشفة',
+      summary.needs_attention > 3 ? 'يوجد عدد كبير من الصفحات تحتاج إلى انتباه' : 'حالة الأرشفة مقبولة'
     ]
   }, {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'public, max-age=1800' // 30 دقيقة
+      'Cache-Control': 'public, max-age=1800', // 30 دقيقة
+      'Access-Control-Allow-Origin': '*',
+      'X-SEO-Check': 'aldeyarksa-indexing-monitor'
     }
   });
 }
