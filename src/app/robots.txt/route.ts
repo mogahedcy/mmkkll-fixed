@@ -1,4 +1,3 @@
-
 export async function GET() {
   const robotsTxt = `User-agent: *
 Allow: /
@@ -118,8 +117,10 @@ User-agent: Bytespider
 Disallow: /
 
 # خرائط المواقع المتعددة والمحدثة
-Sitemap: https://aldeyarksa.tech/sitemap.xml
-Sitemap: https://aldeyarksa.tech/sitemap-images.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-index.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-articles.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-images.xml
 
 # توجيه canonical المضيف
 Host: https://aldeyarksa.tech
