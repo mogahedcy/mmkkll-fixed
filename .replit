@@ -20,7 +20,7 @@ localPort = 3002
 externalPort = 3002
 
 [workflows]
-runButton = "Development Server"
+runButton = "Development Server (Enhanced)"
 
 [[workflows.workflow]]
 name = "Build and Start"
@@ -64,3 +64,16 @@ args = "npm run build"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm start"
+
+[[workflows.workflow]]
+name = "Development Server (Enhanced)"
+author = 46946113
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/prepare-database.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
