@@ -20,7 +20,7 @@ localPort = 3002
 externalPort = 3002
 
 [workflows]
-runButton = "Development Server (Fixed)"
+runButton = "Database Setup & Development"
 
 [[workflows.workflow]]
 name = "Build and Start"
@@ -86,6 +86,27 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npx prisma generate"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Database Setup & Development"
+author = 46947920
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx prisma generate"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx prisma migrate dev --name init"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/create-admin-account.js"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"

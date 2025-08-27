@@ -66,7 +66,11 @@ export default async function DashboardPage() {
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-500">
-                آخر تسجيل دخول: {admin.lastLogin ? new Date(admin.lastLogin).toLocaleDateString('ar-SA') : 'غير محدد'}
+                آخر تسجيل دخول: {admin.lastLogin ? new Date(admin.lastLogin).toLocaleDateString('ar-SA', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                }) : 'غير محدد'}
               </span>
               <a
                 href="/api/auth/logout"
