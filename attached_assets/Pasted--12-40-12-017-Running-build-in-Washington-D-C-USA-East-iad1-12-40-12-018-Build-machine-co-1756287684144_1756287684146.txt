@@ -1,0 +1,72 @@
+[12:40:12.017] Running build in Washington, D.C., USA (East) – iad1
+[12:40:12.018] Build machine configuration: 2 cores, 8 GB
+[12:40:12.042] Cloning github.com/mogahedcy/mmkkll-fixed (Branch: main, Commit: e0e8971)
+[12:40:12.172] Previous build caches not available
+[12:40:12.756] Cloning completed: 713.000ms
+[12:40:12.809] Found .vercelignore
+[12:40:12.822] Removed 38 ignored files defined in .vercelignore
+[12:40:12.822]   /.same/add-project-examples.md
+[12:40:12.822]   /.same/cloudinary-setup-guide.md
+[12:40:12.822]   /.same/competitor-analysis.md
+[12:40:12.822]   /.same/competitor-keywords-analysis.md
+[12:40:12.822]   /.same/comprehensive-seo-analysis-2024.md
+[12:40:12.822]   /.same/content-strategy.md
+[12:40:12.823]   /.same/final-fixes-summary.md
+[12:40:12.823]   /.same/footer-improvements.md
+[12:40:12.823]   /.same/immediate-seo-fixes.md
+[12:40:12.823]   /.same/navbar-improvements.md
+[12:40:13.136] Running "vercel build"
+[12:40:13.546] Vercel CLI 46.0.3
+[12:40:13.887] Running "install" command: `npm install`...
+[12:40:17.366] npm warn deprecated q@1.5.1: You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+[12:40:17.366] npm warn deprecated
+[12:40:17.366] npm warn deprecated (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
+[12:40:17.973] npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+[12:40:35.846] 
+[12:40:35.847] > aldeyar-global-jeddah@0.1.0 postinstall
+[12:40:35.847] > prisma generate
+[12:40:35.847] 
+[12:40:37.429] Prisma schema loaded from prisma/schema.prisma
+[12:40:37.731] 
+[12:40:37.731] ✔ Generated Prisma Client (v6.14.0) to ./node_modules/@prisma/client in 128ms
+[12:40:37.731] 
+[12:40:37.731] Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+[12:40:37.731] 
+[12:40:37.731] Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+[12:40:37.732] 
+[12:40:37.761] 
+[12:40:37.761] added 356 packages, and audited 357 packages in 24s
+[12:40:37.762] 
+[12:40:37.762] 66 packages are looking for funding
+[12:40:37.762]   run `npm fund` for details
+[12:40:37.763] 
+[12:40:37.763] found 0 vulnerabilities
+[12:40:37.806] Detected Next.js version: 15.5.0
+[12:40:37.807] Running "npm run build"
+[12:40:37.924] 
+[12:40:37.925] > aldeyar-global-jeddah@0.1.0 build
+[12:40:37.925] > npm run db:prepare && next build
+[12:40:37.925] 
+[12:40:38.044] 
+[12:40:38.044] > aldeyar-global-jeddah@0.1.0 db:prepare
+[12:40:38.045] > node scripts/prepare-database.js
+[12:40:38.045] 
+[12:40:38.078] node:internal/modules/cjs/loader:1368
+[12:40:38.078]   throw err;
+[12:40:38.078]   ^
+[12:40:38.078] 
+[12:40:38.079] Error: Cannot find module '/vercel/path0/scripts/prepare-database.js'
+[12:40:38.079]     at Function._resolveFilename (node:internal/modules/cjs/loader:1365:15)
+[12:40:38.079]     at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)
+[12:40:38.079]     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)
+[12:40:38.079]     at Function._load (node:internal/modules/cjs/loader:1175:37)
+[12:40:38.079]     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[12:40:38.079]     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+[12:40:38.079]     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+[12:40:38.079]     at node:internal/main/run_main_module:36:49 {
+[12:40:38.079]   code: 'MODULE_NOT_FOUND',
+[12:40:38.080]   requireStack: []
+[12:40:38.080] }
+[12:40:38.080] 
+[12:40:38.080] Node.js v22.18.0
+[12:40:38.103] Error: Command "npm run build" exited with 1
