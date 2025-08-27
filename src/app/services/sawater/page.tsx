@@ -26,20 +26,45 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'سواتر جدة | محترفين الديار - أفضل سواتر خصوصية وحماية',
-  description: 'أفضل سواتر في جدة من محترفين الديار. سواتر حديد، سواتر خشبية، سواتر قماش، سواتر شينكو. تركيب احترافي وضمان 15 سنة. اتصل الآن للحصول على عرض سعر مجاني.',
-  keywords: 'سواتر جدة، سواتر حديد، سواتر خشبية، سواتر قماش، سواتر شينكو، سواتر خصوصية، تركيب سواتر، محترفين الديار',
+  title: 'سواتر جدة - محترفين الديار العالمية | خصوصية وأناقة عالية الجودة',
+  description: 'سواتر جدة بأعلى معايير الجودة - سواتر حديد، قماش، وخشب للخصوصية والحماية. تصاميم أنيقة، ضمان شامل 10 سنوات، خدمة 24/7 في جميع أنحاء جدة والمنطقة الغربية.',
+  keywords: 'سواتر جدة، سواتر حديد، سواتر قماش، سواتر خشب، سواتر خصوصية، تركيب سواتر، شركة سواتر جدة، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: {
-    title: 'سواتر جدة | محترفين الديار',
-    description: 'أفضل سواتر خصوصية وحماية في جدة بأعلى جودة وأفضل الأسعار. خبرة 15 عاماً في تركيب السواتر.',
+    title: 'سواتر جدة - محترفين الديار العالمية',
+    description: 'أفضل شركة سواتر في جدة - خصوصية وأناقة بأعلى معايير الجودة',
+    url: 'https://aldeyarksa.tech/services/sawater',
+    siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://ext.same-assets.com/742929371/1378182230.jpeg',
+        url: 'https://aldeyarksa.tech/uploads/sawater-1.webp',
         width: 1200,
         height: 630,
-        alt: 'سواتر جدة - محترفين الديار',
+        alt: 'سواتر جدة - محترفين الديار العالمية',
       },
     ],
+    locale: 'ar_SA',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'سواتر جدة - محترفين الديار العالمية',
+    description: 'أفضل شركة سواتر في جدة - خصوصية وأناقة بأعلى معايير الجودة',
+    images: ['https://aldeyarksa.tech/uploads/sawater-1.webp'],
+  },
+  alternates: {
+    canonical: 'https://aldeyarksa.tech/services/sawater',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 

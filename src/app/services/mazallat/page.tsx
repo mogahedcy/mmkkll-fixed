@@ -27,20 +27,45 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'مظلات سيارات جدة | محترفين الديار العالمية - أفضل مظلات بأعلى جودة',
-  description: 'أفضل مظلات سيارات في جدة من محترفين الديار العالمية. مظلات PVC، مظلات حدائق، مظلات مدارس ومسابح. تركيب احترافي وضمان 10 سنوات. اتصل الآن للحصول على عرض سعر مجاني.',
-  keywords: 'مظلات سيارات جدة، مظلات PVC، مظلات حدائق جدة، مظلات مدارس، مظلات مسابح، تركيب مظلات، محترفين الديار العالمية',
+  title: 'مظلات سيارات جدة - محترفين الديار العالمية | أفضل الأسعار والتركيب المحترف',
+  description: 'شركة مظلات سيارات جدة الرائدة - تصميم وتنفيذ مظلات السيارات PVC وحديدية بأعلى معايير الجودة. ضمان 10 سنوات، خدمة 24/7، أسعار منافسة في السوق السعودي.',
+  keywords: 'مظلات سيارات جدة، مظلات PVC، مظلات حديد، تركيب مظلات، شركة مظلات جدة، أسعار مظلات السيارات، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: {
-    title: 'مظلات سيارات جدة | محترفين الديار العالمية',
-    description: 'أفضل مظلات سيارات في جدة بأعلى جودة وأفضل الأسعار. خبرة 15 عاماً في تركيب المظلات.',
+    title: 'مظلات سيارات جدة - محترفين الديار العالمية',
+    description: 'أفضل شركة مظلات سيارات في جدة - تصميم وتنفيذ احترافي بضمان 10 سنوات',
+    url: 'https://aldeyarksa.tech/services/mazallat',
+    siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://ext.same-assets.com/2470837690/71406733.jpeg',
+        url: 'https://aldeyarksa.tech/uploads/mazallat-1.webp',
         width: 1200,
         height: 630,
-        alt: 'مظلات سيارات جدة - محترفين الديار',
+        alt: 'مظلات سيارات جدة - محترفين الديار العالمية',
       },
     ],
+    locale: 'ar_SA',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'مظلات سيارات جدة - محترفين الديار العالمية',
+    description: 'أفضل شركة مظلات سيارات في جدة - تصميم وتنفيذ احترافي',
+    images: ['https://aldeyarksa.tech/uploads/mazallat-1.webp'],
+  },
+  alternates: {
+    canonical: 'https://aldeyarksa.tech/services/mazallat',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
@@ -336,7 +361,7 @@ export default function MazallatPage() {
             "provider": {
               "@type": "LocalBusiness",
               "name": "محترفين الديار",
-              "image": "https://ext.same-assets.com/2470837690/71406733.jpeg",
+              "image": "https://aldeyarksa.tech/uploads/mazallat-1.webp",
               "telephone": "+966553719009",
               "address": {
                 "@type": "PostalAddress",

@@ -25,23 +25,41 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'تنسيق حدائق في جدة | مؤسسة الديار العالمية - أفضل التصاميم',
-  description: 'تنسيق حدائق منزلية وعامة في جدة. تصميم الحدائق بأحدث التقنيات وأفضل النباتات والديكورات. خبرة 15 عاماً في تنسيق الحدائق. اطلب عرض سعر مجاني!',
+  title: 'تنسيق حدائق جدة - محترفين الديار العالمية | تصميم وزراعة احترافية',
+  description: 'خدمات تنسيق الحدائق في جدة والمنطقة الغربية - تصميم حدائق منزلية وعامة، زراعة النباتات المحلية، أنظمة الري الحديثة والذكية. فريق متخصص، ضمان شامل، صيانة دورية.',
+  keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية، زراعة نباتات، أنظمة ري، تيل صناعي، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: {
-    title: 'تنسيق حدائق في جدة | مؤسسة الديار العالمية',
-    description: 'تنسيق حدائق منزلية وعامة في جدة. تصميم الحدائق بأحدث التقنيات وأفضل النباتات والديكورات.',
+    title: 'تنسيق حدائق جدة - محترفين الديار العالمية',
+    description: 'أفضل شركة تنسيق حدائق في جدة - تصميم وزراعة احترافية',
+    url: 'https://aldeyarksa.tech/services/landscaping',
+    siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://ext.same-assets.com/4049809232/447736083.jpeg',
+        url: 'https://aldeyarksa.tech/uploads/landscaping-1.webp',
         width: 1200,
         height: 630,
-        alt: 'تنسيق حدائق في جدة - مؤسسة الديار العالمية'
-      }
+        alt: 'تنسيق حدائق جدة - محترفين الديار العالمية',
+      },
     ],
+    locale: 'ar_SA',
     type: 'website',
-    locale: 'ar_SA'
-  }
-}
+  },
+  alternates: {
+    canonical: 'https://aldeyarksa.tech/services/landscaping',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
 
 const heroFeatures = [
   { icon: Shield, text: 'ضمان 2 سنة' },

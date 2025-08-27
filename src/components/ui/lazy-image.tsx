@@ -93,6 +93,7 @@ export function LazyImage({
         className
       )}
       {...props}
+      suppressHydrationWarning
     >
       {/* Loading skeleton */}
       {isLoading && (

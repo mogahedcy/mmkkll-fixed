@@ -148,21 +148,21 @@ export async function GET() {
     },
     { 
       url: '/services/mazallat', 
-      priority: '0.95', 
-      changefreq: 'weekly',
-      keywords: 'مظلات سيارات جدة، تركيب مظلات، مظلات حديد، مظلات قماش'
+      priority: '0.98', 
+      changefreq: 'daily',
+      keywords: 'مظلات سيارات جدة، تركيب مظلات، مظلات حديد، مظلات قماش، أسعار مظلات السيارات، شركة مظلات جدة'
     },
     { 
       url: '/services/pergolas', 
-      priority: '0.95', 
-      changefreq: 'weekly',
-      keywords: 'برجولات جدة، تصميم برجولات، برجولات خشبية، برجولات حديد'
+      priority: '0.98', 
+      changefreq: 'daily',
+      keywords: 'برجولات جدة، تصميم برجولات، برجولات خشبية، برجولات حديد، برجولات حدائق، تركيب برجولات جدة'
     },
     { 
       url: '/services/sawater', 
-      priority: '0.95', 
-      changefreq: 'weekly',
-      keywords: 'سواتر جدة، سواتر خصوصية، سواتر حديد، سواتر قماش'
+      priority: '0.98', 
+      changefreq: 'daily',
+      keywords: 'سواتر جدة، سواتر خصوصية، سواتر حديد، سواتر قماش، تركيب سواتر جدة، أسعار السواتر'
     },
     { 
       url: '/services/sandwich-panel', 

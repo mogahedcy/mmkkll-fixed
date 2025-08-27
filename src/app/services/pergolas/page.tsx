@@ -29,20 +29,45 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'برجولات جدة | محترفين الديار - أفضل برجولات خشبية وحديدية',
-  description: 'أفضل برجولات في جدة من محترفين الديار. برجولات خشبية، برجولات حديدية، برجولات ألومنيوم، برجولات حدائق. تصميم وتنفيذ احترافي وضمان شامل. اتصل الآن للحصول على عرض سعر مجاني.',
-  keywords: 'برجولات جدة، برجولات خشبية، برجولات حديدية، برجولات ألومنيوم، برجولات حدائق، تركيب برجولات، محترفين الديار',
+  title: 'برجولات خشبية جدة - محترفين الديار العالمية | تصاميم أنيقة وعصرية',
+  description: 'برجولات خشبية وحديدية في جدة - تصاميم عصرية للحدائق والمساحات الخارجية. جودة عالية، ضمان شامل 10 سنوات، تركيب احترافي في جميع أنحاء جدة والمنطقة الغربية.',
+  keywords: 'برجولات جدة، برجولات خشبية، برجولات حديد، تصميم برجولات، برجولات حدائق، تركيب برجولات، شركة برجولات جدة، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: {
-    title: 'برجولات جدة | محترفين الديار',
-    description: 'أفضل برجولات خشبية وحديدية في جدة بأعلى جودة وأفضل الأسعار. خبرة 15 عاماً في تصميم وتنفيذ البرجولات.',
+    title: 'برجولات خشبية جدة - محترفين الديار العالمية',
+    description: 'أفضل شركة برجولات في جدة - تصاميم أنيقة وعصرية للحدائق',
+    url: 'https://aldeyarksa.tech/services/pergolas',
+    siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://ext.same-assets.com/3372524550/1177626593.jpeg',
+        url: 'https://aldeyarksa.tech/uploads/pergola-1.jpg',
         width: 1200,
         height: 630,
-        alt: 'برجولات جدة - محترفين الديار',
+        alt: 'برجولات خشبية جدة - محترفين الديار العالمية',
       },
     ],
+    locale: 'ar_SA',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'برجولات خشبية جدة - محترفين الديار العالمية',
+    description: 'أفضل شركة برجولات في جدة - تصاميم أنيقة وعصرية',
+    images: ['https://aldeyarksa.tech/uploads/pergola-1.jpg'],
+  },
+  alternates: {
+    canonical: 'https://aldeyarksa.tech/services/pergolas',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
