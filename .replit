@@ -20,7 +20,7 @@ localPort = 3002
 externalPort = 3002
 
 [workflows]
-runButton = "Development Server (Enhanced)"
+runButton = "Development Server (Fixed)"
 
 [[workflows.workflow]]
 name = "Build and Start"
@@ -73,6 +73,19 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "node scripts/prepare-database.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Development Server (Fixed)"
+author = 46946113
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx prisma generate"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
