@@ -1,0 +1,84 @@
+[11:59:02.530] Running build in Washington, D.C., USA (East) – iad1
+[11:59:02.531] Build machine configuration: 2 cores, 8 GB
+[11:59:02.561] Cloning github.com/mogahedcy/mmkkll-fixed (Branch: main, Commit: 4510376)
+[11:59:02.713] Previous build caches not available
+[11:59:03.362] Cloning completed: 801.000ms
+[11:59:03.411] Found .vercelignore
+[11:59:03.422] Removed 37 ignored files defined in .vercelignore
+[11:59:03.422]   /.same/add-project-examples.md
+[11:59:03.422]   /.same/cloudinary-setup-guide.md
+[11:59:03.423]   /.same/competitor-analysis.md
+[11:59:03.423]   /.same/competitor-keywords-analysis.md
+[11:59:03.423]   /.same/comprehensive-seo-analysis-2024.md
+[11:59:03.423]   /.same/content-strategy.md
+[11:59:03.423]   /.same/final-fixes-summary.md
+[11:59:03.423]   /.same/footer-improvements.md
+[11:59:03.424]   /.same/immediate-seo-fixes.md
+[11:59:03.424]   /.same/navbar-improvements.md
+[11:59:03.780] Running "vercel build"
+[11:59:04.168] Vercel CLI 46.0.3
+[11:59:04.523] Installing dependencies...
+[11:59:07.597] npm warn deprecated q@1.5.1: You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+[11:59:07.597] npm warn deprecated
+[11:59:07.598] npm warn deprecated (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
+[11:59:09.469] npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+[11:59:09.471] npm warn deprecated @types/dompurify@3.2.0: This is a stub types definition. dompurify provides its own type definitions, so you do not need this installed.
+[11:59:27.769] 
+[11:59:27.770] > aldeyar-global-jeddah@0.1.0 postinstall
+[11:59:27.770] > prisma generate
+[11:59:27.771] 
+[11:59:29.150] Prisma schema loaded from prisma/schema.prisma
+[11:59:29.457] 
+[11:59:29.458] ✔ Generated Prisma Client (v6.14.0) to ./node_modules/@prisma/client in 111ms
+[11:59:29.459] 
+[11:59:29.459] Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+[11:59:29.459] 
+[11:59:29.460] Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+[11:59:29.460] 
+[11:59:29.489] 
+[11:59:29.489] added 580 packages in 25s
+[11:59:29.489] 
+[11:59:29.489] 175 packages are looking for funding
+[11:59:29.489]   run `npm fund` for details
+[11:59:29.534] Detected Next.js version: 15.5.0
+[11:59:29.540] Running "npm run vercel-build"
+[11:59:29.655] 
+[11:59:29.655] > aldeyar-global-jeddah@0.1.0 vercel-build
+[11:59:29.655] > prisma generate && next build
+[11:59:29.655] 
+[11:59:31.082] Prisma schema loaded from prisma/schema.prisma
+[11:59:31.362] 
+[11:59:31.363] ✔ Generated Prisma Client (v6.14.0) to ./node_modules/@prisma/client in 131ms
+[11:59:31.363] 
+[11:59:31.364] Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+[11:59:31.364] 
+[11:59:31.364] Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+[11:59:31.365] 
+[11:59:31.970] Attention: Next.js now collects completely anonymous telemetry regarding usage.
+[11:59:31.971] This information is used to shape Next.js' roadmap and prioritize features.
+[11:59:31.971] You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[11:59:31.971] https://nextjs.org/telemetry
+[11:59:31.972] 
+[11:59:32.026]    ▲ Next.js 15.5.0
+[11:59:32.027] 
+[11:59:32.114]    Creating an optimized production build ...
+[11:59:47.209] Failed to compile.
+[11:59:47.209] 
+[11:59:47.210] ./src/app/api/auth/logout/route.ts
+[11:59:47.211] Module parse failed: Identifier 'NextResponse' has already been declared (37:9)
+[11:59:47.211] File was processed with these loaders:
+[11:59:47.211]  * ./node_modules/next/dist/build/webpack/loaders/next-flight-loader/index.js
+[11:59:47.211]  * ./node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+[11:59:47.211] You may need an additional loader to handle the result of these loaders.
+[11:59:47.211] |     }
+[11:59:47.211] | }
+[11:59:47.211] > import { NextResponse } from 'next/server';
+[11:59:47.211] | export async function GET(request) {
+[11:59:47.211] |     const response = NextResponse.redirect(new URL('/login', request.url));
+[11:59:47.211] 
+[11:59:47.212] Import trace for requested module:
+[11:59:47.212] ./src/app/api/auth/logout/route.ts
+[11:59:47.212] 
+[11:59:47.229] 
+[11:59:47.237] > Build failed because of webpack errors
+[11:59:47.259] Error: Command "npm run vercel-build" exited with 1
