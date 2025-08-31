@@ -9,3 +9,4 @@
 [{"name":"next-dev","duration":49447468,"timestamp":1696026123,"id":1,"tags":{},"startTime":1756631976846,"traceId":"366faa4ee8372604"}]
 [{"name":"hot-reloader","duration":175,"timestamp":1757544743,"id":3,"tags":{"version":"15.3.2"},"startTime":1756632038364,"traceId":"07231b9f4fbbad2a"},{"name":"compile-path","duration":3919398,"timestamp":1758429050,"id":4,"tags":{"trigger":"middleware"},"startTime":1756632039249,"traceId":"07231b9f4fbbad2a"}]
 [{"name":"next-dev","duration":24966774,"timestamp":1749626079,"id":1,"tags":{},"startTime":1756632030446,"traceId":"07231b9f4fbbad2a"}]
+[{"name":"hot-reloader","duration":174,"timestamp":1786838592,"id":3,"tags":{"version":"15.3.2"},"startTime":1756632067658,"traceId":"e29c18722d67fc42"},{"name":"compile-path","duration":3762434,"timestamp":1787787918,"id":4,"tags":{"trigger":"middleware"},"startTime":1756632068607,"traceId":"e29c18722d67fc42"}]
