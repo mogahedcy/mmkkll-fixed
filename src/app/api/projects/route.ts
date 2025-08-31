@@ -121,14 +121,14 @@ export async function GET(request: NextRequest) {
     });
 
     // تحسين البيانات المُرجعة
-    const formattedProjects = projects.map(project => ({
+    const formattedProjects = projects.map((project: any) => ({
       ...project,
-      views: project._count.views_users || 0,
-      likes: project._count.likes_users || 0,
-      commentsCount: project._count.comments || 0,
-      mediaCount: project._count.mediaItems || 0,
-      excerpt: project.description.substring(0, 150) + '...',
-      readTime: Math.ceil(project.description.length / 200), // تقدير وقت القراءة
+      views: project._count?.project_views || 0,
+      likes: project._count?.project_likes || 0,
+      commentsCount: project._count?.comments || 0,
+      mediaCount: project._count?.media_items || 0,
+      excerpt: (project.description || '').substring(0, 150) + '...',
+      readTime: Math.ceil((project.description || '').length / 200),
       slug: project.slug || generateSlug(project.title, project.id)
     }));
 
@@ -256,7 +256,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // إنشاء أول مشاهدة (من الإدارة)
+    // إ��شاء أول مشاهدة (من الإدارة)
     await prisma.projectView.create({
       data: {
         projectId: project.id,
