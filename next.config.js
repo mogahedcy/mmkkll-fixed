@@ -1,4 +1,3 @@
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable ESLint and TypeScript during builds to fix Vercel deployment
@@ -9,9 +8,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   // إعدادات الخادم
-  experimental: {
-    outputStandalone: true,
-  },
+  output: 'standalone',
   // إعدادات خاصة بالتطوير المحلي
   turbopack: {
     resolveAlias: {

@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { useState } from 'react';
 import { Calculator, MessageCircle, Phone, CheckCircle, Star, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,7 +24,7 @@ const areas = [
 
 const benefits = [
   'زيارة مجانية لأخذ القياسات',
-  'عرض سعر مفصل ودقيق',
+  'عرض سعر ��فصل ودقيق',
   'استشارة فنية متخصصة',
   'ضمان شامل 10 سنوات',
   'تركيب احترافي',
