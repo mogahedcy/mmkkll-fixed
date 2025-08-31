@@ -73,8 +73,8 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' https://*.builder.codes https://*.projects.builder.codes https://*.fly.dev http://localhost:3000 http://127.0.0.1:3000;",
           },
           {
             key: 'X-Content-Type-Options',
