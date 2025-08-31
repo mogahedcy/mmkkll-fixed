@@ -132,13 +132,13 @@ export async function GET(request: NextRequest) {
       slug: project.slug || generateSlug(project.title, project.id)
     }));
 
-    const totalCount = await prisma.project.count({ where });
+    const totalCount = await Project.count({ where });
 
     // إحصائيات إضافية
     const stats = {
       total: totalCount,
-      featured: await prisma.project.count({ where: { ...where, featured: true } }),
-      categories: await prisma.project.groupBy({
+      featured: await Project.count({ where: { ...where, featured: true } }),
+      categories: await Project.groupBy({
         by: ['category'],
         where,
         _count: { category: true }
