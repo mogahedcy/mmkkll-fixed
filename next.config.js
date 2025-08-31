@@ -60,6 +60,9 @@ const nextConfig = {
     'aldeyarksa.tech',
     'www.aldeyarksa.tech',
     '*.replit.dev',
+    '*.projects.builder.codes',
+    '*.builder.codes',
+    '*.fly.dev',
     'localhost',
     '127.0.0.1'
   ],
