@@ -75,14 +75,33 @@ export async function GET(request: NextRequest) {
         orderBy = [{ featured: 'desc' }, { publishedAt: 'desc' }];
     }
 
-    const projects = await prisma.project.findMany({
+    const db: any = prisma as any;
+    const Project = db.projects || db.project;
+
+    if (!Project) {
+      return NextResponse.json({
+        success: true,
+        projects: [],
+        total: 0,
+        stats: { total: 0, featured: 0, categories: [] },
+        pagination: {
+          total: 0,
+          page: page ? Number.parseInt(page) : 1,
+          limit: take,
+          totalPages: 0,
+          hasMore: false
+        }
+      });
+    }
+
+    const projects = await Project.findMany({
       where,
       include: {
-        mediaItems: {
+        media_items: {
           orderBy: { order: 'asc' },
-          take: 5 // محدود للأداء
+          take: 5
         },
-        tags: {
+        project_tags: {
           take: 10
         },
         _count: {
@@ -90,9 +109,9 @@ export async function GET(request: NextRequest) {
             comments: {
               where: { status: 'APPROVED' }
             },
-            likes_users: true,
-            views_users: true,
-            mediaItems: true
+            project_likes: true,
+            project_views: true,
+            media_items: true
           }
         }
       },
