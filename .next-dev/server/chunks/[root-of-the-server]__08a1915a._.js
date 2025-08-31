@@ -71,6 +71,7 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$externals$5d2f40$prisma$2f$client__$5b$external$5d$__$2840$prisma$2f$client$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/@prisma/client [external] (@prisma/client, cjs)");
 ;
+;
 const globalForPrisma = globalThis;
 const prisma = globalForPrisma.prisma ?? new __TURBOPACK__imported__module__$5b$externals$5d2f40$prisma$2f$client__$5b$external$5d$__$2840$prisma$2f$client$2c$__cjs$29$__["PrismaClient"]({
     log: ("TURBOPACK compile-time truthy", 1) ? [
@@ -228,16 +229,37 @@ async function GET(request) {
                     }
                 ];
         }
-        const projects = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.findMany({
+        const db = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"];
+        const Project = db.projects || db.project;
+        if (!Project) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                success: true,
+                projects: [],
+                total: 0,
+                stats: {
+                    total: 0,
+                    featured: 0,
+                    categories: []
+                },
+                pagination: {
+                    total: 0,
+                    page: page ? Number.parseInt(page) : 1,
+                    limit: take,
+                    totalPages: 0,
+                    hasMore: false
+                }
+            });
+        }
+        const projects = await Project.findMany({
             where,
             include: {
-                mediaItems: {
+                media_items: {
                     orderBy: {
                         order: 'asc'
                     },
-                    take: 5 // محدود للأداء
+                    take: 5
                 },
-                tags: {
+                project_tags: {
                     take: 10
                 },
                 _count: {
@@ -247,9 +269,9 @@ async function GET(request) {
                                 status: 'APPROVED'
                             }
                         },
-                        likes_users: true,
-                        views_users: true,
-                        mediaItems: true
+                        project_likes: true,
+                        project_views: true,
+                        media_items: true
                     }
                 }
             },
@@ -260,27 +282,27 @@ async function GET(request) {
         // تحسين البيانات المُرجعة
         const formattedProjects = projects.map((project)=>({
                 ...project,
-                views: project._count.views_users || 0,
-                likes: project._count.likes_users || 0,
-                commentsCount: project._count.comments || 0,
-                mediaCount: project._count.mediaItems || 0,
-                excerpt: project.description.substring(0, 150) + '...',
-                readTime: Math.ceil(project.description.length / 200),
+                views: project._count?.project_views || 0,
+                likes: project._count?.project_likes || 0,
+                commentsCount: project._count?.comments || 0,
+                mediaCount: project._count?.media_items || 0,
+                excerpt: (project.description || '').substring(0, 150) + '...',
+                readTime: Math.ceil((project.description || '').length / 200),
                 slug: project.slug || generateSlug(project.title, project.id)
             }));
-        const totalCount = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.count({
+        const totalCount = await Project.count({
             where
         });
         // إحصائيات إضافية
         const stats = {
             total: totalCount,
-            featured: await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.count({
+            featured: await Project.count({
                 where: {
                     ...where,
                     featured: true
                 }
             }),
-            categories: await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.groupBy({
+            categories: await Project.groupBy({
                 by: [
                     'category'
                 ],
@@ -378,7 +400,7 @@ async function POST(request) {
                 }
             }
         });
-        // إنشاء أول مشاهدة (من الإدارة)
+        // إ��شاء أول مشاهدة (من الإدارة)
         await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectView.create({
             data: {
                 projectId: project.id,
