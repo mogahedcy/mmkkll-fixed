@@ -1,6 +1,28 @@
 globalThis.__BUILD_MANIFEST = {
   "pages": {
-    "/_app": []
+    "/_app": [
+      "static/chunks/node_modules_next_dist_4f3d469a._.js",
+      "static/chunks/node_modules_react_1cad9b0b._.js",
+      "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
+      "static/chunks/node_modules_react-dom_f14d0471._.js",
+      "static/chunks/node_modules_3bfdc6a4._.js",
+      "static/chunks/[root-of-the-server]__659f318b._.js",
+      "static/chunks/src_app_globals_00e9807d.css",
+      "static/chunks/src_pages__app_5771e187._.js",
+      "static/chunks/src_pages__app_d2613e0d._.js"
+    ],
+    "/home": [
+      "static/chunks/[root-of-the-server]__665dc6b3._.js",
+      "static/chunks/node_modules_next_081c4778._.js",
+      "static/chunks/node_modules_react_1cad9b0b._.js",
+      "static/chunks/node_modules_react-dom_cjs_react-dom_development_ab7e073c.js",
+      "static/chunks/node_modules_react-dom_f14d0471._.js",
+      "static/chunks/node_modules_tailwind-merge_dist_bundle-mjs_mjs_e33d9f9e._.js",
+      "static/chunks/node_modules_f451409b._.js",
+      "static/chunks/node_modules_swiper_d73dda7b._.css",
+      "static/chunks/src_pages_home_5771e187._.js",
+      "static/chunks/src_pages_home_e39a86b1._.js"
+    ]
   },
   "devFiles": [],
   "ampDevFiles": [],
