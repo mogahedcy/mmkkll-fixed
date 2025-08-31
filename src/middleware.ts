@@ -6,12 +6,6 @@ export const runtime = 'nodejs';
 export function middleware(request: NextRequest) {
   // تبسيط middleware لتجنب الأخطاء
   console.log('Middleware path:', request.nextUrl.pathname)
-  if (request.nextUrl.pathname === '/') {
-    const url = request.nextUrl.clone()
-    url.pathname = '/home'
-    return NextResponse.rewrite(url)
-  }
-
   const response = NextResponse.next()
 
   // Security headers
