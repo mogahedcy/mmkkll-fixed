@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
     const db: any = prisma as any;
     const Project = db.projects || db.project;
 
-    if (!Project) {
+    if (!Project || !process.env.DATABASE_URL) {
       return NextResponse.json({
         success: true,
         projects: [],
