@@ -33,3 +33,4 @@
 [{"name":"next-dev","duration":208623485,"timestamp":1912273718,"id":1,"tags":{},"startTime":1756632193093,"traceId":"8bb6ea02e07319ed"}]
 [{"name":"hot-reloader","duration":151,"timestamp":2130523395,"id":3,"tags":{"version":"15.3.2"},"startTime":1756632411343,"traceId":"bb48aba811709d92"},{"name":"compile-path","duration":4604120,"timestamp":2131189068,"id":4,"tags":{"trigger":"middleware"},"startTime":1756632412008,"traceId":"bb48aba811709d92"}]
 [{"name":"next-dev","duration":32659517,"timestamp":2121305382,"id":1,"tags":{},"startTime":1756632402125,"traceId":"bb48aba811709d92"}]
+[{"name":"hot-reloader","duration":162,"timestamp":2166667513,"id":3,"tags":{"version":"15.3.2"},"startTime":1756632447487,"traceId":"ce43453f29198b2c"},{"name":"compile-path","duration":4962419,"timestamp":2167705853,"id":4,"tags":{"trigger":"middleware"},"startTime":1756632448525,"traceId":"ce43453f29198b2c"}]
