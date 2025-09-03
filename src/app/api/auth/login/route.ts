@@ -95,6 +95,9 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // نجاح: تصفير عداد المحاولات لهذا الـ IP
+    attempts.delete(ip);
+
     // إنشاء الاستجابة مع الكوكيز
     const response = NextResponse.json({
       success: true,
