@@ -124,7 +124,7 @@ export async function PUT(
     });
 
     // تحديث المشروع مع البيانات الجديدة
-    const updatedProject = await prisma.project.update({
+    const updatedProject = await prisma.projects.update({
       where: { id: projectId },
       data: {
         title,
@@ -137,7 +137,7 @@ export async function PUT(
         projectDuration: projectDuration || '',
         projectCost: projectCost || '',
         updatedAt: new Date(),
-        mediaItems: {
+        media_items: {
           create: mediaItems?.map((item: { type: string; src: string; thumbnail?: string; title?: string; description?: string; duration?: number }, index: number) => ({
             type: item.type,
             src: item.src,
@@ -148,26 +148,26 @@ export async function PUT(
             order: index
           })) || []
         },
-        tags: {
+        project_tags: {
           create: tags?.map((tag: string | { name: string }) => ({
             name: typeof tag === 'string' ? tag : tag.name
           })) || []
         },
-        materials: {
+        project_materials: {
           create: materials?.map((material: string | { name: string }) => ({
             name: typeof material === 'string' ? material : material.name
           })) || []
         }
       },
       include: {
-        mediaItems: true,
-        tags: true,
-        materials: true,
+        media_items: true,
+        project_tags: true,
+        project_materials: true,
         _count: {
           select: {
             comments: true,
-            likes_users: true,
-            views_users: true
+            project_likes: true,
+            project_views: true
           }
         }
       }
