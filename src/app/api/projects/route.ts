@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
+import { randomUUID } from 'crypto';
 
 // GET - جلب المشاريع مع إحصائيات التفاعل
 export async function GET(request: NextRequest) {
@@ -212,6 +213,7 @@ export async function POST(request: NextRequest) {
 
     const project = await prisma.projects.create({
       data: {
+        id: randomUUID(),
         title,
         description,
         category,
@@ -227,8 +229,10 @@ export async function POST(request: NextRequest) {
         keywords: keywords || `${category}, ${location}, محترفين الديار`,
         status,
         publishedAt: status === 'PUBLISHED' ? new Date() : null,
+        updatedAt: new Date(),
         media_items: {
           create: mediaItems?.map((item: any, index: number) => ({
+            id: randomUUID(),
             type: item.type,
             src: item.src || item.url,
             thumbnail: item.thumbnail || item.src || item.url,
@@ -241,8 +245,7 @@ export async function POST(request: NextRequest) {
             caption: item.caption || '',
             order: index
           })) || []
-        },
-
+        }
       },
       include: {
         media_items: true,
