@@ -111,7 +111,7 @@ export async function PUT(
     }
 
     // حذف الوسائط والعلامات والمواد القديمة
-    await prisma.mediaItem.deleteMany({
+    await prisma.media_items.deleteMany({
       where: { projectId }
     });
 
@@ -123,7 +123,7 @@ export async function PUT(
       where: { projectId }
     });
 
-    // تحديث المشروع مع البيانات الجديدة
+    // تحديث المشروع مع البيانات ا��جديدة
     const updatedProject = await prisma.projects.update({
       where: { id: projectId },
       data: {
@@ -233,7 +233,7 @@ export async function DELETE(
       where: { projectId }
     });
 
-    await prisma.mediaItem.deleteMany({
+    await prisma.media_items.deleteMany({
       where: { projectId }
     });
 
