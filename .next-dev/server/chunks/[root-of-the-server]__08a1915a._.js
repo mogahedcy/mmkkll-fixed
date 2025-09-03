@@ -350,13 +350,13 @@ async function POST(request) {
         }
         // إنشاء slug فريد
         const slug = generateSlug(title);
-        const existingSlug = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.findUnique({
+        const existingSlug = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.findUnique({
             where: {
                 slug
             }
         });
         const finalSlug = existingSlug ? `${slug}-${Date.now()}` : slug;
-        const project = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.create({
+        const project = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.create({
             data: {
                 title,
                 description,
@@ -373,7 +373,7 @@ async function POST(request) {
                 keywords: keywords || `${category}, ${location}, محترفين الديار`,
                 status,
                 publishedAt: status === 'PUBLISHED' ? new Date() : null,
-                mediaItems: {
+                media_items: {
                     create: mediaItems?.map((item, index)=>({
                             type: item.type,
                             src: item.src || item.url,
@@ -390,18 +390,18 @@ async function POST(request) {
                 }
             },
             include: {
-                mediaItems: true,
+                media_items: true,
                 _count: {
                     select: {
                         comments: true,
-                        likes_users: true,
-                        views_users: true
+                        project_likes: true,
+                        project_views: true
                     }
                 }
             }
         });
         // إ��شاء أول مشاهدة (من الإدارة)
-        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectView.create({
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_views.create({
             data: {
                 projectId: project.id,
                 ip,
@@ -410,7 +410,7 @@ async function POST(request) {
             }
         });
         // تحديث عداد المشاهدات
-        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.update({
+        await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.update({
             where: {
                 id: project.id
             },
@@ -424,14 +424,16 @@ async function POST(request) {
         } catch (error) {
             console.warn('فشل في إشعار Google:', error);
         }
+        const formatted = {
+            ...project,
+            mediaItems: project.media_items,
+            views: 1,
+            likes: 0,
+            commentsCount: 0
+        };
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
-            project: {
-                ...project,
-                views: 1,
-                likes: 0,
-                commentsCount: 0
-            },
+            project: formatted,
             message: 'تم إضافة المشروع بنجاح'
         });
     } catch (error) {
