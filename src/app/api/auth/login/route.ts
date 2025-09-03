@@ -15,8 +15,19 @@ function sanitizeInput(input: string): string {
   return input.trim().replace(/[<>"']/g, '');
 }
 
+const attempts = new Map<string, { count: number; resetAt: number }>();
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_ATTEMPTS = 10;
+
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIP(request);
+    const now = Date.now();
+    const rec = attempts.get(ip);
+    if (rec && rec.resetAt > now && rec.count >= MAX_ATTEMPTS) {
+      return NextResponse.json({ error: 'محاولات كثيرة، حاول لاحقاً' }, { status: 429 });
+    }
+
     const { username, password } = await request.json();
 
     // تنظيف المدخلات
