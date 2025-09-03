@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { generateSlug } from '@/lib/utils';
+import { randomUUID } from 'crypto';
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest) {
     // إنشاء المشروع
     const project = await prisma.projects.create({
       data: {
+        id: randomUUID(),
         title: data.title,
         description: data.description,
         category: data.category,
