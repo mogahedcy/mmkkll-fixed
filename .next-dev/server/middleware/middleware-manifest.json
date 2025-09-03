@@ -11,8 +11,8 @@
       "page": "/",
       "matchers": [
         {
-          "regexp": "/:nextData(_next/data/[^/]{1,})?/:path*{(\\\\.json)}?",
-          "originalSource": "/:path*"
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json|images/|uploads/).*){(\\\\.json)}?",
+          "originalSource": "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json|images/|uploads/).*)"
         }
       ],
       "wasm": [],

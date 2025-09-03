@@ -29,18 +29,17 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/server/web/spec-extension/response.js [middleware-edge] (ecmascript)");
 ;
 function middleware(request) {
-    // تبسيط middleware لتجنب الأخطاء
+    // Debug log for visibility
     console.log('Middleware path:', request.nextUrl.pathname);
     const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
-    // Security headers
-    response.headers.set('X-Frame-Options', 'DENY');
+    // Safe security headers that don't block iframe preview
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
     return response;
 }
 const config = {
     matcher: [
-        '/:path*'
+        '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json|images/|uploads/).*)'
     ]
 };
 }}),
