@@ -72,7 +72,7 @@ export async function GET(
     }
 
     // التحقق من وجود المشروع أولاً
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId },
       select: { id: true }
     });
@@ -89,7 +89,7 @@ export async function GET(
 
     return NextResponse.json(comments);
   } catch (error) {
-    console.error('خطأ في جلب التعليقات:', error);
+    console.error('خطأ في جلب التعليق��ت:', error);
     return NextResponse.json(
       { error: 'خطأ في جلب التعليقات' },
       { status: 500 }
@@ -122,7 +122,7 @@ export async function POST(
     const { name, email, message, rating } = body;
 
     // التحقق من وجود المشروع
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId }
     });
 
@@ -134,7 +134,7 @@ export async function POST(
     }
 
     // منع التعليقات المكررة من نفس الاسم في فترة قصيرة (10 دقائق)
-    const recentComment = await prisma.comment.findFirst({
+    const recentComment = await prisma.comments.findFirst({
       where: {
         projectId,
         name: name.trim(),
@@ -152,7 +152,7 @@ export async function POST(
     }
 
     // إضافة التعليق
-    const newComment = await prisma.comment.create({
+    const newComment = await prisma.comments.create({
       data: {
         projectId,
         name: name.trim(),
@@ -169,7 +169,7 @@ export async function POST(
     });
 
     // تحديث متوسط التقييم للمشروع
-    const allComments = await prisma.comment.findMany({
+    const allComments = await prisma.comments.findMany({
       where: { projectId },
       select: { rating: true }
     });
@@ -177,7 +177,7 @@ export async function POST(
     if (allComments.length > 0) {
       const averageRating = allComments.reduce((sum, comment) => sum + comment.rating, 0) / allComments.length;
 
-      await prisma.project.update({
+      await prisma.projects.update({
         where: { id: projectId },
         data: { rating: averageRating }
       });
