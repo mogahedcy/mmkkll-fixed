@@ -21,7 +21,7 @@ export async function POST(
     const referrer = headersList.get('referer') || 'direct';
 
     // التحقق من وجود المشروع
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId }
     });
 
@@ -36,7 +36,7 @@ export async function POST(
 
     if (type === 'view') {
       // تسجيل المشاهدة
-      const existingView = await prisma.projectView.findFirst({
+      const existingView = await prisma.project_views.findFirst({
         where: {
           projectId,
           ip,
@@ -48,7 +48,7 @@ export async function POST(
 
       if (!existingView) {
         // تسجيل مشاهدة جديدة
-        await prisma.projectView.create({
+        await prisma.project_views.create({
           data: {
             projectId,
             ip,
@@ -59,7 +59,7 @@ export async function POST(
         });
 
         // تحديث عداد المشاهدات
-        const updatedProject = await prisma.project.update({
+        const updatedProject = await prisma.projects.update({
           where: { id: projectId },
           data: {
             views: {
@@ -86,7 +86,7 @@ export async function POST(
 
     } else if (type === 'like') {
       // إدارة الإعجاب
-      const existingLike = await prisma.projectLike.findUnique({
+      const existingLike = await prisma.project_likes.findUnique({
         where: {
           projectId_ip: {
             projectId,
@@ -98,7 +98,7 @@ export async function POST(
       if (action === 'toggle' || action === 'add') {
         if (!existingLike) {
           // إضافة إعجاب جديد
-          await prisma.projectLike.create({
+          await prisma.project_likes.create({
             data: {
               projectId,
               ip,
@@ -107,7 +107,7 @@ export async function POST(
           });
 
           // تحديث عداد الإعجابات
-          const updatedProject = await prisma.project.update({
+          const updatedProject = await prisma.projects.update({
             where: { id: projectId },
             data: {
               likes: {
@@ -126,7 +126,7 @@ export async function POST(
           };
         } else if (action === 'toggle') {
           // إزالة الإعجاب
-          await prisma.projectLike.delete({
+          await prisma.project_likes.delete({
             where: {
               projectId_ip: {
                 projectId,
@@ -136,7 +136,7 @@ export async function POST(
           });
 
           // تحديث عداد الإعجابات
-          const updatedProject = await prisma.project.update({
+          const updatedProject = await prisma.projects.update({
             where: { id: projectId },
             data: {
               likes: {
@@ -188,7 +188,7 @@ export async function GET(
     const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
 
     // التحقق من وجود المشروع
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId },
       select: {
         id: true,
@@ -212,7 +212,7 @@ export async function GET(
     }
 
     // التحقق من حالة الإعجاب للمستخدم الحالي
-    const userLike = await prisma.projectLike.findUnique({
+    const userLike = await prisma.project_likes.findUnique({
       where: {
         projectId_ip: {
           projectId,
