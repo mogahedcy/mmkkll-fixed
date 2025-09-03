@@ -15,11 +15,11 @@ export async function GET(
     const project = await prisma.projects.findUnique({
       where: { id: projectId },
       include: {
-        mediaItems: {
+        media_items: {
           orderBy: { order: 'asc' }
         },
-        tags: true,
-        materials: true,
+        project_tags: true,
+        project_materials: true,
         _count: {
           select: {
             comments: true
@@ -51,7 +51,7 @@ export async function GET(
     });
 
   } catch (error) {
-    console.error('❌ خطأ في جلب المشروع:', error);
+    console.error('❌ خطأ ��ي جلب المشروع:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في جلب المشروع' },
       { status: 500 }
