@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -14,13 +13,13 @@ export async function GET() {
       totalComments,
       recentViews
     ] = await Promise.all([
-      prisma.project.count(),
-      prisma.project.count({ where: { status: 'PUBLISHED' } }),
-      prisma.project.count({ where: { featured: true } }),
-      prisma.project.aggregate({ _sum: { views: true } }),
-      prisma.project.aggregate({ _sum: { likes: true } }),
-      prisma.comment.count({ where: { status: 'APPROVED' } }),
-      prisma.projectView.count({
+      prisma.projects.count(),
+      prisma.projects.count({ where: { status: 'PUBLISHED' } }),
+      prisma.projects.count({ where: { featured: true } }),
+      prisma.projects.aggregate({ _sum: { views: true } }),
+      prisma.projects.aggregate({ _sum: { likes: true } }),
+      prisma.comments.count({ where: { status: 'APPROVED' } }),
+      prisma.project_views.count({
         where: {
           createdAt: {
             gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // آخر 7 أيام
