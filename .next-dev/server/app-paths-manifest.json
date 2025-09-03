@@ -10,6 +10,7 @@
   "/dashboard/projects/add/page": "app/dashboard/projects/add/page.js",
   "/dashboard/projects/page": "app/dashboard/projects/page.js",
   "/login/page": "app/login/page.js",
+  "/portfolio/[id]/page": "app/portfolio/[id]/page.js",
   "/portfolio/page": "app/portfolio/page.js",
   "/services/sandwich-panel/page": "app/services/sandwich-panel/page.js"
 }
