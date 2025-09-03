@@ -109,12 +109,16 @@ export async function POST(request: NextRequest) {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/webhook/content-updated`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-webhook-signature': `sha256=${process.env.WEBHOOK_SECRET || 'default-webhook-secret'}`
+        },
         body: JSON.stringify({
-          type: 'project_created',
-          projectId: project.id,
-          projectSlug: slug,
-          projectUrl: `/portfolio/${project.id}`
+          type: 'project',
+          action: 'created',
+          id: project.id,
+          url: `/portfolio/${project.id}`,
+          timestamp: new Date().toISOString()
         })
       });
     } catch (notificationError) {
