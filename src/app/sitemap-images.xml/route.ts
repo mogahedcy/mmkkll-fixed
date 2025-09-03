@@ -1,4 +1,3 @@
-
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
@@ -69,15 +68,15 @@ export async function GET() {
   let projectImages: any[] = [];
 
   try {
-    // جلب صور المشاريع من قاعدة البيانات
-    const projects = await prisma.project.findMany({
+    // جلب صور المشار��ع من قاعدة البيانات
+    const projects = await prisma.projects.findMany({
       select: {
         id: true,
         title: true,
         description: true,
         category: true,
         location: true,
-        mediaItems: {
+        media_items: {
           where: {
             type: 'IMAGE'
           },
@@ -92,7 +91,7 @@ export async function GET() {
     });
 
     projectImages = projects.flatMap(project => 
-      project.mediaItems.map(media => ({
+      project.media_items.map(media => ({
         url: media.src.startsWith('http') ? media.src : media.src,
         caption: `${media.alt || media.title || project.title} - ${project.category} في ${project.location}`,
         title: `${project.title} - محترفين الديار العالمية`,
