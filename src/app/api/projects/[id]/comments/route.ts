@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
+import { randomUUID } from 'crypto';
 
 // نموذج التحقق من بيانات التعليق
 interface CommentRequest {
@@ -58,18 +59,11 @@ function validateComment(data: any): { valid: boolean; errors: string[] } {
 
 // GET - جلب التعليقات
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = parseInt(params.id);
-
-    if (isNaN(projectId)) {
-      return NextResponse.json(
-        { error: 'معرف المشروع غير صالح' },
-        { status: 400 }
-      );
-    }
+    const { id: projectId } = await params;
 
     // التحقق من وجود المشروع أولاً
     const project = await prisma.projects.findUnique({
@@ -84,12 +78,28 @@ export async function GET(
       );
     }
 
-    // إرجاع مصفوفة فارغة بدلاً من استعلام التعليقات حتى يتم إصلاح قاعدة البيانات
-    const comments: any[] = [];
+    const comments = await prisma.comments.findMany({
+      where: { projectId, status: 'APPROVED' },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        message: true,
+        rating: true,
+        createdAt: true
+      }
+    });
 
-    return NextResponse.json(comments);
+    const mapped = comments.map(c => ({
+      ...c,
+      createdAt: c.createdAt.toISOString(),
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(c.name)}&background=059669&color=fff`
+    }));
+
+    return NextResponse.json({ success: true, comments: mapped });
   } catch (error) {
-    console.error('خطأ في جلب التعليق��ت:', error);
+    console.error('خطأ في جلب التعليقات:', error);
     return NextResponse.json(
       { error: 'خطأ في جلب التعليقات' },
       { status: 500 }
@@ -154,8 +164,10 @@ export async function POST(
     // إضافة التعليق
     const newComment = await prisma.comments.create({
       data: {
+        id: randomUUID(),
         projectId,
         name: name.trim(),
+        email: email?.trim() || null,
         message: message.trim(),
         rating
       },
