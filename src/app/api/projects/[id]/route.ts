@@ -232,7 +232,7 @@ export async function DELETE(
     console.log('🗑️ حذف المشروع:', existingProject.title);
 
     // حذف البيانات المرتبطة أولاً
-    await prisma.comment.deleteMany({
+    await prisma.comments.deleteMany({
       where: { projectId }
     });
 
