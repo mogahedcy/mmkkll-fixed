@@ -204,13 +204,13 @@ export async function POST(request: NextRequest) {
 
     // إنشاء slug فريد
     const slug = generateSlug(title);
-    const existingSlug = await prisma.project.findUnique({
+    const existingSlug = await prisma.projects.findUnique({
       where: { slug }
     });
 
     const finalSlug = existingSlug ? `${slug}-${Date.now()}` : slug;
 
-    const project = await prisma.project.create({
+    const project = await prisma.projects.create({
       data: {
         title,
         description,
@@ -227,7 +227,7 @@ export async function POST(request: NextRequest) {
         keywords: keywords || `${category}, ${location}, محترفين الديار`,
         status,
         publishedAt: status === 'PUBLISHED' ? new Date() : null,
-        mediaItems: {
+        media_items: {
           create: mediaItems?.map((item: any, index: number) => ({
             type: item.type,
             src: item.src || item.url,
@@ -245,19 +245,19 @@ export async function POST(request: NextRequest) {
 
       },
       include: {
-        mediaItems: true,
+        media_items: true,
         _count: {
           select: {
             comments: true,
-            likes_users: true,
-            views_users: true
+            project_likes: true,
+            project_views: true
           }
         }
       }
     });
 
     // إ��شاء أول مشاهدة (من الإدارة)
-    await prisma.projectView.create({
+    await prisma.project_views.create({
       data: {
         projectId: project.id,
         ip,
@@ -267,7 +267,7 @@ export async function POST(request: NextRequest) {
     });
 
     // تحديث عداد المشاهدات
-    await prisma.project.update({
+    await prisma.projects.update({
       where: { id: project.id },
       data: { views: 1 }
     });
@@ -279,16 +279,14 @@ export async function POST(request: NextRequest) {
       console.warn('فشل في إشعار Google:', error);
     }
 
-    return NextResponse.json({
-      success: true,
-      project: {
-        ...project,
-        views: 1,
-        likes: 0,
-        commentsCount: 0
-      },
-      message: 'تم إضافة المشروع بنجاح'
-    });
+    const formatted = {
+      ...project,
+      mediaItems: project.media_items,
+      views: 1,
+      likes: 0,
+      commentsCount: 0
+    };
+    return NextResponse.json({ success: true, project: formatted, message: 'تم إضافة المشروع بنجاح' });
 
   } catch (error: unknown) {
     console.error('❌ خطأ في إضافة المشروع:', error);
