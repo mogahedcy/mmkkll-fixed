@@ -27,17 +27,38 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <div className="min-h-screen grid grid-cols-12" dir="rtl">
-      <aside className="col-span-12 md:col-span-3 lg:col-span-2 border-l bg-white p-4 space-y-4">
-        <div className="font-bold text-primary">مرحباً، {admin!.username}</div>
+    <div className="min-h-screen grid grid-cols-12 bg-slate-50" dir="rtl">
+      <aside className="col-span-12 md:col-span-3 lg:col-span-2 border-l bg-white p-4 space-y-6">
+        <div className="flex items-center gap-3">
+          <img src="/favicon.svg" alt="logo" className="w-8 h-8" />
+          <div>
+            <div className="font-bold text-gray-900">الديار العالمية</div>
+            <div className="text-xs text-gray-500">مرحباً، {admin!.username}</div>
+          </div>
+        </div>
         <nav className="space-y-2 text-sm">
-          <Link href="/dashboard" className="block hover:text-primary">نظرة عامة</Link>
-          <Link href="/dashboard/projects" className="block hover:text-primary">المشاريع</Link>
-          <Link href="/dashboard/projects/add" className="block hover:text-primary">إضافة مشروع</Link>
-          <Link href="/dashboard/settings" className="block hover:text-primary">الإعدادات</Link>
+          <Link href="/dashboard" className="block rounded-lg px-3 py-2 hover:bg-slate-100">نظرة عامة</Link>
+          <Link href="/dashboard/projects" className="block rounded-lg px-3 py-2 hover:bg-slate-100">المشاريع</Link>
+          <Link href="/dashboard/projects/add" className="block rounded-lg px-3 py-2 hover:bg-slate-100">إضافة مشروع</Link>
+          <Link href="/dashboard/settings" className="block rounded-lg px-3 py-2 hover:bg-slate-100">الإعدادات</Link>
         </nav>
+        <div className="mt-auto hidden md:block text-xs text-gray-400">© {new Date().getFullYear()} جميع الحقوق محفوظة</div>
       </aside>
-      <main className="col-span-12 md:col-span-9 lg:col-span-10 p-4">{children}</main>
+      <div className="col-span-12 md:col-span-9 lg:col-span-10">
+        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b p-4">
+          {/* @ts-expect-error Async Server Component interop */}
+          <div className="max-w-6xl mx-auto"><div className="flex items-center justify-between">
+            <div className="text-lg font-semibold text-gray-900">لوحة التحكم</div>
+            {/* Client header */}
+            {/* eslint-disable-next-line react/no-unknown-property */}
+            <div suppressHydrationWarning>
+              {/* @ts-expect-error Client Component */}
+              {require('./HeaderClient').default()}
+            </div>
+          </div></div>
+        </header>
+        <main className="p-4 max-w-6xl mx-auto">{children}</main>
+      </div>
     </div>
   )
 }
