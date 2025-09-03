@@ -124,6 +124,8 @@ export async function GET(request: NextRequest) {
     // تحسين البيانات المُرجعة
     const formattedProjects = projects.map((project: any) => ({
       ...project,
+      mediaItems: project.media_items || [],
+      tags: project.project_tags || [],
       views: project._count?.project_views || 0,
       likes: project._count?.project_likes || 0,
       commentsCount: project._count?.comments || 0,
@@ -135,7 +137,7 @@ export async function GET(request: NextRequest) {
 
     const totalCount = await Project.count({ where });
 
-    // إحصائيات إضاف��ة
+    // إحصائيات إضافية
     const stats = {
       total: totalCount,
       featured: await Project.count({ where: { ...where, featured: true } }),
