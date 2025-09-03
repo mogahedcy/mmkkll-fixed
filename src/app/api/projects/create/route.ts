@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { generateSlug } from '@/lib/utils';
@@ -23,13 +22,13 @@ export async function POST(request: NextRequest) {
     let slug = baseSlug;
     let counter = 1;
     
-    while (await prisma.project.findUnique({ where: { slug } })) {
+    while (await prisma.projects.findUnique({ where: { slug } })) {
       slug = `${baseSlug}-${counter}`;
       counter++;
     }
 
     // إنشاء المشروع
-    const project = await prisma.project.create({
+    const project = await prisma.projects.create({
       data: {
         title: data.title,
         description: data.description,
@@ -49,15 +48,15 @@ export async function POST(request: NextRequest) {
         updatedAt: new Date()
       },
       include: {
-        mediaItems: true,
-        tags: true,
-        materials: true
+        media_items: true,
+        project_tags: true,
+        project_materials: true
       }
     });
 
     // إضافة الوسائط إذا كانت متوفرة
     if (data.mediaItems && data.mediaItems.length > 0) {
-      await prisma.mediaItem.createMany({
+      await prisma.media_items.createMany({
         data: data.mediaItems.map((item: any, index: number) => ({
           id: Math.random().toString(36).substring(2, 15),
           projectId: project.id,
@@ -74,7 +73,7 @@ export async function POST(request: NextRequest) {
 
     // إضافة العلامات إذا كانت متوفرة
     if (data.tags && data.tags.length > 0) {
-      await prisma.projectTag.createMany({
+      await prisma.project_tags.createMany({
         data: data.tags.map((tag: string) => ({
           id: Math.random().toString(36).substring(2, 15),
           projectId: project.id,
@@ -86,7 +85,7 @@ export async function POST(request: NextRequest) {
 
     // إضافة المواد إذا كانت متوفرة
     if (data.materials && data.materials.length > 0) {
-      await prisma.projectMaterial.createMany({
+      await prisma.project_materials.createMany({
         data: data.materials.map((material: string) => ({
           id: Math.random().toString(36).substring(2, 15),
           projectId: project.id,
