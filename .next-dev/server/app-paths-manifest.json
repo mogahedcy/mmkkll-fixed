@@ -3,6 +3,7 @@
   "/api/auth/verify/route": "app/api/auth/verify/route.js",
   "/api/projects/[id]/interactions/route": "app/api/projects/[id]/interactions/route.js",
   "/api/projects/route": "app/api/projects/route.js",
+  "/articles/[slug]/page": "app/articles/[slug]/page.js",
   "/articles/complete-car-shades-guide-jeddah-2024/page": "app/articles/complete-car-shades-guide-jeddah-2024/page.js",
   "/articles/page": "app/articles/page.js",
   "/contact/page": "app/contact/page.js",

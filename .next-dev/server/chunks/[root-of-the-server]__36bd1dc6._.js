@@ -107,7 +107,7 @@ async function POST(request, { params }) {
         const userAgent = headersList.get('user-agent') || 'unknown';
         const referrer = headersList.get('referer') || 'direct';
         // التحقق من وجود المشروع
-        const project = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.findUnique({
+        const project = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.findUnique({
             where: {
                 id: projectId
             }
@@ -122,7 +122,7 @@ async function POST(request, { params }) {
         let result = {};
         if (type === 'view') {
             // تسجيل المشاهدة
-            const existingView = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectView.findFirst({
+            const existingView = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_views.findFirst({
                 where: {
                     projectId,
                     ip,
@@ -133,7 +133,7 @@ async function POST(request, { params }) {
             });
             if (!existingView) {
                 // تسجيل مشاهدة جديدة
-                await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectView.create({
+                await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_views.create({
                     data: {
                         projectId,
                         ip,
@@ -143,7 +143,7 @@ async function POST(request, { params }) {
                     }
                 });
                 // تحديث عداد المشاهدات
-                const updatedProject = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.update({
+                const updatedProject = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.update({
                     where: {
                         id: projectId
                     },
@@ -172,7 +172,7 @@ async function POST(request, { params }) {
             }
         } else if (type === 'like') {
             // إدارة الإعجاب
-            const existingLike = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectLike.findUnique({
+            const existingLike = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_likes.findUnique({
                 where: {
                     projectId_ip: {
                         projectId,
@@ -183,7 +183,7 @@ async function POST(request, { params }) {
             if (action === 'toggle' || action === 'add') {
                 if (!existingLike) {
                     // إضافة إعجاب جديد
-                    await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectLike.create({
+                    await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_likes.create({
                         data: {
                             projectId,
                             ip,
@@ -191,7 +191,7 @@ async function POST(request, { params }) {
                         }
                     });
                     // تحديث عداد الإعجابات
-                    const updatedProject = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.update({
+                    const updatedProject = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.update({
                         where: {
                             id: projectId
                         },
@@ -213,7 +213,7 @@ async function POST(request, { params }) {
                     };
                 } else if (action === 'toggle') {
                     // إزالة الإعجاب
-                    await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectLike.delete({
+                    await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_likes.delete({
                         where: {
                             projectId_ip: {
                                 projectId,
@@ -222,7 +222,7 @@ async function POST(request, { params }) {
                         }
                     });
                     // تحديث عداد الإعجابات
-                    const updatedProject = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.update({
+                    const updatedProject = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.update({
                         where: {
                             id: projectId
                         },
@@ -270,7 +270,7 @@ async function GET(request, { params }) {
         const headersList = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["headers"])();
         const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
         // التحقق من وجود المشروع
-        const project = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project.findUnique({
+        const project = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.findUnique({
             where: {
                 id: projectId
             },
@@ -297,7 +297,7 @@ async function GET(request, { params }) {
             });
         }
         // التحقق من حالة الإعجاب للمستخدم الحالي
-        const userLike = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projectLike.findUnique({
+        const userLike = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_likes.findUnique({
             where: {
                 projectId_ip: {
                     projectId,
