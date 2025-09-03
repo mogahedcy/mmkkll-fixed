@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import jwt from 'jsonwebtoken'
-import './page.css'
 
 export const metadata: Metadata = {
   title: 'لوحة التحكم | محترفين الديار العالمية',
@@ -45,7 +44,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <Link href="/dashboard" className="block hover:text-primary">نظرة عامة</Link>
             <Link href="/dashboard/projects" className="block hover:text-primary">المشاريع</Link>
             <Link href="/dashboard/projects/add" className="block hover:text-primary">إضافة مشروع</Link>
-            <Link href="/dashboard/settings" className="block hover:text-primary">الإع��ادات</Link>
+            <Link href="/dashboard/settings" className="block hover:text-primary">الإعدادات</Link>
           </nav>
         </aside>
         <main className="col-span-12 md:col-span-9 lg:col-span-10 p-4">{children}</main>
