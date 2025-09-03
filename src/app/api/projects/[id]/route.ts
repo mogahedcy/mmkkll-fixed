@@ -12,7 +12,7 @@ export async function GET(
     const resolvedParams = await params;
     const projectId = resolvedParams.id;
 
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId },
       include: {
         mediaItems: {
