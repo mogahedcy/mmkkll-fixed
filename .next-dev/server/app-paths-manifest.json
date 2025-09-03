@@ -1,6 +1,9 @@
 {
+  "/api/auth/login/route": "app/api/auth/login/route.js",
   "/api/auth/verify/route": "app/api/auth/verify/route.js",
   "/api/projects/route": "app/api/projects/route.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/login/page": "app/login/page.js",
   "/portfolio/page": "app/portfolio/page.js",
   "/services/sandwich-panel/page": "app/services/sandwich-panel/page.js"
 }
