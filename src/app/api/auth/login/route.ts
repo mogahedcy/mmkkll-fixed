@@ -109,9 +109,9 @@ export async function POST(request: NextRequest) {
     // إعداد الكوكيز الآمنة
     response.cookies.set('admin-token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000, // 24 ساعة
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60, // seconds
       path: '/'
     });
 
