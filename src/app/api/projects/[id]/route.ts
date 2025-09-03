@@ -36,7 +36,7 @@ export async function GET(
     }
 
     // زيادة عدد المشاهدات
-    await prisma.project.update({
+    await prisma.projects.update({
       where: { id: projectId },
       data: { views: { increment: 1 } }
     });
@@ -51,7 +51,7 @@ export async function GET(
     });
 
   } catch (error) {
-    console.error('❌ خطأ ��ي جلب المشروع:', error);
+    console.error('❌ خطأ في جلب المشروع:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في جلب المشروع' },
       { status: 500 }
