@@ -47,17 +47,12 @@ export async function POST(request: NextRequest) {
     });
 
     if (!admin) {
-      // تسجيل محاولة فاشلة
-      // auditLogger.log({ // Assuming auditLogger and getClientIP are available elsewhere or defined locally
-      //   adminId: 'unknown',
-      //   action: 'LOGIN_FAILED',
-      //   resource: 'auth',
-      //   ipAddress: getClientIP(request),
-      //   userAgent: request.headers.get('user-agent') || 'unknown',
-      //   success: false,
-      //   details: { reason: 'invalid_username', username: cleanUsername }
-      // });
-
+      const recFail = attempts.get(ip);
+      if (!recFail || recFail.resetAt <= now) {
+        attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+      } else {
+        attempts.set(ip, { count: recFail.count + 1, resetAt: recFail.resetAt });
+      }
       return NextResponse.json(
         { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' },
         { status: 401 }
