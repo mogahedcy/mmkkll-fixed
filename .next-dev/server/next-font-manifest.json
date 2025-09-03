@@ -1,5 +1,8 @@
 {
   "app": {
+    "[project]/src/app/_not-found/page": [
+      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
+    ],
     "[project]/src/app/dashboard/page": [
       "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
     ],
