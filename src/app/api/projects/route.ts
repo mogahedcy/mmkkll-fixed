@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
 
     const totalCount = await Project.count({ where });
 
-    // إحصائيات إضافية
+    // إحصائيات إضاف��ة
     const stats = {
       total: totalCount,
       featured: await Project.count({ where: { ...where, featured: true } }),
@@ -262,6 +262,7 @@ export async function POST(request: NextRequest) {
     // إ��شاء أول مشاهدة (من الإدارة)
     await prisma.project_views.create({
       data: {
+        id: randomUUID(),
         projectId: project.id,
         ip,
         userAgent: headersList.get('user-agent') || 'unknown',
