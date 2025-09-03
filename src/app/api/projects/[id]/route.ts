@@ -46,6 +46,8 @@ export async function GET(
     return NextResponse.json({
       ...project,
       mediaItems: (project as any).media_items,
+      tags: (project as any).project_tags || [],
+      materials: (project as any).project_materials || [],
       views: (project.views || 0) + 1,
       likes: project.likes || 0,
       rating: project.rating || 0
