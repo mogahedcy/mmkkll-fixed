@@ -225,9 +225,9 @@ async function POST(request) {
         // إعداد الكوكيز الآمنة
         response.cookies.set('admin-token', token, {
             httpOnly: true,
-            secure: ("TURBOPACK compile-time value", "development") === 'production',
-            sameSite: 'strict',
-            maxAge: 24 * 60 * 60 * 1000,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 24 * 60 * 60,
             path: '/'
         });
         // The original code also set a 'session-id' cookie, which is removed here as per the edited snippet.
