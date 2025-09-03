@@ -373,7 +373,7 @@ async function POST(request) {
                 description,
                 category,
                 location,
-                completionDate: new Date(completionDate),
+                completionDate: completionDate ? new Date(completionDate) : new Date(),
                 client: client || null,
                 featured: featured || false,
                 projectDuration: projectDuration || '',
