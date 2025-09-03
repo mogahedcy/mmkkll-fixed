@@ -74,7 +74,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://*.builder.codes https://*.projects.builder.codes https://*.fly.dev http://localhost:3000 http://127.0.0.1:3000;",
+            value: "frame-ancestors https: http: 'self';",
           },
           {
             key: 'X-Content-Type-Options',
