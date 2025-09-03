@@ -1,4 +1,3 @@
-
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 
 async function getAdminData() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('admin-token')?.value;
 
     if (!token) {
@@ -76,7 +75,7 @@ export default async function DashboardPage() {
                 href="/api/auth/logout"
                 className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
               >
-                تسجيل الخروج
+                ��سجيل الخروج
               </a>
             </div>
           </div>
