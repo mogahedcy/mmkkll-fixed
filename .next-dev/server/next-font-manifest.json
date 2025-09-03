@@ -1,63 +1,6 @@
 {
   "app": {
-    "[project]/src/app/about/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/articles/[slug]/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/articles/complete-car-shades-guide-jeddah-2024/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/articles/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/contact/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/faq/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
     "[project]/src/app/portfolio/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/portfolio/reviews/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/privacy/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/quote/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/search/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/byoot-shaar/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/khayyam/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/landscaping/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/mazallat/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/pergolas/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/renovation/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/sandwich-panel/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/services/sawater/page": [
-      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
-    ],
-    "[project]/src/app/terms/page": [
       "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
     ]
   },
