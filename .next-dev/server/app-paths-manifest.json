@@ -11,6 +11,7 @@
   "/api/projects/route": "app/api/projects/route.js",
   "/api/sitemap/refresh/route": "app/api/sitemap/refresh/route.js",
   "/api/upload/route": "app/api/upload/route.js",
+  "/contact/page": "app/contact/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/dashboard/projects/add/page": "app/dashboard/projects/add/page.js",
   "/dashboard/projects/page": "app/dashboard/projects/page.js",
