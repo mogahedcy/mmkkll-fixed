@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Calendar, User, ArrowLeft, Eye, Heart, Clock, Tag, Star, Grid, List, Loader2 } from 'lucide-react';
+import { Calendar, User, ArrowLeft, Eye, Heart, Clock, Tag, Star, Grid, List, Loader2, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -33,6 +33,22 @@ interface SearchResultsProps {
   isLoading: boolean;
   searchQuery: string;
   viewType?: 'grid' | 'list';
+}
+
+function highlight(text: string, query: string) {
+  if (!query) return text;
+  try {
+    const parts = text.split(new RegExp(`(${query.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'));
+    return parts.map((part, i) =>
+      part.toLowerCase() === query.toLowerCase() ? (
+        <mark key={i} className="bg-yellow-200 px-0.5 rounded">{part}</mark>
+      ) : (
+        <span key={i}>{part}</span>
+      )
+    );
+  } catch {
+    return text;
+  }
 }
 
 export default function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }: SearchResultsProps) {
@@ -89,23 +105,27 @@ export default function SearchResults({ articles, isLoading, searchQuery, viewTy
                     {article.category}
                   </Badge>
                 </div>
-                {article.featured && (
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-accent text-white">
-                      مميز
+                <div className="absolute top-4 left-4 flex gap-2">
+                  {article.source && (
+                    <Badge className="bg-black/70 text-white flex items-center gap-1">
+                      <Layers className="w-3 h-3" />
+                      {article.source === 'project' ? 'مشروع' : 'مقال'}
                     </Badge>
-                  </div>
-                )}
+                  )}
+                  {article.featured && (
+                    <Badge className="bg-accent text-white">مميز</Badge>
+                  )}
+                </div>
               </div>
 
               {/* Content */}
               <div className="p-6 flex-grow">
                 <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                  {article.title}
+                  {highlight(article.title, searchQuery)}
                 </h3>
 
                 <p className="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed">
-                  {article.excerpt}
+                  {highlight(article.excerpt, searchQuery)}
                 </p>
 
                 {/* Author & Date */}
