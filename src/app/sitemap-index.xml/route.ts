@@ -1,8 +1,7 @@
-
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const baseUrl = 'https://aldeyarksa.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
   const currentDate = new Date().toISOString();
 
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>

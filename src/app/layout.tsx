@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 import { Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
@@ -19,11 +19,10 @@ export const metadata: Metadata = {
   description:
     "🏆 الشركة الرائدة في جدة لتركيب المظلات والبرجولات والسواتر. خبرة 15 عاماً ✅ ضمان 10 سنوات ✅ تركيب احترافي ✅ أسعار منافسة. اتصل الآن للحصول على استشارة مجانية!",
   keywords:
-    "مظلات سيارات جدة، برجولات خشبية جدة، سواتر خصوصية جدة، محترفين الديار العالمية، تركيب مظلات جدة، برجولات حدائق، مظلات حديد، سواتر معدنية، ساندوتش بانل جدة، تنسيق حدائق جدة، بيوت شعر تراثية، خيام ملكية جدة، مقاول مظلات جدة، شركة برجولات جدة، أفضل مظلات جدة، تركيب برجولات احترافي، مظلات بأسعار منافسة، برجولات ألومنيوم جدة",
+    "مظلات سيارات جدة، برجولات خشبية جدة، سواتر خصوصية جدة، محترفين الديار العالمية، تركيب مظلات جدة، برجولات حدائق، مظلات حديد، سواتر معدنية، ساندوتش بانل جدة، تنسيق حدائق جدة، بيوت شعر تراثية، خيام ملكية جدة، مقاول مظلات جدة، شركة برجول��ت جدة، أفضل مظلات جدة، تركيب برجولات احترافي، مظلات بأسعار منافسة، برجولات ألومنيوم جدة",
   authors: [{ name: "محترفين الديار العالمية" }],
   robots: "index, follow",
   alternates: {
-    canonical: "https://aldeyarksa.tech",
     languages: {
       "ar-SA": "https://aldeyarksa.tech",
     },
@@ -52,11 +51,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" }
     ],
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" }
     ],
     shortcut: "/favicon.svg",
   },
@@ -74,10 +72,10 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "محترفين الديار العالمية",
-  image: "https://aldeyarksa.tech/images/og-image.jpg",
+  image: "https://aldeyarksa.tech/favicon.svg",
   "@id": "https://aldeyarksa.tech",
   url: "https://aldeyarksa.tech",
-  telephone: "+966555555555",
+  telephone: "+966553719009",
   address: {
     "@type": "PostalAddress",
     streetAddress: "جدة",
@@ -131,7 +129,6 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={notoSansArabic.variable}>
       <head>
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
-        <link rel="canonical" href="https://aldeyarksa.tech" />
         <StructuredDataScript data={structuredData} />
       </head>
       <body className="antialiased font-arabic" suppressHydrationWarning={true}>

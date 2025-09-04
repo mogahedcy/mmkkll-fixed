@@ -13,7 +13,7 @@ async function getProject(id: string) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/projects/${id}`, {
-      cache: 'no-store', // تجديد البيانات في كل طلب
+      cache: 'no-store', // تجديد ��لبيانات في كل طلب
     });
 
     if (!response.ok) {
@@ -76,10 +76,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         title: seoTitle,
         description: seoDescription,
         type: 'article',
-        url: `https://aldeyarksa.tech/portfolio/${id}`,
+        url: `https://aldeyarksa.tech/portfolio/${project.slug || id}`,
         siteName: 'محترفين الديار العالمية',
         locale: 'ar_SA',
-        images: project.mediaItems?.filter(item => item.type === 'IMAGE').map(item => ({
+        images: project.mediaItems?.filter((item: any) => item.type === 'IMAGE').map((item: any) => ({
           url: item.src,
           width: 1200,
           height: 630,
@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         images: mainImage ? [mainImage.src] : []
       },
       alternates: {
-        canonical: `https://aldeyarksa.tech/portfolio/${id}`
+        canonical: `https://aldeyarksa.tech/portfolio/${project.slug || id}`
       },
       robots: {
         index: true,
@@ -140,6 +140,7 @@ export default async function ProjectDetailsPage({ params }: Props) {
     "@type": "CreativeWork",
     "name": project.title,
     "description": project.description,
+    "url": `https://aldeyarksa.tech/portfolio/${project.slug || id}`,
     "creator": {
       "@type": "Organization",
       "name": "محترفين الديار العالمية",
@@ -168,12 +169,28 @@ export default async function ProjectDetailsPage({ params }: Props) {
     }))
   };
 
+  const breadcrumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://aldeyarksa.tech"},
+      {"@type": "ListItem", "position": 2, "name": "المشاريع", "item": "https://aldeyarksa.tech/portfolio"},
+      {"@type": "ListItem", "position": 3, "name": project.title, "item": `https://aldeyarksa.tech/portfolio/${project.slug || id}`}
+    ]
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbs),
         }}
       />
       <Navbar />

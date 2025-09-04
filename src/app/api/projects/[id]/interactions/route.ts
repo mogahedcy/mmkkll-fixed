@@ -20,8 +20,8 @@ export async function POST(
     const userAgent = headersList.get('user-agent') || 'unknown';
     const referrer = headersList.get('referer') || 'direct';
 
-    // التحقق من وجود المشروع
-    const project = await prisma.project.findUnique({
+    // التحقق من وجود المشر��ع
+    const project = await prisma.projects.findUnique({
       where: { id: projectId }
     });
 
@@ -36,7 +36,7 @@ export async function POST(
 
     if (type === 'view') {
       // تسجيل المشاهدة
-      const existingView = await prisma.projectView.findFirst({
+      const existingView = await prisma.project_views.findFirst({
         where: {
           projectId,
           ip,
@@ -48,7 +48,7 @@ export async function POST(
 
       if (!existingView) {
         // تسجيل مشاهدة جديدة
-        await prisma.projectView.create({
+        await prisma.project_views.create({
           data: {
             projectId,
             ip,
@@ -59,7 +59,7 @@ export async function POST(
         });
 
         // تحديث عداد المشاهدات
-        const updatedProject = await prisma.project.update({
+        const updatedProject = await prisma.projects.update({
           where: { id: projectId },
           data: {
             views: {
@@ -86,7 +86,7 @@ export async function POST(
 
     } else if (type === 'like') {
       // إدارة الإعجاب
-      const existingLike = await prisma.projectLike.findUnique({
+      const existingLike = await prisma.project_likes.findUnique({
         where: {
           projectId_ip: {
             projectId,
@@ -98,7 +98,7 @@ export async function POST(
       if (action === 'toggle' || action === 'add') {
         if (!existingLike) {
           // إضافة إعجاب جديد
-          await prisma.projectLike.create({
+          await prisma.project_likes.create({
             data: {
               projectId,
               ip,
@@ -106,27 +106,21 @@ export async function POST(
             }
           });
 
-          // تحديث عداد الإعجابات
-          const updatedProject = await prisma.project.update({
-            where: { id: projectId },
-            data: {
-              likes: {
-                increment: 1
-              }
-            },
-            select: { likes: true }
+          // إعادة حساب عدد الإعجابات عبر علاقة project_likes
+          const likesCount = await prisma.project_likes.count({
+            where: { projectId }
           });
 
           result = {
             type: 'like',
             action: 'added',
             success: true,
-            newCount: updatedProject.likes,
+            newCount: likesCount,
             isLiked: true
           };
         } else if (action === 'toggle') {
           // إزالة الإعجاب
-          await prisma.projectLike.delete({
+          await prisma.project_likes.delete({
             where: {
               projectId_ip: {
                 projectId,
@@ -135,29 +129,24 @@ export async function POST(
             }
           });
 
-          // تحديث عداد الإعجابات
-          const updatedProject = await prisma.project.update({
-            where: { id: projectId },
-            data: {
-              likes: {
-                decrement: 1
-              }
-            },
-            select: { likes: true }
+          // إعادة حساب عدد الإعجابات عبر علاقة project_likes
+          const likesCount = await prisma.project_likes.count({
+            where: { projectId }
           });
 
           result = {
             type: 'like',
             action: 'removed',
             success: true,
-            newCount: Math.max(0, updatedProject.likes),
+            newCount: Math.max(0, likesCount),
             isLiked: false
           };
         } else {
+          const likesCount = await prisma.project_likes.count({ where: { projectId } });
           result = {
             type: 'like',
             success: true,
-            newCount: project.likes,
+            newCount: likesCount,
             isLiked: true,
             message: 'لقد أعجبت بهذا المشروع مسبقاً'
           };
@@ -188,17 +177,17 @@ export async function GET(
     const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
 
     // التحقق من وجود المشروع
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId },
       select: {
         id: true,
         views: true,
-        likes: true,
         _count: {
           select: {
             comments: {
               where: { status: 'APPROVED' }
-            }
+            },
+            project_likes: true
           }
         }
       }
@@ -212,7 +201,7 @@ export async function GET(
     }
 
     // التحقق من حالة الإعجاب للمستخدم الحالي
-    const userLike = await prisma.projectLike.findUnique({
+    const userLike = await prisma.project_likes.findUnique({
       where: {
         projectId_ip: {
           projectId,
@@ -225,7 +214,7 @@ export async function GET(
       success: true,
       interactions: {
         views: project.views,
-        likes: project.likes,
+        likes: project._count.project_likes || 0,
         comments: project._count.comments,
         isLiked: !!userLike
       }

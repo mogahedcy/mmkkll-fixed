@@ -15,8 +15,19 @@ function sanitizeInput(input: string): string {
   return input.trim().replace(/[<>"']/g, '');
 }
 
+const attempts = new Map<string, { count: number; resetAt: number }>();
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_ATTEMPTS = 10;
+
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIP(request);
+    const now = Date.now();
+    const rec = attempts.get(ip);
+    if (rec && rec.resetAt > now && rec.count >= MAX_ATTEMPTS) {
+      return NextResponse.json({ error: 'محاولات كثيرة، حاول لاحقاً' }, { status: 429 });
+    }
+
     const { username, password } = await request.json();
 
     // تنظيف المدخلات
@@ -36,17 +47,12 @@ export async function POST(request: NextRequest) {
     });
 
     if (!admin) {
-      // تسجيل محاولة فاشلة
-      // auditLogger.log({ // Assuming auditLogger and getClientIP are available elsewhere or defined locally
-      //   adminId: 'unknown',
-      //   action: 'LOGIN_FAILED',
-      //   resource: 'auth',
-      //   ipAddress: getClientIP(request),
-      //   userAgent: request.headers.get('user-agent') || 'unknown',
-      //   success: false,
-      //   details: { reason: 'invalid_username', username: cleanUsername }
-      // });
-
+      const recFail = attempts.get(ip);
+      if (!recFail || recFail.resetAt <= now) {
+        attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+      } else {
+        attempts.set(ip, { count: recFail.count + 1, resetAt: recFail.resetAt });
+      }
       return NextResponse.json(
         { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' },
         { status: 401 }
@@ -57,17 +63,12 @@ export async function POST(request: NextRequest) {
     const isPasswordValid = await bcrypt.compare(cleanPassword, admin.password);
 
     if (!isPasswordValid) {
-      // تسجيل محاولة فاشلة
-      // auditLogger.log({ // Assuming auditLogger and getClientIP are available elsewhere or defined locally
-      //   adminId: admin.id,
-      //   action: 'LOGIN_FAILED',
-      //   resource: 'auth',
-      //   ipAddress: getClientIP(request),
-      //   userAgent: request.headers.get('user-agent') || 'unknown',
-      //   success: false,
-      //   details: { reason: 'invalid_password' }
-      // });
-
+      const recFail = attempts.get(ip);
+      if (!recFail || recFail.resetAt <= now) {
+        attempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+      } else {
+        attempts.set(ip, { count: recFail.count + 1, resetAt: recFail.resetAt });
+      }
       return NextResponse.json(
         { error: 'اسم المستخدم أو كلمة المرور غير صحيحة' },
         { status: 401 }
@@ -94,6 +95,9 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // نجاح: تصفير عداد المحاولات لهذا الـ IP
+    attempts.delete(ip);
+
     // إنشاء الاستجابة مع الكوكيز
     const response = NextResponse.json({
       success: true,
@@ -109,9 +113,9 @@ export async function POST(request: NextRequest) {
     // إعداد الكوكيز الآمنة
     response.cookies.set('admin-token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000, // 24 ساعة
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60, // seconds
       path: '/'
     });
 

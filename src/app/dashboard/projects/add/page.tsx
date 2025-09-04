@@ -49,7 +49,7 @@ const categories = [
 ];
 
 const suggestedTags = [
-  'جدة', 'السعودية', 'تصميم حديث', 'جودة عالية', 'احترافي',
+  'جدة', 'ا��سعودية', 'تصميم حديث', 'جودة عالية', 'احترافي',
   'مقاوم للطقس', 'عزل حراري', 'صديق للبيئة', 'ضمان طويل',
   'تركيب سريع', 'صيانة سهلة', 'تصميم مخصص'
 ];
@@ -276,7 +276,7 @@ export default function AddProjectPage() {
         body: JSON.stringify(projectData),
       });
 
-      const result = await response.json();
+      const result = await response.json().catch(() => null);
 
       if (response.ok) {
         console.log('✅ تم إضافة المشروع بنجاح');
@@ -284,7 +284,8 @@ export default function AddProjectPage() {
         router.push('/dashboard/projects');
       } else {
         console.error('❌ خطأ في إضافة المشروع:', result);
-        alert(`خطأ: ${result.error || 'فشل في إضافة المشروع'}`);
+        const message = (result && (result.error || result.message)) || 'فشل في إضافة المشروع';
+        alert(`خطأ: ${message}`);
       }
     } catch (error) {
       console.error('❌ خطأ في إضافة المشروع:', error);

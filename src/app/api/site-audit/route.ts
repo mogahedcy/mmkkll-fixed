@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import fs from 'fs';
@@ -206,7 +205,7 @@ async function auditContent() {
 
   try {
     // فحص المقالات
-    const articlesCount = await prisma.project.count();
+    const articlesCount = await prisma.projects.count();
     if (articlesCount < 5) {
       warnings.push('عدد المشاريع قليل');
       score -= 10;
@@ -366,14 +365,14 @@ async function auditDatabase() {
     await prisma.$connect();
     
     // فحص الجداول
-    const tables = await prisma.$queryRaw`SELECT name FROM sqlite_master WHERE type='table'`;
+    const tables = await prisma.$queryRawUnsafe<any[]>("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
     if (Array.isArray(tables) && tables.length < 3) {
       warnings.push('عدد جداول قليل في قاعدة البيانات');
       score -= 10;
     }
 
     // فحص البيانات
-    const projectsCount = await prisma.project.count();
+    const projectsCount = await prisma.projects.count();
     if (projectsCount === 0) {
       warnings.push('لا توجد مشاريع في قاعدة البيانات');
       score -= 15;

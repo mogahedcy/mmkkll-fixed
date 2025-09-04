@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 
 const SEARCH_ENGINES = [
@@ -43,7 +42,7 @@ async function notifySearchEngine(engineUrl: string, sitemapUrl: string, engineN
 }
 
 export async function POST(request: NextRequest) {
-  const sitemapUrl = 'https://aldeyarksa.tech/sitemap.xml';
+  const sitemapUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap.xml`;
   
   try {
     const results = await Promise.allSettled(

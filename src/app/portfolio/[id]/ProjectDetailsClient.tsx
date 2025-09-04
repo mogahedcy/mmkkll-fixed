@@ -94,6 +94,49 @@ export default function ProjectDetailsClient({ project }: Props) {
   const [videoError, setVideoError] = useState<string | null>(null);
   const [videoLoading, setVideoLoading] = useState(false);
 
+  // تفاعلات المشروع
+  const [likesCount, setLikesCount] = useState<number>(project.likes || 0);
+  const [viewsCount, setViewsCount] = useState<number>(project.views || 0);
+  const [commentsCount, setCommentsCount] = useState<number>(project._count?.comments || 0);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchInteractions = async () => {
+      try {
+        const res = await fetch(`/api/projects/${project.id}/interactions`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.success && data.interactions) {
+            setLikesCount(data.interactions.likes ?? likesCount);
+            setViewsCount(data.interactions.views ?? viewsCount);
+            setCommentsCount(data.interactions.comments ?? commentsCount);
+            setIsLiked(!!data.interactions.isLiked);
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
+    };
+    fetchInteractions();
+  }, [project.id]);
+
+  const handleToggleLike = async () => {
+    try {
+      const res = await fetch(`/api/projects/${project.id}/interactions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'like', action: 'toggle' })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setIsLiked(!!data.isLiked);
+        if (typeof data.newCount === 'number') setLikesCount(data.newCount);
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
+
   const handleVideoPlay = () => setIsVideoPlaying(true);
   const handleVideoPause = () => setIsVideoPlaying(false);
   const toggleVideoMute = () => setIsVideoMuted(!isVideoMuted);
@@ -168,6 +211,10 @@ export default function ProjectDetailsClient({ project }: Props) {
             </Button>
 
             <div className="flex items-center gap-3">
+              <Button variant={isLiked ? 'default' : 'outline'} size="sm" onClick={handleToggleLike}>
+                <Heart className={`h-4 w-4 ml-2 ${isLiked ? 'fill-current' : ''}`} />
+                {isLiked ? 'إلغاء الإعجاب' : 'إعجاب'}
+              </Button>
               <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share2 className="h-4 w-4 ml-2" />
                 مشاركة
@@ -416,15 +463,15 @@ export default function ProjectDetailsClient({ project }: Props) {
                   <div className="flex items-center gap-4 text-gray-600">
                     <span className="flex items-center">
                       <Eye className="h-4 w-4 ml-1" />
-                      {project.views}
+                      {viewsCount}
                     </span>
-                    <span className="flex items-center">
-                      <Heart className="h-4 w-4 ml-1" />
-                      {project.likes}
-                    </span>
+                    <button onClick={handleToggleLike} className="flex items-center hover:text-red-600 transition-colors">
+                      <Heart className={`h-4 w-4 ml-1 ${isLiked ? 'text-red-600 fill-current' : ''}`} />
+                      {likesCount}
+                    </button>
                     <span className="flex items-center">
                       <MessageCircle className="h-4 w-4 ml-1" />
-                      {project._count.comments}
+                      {commentsCount}
                     </span>
                   </div>
                 </div>
@@ -559,7 +606,7 @@ export default function ProjectDetailsClient({ project }: Props) {
         </div>
       </section>
 
-      {/* قسم التعليقات والتقييمات */}
+      {/* قسم التعليقات وا��تقييمات */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ProjectCommentsSection 

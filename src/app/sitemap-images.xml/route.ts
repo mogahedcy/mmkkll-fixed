@@ -1,8 +1,9 @@
+import { prisma } from '@/lib/prisma';
 
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
-  const baseUrl = 'https://www.aldeyarksa.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
   
   // الصور الأساسية للموقع
   const staticImages = [
@@ -70,14 +71,15 @@ export async function GET() {
 
   try {
     // جلب صور المشاريع من قاعدة البيانات
-    const projects = await prisma.project.findMany({
+    const projects = await prisma.projects.findMany({
       select: {
         id: true,
+        slug: true,
         title: true,
         description: true,
         category: true,
         location: true,
-        mediaItems: {
+        media_items: {
           where: {
             type: 'IMAGE'
           },
@@ -92,12 +94,12 @@ export async function GET() {
     });
 
     projectImages = projects.flatMap(project => 
-      project.mediaItems.map(media => ({
-        url: media.src.startsWith('http') ? media.src : media.src,
+      project.media_items.map(media => ({
+        url: media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`,
         caption: `${media.alt || media.title || project.title} - ${project.category} في ${project.location}`,
         title: `${project.title} - محترفين الديار العالمية`,
         location: `${project.location}, السعودية`,
-        project_url: `${baseUrl}/portfolio/${project.id}`
+        project_url: `${baseUrl}/portfolio/${project.slug || project.id}`
       }))
     );
   } catch (error) {
@@ -110,13 +112,13 @@ export async function GET() {
   const imagesSitemap = allImages
     .map(image => `
   <url>
-    <loc>${baseUrl}${image.url}</loc>
+    <loc>${image.project_url || (image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`)}</loc>
     <image:image>
-      <image:loc>${image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`}</image:loc>
+      <image:loc>${image.url}</image:loc>
       <image:caption><![CDATA[${image.caption}]]></image:caption>
       <image:title><![CDATA[${image.title}]]></image:title>
       <image:geo_location><![CDATA[${image.location}]]></image:geo_location>
-      <image:license><![CDATA[https://www.aldeyarksa.tech/terms]]></image:license>
+      <image:license><![CDATA[${baseUrl}/terms]]></image:license>
     </image:image>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>weekly</changefreq>

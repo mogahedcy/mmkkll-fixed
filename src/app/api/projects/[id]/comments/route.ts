@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
+import { randomUUID } from 'crypto';
+import jwt from 'jsonwebtoken';
 
 // نموذج التحقق من بيانات التعليق
 interface CommentRequest {
@@ -58,21 +60,14 @@ function validateComment(data: any): { valid: boolean; errors: string[] } {
 
 // GET - جلب التعليقات
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const projectId = parseInt(params.id);
-
-    if (isNaN(projectId)) {
-      return NextResponse.json(
-        { error: 'معرف المشروع غير صالح' },
-        { status: 400 }
-      );
-    }
+    const { id: projectId } = await params;
 
     // التحقق من وجود المشروع أولاً
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId },
       select: { id: true }
     });
@@ -84,10 +79,26 @@ export async function GET(
       );
     }
 
-    // إرجاع مصفوفة فارغة بدلاً من استعلام التعليقات حتى يتم إصلاح قاعدة البيانات
-    const comments: any[] = [];
+    const comments = await prisma.comments.findMany({
+      where: { projectId, status: 'APPROVED' },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        message: true,
+        rating: true,
+        createdAt: true
+      }
+    });
 
-    return NextResponse.json(comments);
+    const mapped = comments.map(c => ({
+      ...c,
+      createdAt: c.createdAt.toISOString(),
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(c.name)}&background=059669&color=fff`
+    }));
+
+    return NextResponse.json({ success: true, comments: mapped });
   } catch (error) {
     console.error('خطأ في جلب التعليقات:', error);
     return NextResponse.json(
@@ -122,7 +133,7 @@ export async function POST(
     const { name, email, message, rating } = body;
 
     // التحقق من وجود المشروع
-    const project = await prisma.project.findUnique({
+    const project = await prisma.projects.findUnique({
       where: { id: projectId }
     });
 
@@ -134,7 +145,7 @@ export async function POST(
     }
 
     // منع التعليقات المكررة من نفس الاسم في فترة قصيرة (10 دقائق)
-    const recentComment = await prisma.comment.findFirst({
+    const recentComment = await prisma.comments.findFirst({
       where: {
         projectId,
         name: name.trim(),
@@ -152,10 +163,12 @@ export async function POST(
     }
 
     // إضافة التعليق
-    const newComment = await prisma.comment.create({
+    const newComment = await prisma.comments.create({
       data: {
+        id: randomUUID(),
         projectId,
         name: name.trim(),
+        email: email?.trim() || null,
         message: message.trim(),
         rating
       },
@@ -169,7 +182,7 @@ export async function POST(
     });
 
     // تحديث متوسط التقييم للمشروع
-    const allComments = await prisma.comment.findMany({
+    const allComments = await prisma.comments.findMany({
       where: { projectId },
       select: { rating: true }
     });
@@ -177,7 +190,7 @@ export async function POST(
     if (allComments.length > 0) {
       const averageRating = allComments.reduce((sum, comment) => sum + comment.rating, 0) / allComments.length;
 
-      await prisma.project.update({
+      await prisma.projects.update({
         where: { id: projectId },
         data: { rating: averageRating }
       });
@@ -199,5 +212,67 @@ export async function POST(
       { error: 'حدث خطأ في إضافة التعليق' },
       { status: 500 }
     );
+  }
+}
+
+// PATCH - اعتماد/تحديث حالة تعليق (للمشرف)
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: projectId } = await params;
+    const token = request.cookies.get('admin-token')?.value;
+    if (!token) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
+    try {
+      jwt.verify(token, process.env.JWT_SECRET || 'default-secret-key-change-in-production');
+    } catch {
+      return NextResponse.json({ error: 'جلسة غير صالحة' }, { status: 401 });
+    }
+
+    const { commentId, status } = await request.json();
+    if (!commentId || !status) {
+      return NextResponse.json({ error: 'بيانات ناقصة' }, { status: 400 });
+    }
+
+    const updated = await prisma.comments.update({
+      where: { id: commentId },
+      data: { status }
+    });
+
+    return NextResponse.json({ success: true, comment: { id: updated.id, status: updated.status } });
+  } catch (error) {
+    console.error('خطأ في تحديث التعليق:', error);
+    return NextResponse.json({ error: 'فشل في تحديث التعليق' }, { status: 500 });
+  }
+}
+
+// DELETE - حذف تعليق (للمشرف)
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: projectId } = await params;
+    const commentId = request.nextUrl.searchParams.get('commentId');
+
+    const token = request.cookies.get('admin-token')?.value;
+    if (!token) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
+    try {
+      jwt.verify(token, process.env.JWT_SECRET || 'default-secret-key-change-in-production');
+    } catch {
+      return NextResponse.json({ error: 'جلسة غير صالحة' }, { status: 401 });
+    }
+
+    if (!commentId) {
+      return NextResponse.json({ error: 'commentId مطلوب' }, { status: 400 });
+    }
+
+    await prisma.comments.delete({ where: { id: commentId } });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('خطأ في حذف التعليق:', error);
+    return NextResponse.json({ error: 'فشل في حذف التعليق' }, { status: 500 });
   }
 }

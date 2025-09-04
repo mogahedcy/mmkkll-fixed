@@ -10,34 +10,38 @@ export async function GET(
 ) {
   try {
     const resolvedParams = await params;
-    const projectId = resolvedParams.id;
+    const param = resolvedParams.id;
 
-    const project = await prisma.project.findUnique({
-      where: { id: projectId },
+    // السماح باستخدام المعرف أو الslug
+    let project = await prisma.projects.findUnique({
+      where: { id: param },
       include: {
-        mediaItems: {
-          orderBy: { order: 'asc' }
-        },
-        tags: true,
-        materials: true,
-        _count: {
-          select: {
-            comments: true
-          }
-        }
+        media_items: { orderBy: { order: 'asc' } },
+        project_tags: true,
+        project_materials: true,
+        _count: { select: { comments: true, project_likes: true } }
       }
     });
 
     if (!project) {
-      return NextResponse.json(
-        { error: 'المشروع غير موجود' },
-        { status: 404 }
-      );
+      project = await prisma.projects.findUnique({
+        where: { slug: param },
+        include: {
+          media_items: { orderBy: { order: 'asc' } },
+          project_tags: true,
+          project_materials: true,
+          _count: { select: { comments: true, project_likes: true } }
+        }
+      });
     }
 
-    // زيادة عدد المشاهدات
-    await prisma.project.update({
-      where: { id: projectId },
+    if (!project) {
+      return NextResponse.json({ error: 'المشروع غير موجود' }, { status: 404 });
+    }
+
+    // زيادة عدد المشاهدات باستخدام معرف المشروع الحقيقي
+    await prisma.projects.update({
+      where: { id: project.id },
       data: { views: { increment: 1 } }
     });
 
@@ -45,8 +49,11 @@ export async function GET(
 
     return NextResponse.json({
       ...project,
+      mediaItems: (project as any).media_items,
+      tags: (project as any).project_tags || [],
+      materials: (project as any).project_materials || [],
       views: (project.views || 0) + 1,
-      likes: project.likes || 0,
+      likes: (project._count as any)?.project_likes || 0,
       rating: project.rating || 0
     });
 
@@ -94,7 +101,7 @@ export async function PUT(
     }
 
     // التحقق من وجود المشروع
-    const existingProject = await prisma.project.findUnique({
+    const existingProject = await prisma.projects.findUnique({
       where: { id: projectId },
       include: {
         mediaItems: true,
@@ -111,20 +118,20 @@ export async function PUT(
     }
 
     // حذف الوسائط والعلامات والمواد القديمة
-    await prisma.mediaItem.deleteMany({
+    await prisma.media_items.deleteMany({
       where: { projectId }
     });
 
-    await prisma.tag.deleteMany({
+    await prisma.project_tags.deleteMany({
       where: { projectId }
     });
 
-    await prisma.material.deleteMany({
+    await prisma.project_materials.deleteMany({
       where: { projectId }
     });
 
     // تحديث المشروع مع البيانات الجديدة
-    const updatedProject = await prisma.project.update({
+    const updatedProject = await prisma.projects.update({
       where: { id: projectId },
       data: {
         title,
@@ -137,7 +144,7 @@ export async function PUT(
         projectDuration: projectDuration || '',
         projectCost: projectCost || '',
         updatedAt: new Date(),
-        mediaItems: {
+        media_items: {
           create: mediaItems?.map((item: { type: string; src: string; thumbnail?: string; title?: string; description?: string; duration?: number }, index: number) => ({
             type: item.type,
             src: item.src,
@@ -148,26 +155,26 @@ export async function PUT(
             order: index
           })) || []
         },
-        tags: {
+        project_tags: {
           create: tags?.map((tag: string | { name: string }) => ({
             name: typeof tag === 'string' ? tag : tag.name
           })) || []
         },
-        materials: {
+        project_materials: {
           create: materials?.map((material: string | { name: string }) => ({
             name: typeof material === 'string' ? material : material.name
           })) || []
         }
       },
       include: {
-        mediaItems: true,
-        tags: true,
-        materials: true,
+        media_items: true,
+        project_tags: true,
+        project_materials: true,
         _count: {
           select: {
             comments: true,
-            likes_users: true,
-            views_users: true
+            project_likes: true,
+            project_views: true
           }
         }
       }
@@ -175,18 +182,23 @@ export async function PUT(
 
     console.log('✅ تم تحديث المشروع بنجاح:', updatedProject.title);
 
-    // إشعار جوجل بالتحديث
+    // إشعار محركات البحث بالتحديث
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/sitemap/refresh`, {
-        method: 'POST'
+      const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      await fetch(`${origin}/api/sitemap/refresh`, { method: 'POST' });
+      const pageUrl = `${origin}/portfolio/${updatedProject.slug || updatedProject.id}`;
+      await fetch(`${origin}/api/indexnow`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: [pageUrl] })
       });
     } catch (error) {
-      console.warn('تعذر إشعار جوجل بالتحديث:', error);
+      console.warn('تعذر إشعار محركات البحث بالتحديث:', error);
     }
 
     return NextResponse.json({
       success: true,
-      project: updatedProject,
+      project: { ...updatedProject, mediaItems: (updatedProject as any).media_items },
       message: 'تم تحديث المشروع بنجاح'
     });
 
@@ -209,12 +221,12 @@ export async function DELETE(
     const projectId = resolvedParams.id;
 
     // التحقق من وجود المشروع
-    const existingProject = await prisma.project.findUnique({
+    const existingProject = await prisma.projects.findUnique({
       where: { id: projectId },
       include: {
-        mediaItems: true,
-        tags: true,
-        materials: true,
+        media_items: true,
+        project_tags: true,
+        project_materials: true,
         comments: true
       }
     });
@@ -229,24 +241,24 @@ export async function DELETE(
     console.log('🗑️ حذف المشروع:', existingProject.title);
 
     // حذف البيانات المرتبطة أولاً
-    await prisma.comment.deleteMany({
+    await prisma.comments.deleteMany({
       where: { projectId }
     });
 
-    await prisma.mediaItem.deleteMany({
+    await prisma.media_items.deleteMany({
       where: { projectId }
     });
 
-    await prisma.tag.deleteMany({
+    await prisma.project_tags.deleteMany({
       where: { projectId }
     });
 
-    await prisma.material.deleteMany({
+    await prisma.project_materials.deleteMany({
       where: { projectId }
     });
 
     // حذف المشروع
-    await prisma.project.delete({
+    await prisma.projects.delete({
       where: { id: projectId }
     });
 
@@ -269,7 +281,7 @@ export async function DELETE(
   } catch (error: unknown) {
     console.error('❌ خطأ في حذف المشروع:', error);
     return NextResponse.json(
-      { error: 'حدث خطأ في حذف المشروع' },
+      { error: 'حدث خطأ في حذف الم��روع' },
       { status: 500 }
     );
   }

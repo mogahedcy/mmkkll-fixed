@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -153,7 +152,7 @@ export default function EditProjectPage() {
       }
     } catch (error) {
       console.error('Error loading project:', error);
-      setError('حدث خطأ في تحميل المشروع');
+      setError('حدث خطأ في تحميل المشرو��');
     }
   };
 
@@ -396,11 +395,11 @@ export default function EditProjectPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => router.push(`/portfolio/${projectId}`)}
+                onClick={() => router.push(`/portfolio/${(project as any)?.slug || projectId}`)}
                 className="flex items-center gap-2"
               >
                 <Eye className="h-4 w-4" />
-                معاينة
+                ��عاينة
               </Button>
               <Button
                 variant="destructive"
