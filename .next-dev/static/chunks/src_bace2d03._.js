@@ -1762,6 +1762,57 @@ function ProjectDetailsClient({ project }) {
     const [isVideoMuted, setIsVideoMuted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [videoError, setVideoError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [videoLoading, setVideoLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    // تفاعلات المشروع
+    const [likesCount, setLikesCount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(project.likes || 0);
+    const [viewsCount, setViewsCount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(project.views || 0);
+    const [commentsCount, setCommentsCount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(project._count?.comments || 0);
+    const [isLiked, setIsLiked] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ProjectDetailsClient.useEffect": ()=>{
+            const fetchInteractions = {
+                "ProjectDetailsClient.useEffect.fetchInteractions": async ()=>{
+                    try {
+                        const res = await fetch(`/api/projects/${project.id}/interactions`);
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data?.success && data.interactions) {
+                                setLikesCount(data.interactions.likes ?? likesCount);
+                                setViewsCount(data.interactions.views ?? viewsCount);
+                                setCommentsCount(data.interactions.comments ?? commentsCount);
+                                setIsLiked(!!data.interactions.isLiked);
+                            }
+                        }
+                    } catch (err) {
+                    // ignore
+                    }
+                }
+            }["ProjectDetailsClient.useEffect.fetchInteractions"];
+            fetchInteractions();
+        }
+    }["ProjectDetailsClient.useEffect"], [
+        project.id
+    ]);
+    const handleToggleLike = async ()=>{
+        try {
+            const res = await fetch(`/api/projects/${project.id}/interactions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    type: 'like',
+                    action: 'toggle'
+                })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setIsLiked(!!data.isLiked);
+                if (typeof data.newCount === 'number') setLikesCount(data.newCount);
+            }
+        } catch (e) {
+        // ignore
+        }
+    };
     const handleVideoPlay = ()=>setIsVideoPlaying(true);
     const handleVideoPause = ()=>setIsVideoPlaying(false);
     const toggleVideoMute = ()=>setIsVideoMuted(!isVideoMuted);
@@ -1835,24 +1886,43 @@ function ProjectDetailsClient({ project }) {
                                             className: "h-5 w-5 ml-2"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                            lineNumber: 165,
+                                            lineNumber: 208,
                                             columnNumber: 17
                                         }, this),
                                         "العودة للمعرض"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                    lineNumber: 164,
+                                    lineNumber: 207,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                lineNumber: 163,
+                                lineNumber: 206,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex items-center gap-3",
                                 children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                        variant: isLiked ? 'default' : 'outline',
+                                        size: "sm",
+                                        onClick: handleToggleLike,
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"], {
+                                                className: `h-4 w-4 ml-2 ${isLiked ? 'fill-current' : ''}`
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
+                                                lineNumber: 215,
+                                                columnNumber: 17
+                                            }, this),
+                                            isLiked ? 'إلغاء الإعجاب' : 'إعجاب'
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
+                                        lineNumber: 214,
+                                        columnNumber: 15
+                                    }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                         variant: "outline",
                                         size: "sm",
@@ -1862,14 +1932,14 @@ function ProjectDetailsClient({ project }) {
                                                 className: "h-4 w-4 ml-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 172,
+                                                lineNumber: 219,
                                                 columnNumber: 17
                                             }, this),
                                             "مشاركة"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 171,
+                                        lineNumber: 218,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1880,36 +1950,36 @@ function ProjectDetailsClient({ project }) {
                                                 className: "h-4 w-4 ml-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 176,
+                                                lineNumber: 223,
                                                 columnNumber: 17
                                             }, this),
                                             "تحميل الكتالوج"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 175,
+                                        lineNumber: 222,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                lineNumber: 170,
+                                lineNumber: 213,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                        lineNumber: 162,
+                        lineNumber: 205,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                    lineNumber: 161,
+                    lineNumber: 204,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                lineNumber: 160,
+                lineNumber: 203,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -1937,7 +2007,7 @@ function ProjectDetailsClient({ project }) {
                                                         priority: selectedMediaIndex === 0
                                                     }, `image-${selectedMediaIndex}`, false, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 197,
+                                                        lineNumber: 244,
                                                         columnNumber: 25
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "relative w-full h-full",
@@ -1961,17 +2031,17 @@ function ProjectDetailsClient({ project }) {
                                                                                     d: "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                    lineNumber: 213,
+                                                                                    lineNumber: 260,
                                                                                     columnNumber: 37
                                                                                 }, this)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 212,
+                                                                                lineNumber: 259,
                                                                                 columnNumber: 35
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                            lineNumber: 211,
+                                                                            lineNumber: 258,
                                                                             columnNumber: 33
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1979,7 +2049,7 @@ function ProjectDetailsClient({ project }) {
                                                                             children: videoError
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                            lineNumber: 216,
+                                                                            lineNumber: 263,
                                                                             columnNumber: 33
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1991,18 +2061,18 @@ function ProjectDetailsClient({ project }) {
                                                                             children: "إعادة المحاولة"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                            lineNumber: 217,
+                                                                            lineNumber: 264,
                                                                             columnNumber: 33
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                    lineNumber: 210,
+                                                                    lineNumber: 257,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 209,
+                                                                lineNumber: 256,
                                                                 columnNumber: 29
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                                                 children: [
@@ -2029,14 +2099,14 @@ function ProjectDetailsClient({ project }) {
                                                                                 type: getVideoType(currentMedia.src)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 249,
+                                                                                lineNumber: 296,
                                                                                 columnNumber: 33
                                                                             }, this),
                                                                             "متصفحك لا يدعم عرض الفيديو"
                                                                         ]
                                                                     }, `video-${selectedMediaIndex}-${currentMedia.src}`, true, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 230,
+                                                                        lineNumber: 277,
                                                                         columnNumber: 31
                                                                     }, this),
                                                                     videoLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2048,7 +2118,7 @@ function ProjectDetailsClient({ project }) {
                                                                                     className: "animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-2"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                    lineNumber: 257,
+                                                                                    lineNumber: 304,
                                                                                     columnNumber: 37
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2056,18 +2126,18 @@ function ProjectDetailsClient({ project }) {
                                                                                     children: "جاري تحميل الفيديو..."
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                    lineNumber: 258,
+                                                                                    lineNumber: 305,
                                                                                     columnNumber: 37
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                            lineNumber: 256,
+                                                                            lineNumber: 303,
                                                                             columnNumber: 35
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 255,
+                                                                        lineNumber: 302,
                                                                         columnNumber: 33
                                                                     }, this)
                                                                 ]
@@ -2084,18 +2154,18 @@ function ProjectDetailsClient({ project }) {
                                                                             className: "h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                            lineNumber: 273,
+                                                                            lineNumber: 320,
                                                                             columnNumber: 47
                                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__["Volume2"], {
                                                                             className: "h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                            lineNumber: 273,
+                                                                            lineNumber: 320,
                                                                             columnNumber: 81
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 267,
+                                                                        lineNumber: 314,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2107,18 +2177,18 @@ function ProjectDetailsClient({ project }) {
                                                                             className: "h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                            lineNumber: 281,
+                                                                            lineNumber: 328,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 275,
+                                                                        lineNumber: 322,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 266,
+                                                                lineNumber: 313,
                                                                 columnNumber: 27
                                                             }, this),
                                                             !isVideoPlaying && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2129,29 +2199,29 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-8 w-8"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 287,
+                                                                        lineNumber: 334,
                                                                         columnNumber: 33
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                    lineNumber: 286,
+                                                                    lineNumber: 333,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 285,
+                                                                lineNumber: 332,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 207,
+                                                        lineNumber: 254,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 193,
+                                                lineNumber: 240,
                                                 columnNumber: 17
                                             }, this),
                                             project.mediaItems.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2165,12 +2235,12 @@ function ProjectDetailsClient({ project }) {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                            lineNumber: 306,
+                                                            lineNumber: 353,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 300,
+                                                        lineNumber: 347,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2182,12 +2252,12 @@ function ProjectDetailsClient({ project }) {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                            lineNumber: 314,
+                                                            lineNumber: 361,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 308,
+                                                        lineNumber: 355,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
@@ -2201,13 +2271,13 @@ function ProjectDetailsClient({ project }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 320,
+                                                lineNumber: 367,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 192,
+                                        lineNumber: 239,
                                         columnNumber: 15
                                     }, this),
                                     project.mediaItems.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2223,7 +2293,7 @@ function ProjectDetailsClient({ project }) {
                                                     className: "w-full h-full object-cover"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                    lineNumber: 339,
+                                                    lineNumber: 386,
                                                     columnNumber: 25
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "relative w-full h-full bg-gray-200 flex items-center justify-center",
@@ -2235,7 +2305,7 @@ function ProjectDetailsClient({ project }) {
                                                             className: "object-cover"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                            lineNumber: 349,
+                                                            lineNumber: 396,
                                                             columnNumber: 29
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
                                                             src: media.src,
@@ -2249,7 +2319,7 @@ function ProjectDetailsClient({ project }) {
                                                             }
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                            lineNumber: 356,
+                                                            lineNumber: 403,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2258,34 +2328,34 @@ function ProjectDetailsClient({ project }) {
                                                                 className: "h-4 w-4 text-white"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 369,
+                                                                lineNumber: 416,
                                                                 columnNumber: 29
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                            lineNumber: 368,
+                                                            lineNumber: 415,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                    lineNumber: 347,
+                                                    lineNumber: 394,
                                                     columnNumber: 25
                                                 }, this)
                                             }, media.id, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 329,
+                                                lineNumber: 376,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 327,
+                                        lineNumber: 374,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                lineNumber: 190,
+                                lineNumber: 237,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2305,7 +2375,7 @@ function ProjectDetailsClient({ project }) {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 385,
+                                                        lineNumber: 432,
                                                         columnNumber: 21
                                                     }, this),
                                                     project.featured && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2315,20 +2385,20 @@ function ProjectDetailsClient({ project }) {
                                                                 className: "h-3 w-3 mr-1 fill-current"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 391,
+                                                                lineNumber: 438,
                                                                 columnNumber: 23
                                                             }, this),
                                                             "مميز"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 390,
+                                                        lineNumber: 437,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 383,
+                                                lineNumber: 430,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -2336,7 +2406,7 @@ function ProjectDetailsClient({ project }) {
                                                 children: project.title
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 397,
+                                                lineNumber: 444,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2351,7 +2421,7 @@ function ProjectDetailsClient({ project }) {
                                                                     className: `h-5 w-5 ${i < Math.floor(project.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`
                                                                 }, i, false, {
                                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                    lineNumber: 404,
+                                                                    lineNumber: 451,
                                                                     columnNumber: 23
                                                                 }, this)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2359,13 +2429,13 @@ function ProjectDetailsClient({ project }) {
                                                                 children: project.rating.toFixed(1)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 413,
+                                                                lineNumber: 460,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 402,
+                                                        lineNumber: 449,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2378,31 +2448,32 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-4 w-4 ml-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 418,
+                                                                        lineNumber: 465,
                                                                         columnNumber: 23
                                                                     }, this),
-                                                                    project.views
+                                                                    viewsCount
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 417,
+                                                                lineNumber: 464,
                                                                 columnNumber: 21
                                                             }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "flex items-center",
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                                onClick: handleToggleLike,
+                                                                className: "flex items-center hover:text-red-600 transition-colors",
                                                                 children: [
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"], {
-                                                                        className: "h-4 w-4 ml-1"
+                                                                        className: `h-4 w-4 ml-1 ${isLiked ? 'text-red-600 fill-current' : ''}`
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 422,
+                                                                        lineNumber: 469,
                                                                         columnNumber: 23
                                                                     }, this),
-                                                                    project.likes
+                                                                    likesCount
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 421,
+                                                                lineNumber: 468,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2412,26 +2483,26 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-4 w-4 ml-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 426,
+                                                                        lineNumber: 473,
                                                                         columnNumber: 23
                                                                     }, this),
-                                                                    project._count.comments
+                                                                    commentsCount
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 425,
+                                                                lineNumber: 472,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 416,
+                                                        lineNumber: 463,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 401,
+                                                lineNumber: 448,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2439,13 +2510,13 @@ function ProjectDetailsClient({ project }) {
                                                 children: project.description
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 432,
+                                                lineNumber: 479,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 382,
+                                        lineNumber: 429,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2456,7 +2527,7 @@ function ProjectDetailsClient({ project }) {
                                                 children: "تفاصيل المشروع"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 439,
+                                                lineNumber: 486,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2472,7 +2543,7 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-5 w-5 ml-3 text-blue-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 444,
+                                                                        lineNumber: 491,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2482,7 +2553,7 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: "الموقع"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 446,
+                                                                                lineNumber: 493,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2490,19 +2561,19 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: project.location
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 447,
+                                                                                lineNumber: 494,
                                                                                 columnNumber: 25
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 445,
+                                                                        lineNumber: 492,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 443,
+                                                                lineNumber: 490,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2512,7 +2583,7 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-5 w-5 ml-3 text-green-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 452,
+                                                                        lineNumber: 499,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2522,7 +2593,7 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: "تاريخ الإكمال"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 454,
+                                                                                lineNumber: 501,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2530,19 +2601,19 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: new Date(project.completionDate).toLocaleDateString('ar-SA')
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 455,
+                                                                                lineNumber: 502,
                                                                                 columnNumber: 25
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 453,
+                                                                        lineNumber: 500,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 451,
+                                                                lineNumber: 498,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2552,7 +2623,7 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-5 w-5 ml-3 text-orange-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 462,
+                                                                        lineNumber: 509,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2562,7 +2633,7 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: "مدة التنفيذ"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 464,
+                                                                                lineNumber: 511,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2570,25 +2641,25 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: project.projectDuration
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 465,
+                                                                                lineNumber: 512,
                                                                                 columnNumber: 25
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 463,
+                                                                        lineNumber: 510,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 461,
+                                                                lineNumber: 508,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 442,
+                                                        lineNumber: 489,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2601,7 +2672,7 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-5 w-5 ml-3 text-purple-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 473,
+                                                                        lineNumber: 520,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2611,7 +2682,7 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: "العميل"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 475,
+                                                                                lineNumber: 522,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2619,19 +2690,19 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: project.client
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 476,
+                                                                                lineNumber: 523,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 474,
+                                                                        lineNumber: 521,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 472,
+                                                                lineNumber: 519,
                                                                 columnNumber: 23
                                                             }, this),
                                                             project.projectCost && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2641,7 +2712,7 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-5 w-5 ml-3 text-emerald-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 483,
+                                                                        lineNumber: 530,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2651,7 +2722,7 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: "التكلفة"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 485,
+                                                                                lineNumber: 532,
                                                                                 columnNumber: 27
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2659,19 +2730,19 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: project.projectCost
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 486,
+                                                                                lineNumber: 533,
                                                                                 columnNumber: 27
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 484,
+                                                                        lineNumber: 531,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 482,
+                                                                lineNumber: 529,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2681,7 +2752,7 @@ function ProjectDetailsClient({ project }) {
                                                                         className: "h-5 w-5 ml-3 text-yellow-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 492,
+                                                                        lineNumber: 539,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2691,7 +2762,7 @@ function ProjectDetailsClient({ project }) {
                                                                                 children: "الحالة"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 494,
+                                                                                lineNumber: 541,
                                                                                 columnNumber: 25
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2701,44 +2772,44 @@ function ProjectDetailsClient({ project }) {
                                                                                         className: "h-4 w-4 ml-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                        lineNumber: 496,
+                                                                                        lineNumber: 543,
                                                                                         columnNumber: 27
                                                                                     }, this),
                                                                                     "مكتمل"
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                                lineNumber: 495,
+                                                                                lineNumber: 542,
                                                                                 columnNumber: 25
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                        lineNumber: 493,
+                                                                        lineNumber: 540,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 491,
+                                                                lineNumber: 538,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 470,
+                                                        lineNumber: 517,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 441,
+                                                lineNumber: 488,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 438,
+                                        lineNumber: 485,
                                         columnNumber: 15
                                     }, this),
                                     (project.tags.length > 0 || project.materials.length > 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2754,14 +2825,14 @@ function ProjectDetailsClient({ project }) {
                                                                 className: "h-4 w-4 ml-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 511,
+                                                                lineNumber: 558,
                                                                 columnNumber: 25
                                                             }, this),
                                                             "الكلمات المفتاحية"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 510,
+                                                        lineNumber: 557,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2771,18 +2842,18 @@ function ProjectDetailsClient({ project }) {
                                                                 children: tag.name
                                                             }, tag.id, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 516,
+                                                                lineNumber: 563,
                                                                 columnNumber: 27
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 514,
+                                                        lineNumber: 561,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 509,
+                                                lineNumber: 556,
                                                 columnNumber: 21
                                             }, this),
                                             project.materials.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2794,14 +2865,14 @@ function ProjectDetailsClient({ project }) {
                                                                 className: "h-4 w-4 ml-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 527,
+                                                                lineNumber: 574,
                                                                 columnNumber: 25
                                                             }, this),
                                                             "المواد المستخدمة"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 526,
+                                                        lineNumber: 573,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2811,24 +2882,24 @@ function ProjectDetailsClient({ project }) {
                                                                 children: material.name
                                                             }, material.id, false, {
                                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                                lineNumber: 532,
+                                                                lineNumber: 579,
                                                                 columnNumber: 27
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                        lineNumber: 530,
+                                                        lineNumber: 577,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 525,
+                                                lineNumber: 572,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 507,
+                                        lineNumber: 554,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2845,19 +2916,19 @@ function ProjectDetailsClient({ project }) {
                                                             className: "h-5 w-5 ml-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                            lineNumber: 546,
+                                                            lineNumber: 593,
                                                             columnNumber: 21
                                                         }, this),
                                                         "تواصل معنا"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                    lineNumber: 545,
+                                                    lineNumber: 592,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 544,
+                                                lineNumber: 591,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2872,47 +2943,47 @@ function ProjectDetailsClient({ project }) {
                                                             className: "h-5 w-5 ml-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                            lineNumber: 552,
+                                                            lineNumber: 599,
                                                             columnNumber: 21
                                                         }, this),
                                                         "احصل على عرض سعر"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                    lineNumber: 551,
+                                                    lineNumber: 598,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                                lineNumber: 550,
+                                                lineNumber: 597,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 543,
+                                        lineNumber: 590,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                lineNumber: 380,
+                                lineNumber: 427,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                        lineNumber: 187,
+                        lineNumber: 234,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                    lineNumber: 186,
+                    lineNumber: 233,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                lineNumber: 185,
+                lineNumber: 232,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -2924,17 +2995,17 @@ function ProjectDetailsClient({ project }) {
                         projectTitle: project.title
                     }, void 0, false, {
                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                        lineNumber: 565,
+                        lineNumber: 612,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                    lineNumber: 564,
+                    lineNumber: 611,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                lineNumber: 563,
+                lineNumber: 610,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -2962,12 +3033,12 @@ function ProjectDetailsClient({ project }) {
                                     className: "h-6 w-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                    lineNumber: 589,
+                                    lineNumber: 636,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                lineNumber: 583,
+                                lineNumber: 630,
                                 columnNumber: 15
                             }, this),
                             currentMedia.type === 'IMAGE' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2979,7 +3050,7 @@ function ProjectDetailsClient({ project }) {
                                 onClick: (e)=>e.stopPropagation()
                             }, `lightbox-image-${selectedMediaIndex}`, false, {
                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                lineNumber: 593,
+                                lineNumber: 640,
                                 columnNumber: 17
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
                                 src: currentMedia.src,
@@ -2993,7 +3064,7 @@ function ProjectDetailsClient({ project }) {
                                 onPause: ()=>setIsVideoPlaying(false)
                             }, `lightbox-video-${selectedMediaIndex}`, false, {
                                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                lineNumber: 603,
+                                lineNumber: 650,
                                 columnNumber: 17
                             }, this),
                             project.mediaItems.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -3010,12 +3081,12 @@ function ProjectDetailsClient({ project }) {
                                             className: "h-8 w-8"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                            lineNumber: 629,
+                                            lineNumber: 676,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 620,
+                                        lineNumber: 667,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3030,12 +3101,12 @@ function ProjectDetailsClient({ project }) {
                                             className: "h-8 w-8"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                            lineNumber: 640,
+                                            lineNumber: 687,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                                        lineNumber: 631,
+                                        lineNumber: 678,
                                         columnNumber: 19
                                     }, this)
                                 ]
@@ -3043,27 +3114,27 @@ function ProjectDetailsClient({ project }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                        lineNumber: 582,
+                        lineNumber: 629,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                    lineNumber: 575,
+                    lineNumber: 622,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-                lineNumber: 573,
+                lineNumber: 620,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/portfolio/[id]/ProjectDetailsClient.tsx",
-        lineNumber: 158,
+        lineNumber: 201,
         columnNumber: 5
     }, this);
 }
-_s(ProjectDetailsClient, "WuBNbiV8g81UFr099itLsTkY3z0=");
+_s(ProjectDetailsClient, "PxSksgirrcz803Klwn5l7nlPUvY=");
 _c = ProjectDetailsClient;
 var _c;
 __turbopack_context__.k.register(_c, "ProjectDetailsClient");

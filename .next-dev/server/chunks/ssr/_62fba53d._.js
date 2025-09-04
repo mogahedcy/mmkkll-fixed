@@ -135,7 +135,7 @@ async function generateMetadata({ params }) {
                 title: seoTitle,
                 description: seoDescription,
                 type: 'article',
-                url: `https://aldeyarksa.tech/portfolio/${id}`,
+                url: `https://aldeyarksa.tech/portfolio/${project.slug || id}`,
                 siteName: 'محترفين الديار العالمية',
                 locale: 'ar_SA',
                 images: project.mediaItems?.filter((item)=>item.type === 'IMAGE').map((item)=>({
@@ -155,7 +155,7 @@ async function generateMetadata({ params }) {
                 ] : []
             },
             alternates: {
-                canonical: `https://aldeyarksa.tech/portfolio/${id}`
+                canonical: `https://aldeyarksa.tech/portfolio/${project.slug || id}`
             },
             robots: {
                 index: true,
@@ -196,6 +196,7 @@ async function ProjectDetailsPage({ params }) {
         "@type": "CreativeWork",
         "name": project.title,
         "description": project.description,
+        "url": `https://aldeyarksa.tech/portfolio/${project.slug || id}`,
         "creator": {
             "@type": "Organization",
             "name": "محترفين الديار العالمية",
@@ -223,6 +224,30 @@ async function ProjectDetailsPage({ params }) {
                 "uploadDate": project.createdAt
             }))
     };
+    const breadcrumbs = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "الرئيسية",
+                "item": "https://aldeyarksa.tech"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "المشاريع",
+                "item": "https://aldeyarksa.tech/portfolio"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": project.title,
+                "item": `https://aldeyarksa.tech/portfolio/${project.slug || id}`
+            }
+        ]
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
@@ -232,12 +257,22 @@ async function ProjectDetailsPage({ params }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/page.tsx",
-                lineNumber: 173,
+                lineNumber: 184,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
+                type: "application/ld+json",
+                dangerouslySetInnerHTML: {
+                    __html: JSON.stringify(breadcrumbs)
+                }
+            }, void 0, false, {
+                fileName: "[project]/src/app/portfolio/[id]/page.tsx",
+                lineNumber: 190,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Navbar$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/page.tsx",
-                lineNumber: 179,
+                lineNumber: 196,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$portfolio$2f5b$id$5d2f$ProjectDetailsClient$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
@@ -245,12 +280,12 @@ async function ProjectDetailsPage({ params }) {
                 projectId: id
             }, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/page.tsx",
-                lineNumber: 180,
+                lineNumber: 197,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/portfolio/[id]/page.tsx",
-                lineNumber: 181,
+                lineNumber: 198,
                 columnNumber: 7
             }, this)
         ]

@@ -79,10 +79,11 @@ const prisma = new __TURBOPACK__imported__module__$5b$externals$5d2f40$prisma$2f
 async function GET(request, { params }) {
     try {
         const resolvedParams = await params;
-        const projectId = resolvedParams.id;
-        const project = await prisma.projects.findUnique({
+        const param = resolvedParams.id;
+        // السماح باستخدام المعرف أو الslug
+        let project = await prisma.projects.findUnique({
             where: {
-                id: projectId
+                id: param
             },
             include: {
                 media_items: {
@@ -101,16 +102,38 @@ async function GET(request, { params }) {
             }
         });
         if (!project) {
+            project = await prisma.projects.findUnique({
+                where: {
+                    slug: param
+                },
+                include: {
+                    media_items: {
+                        orderBy: {
+                            order: 'asc'
+                        }
+                    },
+                    project_tags: true,
+                    project_materials: true,
+                    _count: {
+                        select: {
+                            comments: true,
+                            project_likes: true
+                        }
+                    }
+                }
+            });
+        }
+        if (!project) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: 'المشروع غير موجود'
             }, {
                 status: 404
             });
         }
-        // زيادة عدد المشاهدات
+        // زيادة عدد المشاهدات باستخدام معرف المشروع الحقيقي
         await prisma.projects.update({
             where: {
-                id: projectId
+                id: project.id
             },
             data: {
                 views: {
@@ -281,7 +304,7 @@ async function DELETE(request, { params }) {
         });
         if (!existingProject) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'المشروع غي�� موجود'
+                error: 'المشروع غير موجود'
             }, {
                 status: 404
             });
