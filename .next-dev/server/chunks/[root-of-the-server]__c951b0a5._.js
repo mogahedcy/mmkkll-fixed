@@ -96,8 +96,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__
 ;
 async function GET() {
     try {
+        const now = new Date();
+        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         // جلب الإحصائيات الأساسية
-        const [totalProjects, publishedProjects, featuredProjects, totalViews, totalLikes, totalComments, recentViews] = await Promise.all([
+        const [totalProjects, publishedProjects, featuredProjects, totalViews, totalLikes, totalComments, recentViews, pendingComments] = await Promise.all([
             __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.count(),
             __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.count({
                 where: {
@@ -114,11 +117,7 @@ async function GET() {
                     views: true
                 }
             }),
-            __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.aggregate({
-                _sum: {
-                    likes: true
-                }
-            }),
+            __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_likes.count(),
             __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].comments.count({
                 where: {
                     status: 'APPROVED'
@@ -127,27 +126,174 @@ async function GET() {
             __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_views.count({
                 where: {
                     createdAt: {
-                        gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // آخر 7 أيام
+                        gte: sevenDaysAgo
                     }
+                }
+            }),
+            __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].comments.count({
+                where: {
+                    status: 'PENDING'
                 }
             })
         ]);
+        // اتجاهات 7 أيام
+        const last7Days = Array.from({
+            length: 7
+        }).map((_, idx)=>{
+            const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (6 - idx));
+            const dayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (6 - idx) + 1);
+            return {
+                dayStart,
+                dayEnd
+            };
+        });
+        const [viewsByDay, likesByDay, commentsByDay] = await Promise.all([
+            Promise.all(last7Days.map(({ dayStart, dayEnd })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_views.count({
+                    where: {
+                        createdAt: {
+                            gte: dayStart,
+                            lt: dayEnd
+                        }
+                    }
+                }))),
+            Promise.all(last7Days.map(({ dayStart, dayEnd })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_likes.count({
+                    where: {
+                        createdAt: {
+                            gte: dayStart,
+                            lt: dayEnd
+                        }
+                    }
+                }))),
+            Promise.all(last7Days.map(({ dayStart, dayEnd })=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].comments.count({
+                    where: {
+                        createdAt: {
+                            gte: dayStart,
+                            lt: dayEnd
+                        },
+                        status: 'APPROVED'
+                    }
+                })))
+        ]);
+        const trends = last7Days.map(({ dayStart }, i)=>({
+                date: dayStart.toISOString().slice(0, 10),
+                views: viewsByDay[i],
+                likes: likesByDay[i],
+                comments: commentsByDay[i]
+            }));
+        // مصادر الزيارات آخر 30 يوم
+        const sourcesGroup = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_views.groupBy({
+            by: [
+                'source'
+            ],
+            where: {
+                createdAt: {
+                    gte: thirtyDaysAgo
+                }
+            },
+            _count: {
+                source: true
+            }
+        });
+        const sources = Object.fromEntries(sourcesGroup.map((s)=>[
+                s.source || 'other',
+                s._count.source
+            ]));
+        // أفضل المشاريع آخر 30 يوم (حسب المشاهدات)
+        const topViews = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].project_views.groupBy({
+            by: [
+                'projectId'
+            ],
+            where: {
+                createdAt: {
+                    gte: thirtyDaysAgo
+                }
+            },
+            _count: {
+                projectId: true
+            },
+            orderBy: {
+                _count: {
+                    projectId: 'desc'
+                }
+            },
+            take: 5
+        });
+        const topProjectIds = topViews.map((v)=>v.projectId);
+        const topProjectsRaw = topProjectIds.length ? await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].projects.findMany({
+            where: {
+                id: {
+                    in: topProjectIds
+                }
+            },
+            include: {
+                media_items: {
+                    take: 1,
+                    orderBy: {
+                        order: 'asc'
+                    }
+                }
+            }
+        }) : [];
+        const topProjects = topViews.map((v)=>{
+            const p = topProjectsRaw.find((pr)=>pr.id === v.projectId);
+            return p ? {
+                id: p.id,
+                title: p.title,
+                slug: p.slug,
+                cover: p.media_items?.[0]?.src || null,
+                views: v._count.projectId
+            } : {
+                id: v.projectId,
+                title: 'مشروع',
+                slug: v.projectId,
+                cover: null,
+                views: v._count.projectId
+            };
+        });
+        // أحدث التعليقات
+        const recentComments = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].comments.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: 5,
+            include: {
+                projects: {
+                    select: {
+                        id: true,
+                        title: true,
+                        slug: true
+                    }
+                }
+            }
+        });
         // حساب معدل التفاعل
-        const totalInteractions = (totalLikes._sum.likes || 0) + (totalComments || 0);
+        const totalInteractions = (totalLikes || 0) + (totalComments || 0);
         const engagement = totalProjects > 0 ? Math.round(totalInteractions / totalProjects * 100) / 100 : 0;
-        const stats = {
-            totalProjects,
-            publishedProjects,
-            totalViews: totalViews._sum.views || 0,
-            totalLikes: totalLikes._sum.likes || 0,
-            totalComments,
-            featuredProjects,
-            recentViews,
-            engagement
-        };
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
-            stats
+            stats: {
+                totalProjects,
+                publishedProjects,
+                totalViews: totalViews._sum.views || 0,
+                totalLikes: totalLikes || 0,
+                totalComments,
+                featuredProjects,
+                recentViews,
+                pendingComments,
+                engagement
+            },
+            trends,
+            sources,
+            topProjects,
+            recentComments: recentComments.map((c)=>({
+                    id: c.id,
+                    name: c.name,
+                    message: c.message,
+                    rating: c.rating,
+                    status: c.status,
+                    createdAt: c.createdAt.toISOString(),
+                    project: c.projects
+                }))
         });
     } catch (error) {
         console.error('❌ خطأ في جلب الإحصائيات:', error);
@@ -161,8 +307,13 @@ async function GET() {
                 totalComments: 0,
                 featuredProjects: 0,
                 recentViews: 0,
+                pendingComments: 0,
                 engagement: 0
-            }
+            },
+            trends: [],
+            sources: {},
+            topProjects: [],
+            recentComments: []
         }, {
             status: 500
         });

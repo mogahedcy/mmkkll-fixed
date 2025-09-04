@@ -94,7 +94,8 @@ async function GET(request, { params }) {
                 project_materials: true,
                 _count: {
                     select: {
-                        comments: true
+                        comments: true,
+                        project_likes: true
                     }
                 }
             }
@@ -124,7 +125,7 @@ async function GET(request, { params }) {
             tags: project.project_tags || [],
             materials: project.project_materials || [],
             views: (project.views || 0) + 1,
-            likes: project.likes || 0,
+            likes: project._count?.project_likes || 0,
             rating: project.rating || 0
         });
     } catch (error) {
@@ -280,14 +281,14 @@ async function DELETE(request, { params }) {
         });
         if (!existingProject) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'المشروع غير موجود'
+                error: 'المشروع غي�� موجود'
             }, {
                 status: 404
             });
         }
         console.log('🗑️ حذف المشروع:', existingProject.title);
         // حذف البيانات المرتبطة أولاً
-        await prisma.comment.deleteMany({
+        await prisma.comments.deleteMany({
             where: {
                 projectId
             }
