@@ -17,7 +17,7 @@ export async function GET() {
       prisma.projects.count({ where: { status: 'PUBLISHED' } }),
       prisma.projects.count({ where: { featured: true } }),
       prisma.projects.aggregate({ _sum: { views: true } }),
-      prisma.projects.aggregate({ _sum: { likes: true } }),
+      prisma.project_likes.count(),
       prisma.comments.count({ where: { status: 'APPROVED' } }),
       prisma.project_views.count({
         where: {
