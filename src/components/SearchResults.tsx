@@ -80,7 +80,7 @@ export default function SearchResults({ articles, isLoading, searchQuery, viewTy
       {/* Results Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-primary">
-          نتائج البحث ({articles.length} مقال)
+          نتائج البحث ({articles.length} عنصر)
         </h2>
       </div>
 
