@@ -61,10 +61,17 @@ export async function GET(request: NextRequest) {
         orderBy = [{ featured: 'desc' }, { publishedAt: 'desc' }];
         break;
       case 'popular':
-        orderBy = [{ views: 'desc' }, { likes: 'desc' }];
+        orderBy = [
+          { views: 'desc' },
+          // ترتيب ثانوي حسب عدد الإعجابات الفعلية
+          { project_likes: { _count: 'desc' } } as any
+        ];
         break;
       case 'most-liked':
-        orderBy = [{ likes: 'desc' }, { views: 'desc' }];
+        orderBy = [
+          { project_likes: { _count: 'desc' } } as any,
+          { views: 'desc' }
+        ];
         break;
       case 'highest-rated':
         orderBy = [{ rating: 'desc' }, { views: 'desc' }];
@@ -200,7 +207,7 @@ export async function POST(request: NextRequest) {
     // التحقق من صحة البيانات
     if (!title || !description || !category || !location) {
       return NextResponse.json(
-        { error: 'البيانات الأساسية مطلوبة' },
+        { error: 'البيانات ��لأساسية مطلوبة' },
         { status: 400 }
       );
     }
