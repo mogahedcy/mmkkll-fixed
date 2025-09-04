@@ -94,6 +94,49 @@ export default function ProjectDetailsClient({ project }: Props) {
   const [videoError, setVideoError] = useState<string | null>(null);
   const [videoLoading, setVideoLoading] = useState(false);
 
+  // تفاعلات المشروع
+  const [likesCount, setLikesCount] = useState<number>(project.likes || 0);
+  const [viewsCount, setViewsCount] = useState<number>(project.views || 0);
+  const [commentsCount, setCommentsCount] = useState<number>(project._count?.comments || 0);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchInteractions = async () => {
+      try {
+        const res = await fetch(`/api/projects/${project.id}/interactions`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.success && data.interactions) {
+            setLikesCount(data.interactions.likes ?? likesCount);
+            setViewsCount(data.interactions.views ?? viewsCount);
+            setCommentsCount(data.interactions.comments ?? commentsCount);
+            setIsLiked(!!data.interactions.isLiked);
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
+    };
+    fetchInteractions();
+  }, [project.id]);
+
+  const handleToggleLike = async () => {
+    try {
+      const res = await fetch(`/api/projects/${project.id}/interactions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'like', action: 'toggle' })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setIsLiked(!!data.isLiked);
+        if (typeof data.newCount === 'number') setLikesCount(data.newCount);
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
+
   const handleVideoPlay = () => setIsVideoPlaying(true);
   const handleVideoPause = () => setIsVideoPlaying(false);
   const toggleVideoMute = () => setIsVideoMuted(!isVideoMuted);
