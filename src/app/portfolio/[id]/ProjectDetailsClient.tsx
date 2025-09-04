@@ -78,7 +78,7 @@ const categories = [
   { id: 'renovation', name: 'الترميم', icon: '🔨', color: 'bg-orange-500' },
   { id: 'sandwich-panel', name: 'الساندوتش بانل', icon: '🏢', color: 'bg-slate-500' },
   { id: 'sawater', name: 'السواتر', icon: '🧱', color: 'bg-red-500' },
-  { id: 'byoot-shaar', name: 'بيوت الش��ر', icon: '⛺', color: 'bg-purple-500' },
+  { id: 'byoot-shaar', name: 'بيوت الشعر', icon: '⛺', color: 'bg-purple-500' },
   { id: 'khayyam', name: 'الخيام', icon: '🏕️', color: 'bg-emerald-500' }
 ];
 
@@ -463,15 +463,15 @@ export default function ProjectDetailsClient({ project }: Props) {
                   <div className="flex items-center gap-4 text-gray-600">
                     <span className="flex items-center">
                       <Eye className="h-4 w-4 ml-1" />
-                      {project.views}
+                      {viewsCount}
                     </span>
-                    <span className="flex items-center">
-                      <Heart className="h-4 w-4 ml-1" />
-                      {project.likes}
-                    </span>
+                    <button onClick={handleToggleLike} className="flex items-center hover:text-red-600 transition-colors">
+                      <Heart className={`h-4 w-4 ml-1 ${isLiked ? 'text-red-600 fill-current' : ''}`} />
+                      {likesCount}
+                    </button>
                     <span className="flex items-center">
                       <MessageCircle className="h-4 w-4 ml-1" />
-                      {project._count.comments}
+                      {commentsCount}
                     </span>
                   </div>
                 </div>
@@ -606,7 +606,7 @@ export default function ProjectDetailsClient({ project }: Props) {
         </div>
       </section>
 
-      {/* قسم التعليقات والتقييمات */}
+      {/* قسم التعليقات وا��تقييمات */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ProjectCommentsSection 
