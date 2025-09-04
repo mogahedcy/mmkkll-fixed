@@ -1,5 +1,11 @@
 {
   "app": {
+    "[project]/src/app/dashboard/page": [
+      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
+    ],
+    "[project]/src/app/login/page": [
+      "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
+    ],
     "[project]/src/app/portfolio/page": [
       "static/media/nwpCtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlj4wv4rqxzLIhjE-s.p.195d4c14.woff2"
     ]

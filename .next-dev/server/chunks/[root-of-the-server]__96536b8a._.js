@@ -138,8 +138,21 @@ function sanitizeInput(input) {
     if (!input) return '';
     return input.trim().replace(/[<>"']/g, '');
 }
+const attempts = new Map();
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const MAX_ATTEMPTS = 10;
 async function POST(request) {
     try {
+        const ip = getClientIP(request);
+        const now = Date.now();
+        const rec = attempts.get(ip);
+        if (rec && rec.resetAt > now && rec.count >= MAX_ATTEMPTS) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: 'محاولات كثيرة، حاول لاحقاً'
+            }, {
+                status: 429
+            });
+        }
         const { username, password } = await request.json();
         // تنظيف المدخلات
         const cleanUsername = sanitizeInput(username);
@@ -158,16 +171,18 @@ async function POST(request) {
             }
         });
         if (!admin) {
-            // تسجيل محاولة فاشلة
-            // auditLogger.log({ // Assuming auditLogger and getClientIP are available elsewhere or defined locally
-            //   adminId: 'unknown',
-            //   action: 'LOGIN_FAILED',
-            //   resource: 'auth',
-            //   ipAddress: getClientIP(request),
-            //   userAgent: request.headers.get('user-agent') || 'unknown',
-            //   success: false,
-            //   details: { reason: 'invalid_username', username: cleanUsername }
-            // });
+            const recFail = attempts.get(ip);
+            if (!recFail || recFail.resetAt <= now) {
+                attempts.set(ip, {
+                    count: 1,
+                    resetAt: now + WINDOW_MS
+                });
+            } else {
+                attempts.set(ip, {
+                    count: recFail.count + 1,
+                    resetAt: recFail.resetAt
+                });
+            }
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: 'اسم المستخدم أو كلمة المرور غير صحيحة'
             }, {
@@ -177,16 +192,18 @@ async function POST(request) {
         // التحقق من كلمة المرور
         const isPasswordValid = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].compare(cleanPassword, admin.password);
         if (!isPasswordValid) {
-            // تسجيل محاولة فاشلة
-            // auditLogger.log({ // Assuming auditLogger and getClientIP are available elsewhere or defined locally
-            //   adminId: admin.id,
-            //   action: 'LOGIN_FAILED',
-            //   resource: 'auth',
-            //   ipAddress: getClientIP(request),
-            //   userAgent: request.headers.get('user-agent') || 'unknown',
-            //   success: false,
-            //   details: { reason: 'invalid_password' }
-            // });
+            const recFail = attempts.get(ip);
+            if (!recFail || recFail.resetAt <= now) {
+                attempts.set(ip, {
+                    count: 1,
+                    resetAt: now + WINDOW_MS
+                });
+            } else {
+                attempts.set(ip, {
+                    count: recFail.count + 1,
+                    resetAt: recFail.resetAt
+                });
+            }
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: 'اسم المستخدم أو كلمة المرور غير صحيحة'
             }, {
@@ -211,6 +228,8 @@ async function POST(request) {
                 updatedAt: new Date() // Assuming an updatedAt field exists
             }
         });
+        // نجاح: تصفير عداد المحاولات لهذا الـ IP
+        attempts.delete(ip);
         // إنشاء الاستجابة مع الكوكيز
         const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
