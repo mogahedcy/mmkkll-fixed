@@ -36,7 +36,7 @@ function validateComment(data: any): { valid: boolean; errors: string[] } {
     }
   }
 
-  // التحقق ��ن التعليق
+  // التحقق من التعليق
   if (!data.message || typeof data.message !== 'string' || !data.message.trim()) {
     errors.push('التعليق مطلوب ولا يمكن أن يكون فارغاً');
   } else {
@@ -212,5 +212,67 @@ export async function POST(
       { error: 'حدث خطأ في إضافة التعليق' },
       { status: 500 }
     );
+  }
+}
+
+// PATCH - اعتماد/تحديث حالة تعليق (للمشرف)
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: projectId } = await params;
+    const token = request.cookies.get('admin-token')?.value;
+    if (!token) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
+    try {
+      jwt.verify(token, process.env.JWT_SECRET || 'default-secret-key-change-in-production');
+    } catch {
+      return NextResponse.json({ error: 'جلسة غير صالحة' }, { status: 401 });
+    }
+
+    const { commentId, status } = await request.json();
+    if (!commentId || !status) {
+      return NextResponse.json({ error: 'بيانات ناقصة' }, { status: 400 });
+    }
+
+    const updated = await prisma.comments.update({
+      where: { id: commentId },
+      data: { status }
+    });
+
+    return NextResponse.json({ success: true, comment: { id: updated.id, status: updated.status } });
+  } catch (error) {
+    console.error('خطأ في تحديث التعليق:', error);
+    return NextResponse.json({ error: 'فشل في تحديث التعليق' }, { status: 500 });
+  }
+}
+
+// DELETE - حذف تعليق (للمشرف)
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: projectId } = await params;
+    const commentId = request.nextUrl.searchParams.get('commentId');
+
+    const token = request.cookies.get('admin-token')?.value;
+    if (!token) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
+    try {
+      jwt.verify(token, process.env.JWT_SECRET || 'default-secret-key-change-in-production');
+    } catch {
+      return NextResponse.json({ error: 'جلسة غير صالحة' }, { status: 401 });
+    }
+
+    if (!commentId) {
+      return NextResponse.json({ error: 'commentId مطلوب' }, { status: 400 });
+    }
+
+    await prisma.comments.delete({ where: { id: commentId } });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('خطأ في حذف التعليق:', error);
+    return NextResponse.json({ error: 'فشل في حذف التعليق' }, { status: 500 });
   }
 }
