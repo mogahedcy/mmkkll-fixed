@@ -10,40 +10,46 @@ export async function GET(request: NextRequest) {
     const location = (searchParams.get('location') || '').trim();
 
     // Fetch projects from DB
-    const projects = await prisma.projects.findMany({
-      where: {
-        status: 'PUBLISHED',
-        AND: [
-          q
-            ? {
-                OR: [
-                  { title: { contains: q, mode: 'insensitive' } },
-                  { description: { contains: q, mode: 'insensitive' } },
-                  { category: { contains: q, mode: 'insensitive' } },
-                  { location: { contains: q, mode: 'insensitive' } }
-                ]
-              }
-            : {},
-          category ? { category: { contains: category, mode: 'insensitive' } } : {},
-          location ? { location: { contains: location, mode: 'insensitive' } } : {}
-        ]
-      },
-      select: {
-        id: true,
-        slug: true,
-        title: true,
-        description: true,
-        category: true,
-        location: true,
-        media_items: {
-          where: { type: 'IMAGE' },
-          orderBy: { order: 'asc' },
-          take: 1,
-          select: { src: true, thumbnail: true, alt: true }
-        }
-      },
-      orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }]
-    });
+    let projects: any[] = [];
+    try {
+      projects = await prisma.projects.findMany({
+        where: {
+          status: 'PUBLISHED',
+          AND: [
+            q
+              ? {
+                  OR: [
+                    { title: { contains: q, mode: 'insensitive' } },
+                    { description: { contains: q, mode: 'insensitive' } },
+                    { category: { contains: q, mode: 'insensitive' } },
+                    { location: { contains: q, mode: 'insensitive' } }
+                  ]
+                }
+              : {},
+            category ? { category: { contains: category, mode: 'insensitive' } } : {},
+            location ? { location: { contains: location, mode: 'insensitive' } } : {}
+          ]
+        },
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          description: true,
+          category: true,
+          location: true,
+          media_items: {
+            where: { type: 'IMAGE' },
+            orderBy: { order: 'asc' },
+            take: 1,
+            select: { src: true, thumbnail: true, alt: true }
+          }
+        },
+        orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }]
+      });
+    } catch (e) {
+      console.warn('DB unavailable, skipping project search');
+      projects = [];
+    }
 
     const projectResults = projects.map((p) => ({
       id: String(p.id),

@@ -2914,7 +2914,7 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                         className: "w-12 h-12 text-accent animate-spin mx-auto mb-4"
                     }, void 0, false, {
                         fileName: "[project]/src/components/SearchResults.tsx",
-                        lineNumber: 41,
+                        lineNumber: 43,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2922,18 +2922,18 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                         children: "جاري البحث..."
                     }, void 0, false, {
                         fileName: "[project]/src/components/SearchResults.tsx",
-                        lineNumber: 42,
+                        lineNumber: 44,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/SearchResults.tsx",
-                lineNumber: 40,
+                lineNumber: 42,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/SearchResults.tsx",
-            lineNumber: 39,
+            lineNumber: 41,
             columnNumber: 7
         }, this);
     }
@@ -2947,12 +2947,12 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                         className: "w-12 h-12 text-gray-400"
                     }, void 0, false, {
                         fileName: "[project]/src/components/SearchResults.tsx",
-                        lineNumber: 52,
+                        lineNumber: 54,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SearchResults.tsx",
-                    lineNumber: 51,
+                    lineNumber: 53,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2960,7 +2960,7 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                     children: "لا توجد نتائج"
                 }, void 0, false, {
                     fileName: "[project]/src/components/SearchResults.tsx",
-                    lineNumber: 54,
+                    lineNumber: 56,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2968,13 +2968,13 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                     children: "لم نجد أي مقالات تطابق معايير البحث الخاصة بك."
                 }, void 0, false, {
                     fileName: "[project]/src/components/SearchResults.tsx",
-                    lineNumber: 55,
+                    lineNumber: 57,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/SearchResults.tsx",
-            lineNumber: 50,
+            lineNumber: 52,
             columnNumber: 7
         }, this);
     }
@@ -2992,18 +2992,18 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SearchResults.tsx",
-                    lineNumber: 64,
+                    lineNumber: 66,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/SearchResults.tsx",
-                lineNumber: 63,
+                lineNumber: 65,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: `grid ${viewType === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'} gap-8`,
                 children: articles.map((article)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                        href: `/articles/${article.slug}`,
+                        href: article.href || `/articles/${article.slug}`,
                         className: "group",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
                             className: "bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col",
@@ -3017,7 +3017,7 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                             className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 80,
+                                            lineNumber: 82,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3028,12 +3028,12 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                 children: article.category
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/SearchResults.tsx",
-                                                lineNumber: 86,
+                                                lineNumber: 88,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 85,
+                                            lineNumber: 87,
                                             columnNumber: 17
                                         }, this),
                                         article.featured && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3043,18 +3043,18 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                 children: "مميز"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/SearchResults.tsx",
-                                                lineNumber: 92,
+                                                lineNumber: 94,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 91,
+                                            lineNumber: 93,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 81,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3065,7 +3065,7 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                             children: article.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 101,
+                                            lineNumber: 103,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3073,7 +3073,7 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                             children: article.excerpt
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 105,
+                                            lineNumber: 107,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3088,20 +3088,20 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                             className: "w-6 h-6 rounded-full ml-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                                            lineNumber: 112,
+                                                            lineNumber: 114,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: article.author
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                                            lineNumber: 117,
+                                                            lineNumber: 119,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                    lineNumber: 111,
+                                                    lineNumber: 113,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3111,20 +3111,20 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                             className: "w-3 h-3 ml-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                                            lineNumber: 120,
+                                                            lineNumber: 122,
                                                             columnNumber: 21
                                                         }, this),
                                                         article.readTime
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                    lineNumber: 119,
+                                                    lineNumber: 121,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 110,
+                                            lineNumber: 112,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3140,14 +3140,14 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                                     className: "w-3 h-3 ml-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                                    lineNumber: 129,
+                                                                    lineNumber: 131,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 article.views
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                                            lineNumber: 128,
+                                                            lineNumber: 130,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3157,20 +3157,20 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                                     className: "w-3 h-3 ml-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                                    lineNumber: 133,
+                                                                    lineNumber: 135,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 article.likes
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                                            lineNumber: 132,
+                                                            lineNumber: 134,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                    lineNumber: 127,
+                                                    lineNumber: 129,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3180,20 +3180,20 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                             className: "w-3 h-3 text-yellow-400 fill-current ml-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                                            lineNumber: 138,
+                                                            lineNumber: 140,
                                                             columnNumber: 21
                                                         }, this),
                                                         article.rating
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                    lineNumber: 137,
+                                                    lineNumber: 139,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 126,
+                                            lineNumber: 128,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3206,12 +3206,12 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                     ]
                                                 }, `${article.id}-tag-${index}`, true, {
                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                    lineNumber: 146,
+                                                    lineNumber: 148,
                                                     columnNumber: 21
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 144,
+                                            lineNumber: 146,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3223,41 +3223,41 @@ function SearchResults({ articles, isLoading, searchQuery, viewType = 'grid' }) 
                                                     className: "w-4 h-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                                    lineNumber: 158,
+                                                    lineNumber: 160,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/SearchResults.tsx",
-                                            lineNumber: 156,
+                                            lineNumber: 158,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SearchResults.tsx",
-                                    lineNumber: 100,
+                                    lineNumber: 102,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SearchResults.tsx",
-                            lineNumber: 77,
+                            lineNumber: 79,
                             columnNumber: 13
                         }, this)
                     }, `search-result-${article.id}`, false, {
                         fileName: "[project]/src/components/SearchResults.tsx",
-                        lineNumber: 72,
+                        lineNumber: 74,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/SearchResults.tsx",
-                lineNumber: 70,
+                lineNumber: 72,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/SearchResults.tsx",
-        lineNumber: 61,
+        lineNumber: 63,
         columnNumber: 5
     }, this);
 }
@@ -4915,7 +4915,7 @@ function SearchContent() {
                     title: r.title,
                     excerpt: r.description,
                     category: r.category || 'عام',
-                    author: 'محترفين الديار العالمية',
+                    author: r.type === 'project' ? 'مشروع من معرض الأعمال' : 'محترفين الديار العالمية',
                     authorAvatar: 'https://ui-avatars.com/api/?name=محترفين+الديار&background=0f172a&color=fff',
                     date: new Date().toLocaleDateString('ar-SA'),
                     readTime: '3 دقائق',
@@ -4926,7 +4926,9 @@ function SearchContent() {
                     likes: 0,
                     rating: 0,
                     commentsCount: 0,
-                    keywords: []
+                    keywords: [],
+                    href: r.url,
+                    source: r.type
                 })) || [];
             setResults(mapped);
         } catch (error) {
@@ -4947,7 +4949,7 @@ function SearchContent() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Navbar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/search/page.tsx",
-                lineNumber: 124,
+                lineNumber: 126,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -4964,7 +4966,7 @@ function SearchContent() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/search/page.tsx",
-                                lineNumber: 128,
+                                lineNumber: 130,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4978,18 +4980,18 @@ function SearchContent() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/search/page.tsx",
-                                    lineNumber: 133,
+                                    lineNumber: 135,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/search/page.tsx",
-                                lineNumber: 132,
+                                lineNumber: 134,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/search/page.tsx",
-                        lineNumber: 127,
+                        lineNumber: 129,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5003,18 +5005,18 @@ function SearchContent() {
                                         onFiltersChange: handleFiltersChange
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/search/page.tsx",
-                                        lineNumber: 139,
+                                        lineNumber: 141,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SavedSearches$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                         fileName: "[project]/src/app/search/page.tsx",
-                                        lineNumber: 140,
+                                        lineNumber: 142,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/search/page.tsx",
-                                lineNumber: 138,
+                                lineNumber: 140,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5025,35 +5027,35 @@ function SearchContent() {
                                     searchQuery: query
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/search/page.tsx",
-                                    lineNumber: 144,
+                                    lineNumber: 146,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/search/page.tsx",
-                                lineNumber: 143,
+                                lineNumber: 145,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/search/page.tsx",
-                        lineNumber: 137,
+                        lineNumber: 139,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/search/page.tsx",
-                lineNumber: 126,
+                lineNumber: 128,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Footer$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/search/page.tsx",
-                lineNumber: 149,
+                lineNumber: 151,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/search/page.tsx",
-        lineNumber: 123,
+        lineNumber: 125,
         columnNumber: 5
     }, this);
 }
@@ -5068,7 +5070,7 @@ function SearchPage() {
                         className: "animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto mb-4"
                     }, void 0, false, {
                         fileName: "[project]/src/app/search/page.tsx",
-                        lineNumber: 159,
+                        lineNumber: 161,
                         columnNumber: 11
                     }, void 0),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -5076,28 +5078,28 @@ function SearchPage() {
                         children: "جاري تحميل نتائج البحث..."
                     }, void 0, false, {
                         fileName: "[project]/src/app/search/page.tsx",
-                        lineNumber: 160,
+                        lineNumber: 162,
                         columnNumber: 11
                     }, void 0)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/search/page.tsx",
-                lineNumber: 158,
+                lineNumber: 160,
                 columnNumber: 9
             }, void 0)
         }, void 0, false, {
             fileName: "[project]/src/app/search/page.tsx",
-            lineNumber: 157,
+            lineNumber: 159,
             columnNumber: 7
         }, void 0),
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SearchContent, {}, void 0, false, {
             fileName: "[project]/src/app/search/page.tsx",
-            lineNumber: 164,
+            lineNumber: 166,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/search/page.tsx",
-        lineNumber: 156,
+        lineNumber: 158,
         columnNumber: 5
     }, this);
 }
