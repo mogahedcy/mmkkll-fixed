@@ -28,9 +28,9 @@ export async function GET() {
       })
     ]);
 
-    // حساب معدل التفاعل
-    const totalInteractions = (totalLikes._sum.likes || 0) + (totalComments || 0);
-    const engagement = totalProjects > 0 
+    // ح��اب معدل التفاعل
+    const totalInteractions = (totalLikes || 0) + (totalComments || 0);
+    const engagement = totalProjects > 0
       ? Math.round((totalInteractions / totalProjects) * 100) / 100
       : 0;
 
@@ -38,7 +38,7 @@ export async function GET() {
       totalProjects,
       publishedProjects,
       totalViews: totalViews._sum.views || 0,
-      totalLikes: totalLikes._sum.likes || 0,
+      totalLikes: totalLikes || 0,
       totalComments,
       featuredProjects,
       recentViews,
