@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { randomUUID } from 'crypto';
+import jwt from 'jsonwebtoken';
 
 // نموذج التحقق من بيانات التعليق
 interface CommentRequest {
@@ -35,7 +36,7 @@ function validateComment(data: any): { valid: boolean; errors: string[] } {
     }
   }
 
-  // التحقق من التعليق
+  // التحقق ��ن التعليق
   if (!data.message || typeof data.message !== 'string' || !data.message.trim()) {
     errors.push('التعليق مطلوب ولا يمكن أن يكون فارغاً');
   } else {
