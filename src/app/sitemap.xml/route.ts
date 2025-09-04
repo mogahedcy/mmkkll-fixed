@@ -121,7 +121,7 @@ const articlesData = [
     lastModified: '2024-12-04T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
-    keywords: 'برجولات خشبية ��دة، برجولات حديد، برجولات ألومنيوم، مقارنة مواد البرجولات'
+    keywords: 'برجولات خشبية جدة، برجولات حديد، برجولات ألومنيوم، مقارنة مواد البرجولات'
   },
   {
     id: 10,
@@ -137,7 +137,7 @@ const articlesData = [
 export async function GET() {
   const baseUrl = 'https://aldeyarksa.tech';
 
-  // الصفحات الثابتة مع أولوية SEO محسنة وكلمات مفتاحية
+  // الصفحات الثابتة مع أولوية SEO محسنة وك��مات مفتاحية
   const staticPages = [
     { 
       url: '', 
@@ -252,10 +252,21 @@ export async function GET() {
     projects = await prisma.projects.findMany({
       where: { status: 'PUBLISHED' },
       select: {
+        id: true,
         slug: true,
-        updatedAt: true
+        title: true,
+        description: true,
+        category: true,
+        location: true,
+        featured: true,
+        createdAt: true,
+        updatedAt: true,
+        media_items: {
+          select: { type: true, src: true, alt: true, title: true }
+        }
       }
     });
+    projects = (projects as any[]).map(p => ({ ...p, mediaItems: p.media_items }));
   } catch (error) {
     console.error('خطأ في جلب المشاريع للخريطة:', error);
     projects = [];
