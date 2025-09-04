@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { useState } from 'react';
 import { Calculator, MessageCircle, Phone, CheckCircle, Star, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -84,7 +82,7 @@ export default function QuoteSection() {
             {/* Service Selection */}
             <div className="mb-6">
               <label className="block text-sm font-semibold text-primary mb-3">
-                اختر نوع الخدمة المطلوبة *
+                ا��تر نوع الخدمة المطلوبة *
               </label>
               <div className="grid grid-cols-1 gap-3">
                 {services.map((service) => (
