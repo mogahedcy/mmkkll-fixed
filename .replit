@@ -20,8 +20,11 @@ externalPort = 80
 localPort = 3002
 externalPort = 3002
 
+[[ports]]
+localPort = 5000
+
 [workflows]
-runButton = "Simple Dev Server"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Build and Start"
@@ -151,3 +154,27 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Website Server"
+
+[[workflows.workflow]]
+name = "Website Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[agent]
+expertMode = true
