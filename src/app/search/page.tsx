@@ -9,15 +9,61 @@ import SearchResults from '@/components/SearchResults';
 import AdvancedFilters from '@/components/AdvancedFilters';
 import SavedSearches from '@/components/SavedSearches';
 
+// نوع نتائج API
+interface ApiResult {
+  id: string;
+  title: string;
+  description: string;
+  category?: string;
+  location?: string;
+  image: string;
+  slug: string;
+}
+
+// نوع المقال المطلوب من SearchResults
+interface ArticleShape {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  author: string;
+  authorAvatar: string;
+  date: string;
+  readTime: string;
+  image: string;
+  tags: string[];
+  featured: boolean;
+  views: number;
+  likes: number;
+  rating: number;
+  commentsCount: number;
+  keywords: string[];
+}
+
+// حالة الفلاتر المتوافقة مع AdvancedFilters
+interface FiltersState {
+  category: string;
+  location: string;
+  featured: boolean | null;
+  minRating: number;
+  dateRange: string;
+  hasVideo: boolean | null;
+  priceRange: string;
+}
+
 function SearchContent() {
   const searchParams = useSearchParams();
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<ArticleShape[]>([]);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FiltersState>({
     category: '',
     location: '',
+    featured: null,
+    minRating: 0,
     dateRange: '',
-    sortBy: 'relevance'
+    hasVideo: null,
+    priceRange: ''
   });
 
   const query = searchParams.get('q') || '';
@@ -25,26 +71,52 @@ function SearchContent() {
   useEffect(() => {
     if (query) {
       performSearch(query, filters);
+    } else {
+      setResults([]);
     }
   }, [query, filters]);
 
-  const performSearch = async (searchQuery: string, currentFilters: any) => {
+  const performSearch = async (searchQuery: string, currentFilters: FiltersState) => {
     setLoading(true);
     try {
-      const queryParams = new URLSearchParams({
-        q: searchQuery,
-        ...currentFilters
-      });
+      const queryParams = new URLSearchParams({ q: searchQuery });
+      if (currentFilters.category) queryParams.set('category', currentFilters.category);
+      if (currentFilters.location) queryParams.set('location', currentFilters.location);
 
-      const response = await fetch(`/api/search?${queryParams}`);
+      const response = await fetch(`/api/search?${queryParams.toString()}`, { cache: 'no-store' });
       const data = await response.json();
-      setResults(data.results || []);
+
+      const mapped: ArticleShape[] = (data.results as ApiResult[] | undefined)?.map((r, idx) => ({
+        id: Number.parseInt(r.id) || idx + 1,
+        slug: r.slug,
+        title: r.title,
+        excerpt: r.description,
+        category: r.category || 'عام',
+        author: 'محترفين الديار العالمية',
+        authorAvatar: 'https://ui-avatars.com/api/?name=محترفين+الديار&background=0f172a&color=fff',
+        date: new Date().toLocaleDateString('ar-SA'),
+        readTime: '3 دقائق',
+        image: r.image,
+        tags: [],
+        featured: false,
+        views: 0,
+        likes: 0,
+        rating: 0,
+        commentsCount: 0,
+        keywords: []
+      })) || [];
+
+      setResults(mapped);
     } catch (error) {
       console.error('خطأ في البحث:', error);
       setResults([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFiltersChange = (partial: Partial<FiltersState>) => {
+    setFilters(prev => ({ ...prev, ...partial }));
   };
 
   return (
@@ -58,27 +130,18 @@ function SearchContent() {
           </h1>
 
           <div className="flex items-center justify-between mb-6">
-            <p className="text-gray-600">
-              تم العثور على {results.length} نتيجة
-            </p>
+            <p className="text-gray-600">تم العثور على {results.length} نتيجة</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <AdvancedFilters 
-              filters={filters}
-              onFiltersChange={setFilters}
-            />
+            <AdvancedFilters filters={filters} onFiltersChange={handleFiltersChange} />
             <SavedSearches />
           </div>
 
           <div className="lg:col-span-3">
-            <SearchResults 
-              results={results}
-              loading={loading}
-              query={query}
-            />
+            <SearchResults articles={results} isLoading={loading} searchQuery={query} />
           </div>
         </div>
       </main>
