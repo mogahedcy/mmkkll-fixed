@@ -86,13 +86,13 @@ function SearchContent() {
       const response = await fetch(`/api/search?${queryParams.toString()}`, { cache: 'no-store' });
       const data = await response.json();
 
-      const mapped: ArticleShape[] = (data.results as ApiResult[] | undefined)?.map((r, idx) => ({
+      const mapped: ArticleShape[] = (data.results as any[] | undefined)?.map((r, idx) => ({
         id: Number.parseInt(r.id) || idx + 1,
         slug: r.slug,
         title: r.title,
         excerpt: r.description,
         category: r.category || 'عام',
-        author: 'محترفين الديار العالمية',
+        author: r.type === 'project' ? 'مشروع من معرض الأعمال' : 'محترفين الديار العالمية',
         authorAvatar: 'https://ui-avatars.com/api/?name=محترفين+الديار&background=0f172a&color=fff',
         date: new Date().toLocaleDateString('ar-SA'),
         readTime: '3 دقائق',
@@ -103,7 +103,9 @@ function SearchContent() {
         likes: 0,
         rating: 0,
         commentsCount: 0,
-        keywords: []
+        keywords: [],
+        href: r.url,
+        source: r.type
       })) || [];
 
       setResults(mapped);

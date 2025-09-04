@@ -24,6 +24,8 @@ interface Article {
   commentsCount: number;
   keywords: string[];
   searchScore?: number;
+  href?: string;
+  source?: 'article' | 'project';
 }
 
 interface SearchResultsProps {
@@ -71,7 +73,7 @@ export default function SearchResults({ articles, isLoading, searchQuery, viewTy
         {articles.map((article) => (
           <Link
             key={`search-result-${article.id}`}
-            href={`/articles/${article.slug}`}
+            href={article.href || `/articles/${article.slug}`}
             className="group"
           >
             <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
