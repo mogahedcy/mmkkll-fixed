@@ -22,7 +22,8 @@ export async function GET(
         project_materials: true,
         _count: {
           select: {
-            comments: true
+            comments: true,
+            project_likes: true
           }
         }
       }
@@ -253,7 +254,7 @@ export async function DELETE(
       where: { id: projectId }
     });
 
-    console.log('✅ تم حذف المشروع بنجاح');
+    console.log('✅ تم حذف المشر��ع بنجاح');
 
     // إشعار جوجل بالحذف
     try {
