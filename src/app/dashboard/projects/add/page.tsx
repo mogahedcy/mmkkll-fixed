@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { CategorySelect } from '@/components/ui/project-filters';
+import { SUGGESTED_TAGS } from '@/constants/projectCategories';
 import { 
   Upload, 
   X, 
@@ -37,22 +39,7 @@ interface MediaFile {
   uploadedUrl?: string;
 }
 
-const categories = [
-  'مظلات',
-  'برجولات', 
-  'سواتر',
-  'ساندوتش بانل',
-  'تنسيق حدائق',
-  'خيام ملكية',
-  'بيوت شعر',
-  'ترميم'
-];
 
-const suggestedTags = [
-  'جدة', 'ا��سعودية', 'تصميم حديث', 'جودة عالية', 'احترافي',
-  'مقاوم للطقس', 'عزل حراري', 'صديق للبيئة', 'ضمان طويل',
-  'تركيب سريع', 'صيانة سهلة', 'تصميم مخصص'
-];
 
 export default function AddProjectPage() {
   const router = useRouter();
@@ -326,17 +313,11 @@ export default function AddProjectPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">الفئة *</label>
-                  <select
+                  <CategorySelect
                     value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    onChange={setCategory}
                     required
-                  >
-                    <option value="">اختر الفئة</option>
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
+                  />
                 </div>
               </div>
 
@@ -567,7 +548,7 @@ export default function AddProjectPage() {
                 <div>
                   <p className="text-sm font-medium mb-2">اقتراحات:</p>
                   <div className="flex flex-wrap gap-2">
-                    {suggestedTags.filter(tag => !tags.includes(tag)).map((tag) => (
+                    {SUGGESTED_TAGS.filter(tag => !tags.includes(tag)).map((tag) => (
                       <Button
                         key={tag}
                         type="button"

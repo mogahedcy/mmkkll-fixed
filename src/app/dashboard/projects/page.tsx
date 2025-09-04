@@ -39,6 +39,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ProjectFilters } from '@/components/ui/project-filters';
 
 interface Project {
   id: string;
@@ -406,62 +407,16 @@ export default function ProjectsPage() {
           </AnimatePresence>
 
           {/* Filters */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border space-y-4">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <Input
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="ابحث في المشاريع..."
-                  className="pr-10"
-                />
-              </div>
-
-              {/* Filters */}
-              <div className="flex gap-4">
-                <select
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">جميع الحالات</option>
-                  <option value="PUBLISHED">منشور</option>
-                  <option value="DRAFT">مسودة</option>
-                  <option value="ARCHIVED">أرشيف</option>
-                </select>
-
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="all">جميع الفئات</option>
-                  <option value="مظلات">مظلات</option>
-                  <option value="برجولات">برجولات</option>
-                  <option value="سواتر">سواتر</option>
-                  <option value="ساندوتش بانل">ساندوتش بانل</option>
-                  <option value="تنسيق حدائق">تنسيق حدائق</option>
-                  <option value="خيام ملكية">خيام ملكية</option>
-                  <option value="بيوت شعر">بيوت شعر</option>
-                  <option value="ترميم">ترميم</option>
-                </select>
-
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="newest">الأحدث</option>
-                  <option value="oldest">الأقدم</option>
-                  <option value="popular">الأكثر شعبية</option>
-                  <option value="most-liked">الأكثر إعجاباً</option>
-                  <option value="alphabetical">أبجدياً</option>
-                </select>
-              </div>
-            </div>
-          </div>
+          <ProjectFilters
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedStatus={selectedStatus}
+            onStatusChange={setSelectedStatus}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+          />
         </div>
 
         {/* Projects Grid */}
