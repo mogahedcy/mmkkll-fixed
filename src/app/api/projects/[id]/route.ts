@@ -50,7 +50,7 @@ export async function GET(
       tags: (project as any).project_tags || [],
       materials: (project as any).project_materials || [],
       views: (project.views || 0) + 1,
-      likes: project.likes || 0,
+      likes: (project._count as any)?.project_likes || 0,
       rating: project.rating || 0
     });
 
@@ -225,7 +225,7 @@ export async function DELETE(
 
     if (!existingProject) {
       return NextResponse.json(
-        { error: 'المشروع غير موجود' },
+        { error: 'المشروع غي�� موجود' },
         { status: 404 }
       );
     }
@@ -254,7 +254,7 @@ export async function DELETE(
       where: { id: projectId }
     });
 
-    console.log('✅ تم حذف المشر��ع بنجاح');
+    console.log('✅ تم حذف المشروع بنجاح');
 
     // إشعار جوجل بالحذف
     try {
