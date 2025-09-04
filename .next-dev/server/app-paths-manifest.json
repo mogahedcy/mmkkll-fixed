@@ -18,5 +18,6 @@
   "/login/page": "app/login/page.js",
   "/portfolio/[id]/page": "app/portfolio/[id]/page.js",
   "/portfolio/page": "app/portfolio/page.js",
-  "/search/page": "app/search/page.js"
+  "/search/page": "app/search/page.js",
+  "/services/mazallat/page": "app/services/mazallat/page.js"
 }
