@@ -79,20 +79,21 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-jsx-dev-runtime.js [app-rsc] (ecmascript)");
 ;
-function StructuredDataScript() {
+function StructuredDataScript({ data }) {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
     const organizationData = {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "محترفين الديار العالمية",
         "alternateName": "Al Deyar Professional Global",
-        "url": "https://aldeyarksa.tech",
-        "logo": "https://aldeyarksa.tech/images/logo.png",
-        "image": "https://aldeyarksa.tech/images/logo.png",
+        "url": baseUrl,
+        "logo": `${baseUrl}/favicon.svg`,
+        "image": `${baseUrl}/favicon.svg`,
         "description": "شركة رائدة في تركيب مظلات السيارات، البرجولات، السواتر، تنسيق الحدائق في جدة والمملكة العربية السعودية",
         "foundingDate": "2010",
         "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+966-50-123-4567",
+            "telephone": "+966553719009",
             "contactType": "customer service",
             "areaServed": "SA",
             "availableLanguage": [
@@ -127,7 +128,7 @@ function StructuredDataScript() {
                     "@type": "Offer",
                     "itemOffered": {
                         "@type": "Service",
-                        "name": "مظلات السيارات",
+                        "name": "مظلات ا��سيارات",
                         "description": "تركيب مظلات السيارات بأعلى معايير الجودة"
                     }
                 },
@@ -153,11 +154,11 @@ function StructuredDataScript() {
     const localBusinessData = {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
-        "@id": "https://aldeyarksa.tech/#organization",
+        "@id": `${baseUrl}/#organization`,
         "name": "محترفين الديار العالمية",
-        "image": "https://aldeyarksa.tech/favicon.svg",
-        "url": "https://aldeyarksa.tech",
-        "telephone": "+966-12-123-4567",
+        "image": `${baseUrl}/favicon.svg`,
+        "url": baseUrl,
+        "telephone": "+966553719009",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "شارع الأمير سلطان",
@@ -195,10 +196,10 @@ function StructuredDataScript() {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "محترفين الديار العالمية",
-        "url": "https://aldeyarksa.tech",
+        "url": baseUrl,
         "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://aldeyarksa.tech/search?q={search_term_string}",
+            "target": `${baseUrl}/search?q={search_term_string}`,
             "query-input": "required name=search_term_string"
         }
     };
@@ -210,28 +211,31 @@ function StructuredDataScript() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "الرئيسية",
-                "item": "https://aldeyarksa.tech"
+                "item": baseUrl
             },
             {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "خدماتنا",
-                "item": "https://aldeyarksa.tech/#services"
+                "item": `${baseUrl}/#services`
             },
             {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "معرض الأعمال",
-                "item": "https://aldeyarksa.tech/portfolio"
+                "item": `${baseUrl}/portfolio`
             },
             {
                 "@type": "ListItem",
                 "position": 4,
                 "name": "اتصل بنا",
-                "item": "https://aldeyarksa.tech/contact"
+                "item": `${baseUrl}/contact`
             }
         ]
     };
+    const extraData = Array.isArray(data) ? data : data ? [
+        data
+    ] : [];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
@@ -241,7 +245,7 @@ function StructuredDataScript() {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/StructuredDataScript.tsx",
-                lineNumber: 157,
+                lineNumber: 102,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
@@ -251,7 +255,7 @@ function StructuredDataScript() {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/StructuredDataScript.tsx",
-                lineNumber: 163,
+                lineNumber: 103,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
@@ -261,7 +265,7 @@ function StructuredDataScript() {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/StructuredDataScript.tsx",
-                lineNumber: 169,
+                lineNumber: 104,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
@@ -271,9 +275,19 @@ function StructuredDataScript() {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/StructuredDataScript.tsx",
-                lineNumber: 175,
+                lineNumber: 105,
                 columnNumber: 7
-            }, this)
+            }, this),
+            extraData.map((d, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
+                    type: "application/ld+json",
+                    dangerouslySetInnerHTML: {
+                        __html: JSON.stringify(d)
+                    }
+                }, `structured-extra-${i}`, false, {
+                    fileName: "[project]/src/components/StructuredDataScript.tsx",
+                    lineNumber: 107,
+                    columnNumber: 9
+                }, this))
         ]
     }, void 0, true);
 }
