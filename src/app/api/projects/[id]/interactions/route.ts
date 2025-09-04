@@ -20,7 +20,7 @@ export async function POST(
     const userAgent = headersList.get('user-agent') || 'unknown';
     const referrer = headersList.get('referer') || 'direct';
 
-    // التحقق من وجود المشروع
+    // التحقق من وجود المشر��ع
     const project = await prisma.projects.findUnique({
       where: { id: projectId }
     });
@@ -106,22 +106,16 @@ export async function POST(
             }
           });
 
-          // تحديث عداد الإعجابات
-          const updatedProject = await prisma.projects.update({
-            where: { id: projectId },
-            data: {
-              likes: {
-                increment: 1
-              }
-            },
-            select: { likes: true }
+          // إعادة حساب عدد الإعجابات عبر علاقة project_likes
+          const likesCount = await prisma.project_likes.count({
+            where: { projectId }
           });
 
           result = {
             type: 'like',
             action: 'added',
             success: true,
-            newCount: updatedProject.likes,
+            newCount: likesCount,
             isLiked: true
           };
         } else if (action === 'toggle') {
@@ -135,29 +129,24 @@ export async function POST(
             }
           });
 
-          // تحديث عداد الإعجابات
-          const updatedProject = await prisma.projects.update({
-            where: { id: projectId },
-            data: {
-              likes: {
-                decrement: 1
-              }
-            },
-            select: { likes: true }
+          // إعادة حساب عدد الإعجابات عبر علاقة project_likes
+          const likesCount = await prisma.project_likes.count({
+            where: { projectId }
           });
 
           result = {
             type: 'like',
             action: 'removed',
             success: true,
-            newCount: Math.max(0, updatedProject.likes),
+            newCount: Math.max(0, likesCount),
             isLiked: false
           };
         } else {
+          const likesCount = await prisma.project_likes.count({ where: { projectId } });
           result = {
             type: 'like',
             success: true,
-            newCount: project.likes,
+            newCount: likesCount,
             isLiked: true,
             message: 'لقد أعجبت بهذا المشروع مسبقاً'
           };
@@ -193,12 +182,12 @@ export async function GET(
       select: {
         id: true,
         views: true,
-        likes: true,
         _count: {
           select: {
             comments: {
               where: { status: 'APPROVED' }
-            }
+            },
+            project_likes: true
           }
         }
       }
@@ -225,7 +214,7 @@ export async function GET(
       success: true,
       interactions: {
         views: project.views,
-        likes: project.likes,
+        likes: project._count.project_likes || 0,
         comments: project._count.comments,
         isLiked: !!userLike
       }
