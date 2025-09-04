@@ -23,7 +23,6 @@ export const metadata: Metadata = {
   authors: [{ name: "محترفين الديار العالمية" }],
   robots: "index, follow",
   alternates: {
-    canonical: "https://aldeyarksa.tech",
     languages: {
       "ar-SA": "https://aldeyarksa.tech",
     },
