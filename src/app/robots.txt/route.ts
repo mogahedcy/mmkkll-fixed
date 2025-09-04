@@ -116,9 +116,10 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
-# خرائط المواقع المتعددة والمحدثة
+# خرائط المواقع المتعددة والمحدثة - محسنة لـ SEO
 Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-index.xml
 Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-projects.xml
 Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-articles.xml
 Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-images.xml
 

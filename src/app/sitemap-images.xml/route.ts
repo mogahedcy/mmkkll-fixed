@@ -109,11 +109,15 @@ export async function GET() {
   const allImages = [...staticImages, ...serviceImages, ...projectImages];
 
   const imagesSitemap = allImages
-    .map(image => `
+    .map(image => {
+      const imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
+      const pageUrl = image.project_url || `${baseUrl}/images`;
+      
+      return `
   <url>
-    <loc>${image.project_url || (image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`)}</loc>
+    <loc>${pageUrl}</loc>
     <image:image>
-      <image:loc>${image.url}</image:loc>
+      <image:loc>${imageUrl}</image:loc>
       <image:caption><![CDATA[${image.caption}]]></image:caption>
       <image:title><![CDATA[${image.title}]]></image:title>
       <image:geo_location><![CDATA[${image.location}]]></image:geo_location>
@@ -122,12 +126,16 @@ export async function GET() {
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>`)
+    <rs:ln rel="canonical" href="${pageUrl}" />
+    <rs:ln rel="alternate" hreflang="ar" href="${pageUrl}" />
+  </url>`;
+    })
     .join('');
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
   ${imagesSitemap}
 </urlset>`;
 
@@ -135,8 +143,14 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-      'X-Images-Count': allImages.length.toString()
+      'Cache-Control': 'public, max-age=1800, s-maxage=1800, stale-while-revalidate=43200',
+      'CDN-Cache-Control': 'max-age=1800',
+      'Vercel-CDN-Cache-Control': 'max-age=1800',
+      'X-Robots-Tag': 'index, follow, all',
+      'X-Images-Count': allImages.length.toString(),
+      'X-Last-Updated': new Date().toISOString(),
+      'Vary': 'Accept-Encoding',
+      'ETag': `"images-sitemap-${Date.now()}"`,
     },
   });
 }

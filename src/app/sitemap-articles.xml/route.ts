@@ -278,7 +278,7 @@ const serviceArticles = [
 const allArticles = [...generalArticles, ...serviceArticles];
 
 export async function GET() {
-  const baseUrl = 'https://aldeyarksa.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
 
   // إنشاء sitemap للمقالات مع تحسينات SEO شاملة
   const articlesSitemap = allArticles

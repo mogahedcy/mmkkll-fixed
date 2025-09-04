@@ -401,6 +401,12 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   handler satisfies RouteHandlerConfig<"/sitemap-index.xml">
 }
 
+// Validate ../../src/app/sitemap-projects.xml/route.ts
+{
+  const handler = {} as typeof import("../../src/app/sitemap-projects.xml/route.js")
+  handler satisfies RouteHandlerConfig<"/sitemap-projects.xml">
+}
+
 // Validate ../../src/app/sitemap.xml/route.ts
 {
   const handler = {} as typeof import("../../src/app/sitemap.xml/route.js")

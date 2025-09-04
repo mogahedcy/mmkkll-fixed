@@ -135,7 +135,7 @@ const articlesData = [
 ];
 
 export async function GET() {
-  const baseUrl = 'https://aldeyarksa.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
 
   // الصفحات الثابتة مع أولوية SEO محسنة وك��مات مفتاحية
   const staticPages = [
@@ -243,34 +243,7 @@ export async function GET() {
     }
   ];
 
-  let projects = [];
-
-  // جلب المشاريع مع معالجة الأخطاء
-  try {
-    // استيراد مؤجل لتجنب مشاكل البناء
-    const { prisma } = await import('@/lib/prisma');
-    projects = await prisma.projects.findMany({
-      where: { status: 'PUBLISHED' },
-      select: {
-        id: true,
-        slug: true,
-        title: true,
-        description: true,
-        category: true,
-        location: true,
-        featured: true,
-        createdAt: true,
-        updatedAt: true,
-        media_items: {
-          select: { type: true, src: true, alt: true, title: true }
-        }
-      }
-    });
-    projects = (projects as any[]).map(p => ({ ...p, mediaItems: p.media_items }));
-  } catch (error) {
-    console.error('خطأ في جلب المشاريع للخريطة:', error);
-    projects = [];
-  }
+  // تم نقل المشاريع إلى sitemap منفصل لتحسين الأداء
 
   // إنشاء sitemap للصفحات الثابتة
   const staticSitemap = staticPages
@@ -344,52 +317,16 @@ export async function GET() {
     )
     .join('');
 
-  // إنشاء sitemap للمشاريع مع الوسائط المحسنة
-  const projectsSitemap = projects
-    .map(
-      (project) => {
-        const images = project.mediaItems
-          ?.filter(media => media.type === 'IMAGE')
-          .slice(0, 5) // تقليل عدد الصور لتحسين الأداء
-          .map(media => `
-      <image:image>
-        <image:loc>${media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`}</image:loc>
-        <image:caption><![CDATA[${media.alt || media.title || project.title} - ${project.category} في ${project.location}]]></image:caption>
-        <image:title><![CDATA[${project.title} - محترفين الديار العالمية جدة]]></image:title>
-        <image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location>
-      </image:image>`)
-          .join('') || '';
+  // تم نقل sitemap المشاريع إلى ملف منفصل /sitemap-projects.xml
 
-        const videos = project.mediaItems
-          ?.filter(media => media.type === 'VIDEO')
-          .slice(0, 3) // تقليل عدد الفيديوهات
-          .map(media => `
-      <video:video>
-        <video:content_loc>${media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`}</video:content_loc>
-        <video:title><![CDATA[${project.title} - ${project.category} في ${project.location}]]></video:title>
-        <video:description><![CDATA[${project.description || project.title} - مشروع ${project.category} منفذ من قبل محترفين الديار العالمية في ${project.location}]]></video:description>
-        <video:thumbnail_loc>${project.mediaItems?.find(m => m.type === 'IMAGE')?.src || `${baseUrl}/images/default-thumbnail.webp`}</video:thumbnail_loc>
-        <video:publication_date>${project.createdAt.toISOString()}</video:publication_date>
-        <video:family_friendly>yes</video:family_friendly>
-        <video:live>no</video:live>
-      </video:video>`)
-          .join('') || '';
-
-        const priority = project.featured ? '0.85' : '0.75';
-
-        return `
+  // إضافة روابط الـ sitemaps المنفصلة
+  const sitemapReferences = `
   <url>
-    <loc>${baseUrl}/portfolio/${(project as any).slug || (project as any).id}</loc>
-    <lastmod>${project.updatedAt.toISOString()}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>${priority}</priority>${images}${videos}
-  </url>`;
-      }
-    )
-    .join('');
-
-  // إضافة رابط sitemap المقالات المنفصل
-  const sitemapIndex = `
+    <loc>${baseUrl}/sitemap-projects.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
   <url>
     <loc>${baseUrl}/sitemap-articles.xml</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
@@ -406,13 +343,12 @@ export async function GET() {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
   ${staticSitemap}
   ${generalArticlesSitemap}
   ${serviceArticlesSitemap}
-  ${projectsSitemap}
-  ${sitemapIndex}
+  ${sitemapReferences}
 </urlset>`;
 
   return new Response(sitemap, {
