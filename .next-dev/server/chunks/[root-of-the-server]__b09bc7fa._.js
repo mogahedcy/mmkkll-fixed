@@ -264,40 +264,34 @@ async function GET(request) {
                                 OR: [
                                     {
                                         title: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     },
                                     {
                                         description: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     },
                                     {
                                         category: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     },
                                     {
                                         location: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     }
                                 ]
                             } : {},
                             category ? {
                                 category: {
-                                    contains: category,
-                                    mode: 'insensitive'
+                                    contains: category
                                 }
                             } : {},
                             location ? {
                                 location: {
-                                    contains: location,
-                                    mode: 'insensitive'
+                                    contains: location
                                 }
                             } : {}
                         ]
@@ -311,40 +305,34 @@ async function GET(request) {
                                 OR: [
                                     {
                                         title: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     },
                                     {
                                         description: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     },
                                     {
                                         category: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     },
                                     {
                                         location: {
-                                            contains: q,
-                                            mode: 'insensitive'
+                                            contains: q
                                         }
                                     }
                                 ]
                             } : {},
                             category ? {
                                 category: {
-                                    contains: category,
-                                    mode: 'insensitive'
+                                    contains: category
                                 }
                             } : {},
                             location ? {
                                 location: {
-                                    contains: location,
-                                    mode: 'insensitive'
+                                    contains: location
                                 }
                             } : {}
                         ]
