@@ -78,7 +78,7 @@ const categories = [
   { id: 'renovation', name: 'الترميم', icon: '🔨', color: 'bg-orange-500' },
   { id: 'sandwich-panel', name: 'الساندوتش بانل', icon: '🏢', color: 'bg-slate-500' },
   { id: 'sawater', name: 'السواتر', icon: '🧱', color: 'bg-red-500' },
-  { id: 'byoot-shaar', name: 'بيوت الشعر', icon: '⛺', color: 'bg-purple-500' },
+  { id: 'byoot-shaar', name: 'بيوت الش��ر', icon: '⛺', color: 'bg-purple-500' },
   { id: 'khayyam', name: 'الخيام', icon: '🏕️', color: 'bg-emerald-500' }
 ];
 
@@ -211,6 +211,10 @@ export default function ProjectDetailsClient({ project }: Props) {
             </Button>
 
             <div className="flex items-center gap-3">
+              <Button variant={isLiked ? 'default' : 'outline'} size="sm" onClick={handleToggleLike}>
+                <Heart className={`h-4 w-4 ml-2 ${isLiked ? 'fill-current' : ''}`} />
+                {isLiked ? 'إلغاء الإعجاب' : 'إعجاب'}
+              </Button>
               <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share2 className="h-4 w-4 ml-2" />
                 مشاركة
