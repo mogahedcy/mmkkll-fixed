@@ -207,7 +207,7 @@ export async function POST(request: NextRequest) {
     // التحقق من صحة البيانات
     if (!title || !description || !category || !location) {
       return NextResponse.json(
-        { error: 'البيانات ��لأساسية مطلوبة' },
+        { error: 'البيانات الأساسية مطلوبة' },
         { status: 400 }
       );
     }
@@ -329,12 +329,22 @@ async function notifyGoogleNewContent(slug: string): Promise<void> {
   const url = `${baseUrl}/portfolio/${slug}`;
 
   try {
-    // إشعار Google بالصفحة الجديدة
+    // إشعار Google بتحديث ال sitemap
     await fetch('https://www.google.com/ping?sitemap=' + encodeURIComponent(`${baseUrl}/sitemap.xml`));
 
-    // يمكن إضافة Google Search Console API هنا
-    console.log('✅ تم إشعار Google بالمحتوى الجديد:', url);
+    // إرسال IndexNow بعنوان الصفحة مباشرة
+    try {
+      await fetch(`${baseUrl}/api/indexnow`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: [url] })
+      });
+    } catch (e) {
+      console.warn('IndexNow submit failed:', e);
+    }
+
+    console.log('✅ تمت إشعارات الفهرسة:', url);
   } catch (error) {
-    console.warn('⚠️ فشل في إشعار Google:', error);
+    console.warn('⚠️ فشل في إشعار محركات البحث:', error);
   }
 }
