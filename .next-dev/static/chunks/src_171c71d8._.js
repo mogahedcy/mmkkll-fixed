@@ -363,12 +363,12 @@ function PortfolioPageClient() {
         categories: []
     });
     // حالات الفلترة والبحث
-    const [searchTerm, setSearchTerm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(searchParams.get('search') || '');
+    const [searchTerm, setSearchTerm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])((searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('search')) || '');
     const [viewMode, setViewMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('grid');
-    const [sortBy, setSortBy] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(searchParams.get('sort') || 'newest');
-    const [selectedCategory, setSelectedCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(searchParams.get('category') || 'all');
+    const [sortBy, setSortBy] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])((searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('sort')) || 'newest');
+    const [selectedCategory, setSelectedCategory] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])((searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('category')) || 'all');
     // التصفح والتحميل
-    const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(Number(searchParams.get('page')) || 1);
+    const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(Number(searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('page')) || 1);
     const [hasMore, setHasMore] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [loadingMore, setLoadingMore] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     // حالات التفاعل
@@ -624,7 +624,7 @@ function PortfolioPageClient() {
         }
     };
     const updateURL = (params)=>{
-        const newSearchParams = new URLSearchParams(searchParams.toString());
+        const newSearchParams = new URLSearchParams((searchParams === null || searchParams === void 0 ? void 0 : searchParams.toString()) || '');
         Object.entries(params).forEach((param)=>{
             let [key, value] = param;
             if (value) {
@@ -727,12 +727,12 @@ function PortfolioPageClient() {
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "min-h-screen bg-gradient-to-br from-gray-50 to-gray-100",
+        className: "min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-sm",
+                className: "bg-white/95 border-b border-gray-200/80 sticky top-0 z-40 backdrop-blur-md shadow-sm",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6",
+                    className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                             initial: {
@@ -743,150 +743,340 @@ function PortfolioPageClient() {
                                 opacity: 1,
                                 y: 0
                             },
-                            className: "text-center mb-8",
+                            className: "text-center mb-10",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                    className: "text-4xl md:text-5xl font-bold text-gray-900 mb-4",
-                                    children: "معرض أعمال محترفين الديار العالمية"
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "mb-6",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "inline-flex items-center gap-3 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                className: "w-4 h-4",
+                                                fill: "currentColor",
+                                                viewBox: "0 0 20 20",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    fillRule: "evenodd",
+                                                    d: "M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.94l1-4H9.03z",
+                                                    clipRule: "evenodd"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 404,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                lineNumber: 403,
+                                                columnNumber: 17
+                                            }, this),
+                                            "معرض أعمالنا المتميز"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                        lineNumber: 402,
+                                        columnNumber: 15
+                                    }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
                                     lineNumber: 401,
                                     columnNumber: 13
                                 }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                    className: "text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6 leading-tight",
+                                    children: "محترفين الديار العالمية"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                    lineNumber: 409,
+                                    columnNumber: 13
+                                }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-xl text-gray-600 mb-6 max-w-3xl mx-auto",
+                                    className: "text-2xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed font-medium",
                                     children: [
-                                        "اكتشف أكثر من ",
-                                        formatNumber(stats.total),
+                                        "أكثر من ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "font-bold text-blue-600",
+                                            children: formatNumber(stats.total)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                            lineNumber: 413,
+                                            columnNumber: 23
+                                        }, this),
                                         " مشروع متميز في جدة والمناطق المحيطة"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                    lineNumber: 404,
+                                    lineNumber: 412,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto",
+                                    className: "grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                                             whileHover: {
-                                                scale: 1.05
+                                                scale: 1.05,
+                                                y: -5
                                             },
-                                            className: "bg-blue-50 rounded-lg p-3 cursor-pointer",
+                                            className: "group bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-2xl font-bold text-blue-600",
-                                                    children: [
-                                                        formatNumber(stats.total),
-                                                        "+"
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 414,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-sm text-blue-800",
-                                                    children: "مشروع ناجح"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 415,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 410,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                                            whileHover: {
-                                                scale: 1.05
-                                            },
-                                            className: "bg-green-50 rounded-lg p-3 cursor-pointer",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-2xl font-bold text-green-600",
-                                                    children: stats.categories.length
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 421,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-sm text-green-800",
-                                                    children: "خدمات متخصصة"
+                                                    className: "absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
                                                     lineNumber: 422,
                                                     columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "relative z-10",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-3xl font-bold mb-1",
+                                                            children: [
+                                                                formatNumber(stats.total),
+                                                                "+"
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 424,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-blue-100 font-medium",
+                                                            children: "مشروع ناجح"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 425,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                            className: "w-8 h-8 mt-2 text-blue-200",
+                                                            fill: "none",
+                                                            stroke: "currentColor",
+                                                            viewBox: "0 0 24 24",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                strokeLinecap: "round",
+                                                                strokeLinejoin: "round",
+                                                                strokeWidth: 2,
+                                                                d: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                lineNumber: 427,
+                                                                columnNumber: 21
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 426,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 423,
+                                                    columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 417,
+                                            lineNumber: 418,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                                             whileHover: {
-                                                scale: 1.05
+                                                scale: 1.05,
+                                                y: -5
                                             },
-                                            className: "bg-purple-50 rounded-lg p-3 cursor-pointer",
+                                            className: "group bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-2xl font-bold text-purple-600",
-                                                    children: "15"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 428,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-sm text-purple-800",
-                                                    children: "عام خبرة"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 429,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 424,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                                            whileHover: {
-                                                scale: 1.05
-                                            },
-                                            className: "bg-orange-50 rounded-lg p-3 cursor-pointer",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-2xl font-bold text-orange-600",
-                                                    children: formatNumber(stats.featured)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 435,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-sm text-orange-800",
-                                                    children: "مشروع مميز"
+                                                    className: "absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
                                                     lineNumber: 436,
                                                     columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "relative z-10",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-3xl font-bold mb-1",
+                                                            children: stats.categories.length
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 438,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-green-100 font-medium",
+                                                            children: "خدمة متخصصة"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 439,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                            className: "w-8 h-8 mt-2 text-green-200",
+                                                            fill: "none",
+                                                            stroke: "currentColor",
+                                                            viewBox: "0 0 24 24",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                strokeLinecap: "round",
+                                                                strokeLinejoin: "round",
+                                                                strokeWidth: 2,
+                                                                d: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                lineNumber: 441,
+                                                                columnNumber: 21
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 440,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 437,
+                                                    columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 431,
+                                            lineNumber: 432,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                                            whileHover: {
+                                                scale: 1.05,
+                                                y: -5
+                                            },
+                                            className: "group bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 450,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "relative z-10",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-3xl font-bold mb-1",
+                                                            children: "15+"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 452,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-purple-100 font-medium",
+                                                            children: "عام خبرة"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 453,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                            className: "w-8 h-8 mt-2 text-purple-200",
+                                                            fill: "none",
+                                                            stroke: "currentColor",
+                                                            viewBox: "0 0 24 24",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                strokeLinecap: "round",
+                                                                strokeLinejoin: "round",
+                                                                strokeWidth: 2,
+                                                                d: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                lineNumber: 455,
+                                                                columnNumber: 21
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 454,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 451,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                            lineNumber: 446,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                                            whileHover: {
+                                                scale: 1.05,
+                                                y: -5
+                                            },
+                                            className: "group bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 464,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "relative z-10",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-3xl font-bold mb-1",
+                                                            children: formatNumber(stats.featured)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 466,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-orange-100 font-medium",
+                                                            children: "مشروع مميز"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 467,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                            className: "w-8 h-8 mt-2 text-orange-200",
+                                                            fill: "none",
+                                                            stroke: "currentColor",
+                                                            viewBox: "0 0 24 24",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                strokeLinecap: "round",
+                                                                strokeLinejoin: "round",
+                                                                strokeWidth: 2,
+                                                                d: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                lineNumber: 469,
+                                                                columnNumber: 21
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 468,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 465,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                            lineNumber: 460,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                    lineNumber: 409,
+                                    lineNumber: 417,
                                     columnNumber: 13
                                 }, this)
                             ]
@@ -896,7 +1086,7 @@ function PortfolioPageClient() {
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "space-y-4",
+                            className: "space-y-6",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                                     initial: {
@@ -907,153 +1097,296 @@ function PortfolioPageClient() {
                                         opacity: 1,
                                         y: 0
                                     },
-                                    className: "relative max-w-2xl mx-auto",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
-                                            className: "absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 449,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                            value: searchTerm,
-                                            onChange: (e)=>handleSearchChange(e.target.value),
-                                            placeholder: "ابحث في المشاريع... (العنوان، الوصف، الموقع، الكلمات المفتاحية)",
-                                            className: "pr-12 text-lg py-3 rounded-full border-2 border-gray-300 focus:border-blue-500 transition-all duration-200"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 450,
-                                            columnNumber: 15
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
+                                    className: "relative max-w-3xl mx-auto",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "relative group",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
+                                                className: "absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 w-6 h-6 transition-colors duration-200"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                lineNumber: 485,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                value: searchTerm,
+                                                onChange: (e)=>handleSearchChange(e.target.value),
+                                                placeholder: "ابحث في معرض أعمالنا... (العنوان، الوصف، الموقع، نوع العمل)",
+                                                className: "pr-16 pl-6 py-4 text-lg rounded-2xl border-2 border-gray-200 bg-white/80 backdrop-blur-sm focus:border-blue-500 focus:bg-white transition-all duration-300 shadow-lg focus:shadow-xl placeholder:text-gray-400"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                lineNumber: 486,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "absolute left-4 top-1/2 transform -translate-y-1/2",
+                                                children: searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    onClick: ()=>handleSearchChange(''),
+                                                    className: "p-1 rounded-full hover:bg-gray-100 transition-colors duration-200",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                        className: "w-4 h-4 text-gray-400",
+                                                        fill: "none",
+                                                        stroke: "currentColor",
+                                                        viewBox: "0 0 24 24",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                            strokeLinecap: "round",
+                                                            strokeLinejoin: "round",
+                                                            strokeWidth: 2,
+                                                            d: "M6 18L18 6M6 6l12 12"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 499,
+                                                            columnNumber: 25
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                        lineNumber: 498,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 494,
+                                                    columnNumber: 21
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                lineNumber: 492,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                        lineNumber: 484,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                    lineNumber: 444,
+                                    lineNumber: 479,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex flex-col md:flex-row gap-4 items-center justify-between",
+                                    className: "space-y-6",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex flex-wrap gap-2",
-                                            children: categories.map((category)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-                                                    whileHover: {
-                                                        scale: 1.05
-                                                    },
-                                                    whileTap: {
-                                                        scale: 0.95
-                                                    },
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                        variant: selectedCategory === category.value ? 'default' : 'outline',
-                                                        size: "sm",
-                                                        onClick: ()=>handleCategoryChange(category.value),
-                                                        className: "rounded-full transition-all duration-200",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "mr-2",
-                                                                children: category.icon
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 470,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            category.label
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 464,
-                                                        columnNumber: 21
-                                                    }, this)
-                                                }, "category-".concat(category.value), false, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 463,
-                                                    columnNumber: 19
-                                                }, this))
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 461,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex items-center gap-2",
+                                            className: "text-center",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
-                                                    value: sortBy,
-                                                    onChange: (e)=>handleSortChange(e.target.value),
-                                                    className: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-                                                    children: sortOptions.map((option)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                            value: option.value,
-                                                            children: option.label
-                                                        }, "sort-".concat(option.value), false, {
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                    className: "text-lg font-semibold text-gray-800 mb-4",
+                                                    children: "اختر تخصصك المفضل"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 511,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex flex-wrap gap-3 justify-center",
+                                                    children: categories.map((category)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                                                            whileHover: {
+                                                                scale: 1.05,
+                                                                y: -2
+                                                            },
+                                                            whileTap: {
+                                                                scale: 0.95
+                                                            },
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                                variant: selectedCategory === category.value ? 'default' : 'outline',
+                                                                size: "lg",
+                                                                onClick: ()=>handleCategoryChange(category.value),
+                                                                className: "rounded-2xl transition-all duration-300 px-6 py-3 font-medium shadow-md hover:shadow-lg\n                          ".concat(selectedCategory === category.value ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-lg' : 'bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50'),
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        className: "ml-3 text-xl",
+                                                                        children: category.icon
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                        lineNumber: 525,
+                                                                        columnNumber: 25
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        className: "text-base",
+                                                                        children: category.label
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                        lineNumber: 526,
+                                                                        columnNumber: 25
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                lineNumber: 515,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, "category-".concat(category.value), false, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 485,
+                                                            lineNumber: 514,
                                                             columnNumber: 21
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 479,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex border border-gray-300 rounded-lg overflow-hidden",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                            variant: viewMode === 'grid' ? 'default' : 'ghost',
-                                                            size: "sm",
-                                                            onClick: ()=>setViewMode('grid'),
-                                                            className: "rounded-none",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3X3$3e$__["Grid3X3"], {
-                                                                className: "w-4 h-4"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 498,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 492,
-                                                            columnNumber: 19
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                            variant: viewMode === 'list' ? 'default' : 'ghost',
-                                                            size: "sm",
-                                                            onClick: ()=>setViewMode('list'),
-                                                            className: "rounded-none",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__["List"], {
-                                                                className: "w-4 h-4"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 506,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 500,
-                                                            columnNumber: 19
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 491,
+                                                    lineNumber: 512,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 478,
+                                            lineNumber: 510,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 shadow-lg",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-4",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                            className: "text-sm font-medium text-gray-700",
+                                                            children: "ترتيب بحسب:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 536,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "relative",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                                                    value: sortBy,
+                                                                    onChange: (e)=>handleSortChange(e.target.value),
+                                                                    className: "px-4 py-2 bg-white border-2 border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none pr-10 cursor-pointer transition-all duration-200",
+                                                                    children: sortOptions.map((option)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                            value: option.value,
+                                                                            children: option.label
+                                                                        }, "sort-".concat(option.value), false, {
+                                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                            lineNumber: 544,
+                                                                            columnNumber: 25
+                                                                        }, this))
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                    lineNumber: 538,
+                                                                    columnNumber: 21
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none",
+                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                                        className: "w-4 h-4 text-gray-400",
+                                                                        fill: "none",
+                                                                        stroke: "currentColor",
+                                                                        viewBox: "0 0 24 24",
+                                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                            strokeLinecap: "round",
+                                                                            strokeLinejoin: "round",
+                                                                            strokeWidth: 2,
+                                                                            d: "M19 9l-7 7-7-7"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                            lineNumber: 551,
+                                                                            columnNumber: 25
+                                                                        }, this)
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                        lineNumber: 550,
+                                                                        columnNumber: 23
+                                                                    }, this)
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                    lineNumber: 549,
+                                                                    columnNumber: 21
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 537,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 535,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-2",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-sm font-medium text-gray-700",
+                                                            children: "طريقة العرض:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 558,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex bg-gray-100 rounded-xl p-1 border border-gray-200",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                                    variant: viewMode === 'grid' ? 'default' : 'ghost',
+                                                                    size: "sm",
+                                                                    onClick: ()=>setViewMode('grid'),
+                                                                    className: "rounded-lg transition-all duration-200 px-4 py-2\n                        ".concat(viewMode === 'grid' ? 'bg-white shadow-md text-blue-600 border border-blue-200' : 'text-gray-600 hover:text-gray-800'),
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3X3$3e$__["Grid3X3"], {
+                                                                            className: "w-5 h-5 ml-1"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                            lineNumber: 570,
+                                                                            columnNumber: 23
+                                                                        }, this),
+                                                                        "شبكة"
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                    lineNumber: 560,
+                                                                    columnNumber: 21
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                                    variant: viewMode === 'list' ? 'default' : 'ghost',
+                                                                    size: "sm",
+                                                                    onClick: ()=>setViewMode('list'),
+                                                                    className: "rounded-lg transition-all duration-200 px-4 py-2\n                        ".concat(viewMode === 'list' ? 'bg-white shadow-md text-blue-600 border border-blue-200' : 'text-gray-600 hover:text-gray-800'),
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__["List"], {
+                                                                            className: "w-5 h-5 ml-1"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                            lineNumber: 583,
+                                                                            columnNumber: 23
+                                                                        }, this),
+                                                                        "قائمة"
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                    lineNumber: 573,
+                                                                    columnNumber: 21
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                            lineNumber: 559,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                    lineNumber: 557,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                            lineNumber: 534,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                    lineNumber: 459,
+                                    lineNumber: 508,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                            lineNumber: 442,
+                            lineNumber: 477,
                             columnNumber: 11
                         }, this)
                     ]
@@ -1114,15 +1447,26 @@ function PortfolioPageClient() {
                                                         href: "/portfolio/".concat(project.slug || project.id),
                                                         onClick: ()=>registerView(project.id),
                                                         children: mainMedia ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                                                            children: mainMedia.type === 'IMAGE' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                                src: mainMedia.src,
-                                                                alt: mainMedia.alt || project.title,
-                                                                fill: true,
-                                                                className: "object-cover",
-                                                                sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                                            children: mainMedia.type === 'IMAGE' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "relative w-full h-full",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                                    src: mainMedia.src,
+                                                                    alt: mainMedia.alt || project.title,
+                                                                    fill: true,
+                                                                    className: "object-cover transition-transform duration-300 group-hover:scale-110",
+                                                                    sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw",
+                                                                    priority: index < 4,
+                                                                    loading: index < 8 ? 'eager' : 'lazy',
+                                                                    placeholder: "blur",
+                                                                    blurDataURL: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
+                                                                    lineNumber: 633,
+                                                                    columnNumber: 35
+                                                                }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 553,
+                                                                lineNumber: 632,
                                                                 columnNumber: 33
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "relative w-full h-full",
@@ -1138,12 +1482,12 @@ function PortfolioPageClient() {
                                                                             type: "video/mp4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 569,
+                                                                            lineNumber: 654,
                                                                             columnNumber: 37
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 562,
+                                                                        lineNumber: 647,
                                                                         columnNumber: 35
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1152,12 +1496,12 @@ function PortfolioPageClient() {
                                                                             className: "w-4 h-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 572,
+                                                                            lineNumber: 657,
                                                                             columnNumber: 37
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 571,
+                                                                        lineNumber: 656,
                                                                         columnNumber: 35
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1171,23 +1515,23 @@ function PortfolioPageClient() {
                                                                                 className: "w-8 h-8 text-white"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                lineNumber: 579,
+                                                                                lineNumber: 664,
                                                                                 columnNumber: 39
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 575,
+                                                                            lineNumber: 660,
                                                                             columnNumber: 37
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 574,
+                                                                        lineNumber: 659,
                                                                         columnNumber: 35
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 561,
+                                                                lineNumber: 646,
                                                                 columnNumber: 33
                                                             }, this)
                                                         }, void 0, false) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1196,17 +1540,17 @@ function PortfolioPageClient() {
                                                                 className: "w-16 h-16 text-gray-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 587,
+                                                                lineNumber: 672,
                                                                 columnNumber: 31
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 586,
+                                                            lineNumber: 671,
                                                             columnNumber: 29
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 546,
+                                                        lineNumber: 625,
                                                         columnNumber: 25
                                                     }, this),
                                                     project.mediaCount > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1216,14 +1560,14 @@ function PortfolioPageClient() {
                                                                 className: "w-3 h-3"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 595,
+                                                                lineNumber: 680,
                                                                 columnNumber: 29
                                                             }, this),
                                                             project.mediaCount
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 594,
+                                                        lineNumber: 679,
                                                         columnNumber: 27
                                                     }, this),
                                                     project.featured && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1239,14 +1583,14 @@ function PortfolioPageClient() {
                                                                 className: "w-3 h-3"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 607,
+                                                                lineNumber: 692,
                                                                 columnNumber: 29
                                                             }, this),
                                                             "مميز"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 602,
+                                                        lineNumber: 687,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1265,12 +1609,12 @@ function PortfolioPageClient() {
                                                                     className: "w-4 h-4 ".concat(isLiked ? 'fill-current' : '')
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 624,
+                                                                    lineNumber: 709,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 614,
+                                                                lineNumber: 699,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -1286,31 +1630,31 @@ function PortfolioPageClient() {
                                                                     className: "w-4 h-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 633,
+                                                                    lineNumber: 718,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 627,
+                                                                lineNumber: 712,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 613,
+                                                        lineNumber: 698,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 638,
+                                                        lineNumber: 723,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                lineNumber: 545,
+                                                lineNumber: 624,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1325,7 +1669,7 @@ function PortfolioPageClient() {
                                                                 children: project.category
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 644,
+                                                                lineNumber: 729,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1335,7 +1679,7 @@ function PortfolioPageClient() {
                                                                         className: "w-3 h-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 648,
+                                                                        lineNumber: 733,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     project.readTime,
@@ -1343,13 +1687,13 @@ function PortfolioPageClient() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 647,
+                                                                lineNumber: 732,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 643,
+                                                        lineNumber: 728,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1360,12 +1704,12 @@ function PortfolioPageClient() {
                                                             children: project.title
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 657,
+                                                            lineNumber: 742,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 653,
+                                                        lineNumber: 738,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1375,14 +1719,14 @@ function PortfolioPageClient() {
                                                                 className: "w-4 h-4 ml-1"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 663,
+                                                                lineNumber: 748,
                                                                 columnNumber: 27
                                                             }, this),
                                                             project.location
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 662,
+                                                        lineNumber: 747,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1390,7 +1734,7 @@ function PortfolioPageClient() {
                                                         children: project.excerpt
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 667,
+                                                        lineNumber: 752,
                                                         columnNumber: 25
                                                     }, this),
                                                     ((_project_tags = project.tags) === null || _project_tags === void 0 ? void 0 : _project_tags.length) > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1404,7 +1748,7 @@ function PortfolioPageClient() {
                                                                     ]
                                                                 }, "tag-".concat(project.id, "-").concat(tag.name, "-").concat(index), true, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 675,
+                                                                    lineNumber: 760,
                                                                     columnNumber: 31
                                                                 }, this)),
                                                             project.tags.length > 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1415,13 +1759,13 @@ function PortfolioPageClient() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 680,
+                                                                lineNumber: 765,
                                                                 columnNumber: 31
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 673,
+                                                        lineNumber: 758,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1440,14 +1784,14 @@ function PortfolioPageClient() {
                                                                                 className: "w-4 h-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                lineNumber: 692,
+                                                                                lineNumber: 777,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             formatNumber(interactions.views || project.views)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 688,
+                                                                        lineNumber: 773,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].span, {
@@ -1460,14 +1804,14 @@ function PortfolioPageClient() {
                                                                                 className: "w-4 h-4 ".concat(isLiked ? 'text-red-500' : '')
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                lineNumber: 699,
+                                                                                lineNumber: 784,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             formatNumber(interactions.likes || project.likes)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 695,
+                                                                        lineNumber: 780,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].span, {
@@ -1480,20 +1824,20 @@ function PortfolioPageClient() {
                                                                                 className: "w-4 h-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                lineNumber: 706,
+                                                                                lineNumber: 791,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             formatNumber(interactions.comments || project.commentsCount)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 702,
+                                                                        lineNumber: 787,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 687,
+                                                                lineNumber: 772,
                                                                 columnNumber: 27
                                                             }, this),
                                                             project.rating > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1503,26 +1847,26 @@ function PortfolioPageClient() {
                                                                         className: "w-4 h-4 text-yellow-400 fill-current"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 713,
+                                                                        lineNumber: 798,
                                                                         columnNumber: 31
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                         children: project.rating.toFixed(1)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 714,
+                                                                        lineNumber: 799,
                                                                         columnNumber: 31
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 712,
+                                                                lineNumber: 797,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 686,
+                                                        lineNumber: 771,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1537,30 +1881,30 @@ function PortfolioPageClient() {
                                                                     className: "w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 726,
+                                                                    lineNumber: 811,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 721,
+                                                            lineNumber: 806,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 720,
+                                                        lineNumber: 805,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                lineNumber: 642,
+                                                lineNumber: 727,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, project.id, true, {
                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                        lineNumber: 536,
+                                        lineNumber: 615,
                                         columnNumber: 21
                                     }, this) : // List View
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1591,7 +1935,7 @@ function PortfolioPageClient() {
                                                             className: "object-cover hover:scale-110 transition-transform duration-300"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 749,
+                                                            lineNumber: 834,
                                                             columnNumber: 33
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "relative w-full h-full",
@@ -1605,12 +1949,12 @@ function PortfolioPageClient() {
                                                                         type: "video/mp4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 762,
+                                                                        lineNumber: 847,
                                                                         columnNumber: 37
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 757,
+                                                                    lineNumber: 842,
                                                                     columnNumber: 35
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1619,18 +1963,18 @@ function PortfolioPageClient() {
                                                                         className: "w-6 h-6 text-white"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 765,
+                                                                        lineNumber: 850,
                                                                         columnNumber: 37
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 764,
+                                                                    lineNumber: 849,
                                                                     columnNumber: 35
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 756,
+                                                            lineNumber: 841,
                                                             columnNumber: 33
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "w-full h-full bg-gray-200 flex items-center justify-center",
@@ -1638,22 +1982,22 @@ function PortfolioPageClient() {
                                                                 className: "w-8 h-8 text-gray-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 771,
+                                                                lineNumber: 856,
                                                                 columnNumber: 33
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 770,
+                                                            lineNumber: 855,
                                                             columnNumber: 31
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                        lineNumber: 743,
+                                                        lineNumber: 828,
                                                         columnNumber: 27
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 742,
+                                                    lineNumber: 827,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1670,7 +2014,7 @@ function PortfolioPageClient() {
                                                                             children: project.category
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 781,
+                                                                            lineNumber: 866,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         project.featured && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1681,20 +2025,20 @@ function PortfolioPageClient() {
                                                                                     className: "w-3 h-3 ml-1"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                    lineNumber: 784,
+                                                                                    lineNumber: 869,
                                                                                     columnNumber: 35
                                                                                 }, this),
                                                                                 "مميز"
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 783,
+                                                                            lineNumber: 868,
                                                                             columnNumber: 33
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 780,
+                                                                    lineNumber: 865,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1713,12 +2057,12 @@ function PortfolioPageClient() {
                                                                                 className: "w-4 h-4 ".concat(isLiked ? 'fill-current' : '')
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                lineNumber: 801,
+                                                                                lineNumber: 886,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 791,
+                                                                            lineNumber: 876,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -1734,24 +2078,24 @@ function PortfolioPageClient() {
                                                                                 className: "w-4 h-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                lineNumber: 810,
+                                                                                lineNumber: 895,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 804,
+                                                                            lineNumber: 889,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 790,
+                                                                    lineNumber: 875,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 779,
+                                                            lineNumber: 864,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1762,12 +2106,12 @@ function PortfolioPageClient() {
                                                                 children: project.title
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                lineNumber: 819,
+                                                                lineNumber: 904,
                                                                 columnNumber: 29
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 815,
+                                                            lineNumber: 900,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1777,7 +2121,7 @@ function PortfolioPageClient() {
                                                                     className: "w-4 h-4 ml-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 825,
+                                                                    lineNumber: 910,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 project.location,
@@ -1786,14 +2130,14 @@ function PortfolioPageClient() {
                                                                     children: "•"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 827,
+                                                                    lineNumber: 912,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
                                                                     className: "w-4 h-4 ml-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 828,
+                                                                    lineNumber: 913,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 project.readTime,
@@ -1801,7 +2145,7 @@ function PortfolioPageClient() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 824,
+                                                            lineNumber: 909,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1809,7 +2153,7 @@ function PortfolioPageClient() {
                                                             children: project.excerpt
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 832,
+                                                            lineNumber: 917,
                                                             columnNumber: 27
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1825,14 +2169,14 @@ function PortfolioPageClient() {
                                                                                     className: "w-4 h-4"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                    lineNumber: 840,
+                                                                                    lineNumber: 925,
                                                                                     columnNumber: 33
                                                                                 }, this),
                                                                                 formatNumber(interactions.views || project.views)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 839,
+                                                                            lineNumber: 924,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1842,14 +2186,14 @@ function PortfolioPageClient() {
                                                                                     className: "w-4 h-4 ".concat(isLiked ? 'text-red-500' : '')
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                    lineNumber: 844,
+                                                                                    lineNumber: 929,
                                                                                     columnNumber: 33
                                                                                 }, this),
                                                                                 formatNumber(interactions.likes || project.likes)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 843,
+                                                                            lineNumber: 928,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1859,20 +2203,20 @@ function PortfolioPageClient() {
                                                                                     className: "w-4 h-4"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                    lineNumber: 848,
+                                                                                    lineNumber: 933,
                                                                                     columnNumber: 33
                                                                                 }, this),
                                                                                 formatNumber(interactions.comments || project.commentsCount)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                            lineNumber: 847,
+                                                                            lineNumber: 932,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 838,
+                                                                    lineNumber: 923,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1886,47 +2230,47 @@ function PortfolioPageClient() {
                                                                                 className: "w-4 h-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                                lineNumber: 859,
+                                                                                lineNumber: 944,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                        lineNumber: 854,
+                                                                        lineNumber: 939,
                                                                         columnNumber: 31
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                                    lineNumber: 853,
+                                                                    lineNumber: 938,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                            lineNumber: 837,
+                                                            lineNumber: 922,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                    lineNumber: 778,
+                                                    lineNumber: 863,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                            lineNumber: 740,
+                                            lineNumber: 825,
                                             columnNumber: 23
                                         }, this)
                                     }, project.id, false, {
                                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                        lineNumber: 733,
+                                        lineNumber: 818,
                                         columnNumber: 21
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                lineNumber: 525,
+                                lineNumber: 604,
                                 columnNumber: 15
                             }, this),
                             hasMore && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1948,7 +2292,7 @@ function PortfolioPageClient() {
                                                 className: "w-5 h-5 animate-spin ml-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                lineNumber: 885,
+                                                lineNumber: 970,
                                                 columnNumber: 25
                                             }, this),
                                             "جاري التحميل..."
@@ -1959,7 +2303,7 @@ function PortfolioPageClient() {
                                                 className: "w-5 h-5 ml-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                                lineNumber: 890,
+                                                lineNumber: 975,
                                                 columnNumber: 25
                                             }, this),
                                             "تحميل المزيد"
@@ -1967,18 +2311,18 @@ function PortfolioPageClient() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                    lineNumber: 877,
+                                    lineNumber: 962,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                lineNumber: 872,
+                                lineNumber: 957,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, "projects", true, {
                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                        lineNumber: 519,
+                        lineNumber: 598,
                         columnNumber: 13
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                         initial: {
@@ -1995,7 +2339,7 @@ function PortfolioPageClient() {
                                 className: "w-16 h-16 text-gray-400 mx-auto mb-4"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                lineNumber: 905,
+                                lineNumber: 990,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2003,7 +2347,7 @@ function PortfolioPageClient() {
                                 children: searchTerm ? 'لم يتم العثور على نتائج' : 'لا توجد مشاريع'
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                lineNumber: 906,
+                                lineNumber: 991,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2011,7 +2355,7 @@ function PortfolioPageClient() {
                                 children: searchTerm ? 'لم يتم العثور على مشاريع تحتوي على "'.concat(searchTerm, '"') : 'ستظهر المشاريع هنا عند إضافتها'
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                lineNumber: 909,
+                                lineNumber: 994,
                                 columnNumber: 15
                             }, this),
                             searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2019,23 +2363,23 @@ function PortfolioPageClient() {
                                 children: "إزالة البحث"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                                lineNumber: 916,
+                                lineNumber: 1001,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, "no-results", true, {
                         fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                        lineNumber: 899,
+                        lineNumber: 984,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                    lineNumber: 517,
+                    lineNumber: 596,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/portfolio/PortfolioPageClient.tsx",
-                lineNumber: 516,
+                lineNumber: 595,
                 columnNumber: 7
             }, this)
         ]
@@ -2045,7 +2389,7 @@ function PortfolioPageClient() {
         columnNumber: 5
     }, this);
 }
-_s(PortfolioPageClient, "MkQuQ1i2oZLfIDl0LNVROOC8iqg=", false, function() {
+_s(PortfolioPageClient, "6rNY/D5+wif1lhEftuPUJ2QQg0E=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]

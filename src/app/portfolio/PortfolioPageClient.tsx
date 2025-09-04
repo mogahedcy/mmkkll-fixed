@@ -104,13 +104,13 @@ export default function PortfolioPageClient() {
   const [stats, setStats] = useState<Stats>({ total: 0, featured: 0, categories: [] });
 
   // حالات الفلترة والبحث
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const [searchTerm, setSearchTerm] = useState(searchParams?.get('search') || '');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
+  const [sortBy, setSortBy] = useState(searchParams?.get('sort') || 'newest');
+  const [selectedCategory, setSelectedCategory] = useState(searchParams?.get('category') || 'all');
 
   // التصفح والتحميل
-  const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
+  const [currentPage, setCurrentPage] = useState(Number(searchParams?.get('page')) || 1);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -328,7 +328,7 @@ export default function PortfolioPageClient() {
   };
 
   const updateURL = (params: Record<string, string>) => {
-    const newSearchParams = new URLSearchParams(searchParams.toString());
+    const newSearchParams = new URLSearchParams(searchParams?.toString() || '');
 
     Object.entries(params).forEach(([key, value]) => {
       if (value) {
@@ -388,123 +388,202 @@ export default function PortfolioPageClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Header Section */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Title and Stats */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
+      {/* Header Section with enhanced design */}
+      <div className="bg-white/95 border-b border-gray-200/80 sticky top-0 z-40 backdrop-blur-md shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Enhanced Title and Stats */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8"
+            className="text-center mb-10"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              معرض أعمال محترفين الديار العالمية
+            <div className="mb-6">
+              <div className="inline-flex items-center gap-3 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.94l1-4H9.03z" clipRule="evenodd" />
+                </svg>
+                معرض أعمالنا المتميز
+              </div>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6 leading-tight">
+              محترفين الديار العالمية
             </h1>
-            <p className="text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
-              اكتشف أكثر من {formatNumber(stats.total)} مشروع متميز في جدة والمناطق المحيطة
+            <p className="text-2xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed font-medium">
+              أكثر من <span className="font-bold text-blue-600">{formatNumber(stats.total)}</span> مشروع متميز في جدة والمناطق المحيطة
             </p>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+            {/* Enhanced Quick Stats */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
               <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="bg-blue-50 rounded-lg p-3 cursor-pointer"
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
               >
-                <div className="text-2xl font-bold text-blue-600">{formatNumber(stats.total)}+</div>
-                <div className="text-sm text-blue-800">مشروع ناجح</div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="relative z-10">
+                  <div className="text-3xl font-bold mb-1">{formatNumber(stats.total)}+</div>
+                  <div className="text-blue-100 font-medium">مشروع ناجح</div>
+                  <svg className="w-8 h-8 mt-2 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
               </motion.div>
+              
               <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="bg-green-50 rounded-lg p-3 cursor-pointer"
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
               >
-                <div className="text-2xl font-bold text-green-600">{stats.categories.length}</div>
-                <div className="text-sm text-green-800">خدمات متخصصة</div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="relative z-10">
+                  <div className="text-3xl font-bold mb-1">{stats.categories.length}</div>
+                  <div className="text-green-100 font-medium">خدمة متخصصة</div>
+                  <svg className="w-8 h-8 mt-2 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
               </motion.div>
+              
               <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="bg-purple-50 rounded-lg p-3 cursor-pointer"
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
               >
-                <div className="text-2xl font-bold text-purple-600">15</div>
-                <div className="text-sm text-purple-800">عام خبرة</div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="relative z-10">
+                  <div className="text-3xl font-bold mb-1">15+</div>
+                  <div className="text-purple-100 font-medium">عام خبرة</div>
+                  <svg className="w-8 h-8 mt-2 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
               </motion.div>
+              
               <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="bg-orange-50 rounded-lg p-3 cursor-pointer"
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
               >
-                <div className="text-2xl font-bold text-orange-600">{formatNumber(stats.featured)}</div>
-                <div className="text-sm text-orange-800">مشروع مميز</div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="relative z-10">
+                  <div className="text-3xl font-bold mb-1">{formatNumber(stats.featured)}</div>
+                  <div className="text-orange-100 font-medium">مشروع مميز</div>
+                  <svg className="w-8 h-8 mt-2 text-orange-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                  </svg>
+                </div>
               </motion.div>
             </div>
           </motion.div>
 
-          {/* Search and Filters */}
-          <div className="space-y-4">
-            {/* Search Bar */}
+          {/* Enhanced Search and Filters */}
+          <div className="space-y-6">
+            {/* Premium Search Bar */}
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative max-w-2xl mx-auto"
+              className="relative max-w-3xl mx-auto"
             >
-              <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input
-                value={searchTerm}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                placeholder="ابحث في المشاريع... (العنوان، الوصف، الموقع، الكلمات المفتاحية)"
-                className="pr-12 text-lg py-3 rounded-full border-2 border-gray-300 focus:border-blue-500 transition-all duration-200"
-              />
+              <div className="relative group">
+                <Search className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 w-6 h-6 transition-colors duration-200" />
+                <Input
+                  value={searchTerm}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  placeholder="ابحث في معرض أعمالنا... (العنوان، الوصف، الموقع، نوع العمل)"
+                  className="pr-16 pl-6 py-4 text-lg rounded-2xl border-2 border-gray-200 bg-white/80 backdrop-blur-sm focus:border-blue-500 focus:bg-white transition-all duration-300 shadow-lg focus:shadow-xl placeholder:text-gray-400"
+                />
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                  {searchTerm && (
+                    <button
+                      onClick={() => handleSearchChange('')}
+                      className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
             </motion.div>
 
-            {/* Filters Row */}
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              {/* Categories */}
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <motion.div key={`category-${category.value}`} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button
-                      variant={selectedCategory === category.value ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => handleCategoryChange(category.value)}
-                      className="rounded-full transition-all duration-200"
-                    >
-                      <span className="mr-2">{category.icon}</span>
-                      {category.label}
-                    </Button>
-                  </motion.div>
-                ))}
+            {/* Premium Filters Row */}
+            <div className="space-y-6">
+              {/* Categories with enhanced design */}
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">اختر تخصصك المفضل</h3>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  {categories.map((category) => (
+                    <motion.div key={`category-${category.value}`} whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant={selectedCategory === category.value ? 'default' : 'outline'}
+                        size="lg"
+                        onClick={() => handleCategoryChange(category.value)}
+                        className={`rounded-2xl transition-all duration-300 px-6 py-3 font-medium shadow-md hover:shadow-lg
+                          ${selectedCategory === category.value 
+                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-lg' 
+                            : 'bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                          }`}
+                      >
+                        <span className="ml-3 text-xl">{category.icon}</span>
+                        <span className="text-base">{category.label}</span>
+                      </Button>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
 
-              {/* Sort and View Options */}
-              <div className="flex items-center gap-2">
-                <select
-                  value={sortBy}
-                  onChange={(e) => handleSortChange(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {sortOptions.map((option) => (
-                    <option key={`sort-${option.value}`} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+              {/* Premium Sort and View Options */}
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 shadow-lg">
+                <div className="flex items-center gap-4">
+                  <label className="text-sm font-medium text-gray-700">ترتيب بحسب:</label>
+                  <div className="relative">
+                    <select
+                      value={sortBy}
+                      onChange={(e) => handleSortChange(e.target.value)}
+                      className="px-4 py-2 bg-white border-2 border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none pr-10 cursor-pointer transition-all duration-200"
+                    >
+                      {sortOptions.map((option) => (
+                        <option key={`sort-${option.value}`} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
 
-                <div className="flex border border-gray-300 rounded-lg overflow-hidden">
-                  <Button
-                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                    size="sm"
-                    onClick={() => setViewMode('grid')}
-                    className="rounded-none"
-                  >
-                    <Grid3X3 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === 'list' ? 'default' : 'ghost'}
-                    size="sm"
-                    onClick={() => setViewMode('list')}
-                    className="rounded-none"
-                  >
-                    <List className="w-4 h-4" />
-                  </Button>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-gray-700">طريقة العرض:</span>
+                  <div className="flex bg-gray-100 rounded-xl p-1 border border-gray-200">
+                    <Button
+                      variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                      size="sm"
+                      onClick={() => setViewMode('grid')}
+                      className={`rounded-lg transition-all duration-200 px-4 py-2
+                        ${viewMode === 'grid' 
+                          ? 'bg-white shadow-md text-blue-600 border border-blue-200' 
+                          : 'text-gray-600 hover:text-gray-800'
+                        }`}
+                    >
+                      <Grid3X3 className="w-5 h-5 ml-1" />
+                      شبكة
+                    </Button>
+                    <Button
+                      variant={viewMode === 'list' ? 'default' : 'ghost'}
+                      size="sm"
+                      onClick={() => setViewMode('list')}
+                      className={`rounded-lg transition-all duration-200 px-4 py-2
+                        ${viewMode === 'list' 
+                          ? 'bg-white shadow-md text-blue-600 border border-blue-200' 
+                          : 'text-gray-600 hover:text-gray-800'
+                        }`}
+                    >
+                      <List className="w-5 h-5 ml-1" />
+                      قائمة
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -550,13 +629,19 @@ export default function PortfolioPageClient() {
                           {mainMedia ? (
                             <>
                               {mainMedia.type === 'IMAGE' ? (
-                                <Image
-                                  src={mainMedia.src}
-                                  alt={mainMedia.alt || project.title}
-                                  fill
-                                  className="object-cover"
-                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                />
+                                <div className="relative w-full h-full">
+                                  <Image
+                                    src={mainMedia.src}
+                                    alt={mainMedia.alt || project.title}
+                                    fill
+                                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                    priority={index < 4}
+                                    loading={index < 8 ? 'eager' : 'lazy'}
+                                    placeholder="blur"
+                                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                                  />
+                                </div>
                               ) : (
                                 <div className="relative w-full h-full">
                                   <video

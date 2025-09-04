@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface PerformanceOptimizerProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 // Image cache management
@@ -313,5 +313,5 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
     };
   }, [isClient]);
 
-  return <>{children}</>;
+  return <>{children || null}</>;
 }

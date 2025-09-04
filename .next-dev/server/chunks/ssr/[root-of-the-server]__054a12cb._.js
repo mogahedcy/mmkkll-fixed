@@ -36,7 +36,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$shared$2f$lib$2f$app$2d$dynamic$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/shared/lib/app-dynamic.js [app-ssr] (ecmascript)");
 ;
 'use client';
-'use client';
 ;
 ;
 ;
@@ -44,52 +43,27 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 function ClientBody({ children }) {
     const [isMounted, setIsMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["usePathname"])();
-    const [isAuthenticated, setIsAuthenticated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [isLoading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         setIsMounted(true);
     }, []);
-    // التحقق من حالة تسجيل الدخول
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        checkAuthStatus();
-    }, []);
-    const checkAuthStatus = async ()=>{
-        try {
-            const response = await fetch('/api/auth/verify');
-            const data = await response.json();
-            setIsAuthenticated(data.authenticated);
-        } catch (error) {
-            console.error('خطأ في التحقق من المصادقة:', error);
-            setIsAuthenticated(false);
-        } finally{
-            setLoading(false);
-        }
-    };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-    // هذا الشرط لم يكن له أي تأثير فعلي وتمت إزالته
-    // if (!isMounted) return;
-    }, [
-        isMounted,
-        pathname
-    ]); // تم تحديث الاعتماديات لتشمل isMounted
+    // تحميل محسن الأداء بشكل ديناميكي
     const PerformanceOptimizer = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$shared$2f$lib$2f$app$2d$dynamic$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])(async ()=>{}, {
         loadableGenerated: {
             modules: [
                 "[project]/src/components/PerformanceOptimizer.tsx [app-client] (ecmascript, next/dynamic entry)"
             ]
         },
-        ssr: false
+        ssr: false,
+        loading: ()=>null
     });
     if (!isMounted) {
-        // أثناء الـ hydration، نعرض نفس المحتوى
+        // عرض المحتوى أثناء hydration مع إخفاء مؤقت لتجنب hydration mismatch
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            style: {
-                visibility: 'hidden'
-            },
+            suppressHydrationWarning: true,
             children: children
         }, void 0, false, {
             fileName: "[project]/src/app/ClientBody.tsx",
-            lineNumber: 52,
+            lineNumber: 27,
             columnNumber: 12
         }, this);
     }
@@ -97,15 +71,15 @@ function ClientBody({ children }) {
         suppressHydrationWarning: true,
         children: [
             children,
-            isMounted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(PerformanceOptimizer, {}, void 0, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(PerformanceOptimizer, {}, void 0, false, {
                 fileName: "[project]/src/app/ClientBody.tsx",
-                lineNumber: 58,
-                columnNumber: 21
+                lineNumber: 33,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/ClientBody.tsx",
-        lineNumber: 56,
+        lineNumber: 31,
         columnNumber: 5
     }, this);
 }
