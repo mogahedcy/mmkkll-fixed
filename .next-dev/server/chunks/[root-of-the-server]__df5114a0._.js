@@ -197,15 +197,20 @@ async function GET(request) {
                     {
                         views: 'desc'
                     },
+                    // ترتيب ثانوي حسب عدد الإعجابات الفعلية
                     {
-                        likes: 'desc'
+                        project_likes: {
+                            _count: 'desc'
+                        }
                     }
                 ];
                 break;
             case 'most-liked':
                 orderBy = [
                     {
-                        likes: 'desc'
+                        project_likes: {
+                            _count: 'desc'
+                        }
                     },
                     {
                         views: 'desc'
@@ -355,7 +360,7 @@ async function POST(request) {
         // التحقق من صحة البيانات
         if (!title || !description || !category || !location) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'البيانات الأساسية مطلوبة'
+                error: 'البيانات ��لأساسية مطلوبة'
             }, {
                 status: 400
             });
