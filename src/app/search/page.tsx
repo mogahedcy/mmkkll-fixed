@@ -68,12 +68,12 @@ function SearchContent() {
   const [hasMore, setHasMore] = useState(false);
   const [sortBy, setSortBy] = useState<'relevance' | 'date' | 'name'>('relevance');
   const [type, setType] = useState<'all' | 'projects' | 'articles'>(
-    (searchParams.get('type') as any) || 'all'
+    (searchParams?.get('type') as any) || 'all'
   );
-  const [searchText, setSearchText] = useState(searchParams.get('q') || '');
+  const [searchText, setSearchText] = useState(searchParams?.get('q') || '');
   const [filters, setFilters] = useState<FiltersState>({
-    category: searchParams.get('category') || '',
-    location: searchParams.get('location') || '',
+    category: searchParams?.get('category') || '',
+    location: searchParams?.get('location') || '',
     featured: null,
     minRating: 0,
     dateRange: '',
@@ -81,12 +81,12 @@ function SearchContent() {
     priceRange: ''
   });
 
-  const query = useMemo(() => searchParams.get('q') || '', [searchParams]);
+  const query = useMemo(() => searchParams?.get('q') || '', [searchParams]);
   const limit = 12;
 
   useEffect(() => {
     // مزامنة النوع مع URL
-    setType(((searchParams.get('type') as any) || 'all'));
+    setType(((searchParams?.get('type') as any) || 'all'));
   }, [searchParams]);
 
   useEffect(() => {
@@ -100,7 +100,7 @@ function SearchContent() {
   }, [query, type, sortBy, filters.category, filters.location]);
 
   const updateUrl = (params: Record<string, string | undefined>) => {
-    const sp = new URLSearchParams(searchParams.toString());
+    const sp = new URLSearchParams(searchParams?.toString() || '');
     Object.entries(params).forEach(([k, v]) => {
       if (!v) sp.delete(k);
       else sp.set(k, v);

@@ -5064,11 +5064,11 @@ function SearchContent() {
     const [page, setPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
     const [hasMore, setHasMore] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [sortBy, setSortBy] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('relevance');
-    const [type, setType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(searchParams.get('type') || 'all');
-    const [searchText, setSearchText] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(searchParams.get('q') || '');
+    const [type, setType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])((searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('type')) || 'all');
+    const [searchText, setSearchText] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])((searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('q')) || '');
     const [filters, setFilters] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
-        category: searchParams.get('category') || '',
-        location: searchParams.get('location') || '',
+        category: (searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('category')) || '',
+        location: (searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('location')) || '',
         featured: null,
         minRating: 0,
         dateRange: '',
@@ -5076,7 +5076,7 @@ function SearchContent() {
         priceRange: ''
     });
     const query = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "SearchContent.useMemo[query]": ()=>searchParams.get('q') || ''
+        "SearchContent.useMemo[query]": ()=>(searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('q')) || ''
     }["SearchContent.useMemo[query]"], [
         searchParams
     ]);
@@ -5084,7 +5084,7 @@ function SearchContent() {
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SearchContent.useEffect": ()=>{
             // مزامنة النوع مع URL
-            setType(searchParams.get('type') || 'all');
+            setType((searchParams === null || searchParams === void 0 ? void 0 : searchParams.get('type')) || 'all');
         }
     }["SearchContent.useEffect"], [
         searchParams
@@ -5107,7 +5107,7 @@ function SearchContent() {
         filters.location
     ]);
     const updateUrl = (params)=>{
-        const sp = new URLSearchParams(searchParams.toString());
+        const sp = new URLSearchParams((searchParams === null || searchParams === void 0 ? void 0 : searchParams.toString()) || '');
         Object.entries(params).forEach((param)=>{
             let [k, v] = param;
             if (!v) sp.delete(k);
@@ -5491,7 +5491,7 @@ function SearchContent() {
         columnNumber: 5
     }, this);
 }
-_s(SearchContent, "vB5lq8XEc8R3HVywNeNbJgB86ww=", false, function() {
+_s(SearchContent, "sG8Qcuu9rEY246eswAYFLQOD3wo=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],

@@ -245,7 +245,7 @@ export default function ProjectCommentsSection({
                 {averageRating}
               </div>
               <div className="flex justify-center mb-2">
-                {renderStars(Math.round(Number.parseFloat(averageRating)))}
+                {renderStars(Math.round(Number.parseFloat(averageRating.toString())))}
               </div>
               <p className="text-gray-600">
                 من أصل {comments.length} تقييم
