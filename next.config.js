@@ -56,7 +56,7 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   trailingSlash: false,
-  distDir: '.next-dev',
+  distDir: '.next',
   allowedDevOrigins: [
     'aldeyarksa.tech',
     'www.aldeyarksa.tech',
