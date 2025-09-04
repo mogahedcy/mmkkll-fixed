@@ -72,10 +72,10 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "محترفين الديار العالمية",
-  image: "https://aldeyarksa.tech/images/og-image.jpg",
+  image: "https://aldeyarksa.tech/favicon.svg",
   "@id": "https://aldeyarksa.tech",
   url: "https://aldeyarksa.tech",
-  telephone: "+966555555555",
+  telephone: "+966553719009",
   address: {
     "@type": "PostalAddress",
     streetAddress: "جدة",
@@ -129,7 +129,6 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={notoSansArabic.variable}>
       <head>
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
-        <link rel="canonical" href="https://aldeyarksa.tech" />
         <StructuredDataScript data={structuredData} />
       </head>
       <body className="antialiased font-arabic" suppressHydrationWarning={true}>
