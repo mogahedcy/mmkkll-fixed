@@ -11,7 +11,7 @@ interface Props {
 // دالة لجلب بيانات المشروع من API
 async function getProject(id: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
     const response = await fetch(`${baseUrl}/api/projects/${id}`, {
       cache: 'no-store', // تجديد ��لبيانات في كل طلب
     });
