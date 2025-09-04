@@ -11,7 +11,8 @@
     "vercel-build": "prisma generate && next build",
     "postinstall": "prisma generate",
     "db:prepare": "node scripts/prepare-database.js",
-    "db:seed": "node scripts/add-more-projects.js"
+    "db:seed": "node scripts/add-more-projects.js",
+    "production-setup": "node scripts/production-setup.js"
   },
   "dependencies": {
     "@prisma/client": "^6.14.0",
