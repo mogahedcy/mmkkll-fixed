@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import jwt from 'jsonwebtoken'
+import HeaderClient from './HeaderClient'
 
 export const metadata: Metadata = {
   title: 'لوحة التحكم | محترفين الديار العالمية',
@@ -52,8 +53,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             {/* Client header */}
             {/* eslint-disable-next-line react/no-unknown-property */}
             <div suppressHydrationWarning>
-              {/* @ts-expect-error Client Component */}
-              {require('./HeaderClient').default()}
+              <HeaderClient />
             </div>
           </div></div>
         </header>
