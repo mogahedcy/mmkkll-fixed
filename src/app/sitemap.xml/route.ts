@@ -121,7 +121,7 @@ const articlesData = [
     lastModified: '2024-12-04T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
-    keywords: 'برجولات خشبية جدة، برجولات حديد، برجولات ألومنيوم، مقارنة مواد البرجولات'
+    keywords: 'برجولات خشبية ��دة، برجولات حديد، برجولات ألومنيوم، مقارنة مواد البرجولات'
   },
   {
     id: 10,
@@ -368,7 +368,7 @@ export async function GET() {
 
         return `
   <url>
-    <loc>${baseUrl}/portfolio/${project.id}</loc>
+    <loc>${baseUrl}/portfolio/${(project as any).slug || (project as any).id}</loc>
     <lastmod>${project.updatedAt.toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${priority}</priority>${images}${videos}
