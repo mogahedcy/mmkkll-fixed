@@ -66,14 +66,14 @@ export default function SavedSearches() {
     const newSearch: SavedSearch = {
       id: Date.now().toString(),
       name: searchName.trim(),
-      query: searchParams.get('search') || '',
+      query: searchParams.get('q') || '',
       filters: Object.fromEntries(searchParams.entries()),
       createdAt: new Date(),
       lastUsed: new Date(),
       useCount: 0
     };
 
-    const updated = [newSearch, ...savedSearches.slice(0, 9)]; // حفظ أحدث 10 بحثات
+    const updated = [newSearch, ...savedSearches.slice(0, 9)];
     setSavedSearches(updated);
     saveTOLocalStorage(updated);
     setSearchName('');
@@ -96,7 +96,7 @@ export default function SavedSearches() {
 
     // تطبيق المعايير على URL
     const params = new URLSearchParams(search.filters);
-    window.location.href = `/portfolio?${params.toString()}`;
+    window.location.href = `/search?${params.toString()}`;
   };
 
   // حذف بحث محفوظ
