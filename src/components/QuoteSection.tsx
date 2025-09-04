@@ -24,7 +24,7 @@ const areas = [
 
 const benefits = [
   'زيارة مجانية لأخذ القياسات',
-  'عرض سعر ��فصل ودقيق',
+  'عرض سعر مفصل ودقيق',
   'استشارة فنية متخصصة',
   'ضمان شامل 10 سنوات',
   'تركيب احترافي',
@@ -201,36 +201,22 @@ export default function QuoteSection() {
             {/* Trust Indicators */}
             <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 rounded-3xl p-8">
               <div className="text-center">
-                <div className="flex justify-center mb-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
                   {[
-            { icon: '🏢', title: 'مشاريع تجارية', id: 'commercial-1' },
-            { icon: '🏢', title: 'مشاريع تجارية', id: 'commercial-2' },
-            { icon: '🏢', title: 'مشاريع تجارية', id: 'commercial-3' },
-            { icon: '🏠', title: 'مشاريع سكنية', id: 'residential-1' },
-            { icon: '🏠', title: 'مشاريع سكنية', id: 'residential-2' },
-            { icon: '🏠', title: 'مشاريع سكنية', id: 'residential-3' },
-            { icon: '🌳', title: 'تنسيق حدائق', id: 'landscaping-1' },
-            { icon: '🌳', title: 'تنسيق حدائق', id: 'landscaping-2' },
-            { icon: '🌳', title: 'تنسيق حدائق', id: 'landscaping-3' },
-            { icon: '⭐', title: 'تقييم ممتاز', id: 'rating-1' },
-            { icon: '⭐', title: 'تقييم ممتاز', id: 'rating-2' },
-            { icon: '⭐', title: 'تقييم ممتاز', id: 'rating-3' }
-          ].map((item) => (
-            <div key={item.id} className="bg-primary/5 rounded-lg p-4 text-center">
-              <div className="text-2xl mb-2">{item.icon}</div>
-              <div className="text-sm font-medium text-primary">{item.title}</div>
-            </div>
-          ))}
+                    { icon: '🏢', title: 'مشاريع تجارية' },
+                    { icon: '🏠', title: 'مشاريع سكنية' },
+                    { icon: '🌳', title: 'تنسيق حدائق' },
+                    { icon: '⭐', title: 'تقييم ممتاز' }
+                  ].map((item, idx) => (
+                    <div key={`trust-${idx}`} className="bg-primary/5 rounded-lg p-4 text-center">
+                      <div className="text-2xl mb-1 leading-none">{item.icon}</div>
+                      <div className="text-sm font-medium text-primary">{item.title}</div>
+                    </div>
+                  ))}
                 </div>
-                <h3 className="text-xl font-bold text-primary mb-2">
-                  تقييم العملاء 5/5
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  أكثر من 5000 عميل راضي عن خدماتنا
-                </p>
-                <div className="text-sm text-muted-foreground">
-                  "أفضل شركة تعاملت معها في مجال المظلات والبرجولات"
-                </div>
+                <h3 className="text-xl font-bold text-primary mb-2">تقييم العملاء 5/5</h3>
+                <p className="text-muted-foreground mb-4">أكثر من 5000 عميل راضٍ عن خدماتنا</p>
+                <div className="text-sm text-muted-foreground">"أفضل شركة تعاملت معها في مجال المظلات والبرجولات"</div>
               </div>
             </div>
 
