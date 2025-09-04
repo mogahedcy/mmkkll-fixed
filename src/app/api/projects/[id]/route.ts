@@ -182,13 +182,18 @@ export async function PUT(
 
     console.log('✅ تم تحديث المشروع بنجاح:', updatedProject.title);
 
-    // إش��ار جوجل بالتحديث
+    // إشعار محركات البحث بالتحديث
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/sitemap/refresh`, {
-        method: 'POST'
+      const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      await fetch(`${origin}/api/sitemap/refresh`, { method: 'POST' });
+      const pageUrl = `${origin}/portfolio/${updatedProject.slug || updatedProject.id}`;
+      await fetch(`${origin}/api/indexnow`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: [pageUrl] })
       });
     } catch (error) {
-      console.warn('تعذر إشعار جوجل بالتحديث:', error);
+      console.warn('تعذر إشعار محركات البحث بالتحديث:', error);
     }
 
     return NextResponse.json({

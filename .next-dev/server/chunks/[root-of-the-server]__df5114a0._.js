@@ -360,7 +360,7 @@ async function POST(request) {
         // التحقق من صحة البيانات
         if (!title || !description || !category || !location) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'البيانات ��لأساسية مطلوبة'
+                error: 'البيانات الأساسية مطلوبة'
             }, {
                 status: 400
             });
@@ -478,12 +478,27 @@ async function notifyGoogleNewContent(slug) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
     const url = `${baseUrl}/portfolio/${slug}`;
     try {
-        // إشعار Google بالصفحة الجديدة
+        // إشعار Google بتحديث ال sitemap
         await fetch('https://www.google.com/ping?sitemap=' + encodeURIComponent(`${baseUrl}/sitemap.xml`));
-        // يمكن إضافة Google Search Console API هنا
-        console.log('✅ تم إشعار Google بالمحتوى الجديد:', url);
+        // إرسال IndexNow بعنوان الصفحة مباشرة
+        try {
+            await fetch(`${baseUrl}/api/indexnow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    urls: [
+                        url
+                    ]
+                })
+            });
+        } catch (e) {
+            console.warn('IndexNow submit failed:', e);
+        }
+        console.log('✅ تمت إشعارات الفهرسة:', url);
     } catch (error) {
-        console.warn('⚠️ فشل في إشعار Google:', error);
+        console.warn('⚠️ فشل في إشعار محركات البحث:', error);
     }
 }
 }}),
