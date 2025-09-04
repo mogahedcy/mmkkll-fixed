@@ -544,7 +544,7 @@ export default function PortfolioPageClient() {
                       {/* Project Image/Video */}
                       <div className="relative aspect-square group-hover:scale-105 transition-transform duration-500 overflow-hidden">
                         <Link 
-                          href={`/portfolio/${project.id}`}
+                          href={`/portfolio/${project.slug || project.id}`}
                           onClick={() => registerView(project.id)}
                         >
                           {mainMedia ? (
@@ -651,7 +651,7 @@ export default function PortfolioPageClient() {
                         </div>
 
                         <Link 
-                          href={`/portfolio/${project.id}`}
+                          href={`/portfolio/${project.slug || project.id}`}
                           onClick={() => registerView(project.id)}
                         >
                           <h3 className="font-bold text-gray-900 line-clamp-2 mb-2 text-lg hover:text-blue-600 transition-colors">
@@ -719,7 +719,7 @@ export default function PortfolioPageClient() {
                         {/* CTA */}
                         <Button asChild className="w-full group">
                           <Link 
-                            href={`/portfolio/${project.id}`}
+                            href={`/portfolio/${project.slug || project.id}`}
                             onClick={() => registerView(project.id)}
                           >
                             عرض التفاصيل
@@ -741,7 +741,7 @@ export default function PortfolioPageClient() {
                         {/* Thumbnail */}
                         <div className="relative w-32 h-32 rounded-lg overflow-hidden flex-shrink-0">
                           <Link 
-                            href={`/portfolio/${project.id}`}
+                            href={`/portfolio/${project.slug || project.id}`}
                             onClick={() => registerView(project.id)}
                           >
                             {mainMedia ? (
@@ -813,7 +813,7 @@ export default function PortfolioPageClient() {
                           </div>
 
                           <Link 
-                            href={`/portfolio/${project.id}`}
+                            href={`/portfolio/${project.slug || project.id}`}
                             onClick={() => registerView(project.id)}
                           >
                             <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
@@ -852,7 +852,7 @@ export default function PortfolioPageClient() {
 
                             <Button asChild>
                               <Link 
-                                href={`/portfolio/${project.id}`}
+                                href={`/portfolio/${project.slug || project.id}`}
                                 onClick={() => registerView(project.id)}
                               >
                                 عرض التفاصيل
