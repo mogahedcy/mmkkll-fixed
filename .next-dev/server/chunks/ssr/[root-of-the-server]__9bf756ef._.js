@@ -5355,7 +5355,7 @@ const areas = [
 ];
 const benefits = [
     'زيارة مجانية لأخذ القياسات',
-    'عرض سعر ��فصل ودقيق',
+    'عرض سعر مفصل ودقيق',
     'استشارة فنية متخصصة',
     'ضمان شامل 10 سنوات',
     'تركيب احترافي',
@@ -5773,92 +5773,48 @@ function QuoteSection() {
                                         className: "text-center",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                                className: "flex justify-center mb-4",
+                                                className: "grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4",
                                                 children: [
                                                     {
                                                         icon: '🏢',
-                                                        title: 'مشاريع تجارية',
-                                                        id: 'commercial-1'
-                                                    },
-                                                    {
-                                                        icon: '🏢',
-                                                        title: 'مشاريع تجارية',
-                                                        id: 'commercial-2'
-                                                    },
-                                                    {
-                                                        icon: '🏢',
-                                                        title: 'مشاريع تجارية',
-                                                        id: 'commercial-3'
+                                                        title: 'مشاريع تجارية'
                                                     },
                                                     {
                                                         icon: '🏠',
-                                                        title: 'مشاريع سكنية',
-                                                        id: 'residential-1'
-                                                    },
-                                                    {
-                                                        icon: '🏠',
-                                                        title: 'مشاريع سكنية',
-                                                        id: 'residential-2'
-                                                    },
-                                                    {
-                                                        icon: '🏠',
-                                                        title: 'مشاريع سكنية',
-                                                        id: 'residential-3'
+                                                        title: 'مشاريع سكنية'
                                                     },
                                                     {
                                                         icon: '🌳',
-                                                        title: 'تنسيق حدائق',
-                                                        id: 'landscaping-1'
-                                                    },
-                                                    {
-                                                        icon: '🌳',
-                                                        title: 'تنسيق حدائق',
-                                                        id: 'landscaping-2'
-                                                    },
-                                                    {
-                                                        icon: '🌳',
-                                                        title: 'تنسيق حدائق',
-                                                        id: 'landscaping-3'
+                                                        title: 'تنسيق حدائق'
                                                     },
                                                     {
                                                         icon: '⭐',
-                                                        title: 'تقييم ممتاز',
-                                                        id: 'rating-1'
-                                                    },
-                                                    {
-                                                        icon: '⭐',
-                                                        title: 'تقييم ممتاز',
-                                                        id: 'rating-2'
-                                                    },
-                                                    {
-                                                        icon: '⭐',
-                                                        title: 'تقييم ممتاز',
-                                                        id: 'rating-3'
+                                                        title: 'تقييم ممتاز'
                                                     }
-                                                ].map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
+                                                ].map((item, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                                         className: "bg-primary/5 rounded-lg p-4 text-center",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
-                                                                className: "text-2xl mb-2",
+                                                                className: "text-2xl mb-1 leading-none",
                                                                 children: item.icon
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/QuoteSection.tsx",
-                                                                lineNumber: 220,
-                                                                columnNumber: 15
+                                                                lineNumber: 212,
+                                                                columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
                                                                 className: "text-sm font-medium text-primary",
                                                                 children: item.title
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/QuoteSection.tsx",
-                                                                lineNumber: 221,
-                                                                columnNumber: 15
+                                                                lineNumber: 213,
+                                                                columnNumber: 23
                                                             }, this)
                                                         ]
-                                                    }, item.id, true, {
+                                                    }, `trust-${idx}`, true, {
                                                         fileName: "[project]/src/components/QuoteSection.tsx",
-                                                        lineNumber: 219,
-                                                        columnNumber: 13
+                                                        lineNumber: 211,
+                                                        columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/QuoteSection.tsx",
@@ -5870,15 +5826,15 @@ function QuoteSection() {
                                                 children: "تقييم العملاء 5/5"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/QuoteSection.tsx",
-                                                lineNumber: 225,
+                                                lineNumber: 217,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
                                                 className: "text-muted-foreground mb-4",
-                                                children: "أكثر من 5000 عميل راضي عن خدماتنا"
+                                                children: "أكثر من 5000 عميل راضٍ عن خدماتنا"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/QuoteSection.tsx",
-                                                lineNumber: 228,
+                                                lineNumber: 218,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("div", {
@@ -5886,7 +5842,7 @@ function QuoteSection() {
                                                 children: '"أفضل شركة تعاملت معها في مجال المظلات والبرجولات"'
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/QuoteSection.tsx",
-                                                lineNumber: 231,
+                                                lineNumber: 219,
                                                 columnNumber: 17
                                             }, this)
                                         ]
@@ -5908,7 +5864,7 @@ function QuoteSection() {
                                             children: "تحتاج مساعدة فورية؟"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuoteSection.tsx",
-                                            lineNumber: 239,
+                                            lineNumber: 225,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("p", {
@@ -5916,7 +5872,7 @@ function QuoteSection() {
                                             children: "تحدث مع خبرائنا مباشرة للحصول على استشارة فنية فورية"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuoteSection.tsx",
-                                            lineNumber: 242,
+                                            lineNumber: 228,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -5930,31 +5886,31 @@ function QuoteSection() {
                                                         children: "اتصل الآن: 966553719009+"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/QuoteSection.tsx",
-                                                        lineNumber: 247,
+                                                        lineNumber: 233,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__["ArrowLeft"], {
                                                         className: "w-5 h-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/QuoteSection.tsx",
-                                                        lineNumber: 248,
+                                                        lineNumber: 234,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/QuoteSection.tsx",
-                                                lineNumber: 246,
+                                                lineNumber: 232,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/QuoteSection.tsx",
-                                            lineNumber: 245,
+                                            lineNumber: 231,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/QuoteSection.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 224,
                                     columnNumber: 13
                                 }, this)
                             ]
@@ -5976,12 +5932,12 @@ function QuoteSection() {
                         children: "جميع عروض الأسعار والاستشارات الفنية مجانية تماماً • لا توجد التزامات مالية قبل الموافقة"
                     }, void 0, false, {
                         fileName: "[project]/src/components/QuoteSection.tsx",
-                        lineNumber: 257,
+                        lineNumber: 243,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/QuoteSection.tsx",
-                    lineNumber: 256,
+                    lineNumber: 242,
                     columnNumber: 9
                 }, this)
             ]
