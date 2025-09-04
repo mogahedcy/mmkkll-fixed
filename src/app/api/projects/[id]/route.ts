@@ -10,35 +10,38 @@ export async function GET(
 ) {
   try {
     const resolvedParams = await params;
-    const projectId = resolvedParams.id;
+    const param = resolvedParams.id;
 
-    const project = await prisma.projects.findUnique({
-      where: { id: projectId },
+    // السماح باستخدام المعرف أو الslug
+    let project = await prisma.projects.findUnique({
+      where: { id: param },
       include: {
-        media_items: {
-          orderBy: { order: 'asc' }
-        },
+        media_items: { orderBy: { order: 'asc' } },
         project_tags: true,
         project_materials: true,
-        _count: {
-          select: {
-            comments: true,
-            project_likes: true
-          }
-        }
+        _count: { select: { comments: true, project_likes: true } }
       }
     });
 
     if (!project) {
-      return NextResponse.json(
-        { error: 'المشروع غير موجود' },
-        { status: 404 }
-      );
+      project = await prisma.projects.findUnique({
+        where: { slug: param },
+        include: {
+          media_items: { orderBy: { order: 'asc' } },
+          project_tags: true,
+          project_materials: true,
+          _count: { select: { comments: true, project_likes: true } }
+        }
+      });
     }
 
-    // زيادة عدد المشاهدات
+    if (!project) {
+      return NextResponse.json({ error: 'المشروع غير موجود' }, { status: 404 });
+    }
+
+    // زيادة عدد المشاهدات باستخدام معرف المشروع الحقيقي
     await prisma.projects.update({
-      where: { id: projectId },
+      where: { id: project.id },
       data: { views: { increment: 1 } }
     });
 
@@ -225,7 +228,7 @@ export async function DELETE(
 
     if (!existingProject) {
       return NextResponse.json(
-        { error: 'المشروع غي�� موجود' },
+        { error: 'المشروع غير موجود' },
         { status: 404 }
       );
     }
