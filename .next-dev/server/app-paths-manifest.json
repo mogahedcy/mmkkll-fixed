@@ -7,6 +7,7 @@
   "/api/projects/[id]/interactions/route": "app/api/projects/[id]/interactions/route.js",
   "/api/projects/[id]/route": "app/api/projects/[id]/route.js",
   "/api/projects/route": "app/api/projects/route.js",
+  "/api/search/route": "app/api/search/route.js",
   "/api/upload/route": "app/api/upload/route.js",
   "/contact/page": "app/contact/page.js",
   "/dashboard/page": "app/dashboard/page.js",

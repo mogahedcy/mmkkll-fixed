@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -33,7 +33,13 @@ import {
   User,
   CheckCircle,
   Flame,
-  Zap
+  Zap,
+  X,
+  ChevronDown,
+  ArrowUpRight,
+  Sparkles,
+  Target,
+  Users
 } from 'lucide-react';
 
 interface Project {
@@ -72,518 +78,376 @@ interface Stats {
 }
 
 const categories = [
-  { value: 'all', label: 'الكل', icon: '🏠' },
-  { value: 'مظلات', label: 'مظلات', icon: '☂️' },
-  { value: 'برجولات', label: 'برجولات', icon: '🏗️' },
-  { value: 'سواتر', label: 'سواتر', icon: '🛡️' },
-  { value: 'ساندوتش بانل', label: 'ساندوتش بانل', icon: '🏢' },
-  { value: 'تنسيق حدائق', label: 'تنسيق حدائق', icon: '🌿' },
-  { value: 'خيام ملكية', label: 'خيام ملكية', icon: '⛺' },
-  { value: 'بيوت شعر', label: 'بيوت شعر', icon: '🏕️' },
-  { value: 'ترميم', label: 'ترميم', icon: '🔧' }
+  { value: 'all', label: 'جميع المشاريع', icon: '🏠' },
+  { value: 'مظلات', label: 'مظلات السيارات', icon: '🚗' },
+  { value: 'برجولات', label: 'برجولات الحدائق', icon: '🌿' },
+  { value: 'تنسيق حدائق', label: 'تنسيق الحدائق', icon: '🌺' },
+  { value: 'هناجر', label: 'هناجر ومخازن', icon: '🏢' },
+  { value: 'سواتر', label: 'سواتر وأسوار', icon: '🛡️' },
+  { value: 'كرانيش', label: 'كرانيش الأسقف', icon: '🏛️' }
 ];
 
 const sortOptions = [
-  { value: 'newest', label: 'الأحدث', icon: Calendar },
-  { value: 'popular', label: 'الأكثر شعبية', icon: TrendingUp },
-  { value: 'most-liked', label: 'الأكثر إعجاباً', icon: Heart },
-  { value: 'highest-rated', label: 'الأعلى تقييماً', icon: Star },
-  { value: 'featured', label: 'المميزة', icon: Award },
-  { value: 'alphabetical', label: 'أبجدياً', icon: SortAsc }
+  { value: 'newest', label: 'الأحدث أولاً' },
+  { value: 'oldest', label: 'الأقدم أولاً' },
+  { value: 'featured', label: 'المميزة أولاً' },
+  { value: 'popular', label: 'الأكثر مشاهدة' },
+  { value: 'rating', label: 'الأعلى تقييماً' },
+  { value: 'alphabetical', label: 'أبجدياً' }
 ];
+
+// تحسين دالة تنسيق الأرقام
+const formatNumber = (num: number): string => {
+  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}م`;
+  if (num >= 1000) return `${(num / 1000).toFixed(1)}ك`;
+  return num.toString();
+};
+
+// دالة محسنة لتأخير البحث
+const useDebounce = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+
+  return debouncedValue;
+};
 
 export default function PortfolioPageClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  // الحالات الأساسية
+  
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [stats, setStats] = useState<Stats>({ total: 0, featured: 0, categories: [] });
-
-  // حالات الفلترة والبحث
-  const [searchTerm, setSearchTerm] = useState(searchParams?.get('search') || '');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState(searchParams?.get('sort') || 'newest');
+  
+  const [searchTerm, setSearchTerm] = useState(searchParams?.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState(searchParams?.get('category') || 'all');
+  const [sortBy, setSortBy] = useState(searchParams?.get('sort') || 'newest');
+  const [showFilters, setShowFilters] = useState(false);
+  
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const loadingRef = useRef<HTMLDivElement>(null);
 
-  // التصفح والتحميل
-  const [currentPage, setCurrentPage] = useState(Number(searchParams?.get('page')) || 1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-
-  // حالات التفاعل
-  const [likedProjects, setLikedProjects] = useState<Set<string>>(new Set());
-  const [projectInteractions, setProjectInteractions] = useState<Map<string, any>>(new Map());
-
-  const ITEMS_PER_PAGE = 12;
-
-  // جلب المشاريع
-  const fetchProjects = useCallback(async (reset = false) => {
+  // جلب المشاريع مع تحسينات الأداء
+  const fetchProjects = useCallback(async () => {
+    setLoading(true);
     try {
-      if (reset) {
-        setLoading(true);
-        setCurrentPage(1);
-      } else {
-        setLoadingMore(true);
-      }
-
-      const page = reset ? 1 : currentPage;
       const params = new URLSearchParams({
-        page: page.toString(),
-        limit: ITEMS_PER_PAGE.toString(),
+        limit: '50',
         sort: sortBy,
         ...(selectedCategory !== 'all' && { category: selectedCategory }),
-        ...(searchTerm && { search: searchTerm })
+        ...(debouncedSearchTerm && { search: debouncedSearchTerm })
       });
-
+      
       const response = await fetch(`/api/projects?${params}`);
       const data = await response.json();
-
-      if (data.success && data.projects) {
-        if (reset || page === 1) {
-          setProjects(data.projects || []);
-        } else {
-          setProjects(prev => [...prev, ...(data.projects || [])]);
-        }
-
-        setStats(data.stats || { total: 0, featured: 0, categories: [] });
-        setHasMore(data.pagination?.hasMore || false);
-
-        // جلب حالات التفاعل للمشاريع
-        if (data.projects && data.projects.length > 0) {
-          await fetchInteractions(data.projects);
-        }
-      } else {
-        console.warn('استجابة غير متوقعة من API:', data);
-        setError(data.error || 'فشل في جلب المشاريع');
+      
+      if (data.success) {
+        setProjects(data.projects || []);
+        setStats({
+          total: data.stats?.total || data.projects?.length || 0,
+          featured: data.stats?.featured || 0,
+          categories: data.stats?.categories || []
+        });
       }
     } catch (error) {
-      console.error('خطأ في جلب المشاريع:', error);
-      setError('حدث خطأ في جلب المشاريع');
-      // في حالة الخطأ، تعيين قيم افتراضية
-      if (reset) {
-        setProjects([]);
-        setStats({ total: 0, featured: 0, categories: [] });
-      }
+      console.error('Error fetching projects:', error);
     } finally {
       setLoading(false);
-      setLoadingMore(false);
+      setInitialLoading(false);
     }
-  }, [selectedCategory, sortBy, searchTerm, currentPage]);
+  }, [debouncedSearchTerm, selectedCategory, sortBy]);
 
-  // جلب حالات التفاعل
-  const fetchInteractions = async (projectList: Project[]) => {
-    if (!projectList || projectList.length === 0) return;
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+  // تحديث URL عند تغيير الفلاتر
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedSearchTerm) params.set('search', debouncedSearchTerm);
+    if (selectedCategory !== 'all') params.set('category', selectedCategory);
+    if (sortBy !== 'newest') params.set('sort', sortBy);
     
-    const interactions = new Map();
-    const liked = new Set<string>();
+    const newUrl = params.toString() ? `?${params}` : '/portfolio';
+    router.replace(newUrl, { scroll: false });
+  }, [debouncedSearchTerm, selectedCategory, sortBy, router]);
 
-    for (const project of projectList) {
-      if (!project?.id) continue;
-      
-      try {
-        const response = await fetch(`/api/projects/${project.id}/interactions`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && data.interactions) {
-            interactions.set(project.id, data.interactions);
-            if (data.interactions.isLiked) {
-              liked.add(project.id);
-            }
-          }
-        }
-      } catch (error) {
-        console.warn('فشل في جلب تفاعلات المشروع:', project.id, error);
-      }
-    }
+  // معالجات الأحداث
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchTerm(value);
+  }, []);
 
-    setProjectInteractions(interactions);
-    setLikedProjects(liked);
-  };
-
-  // تسجيل مشاهدة
-  const registerView = async (projectId: string) => {
-    try {
-      await fetch(`/api/projects/${projectId}/interactions`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'view' })
-      });
-    } catch (error) {
-      console.warn('فشل في تسجيل المشاهدة:', error);
-    }
-  };
-
-  // إدارة الإعجاب
-  const handleLike = async (projectId: string, event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    try {
-      const response = await fetch(`/api/projects/${projectId}/interactions`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'like', action: 'toggle' })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-
-        // تحديث الحالة المحلية
-        setLikedProjects(prev => {
-          const newSet = new Set(prev);
-          if (data.isLiked) {
-            newSet.add(projectId);
-          } else {
-            newSet.delete(projectId);
-          }
-          return newSet;
-        });
-
-        // تحديث العداد
-        setProjects(prev => prev.map(p => 
-          p.id === projectId ? { ...p, likes: data.newCount } : p
-        ));
-
-        // تحديث التفاعلات
-        setProjectInteractions(prev => {
-          const newMap = new Map(prev);
-          const current = newMap.get(projectId) || {};
-          newMap.set(projectId, { ...current, likes: data.newCount, isLiked: data.isLiked });
-          return newMap;
-        });
-      }
-    } catch (error) {
-      console.error('خطأ في الإعجاب:', error);
-    }
-  };
-
-  // مشاركة المشروع
-  const handleShare = async (project: Project, event: React.MouseEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const url = `${window.location.origin}/portfolio/${project.id}`;
-    const text = `شاهد هذا المشروع الرائع: ${project.title}`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: project.title, text, url });
-      } catch (error) {
-        console.log('تم إلغاء المشاركة');
-      }
-    } else {
-      // نسخ الرابط
-      await navigator.clipboard.writeText(url);
-      // يمكن إضافة إشعار هنا
-    }
-  };
-
-  // Effects
-  useEffect(() => {
-    fetchProjects(true);
-  }, [selectedCategory, sortBy, searchTerm]);
-
-  useEffect(() => {
-    if (searchTerm && searchTerm.trim()) {
-      const filtered = projects.filter(project => {
-        const searchLower = searchTerm.toLowerCase().trim();
-        return (
-          project.title?.toLowerCase().includes(searchLower) ||
-          project.description?.toLowerCase().includes(searchLower) ||
-          project.excerpt?.toLowerCase().includes(searchLower) ||
-          project.location?.toLowerCase().includes(searchLower) ||
-          project.category?.toLowerCase().includes(searchLower) ||
-          project.client?.toLowerCase().includes(searchLower) ||
-          project.tags?.some(tag => tag.name?.toLowerCase().includes(searchLower))
-        );
-      });
-      setFilteredProjects(filtered);
-    } else {
-      setFilteredProjects(projects);
-    }
-  }, [projects, searchTerm]);
-
-  // التعامل مع تغيير المرشحات
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = useCallback((category: string) => {
     setSelectedCategory(category);
-    updateURL({ category, page: '1' });
-  };
+  }, []);
 
-  const handleSortChange = (sort: string) => {
+  const handleSortChange = useCallback((sort: string) => {
     setSortBy(sort);
-    updateURL({ sort, page: '1' });
-  };
+  }, []);
 
-  const handleSearchChange = (search: string) => {
-    setSearchTerm(search);
-    if (search.trim()) {
-      updateURL({ search: search.trim(), page: '1' });
-    } else {
-      updateURL({ search: '', page: '1' });
-    }
-  };
+  // مصفوفة البيانات المحسنة
+  const filteredAndSortedProjects = useMemo(() => {
+    return projects;
+  }, [projects]);
 
-  const updateURL = (params: Record<string, string>) => {
-    const newSearchParams = new URLSearchParams(searchParams?.toString() || '');
-
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) {
-        newSearchParams.set(key, value);
-      } else {
-        newSearchParams.delete(key);
-      }
-    });
-
-    router.push(`/portfolio?${newSearchParams.toString()}`);
-  };
-
-  // تحميل المزيد
-  const loadMore = () => {
-    if (hasMore && !loadingMore) {
-      setCurrentPage(prev => prev + 1);
-      setTimeout(() => fetchProjects(false), 100);
-    }
-  };
-
-  const getMainMedia = (project: Project) => {
-    return project.mediaItems?.[0];
-  };
-
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'م';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'ك';
-    return num.toString();
-  };
-
-  if (loading && currentPage === 1) {
+  if (initialLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50 flex items-center justify-center">
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="text-center"
         >
-          <Loader2 className="w-16 h-16 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-xl text-gray-600">جاري تحميل معرض الأعمال...</p>
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+          >
+            <Sparkles className="w-8 h-8 text-white" />
+          </motion.div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">جاري تحضير معرض أعمالنا المتميز</h2>
+          <p className="text-gray-600">نقوم بتحميل أفضل مشاريعنا لعرضها عليك</p>
         </motion.div>
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-xl text-red-600 mb-4">{error}</p>
-          <Button onClick={() => window.location.reload()}>
-            إعادة المحاولة
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50">
-      {/* Header Section with enhanced design */}
-      <div className="bg-white/95 border-b border-gray-200/80 sticky top-0 z-40 backdrop-blur-md shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Enhanced Title and Stats */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+      {/* Premium Header Section */}
+      <div className="relative bg-white/95 border-b border-gray-200/80 backdrop-blur-md shadow-lg">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-indigo-600/10" />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Hero Section */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <div className="mb-6">
-              <div className="inline-flex items-center gap-3 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.94l1-4H9.03z" clipRule="evenodd" />
-                </svg>
-                معرض أعمالنا المتميز
-              </div>
+            <div className="mb-8">
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-bold mb-6 shadow-lg"
+              >
+                <Sparkles className="w-5 h-5" />
+                معرض أعمال محترفين الديار العالمية
+                <Target className="w-5 h-5" />
+              </motion.div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6 leading-tight">
-              محترفين الديار العالمية
+            
+            <h1 className="text-6xl md:text-7xl font-black mb-6">
+              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
+                إبداع وجودة
+              </span>
+              <span className="block text-4xl md:text-5xl text-gray-800 mt-2">
+                في كل مشروع نقوم به
+              </span>
             </h1>
-            <p className="text-2xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed font-medium">
-              أكثر من <span className="font-bold text-blue-600">{formatNumber(stats.total)}</span> مشروع متميز في جدة والمناطق المحيطة
+            
+            <p className="text-2xl text-gray-700 mb-10 max-w-4xl mx-auto leading-relaxed">
+              استكشف أكثر من <span className="font-black text-blue-600">{formatNumber(stats.total)}</span> مشروع متميز
+              ينتشر في جدة والمناطق المحيطة، كل مشروع يحكي قصة نجاح
             </p>
 
             {/* Enhanced Quick Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
+                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="text-3xl font-bold mb-1">{formatNumber(stats.total)}+</div>
-                  <div className="text-blue-100 font-medium">مشروع ناجح</div>
-                  <svg className="w-8 h-8 mt-2 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-4xl font-black">{formatNumber(stats.total)}+</div>
+                    <Award className="w-10 h-10 text-blue-200 group-hover:rotate-12 transition-transform duration-300" />
+                  </div>
+                  <div className="text-blue-100 font-bold text-lg">مشروع ناجح</div>
+                  <div className="text-blue-200 text-sm mt-2">في جميع أنحاء المملكة</div>
                 </div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
+                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="text-3xl font-bold mb-1">{stats.categories.length}</div>
-                  <div className="text-green-100 font-medium">خدمة متخصصة</div>
-                  <svg className="w-8 h-8 mt-2 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                  </svg>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-4xl font-black">{stats.categories.length}</div>
+                    <Target className="w-10 h-10 text-green-200 group-hover:rotate-12 transition-transform duration-300" />
+                  </div>
+                  <div className="text-green-100 font-bold text-lg">خدمة متخصصة</div>
+                  <div className="text-green-200 text-sm mt-2">لكافة احتياجاتكم</div>
                 </div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
+                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="text-3xl font-bold mb-1">15+</div>
-                  <div className="text-purple-100 font-medium">عام خبرة</div>
-                  <svg className="w-8 h-8 mt-2 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-4xl font-black">15+</div>
+                    <Clock className="w-10 h-10 text-purple-200 group-hover:rotate-12 transition-transform duration-300" />
+                  </div>
+                  <div className="text-purple-100 font-bold text-lg">عام خبرة</div>
+                  <div className="text-purple-200 text-sm mt-2">في السوق السعودي</div>
                 </div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
+                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="text-3xl font-bold mb-1">{formatNumber(stats.featured)}</div>
-                  <div className="text-orange-100 font-medium">مشروع مميز</div>
-                  <svg className="w-8 h-8 mt-2 text-orange-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                  </svg>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-4xl font-black">{formatNumber(stats.featured)}</div>
+                    <Star className="w-10 h-10 text-orange-200 group-hover:rotate-12 transition-transform duration-300" />
+                  </div>
+                  <div className="text-orange-100 font-bold text-lg">مشروع مميز</div>
+                  <div className="text-orange-200 text-sm mt-2">حاز على جوائز</div>
                 </div>
               </motion.div>
             </div>
           </motion.div>
 
-          {/* Enhanced Search and Filters */}
-          <div className="space-y-6">
+          {/* Advanced Search and Filters */}
+          <div className="space-y-8">
             {/* Premium Search Bar */}
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative max-w-3xl mx-auto"
+              className="relative max-w-4xl mx-auto"
             >
               <div className="relative group">
-                <Search className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 w-6 h-6 transition-colors duration-200" />
+                <Search className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 w-7 h-7 transition-all duration-300" />
                 <Input
                   value={searchTerm}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  placeholder="ابحث في معرض أعمالنا... (العنوان، الوصف، الموقع، نوع العمل)"
-                  className="pr-16 pl-6 py-4 text-lg rounded-2xl border-2 border-gray-200 bg-white/80 backdrop-blur-sm focus:border-blue-500 focus:bg-white transition-all duration-300 shadow-lg focus:shadow-xl placeholder:text-gray-400"
+                  placeholder="ابحث في معرض أعمالنا المتميز... (اكتب اسم المشروع، النوع، أو المكان)"
+                  className="pr-20 pl-8 py-5 text-xl rounded-3xl border-3 border-gray-200 bg-white/90 backdrop-blur-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-200 transition-all duration-300 shadow-xl focus:shadow-2xl placeholder:text-gray-400"
                 />
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                  {searchTerm && (
-                    <button
-                      onClick={() => handleSearchChange('')}
-                      className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200"
-                    >
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  )}
-                </div>
+                {searchTerm && (
+                  <motion.button
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    onClick={() => handleSearchChange('')}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    <X className="w-5 h-5 text-gray-400" />
+                  </motion.button>
+                )}
               </div>
             </motion.div>
 
-            {/* Premium Filters Row */}
-            <div className="space-y-6">
-              {/* Categories with enhanced design */}
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">اختر تخصصك المفضل</h3>
-                <div className="flex flex-wrap gap-3 justify-center">
-                  {categories.map((category) => (
-                    <motion.div key={`category-${category.value}`} whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
-                      <Button
-                        variant={selectedCategory === category.value ? 'default' : 'outline'}
-                        size="lg"
-                        onClick={() => handleCategoryChange(category.value)}
-                        className={`rounded-2xl transition-all duration-300 px-6 py-3 font-medium shadow-md hover:shadow-lg
-                          ${selectedCategory === category.value 
-                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-lg' 
-                            : 'bg-white/80 backdrop-blur-sm border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50'
-                          }`}
-                      >
-                        <span className="ml-3 text-xl">{category.icon}</span>
-                        <span className="text-base">{category.label}</span>
-                      </Button>
-                    </motion.div>
-                  ))}
-                </div>
+            {/* Premium Categories */}
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-3">
+                <Filter className="w-6 h-6" />
+                اختر تخصصك المفضل
+                <Zap className="w-6 h-6" />
+              </h3>
+              
+              <div className="flex flex-wrap gap-4 justify-center max-w-6xl mx-auto">
+                {categories.map((category) => (
+                  <motion.div key={category.value} whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      variant={selectedCategory === category.value ? 'default' : 'outline'}
+                      size="lg"
+                      onClick={() => handleCategoryChange(category.value)}
+                      className={`rounded-2xl transition-all duration-300 px-8 py-4 font-bold shadow-lg hover:shadow-2xl text-base
+                        ${selectedCategory === category.value 
+                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-2xl transform scale-105' 
+                          : 'bg-white/90 backdrop-blur-sm border-3 border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-800 hover:shadow-xl'
+                        }`}
+                    >
+                      <span className="text-2xl ml-3">{category.icon}</span>
+                      <span>{category.label}</span>
+                      {selectedCategory === category.value && (
+                        <CheckCircle className="mr-3 w-5 h-5" />
+                      )}
+                    </Button>
+                  </motion.div>
+                ))}
               </div>
+            </div>
 
-              {/* Premium Sort and View Options */}
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 shadow-lg">
-                <div className="flex items-center gap-4">
-                  <label className="text-sm font-medium text-gray-700">ترتيب بحسب:</label>
+            {/* Advanced Controls */}
+            <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-gray-200 shadow-xl">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <label className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <SortAsc className="w-5 h-5" />
+                    ترتيب النتائج:
+                  </label>
                   <div className="relative">
                     <select
                       value={sortBy}
                       onChange={(e) => handleSortChange(e.target.value)}
-                      className="px-4 py-2 bg-white border-2 border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none pr-10 cursor-pointer transition-all duration-200"
+                      className="px-6 py-3 bg-white border-2 border-gray-200 rounded-2xl text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 appearance-none pr-12 cursor-pointer transition-all duration-300 font-medium"
                     >
                       {sortOptions.map((option) => (
-                        <option key={`sort-${option.value}`} value={option.value}>
+                        <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
                       ))}
                     </select>
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
+                    <ChevronDown className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
+              </div>
 
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-700">طريقة العرض:</span>
-                  <div className="flex bg-gray-100 rounded-xl p-1 border border-gray-200">
-                    <Button
-                      variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                      size="sm"
-                      onClick={() => setViewMode('grid')}
-                      className={`rounded-lg transition-all duration-200 px-4 py-2
-                        ${viewMode === 'grid' 
-                          ? 'bg-white shadow-md text-blue-600 border border-blue-200' 
-                          : 'text-gray-600 hover:text-gray-800'
-                        }`}
-                    >
-                      <Grid3X3 className="w-5 h-5 ml-1" />
-                      شبكة
-                    </Button>
-                    <Button
-                      variant={viewMode === 'list' ? 'default' : 'ghost'}
-                      size="sm"
-                      onClick={() => setViewMode('list')}
-                      className={`rounded-lg transition-all duration-200 px-4 py-2
-                        ${viewMode === 'list' 
-                          ? 'bg-white shadow-md text-blue-600 border border-blue-200' 
-                          : 'text-gray-600 hover:text-gray-800'
-                        }`}
-                    >
-                      <List className="w-5 h-5 ml-1" />
-                      قائمة
-                    </Button>
-                  </div>
+              <div className="flex items-center gap-4">
+                <span className="text-lg font-bold text-gray-700">طريقة العرض:</span>
+                <div className="flex bg-gray-100 rounded-2xl p-1 border border-gray-200">
+                  <Button
+                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('grid')}
+                    className={`rounded-xl transition-all duration-300 px-6 py-3 font-medium
+                      ${viewMode === 'grid' 
+                        ? 'bg-white shadow-lg text-blue-600 border-2 border-blue-200' 
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
+                      }`}
+                  >
+                    <Grid3X3 className="w-5 h-5 ml-2" />
+                    شبكة
+                  </Button>
+                  <Button
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('list')}
+                    className={`rounded-xl transition-all duration-300 px-6 py-3 font-medium
+                      ${viewMode === 'list' 
+                        ? 'bg-white shadow-lg text-blue-600 border-2 border-blue-200' 
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
+                      }`}
+                  >
+                    <List className="w-5 h-5 ml-2" />
+                    قائمة
+                  </Button>
+                </div>
+                
+                <div className="text-lg font-bold text-gray-600 bg-gray-100 px-4 py-2 rounded-xl">
+                  {filteredAndSortedProjects.length} نتيجة
                 </div>
               </div>
             </div>
@@ -592,420 +456,285 @@ export default function PortfolioPageClient() {
       </div>
 
       {/* Projects Grid/List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <AnimatePresence mode="wait">
-          {filteredProjects.length > 0 ? (
+          {loading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-center py-20"
+            >
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+              >
+                <Loader2 className="w-8 h-8 text-white" />
+              </motion.div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-2">جاري تحميل المشاريع المميزة</h3>
+              <p className="text-gray-600">يرجى الانتظار قليلاً...</p>
+            </motion.div>
+          ) : filteredAndSortedProjects.length === 0 ? (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="text-center py-20"
+            >
+              <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                <Search className="w-12 h-12 text-gray-400" />
+              </div>
+              <h3 className="text-3xl font-bold text-gray-800 mb-4">لا توجد مشاريع مطابقة</h3>
+              <p className="text-xl text-gray-600 mb-8">جرب تغيير معايير البحث أو الفلاتر المختارة</p>
+              <Button
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedCategory('all');
+                  setSortBy('newest');
+                }}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-2xl font-bold"
+              >
+                إعادة تعيين البحث
+              </Button>
+            </motion.div>
+          ) : (
             <motion.div
               key="projects"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-            >
-              <div className={`mb-8 ${viewMode === 'grid' 
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
+              className={viewMode === 'grid' 
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8' 
                 : 'space-y-6'
-              }`}>
-                {filteredProjects.map((project, index) => {
-                  const mainMedia = getMainMedia(project);
-                  const interactions = projectInteractions.get(project.id) || {};
-                  const isLiked = likedProjects.has(project.id);
-
-                  return viewMode === 'grid' ? (
-                    // Grid View
-                    <motion.div
-                      key={project.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -5 }}
-                      className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"
-                    >
-                      {/* Project Image/Video */}
-                      <div className="relative aspect-square group-hover:scale-105 transition-transform duration-500 overflow-hidden">
-                        <Link 
-                          href={`/portfolio/${project.slug || project.id}`}
-                          onClick={() => registerView(project.id)}
-                        >
-                          {mainMedia ? (
-                            <>
-                              {mainMedia.type === 'IMAGE' ? (
-                                <div className="relative w-full h-full">
-                                  <Image
-                                    src={mainMedia.src}
-                                    alt={mainMedia.alt || project.title}
-                                    fill
-                                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                    priority={index < 4}
-                                    loading={index < 8 ? 'eager' : 'lazy'}
-                                    placeholder="blur"
-                                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                                  />
-                                </div>
-                              ) : (
-                                <div className="relative w-full h-full">
-                                  <video
-                                    className="w-full h-full object-cover"
-                                    poster={mainMedia.thumbnail}
-                                    muted
-                                    loop
-                                    playsInline
+              }
+            >
+              {filteredAndSortedProjects.map((project, index) => {
+                const mainMedia = project.mediaItems?.[0];
+                
+                return viewMode === 'grid' ? (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group"
+                  >
+                    <Link href={`/portfolio/${project.slug || project.id}`}>
+                      <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2 hover:scale-105">
+                        {/* Enhanced Image Container */}
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          {mainMedia?.type === 'IMAGE' ? (
+                            <div className="relative w-full h-full">
+                              <Image
+                                src={mainMedia.src}
+                                alt={mainMedia.alt || project.title}
+                                fill
+                                className="object-cover transition-all duration-700 group-hover:scale-110"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                                priority={index < 8}
+                                loading={index < 8 ? 'eager' : 'lazy'}
+                                placeholder="blur"
+                                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                              />
+                              
+                              {/* Enhanced Overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                              
+                              {/* Premium Badges */}
+                              <div className="absolute top-4 right-4 flex gap-2">
+                                {project.featured && (
+                                  <motion.div
+                                    initial={{ scale: 0, rotate: -180 }}
+                                    animate={{ scale: 1, rotate: 0 }}
+                                    className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg"
                                   >
-                                    <source src={mainMedia.src} type="video/mp4" />
-                                  </video>
-                                  <div className="absolute top-4 right-4 bg-black/70 text-white p-2 rounded-full">
-                                    <Video className="w-4 h-4" />
+                                    <Star className="w-3 h-3" />
+                                    مميز
+                                  </motion.div>
+                                )}
+                                {project.mediaItems?.length > 1 && (
+                                  <div className="bg-black/70 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                                    <Camera className="w-3 h-3" />
+                                    {project.mediaItems.length}
                                   </div>
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <motion.div 
-                                      whileHover={{ scale: 1.1 }}
-                                      className="bg-black/50 backdrop-blur-sm rounded-full p-3"
-                                    >
-                                      <Play className="w-8 h-8 text-white" />
-                                    </motion.div>
+                                )}
+                              </div>
+
+                              {/* Premium Hover Actions */}
+                              <div className="absolute bottom-4 right-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                                <div className="flex items-center justify-between text-white">
+                                  <div className="flex items-center gap-4 text-sm">
+                                    <div className="flex items-center gap-1">
+                                      <Eye className="w-4 h-4" />
+                                      {formatNumber(project.views || 0)}
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <Heart className="w-4 h-4" />
+                                      {formatNumber(project.likes || 0)}
+                                    </div>
                                   </div>
+                                  <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    className="p-2 bg-white/20 rounded-full backdrop-blur-sm"
+                                  >
+                                    <ArrowUpRight className="w-5 h-5" />
+                                  </motion.button>
                                 </div>
-                              )}
-                            </>
+                              </div>
+                            </div>
                           ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                              <Camera className="w-16 h-16 text-gray-400" />
+                            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                              <Camera className="w-12 h-12 text-gray-400" />
                             </div>
                           )}
-                        </Link>
-
-                        {/* Media Count */}
-                        {project.mediaCount > 1 && (
-                          <div className="absolute top-4 left-4 bg-black/70 text-white px-2 py-1 rounded-full text-xs flex items-center gap-1">
-                            <Camera className="w-3 h-3" />
-                            {project.mediaCount}
-                          </div>
-                        )}
-
-                        {/* Featured Badge */}
-                        {project.featured && (
-                          <motion.div 
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute bottom-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1"
-                          >
-                            <Star className="w-3 h-3" />
-                            مميز
-                          </motion.div>
-                        )}
-
-                        {/* Action Buttons */}
-                        <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={(e) => handleLike(project.id, e)}
-                            className={`p-2 rounded-full backdrop-blur-sm transition-colors ${
-                              isLiked 
-                                ? 'bg-red-500 text-white' 
-                                : 'bg-white/80 text-gray-700 hover:bg-red-50 hover:text-red-500'
-                            }`}
-                          >
-                            <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-                          </motion.button>
-
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={(e) => handleShare(project, e)}
-                            className="p-2 rounded-full bg-white/80 text-gray-700 hover:bg-blue-50 hover:text-blue-500 backdrop-blur-sm transition-colors"
-                          >
-                            <Share2 className="w-4 h-4" />
-                          </motion.button>
                         </div>
 
-                        {/* Overlay Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-
-                      {/* Project Info */}
-                      <div className="p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <Badge variant="secondary" className="text-xs">
-                            {project.category}
-                          </Badge>
-                          <div className="flex items-center text-xs text-gray-500 gap-2">
-                            <Clock className="w-3 h-3" />
-                            {project.readTime} دقائق
+                        {/* Enhanced Content */}
+                        <div className="p-6">
+                          <div className="mb-3">
+                            <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200 mb-2">
+                              {project.category}
+                            </Badge>
                           </div>
-                        </div>
-
-                        <Link 
-                          href={`/portfolio/${project.slug || project.id}`}
-                          onClick={() => registerView(project.id)}
-                        >
-                          <h3 className="font-bold text-gray-900 line-clamp-2 mb-2 text-lg hover:text-blue-600 transition-colors">
+                          
+                          <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
                             {project.title}
                           </h3>
-                        </Link>
-
-                        <div className="flex items-center text-sm text-gray-600 mb-3">
-                          <MapPin className="w-4 h-4 ml-1" />
-                          {project.location}
-                        </div>
-
-                        <p className="text-sm text-gray-600 line-clamp-3 mb-4">
-                          {project.excerpt}
-                        </p>
-
-                        {/* Tags */}
-                        {project.tags?.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mb-4">
-                            {project.tags.slice(0, 2).map((tag, index) => (
-                              <span key={`tag-${project.id}-${tag.name}-${index}`} className="bg-blue-50 text-blue-600 px-2 py-1 rounded-full text-xs">
-                                #{tag.name}
-                              </span>
-                            ))}
-                            {project.tags.length > 2 && (
-                              <span className="text-gray-400 text-xs">+{project.tags.length - 2}</span>
-                            )}
-                          </div>
-                        )}
-
-                        {/* Stats */}
-                        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                          <div className="flex items-center gap-3">
-                            <motion.span 
-                              whileHover={{ scale: 1.05 }}
-                              className="flex items-center gap-1 cursor-pointer"
-                            >
-                              <Eye className="w-4 h-4" />
-                              {formatNumber(interactions.views || project.views)}
-                            </motion.span>
-                            <motion.span 
-                              whileHover={{ scale: 1.05 }}
-                              className="flex items-center gap-1 cursor-pointer"
-                            >
-                              <Heart className={`w-4 h-4 ${isLiked ? 'text-red-500' : ''}`} />
-                              {formatNumber(interactions.likes || project.likes)}
-                            </motion.span>
-                            <motion.span 
-                              whileHover={{ scale: 1.05 }}
-                              className="flex items-center gap-1 cursor-pointer"
-                            >
-                              <MessageCircle className="w-4 h-4" />
-                              {formatNumber(interactions.comments || project.commentsCount)}
-                            </motion.span>
-                          </div>
-
-                          {project.rating > 0 && (
+                          
+                          <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                            {project.description}
+                          </p>
+                          
+                          <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                             <div className="flex items-center gap-1">
-                              <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                              <span>{project.rating.toFixed(1)}</span>
+                              <MapPin className="w-4 h-4" />
+                              {project.location}
                             </div>
-                          )}
-                        </div>
-
-                        {/* CTA */}
-                        <Button asChild className="w-full group">
-                          <Link 
-                            href={`/portfolio/${project.slug || project.id}`}
-                            onClick={() => registerView(project.id)}
-                          >
-                            عرض التفاصيل
-                            <ArrowLeft className="w-4 h-4 mr-2 group-hover:translate-x-1 transition-transform" />
-                          </Link>
-                        </Button>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    // List View
-                    <motion.div
-                      key={project.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      <div className="flex gap-6">
-                        {/* Thumbnail */}
-                        <div className="relative w-32 h-32 rounded-lg overflow-hidden flex-shrink-0">
-                          <Link 
-                            href={`/portfolio/${project.slug || project.id}`}
-                            onClick={() => registerView(project.id)}
-                          >
-                            {mainMedia ? (
-                              mainMedia.type === 'IMAGE' ? (
-                                <Image
-                                  src={mainMedia.src}
-                                  alt={mainMedia.alt || project.title}
-                                  fill
-                                  className="object-cover hover:scale-110 transition-transform duration-300"
-                                />
-                              ) : (
-                                <div className="relative w-full h-full">
-                                  <video
-                                    className="w-full h-full object-cover"
-                                    poster={mainMedia.thumbnail}
-                                    muted
-                                  >
-                                    <source src={mainMedia.src} type="video/mp4" />
-                                  </video>
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <Play className="w-6 h-6 text-white" />
-                                  </div>
-                                </div>
-                              )
-                            ) : (
-                              <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                <Camera className="w-8 h-8 text-gray-400" />
+                            {project.rating > 0 && (
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                <span className="font-medium">{project.rating}</span>
                               </div>
                             )}
-                          </Link>
-                        </div>
-
-                        {/* Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <Badge variant="secondary">{project.category}</Badge>
-                              {project.featured && (
-                                <Badge variant="default" className="bg-yellow-500">
-                                  <Star className="w-3 h-3 ml-1" />
-                                  مميز
-                                </Badge>
-                              )}
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={(e) => handleLike(project.id, e)}
-                                className={`p-2 rounded-full transition-colors ${
-                                  isLiked 
-                                    ? 'bg-red-50 text-red-500' 
-                                    : 'bg-gray-50 text-gray-500 hover:bg-red-50 hover:text-red-500'
-                                }`}
-                              >
-                                <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-                              </motion.button>
-
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={(e) => handleShare(project, e)}
-                                className="p-2 rounded-full bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-500 transition-colors"
-                              >
-                                <Share2 className="w-4 h-4" />
-                              </motion.button>
-                            </div>
                           </div>
-
-                          <Link 
-                            href={`/portfolio/${project.slug || project.id}`}
-                            onClick={() => registerView(project.id)}
-                          >
-                            <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
-                              {project.title}
-                            </h3>
-                          </Link>
-
-                          <div className="flex items-center text-sm text-gray-600 mb-3">
-                            <MapPin className="w-4 h-4 ml-1" />
-                            {project.location}
-                            <span className="mx-2">•</span>
-                            <Clock className="w-4 h-4 ml-1" />
-                            {project.readTime} دقائق قراءة
-                          </div>
-
-                          <p className="text-gray-600 line-clamp-2 mb-4">
-                            {project.excerpt}
-                          </p>
-
-                          {/* Stats and CTA */}
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-sm text-gray-500">
+                          
+                          {/* Tags */}
+                          {project.tags?.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-4">
+                              {project.tags.slice(0, 3).map((tag, i) => (
+                                <span key={i} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                  {tag.name}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          
+                          {/* Stats */}
+                          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <div className="flex items-center gap-4 text-xs text-gray-500">
                               <span className="flex items-center gap-1">
-                                <Eye className="w-4 h-4" />
-                                {formatNumber(interactions.views || project.views)}
+                                <Eye className="w-3 h-3" />
+                                {formatNumber(project.views || 0)}
                               </span>
                               <span className="flex items-center gap-1">
-                                <Heart className={`w-4 h-4 ${isLiked ? 'text-red-500' : ''}`} />
-                                {formatNumber(interactions.likes || project.likes)}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <MessageCircle className="w-4 h-4" />
-                                {formatNumber(interactions.comments || project.commentsCount)}
+                                <MessageCircle className="w-3 h-3" />
+                                {formatNumber(project._count?.comments || 0)}
                               </span>
                             </div>
-
-                            <Button asChild>
-                              <Link 
-                                href={`/portfolio/${project.slug || project.id}`}
-                                onClick={() => registerView(project.id)}
-                              >
-                                عرض التفاصيل
-                                <ArrowLeft className="w-4 h-4 mr-2" />
-                              </Link>
-                            </Button>
+                            <div className="text-blue-600 font-medium text-sm group-hover:underline">
+                              مشاهدة التفاصيل ←
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Load More */}
-              {hasMore && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-center"
-                >
-                  <Button
-                    onClick={loadMore}
-                    disabled={loadingMore}
-                    size="lg"
-                    className="px-8"
+                    </Link>
+                  </motion.div>
+                ) : (
+                  // List View - Enhanced
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group"
                   >
-                    {loadingMore ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin ml-2" />
-                        جاري التحميل...
-                      </>
-                    ) : (
-                      <>
-                        <Zap className="w-5 h-5 ml-2" />
-                        تحميل المزيد
-                      </>
-                    )}
-                  </Button>
-                </motion.div>
-              )}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="no-results"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center py-16"
-            >
-              <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-medium text-gray-900 mb-2">
-                {searchTerm ? 'لم يتم العثور على نتائج' : 'لا توجد مشاريع'}
-              </h3>
-              <p className="text-gray-600 mb-6">
-                {searchTerm 
-                  ? `لم يتم العثور على مشاريع تحتوي على "${searchTerm}"`
-                  : 'ستظهر المشاريع هنا عند إضافتها'
-                }
-              </p>
-              {searchTerm && (
-                <Button onClick={() => handleSearchChange('')}>
-                  إزالة البحث
-                </Button>
-              )}
+                    <Link href={`/portfolio/${project.slug || project.id}`}>
+                      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden p-6 flex gap-6 items-center transform hover:-translate-y-1">
+                        {/* Image */}
+                        {mainMedia && (
+                          <div className="relative w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                            <Image
+                              src={mainMedia.src}
+                              alt={mainMedia.alt || project.title}
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-110"
+                              sizes="128px"
+                            />
+                          </div>
+                        )}
+                        
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <div className="flex items-center gap-3 mb-2">
+                                <Badge className="bg-blue-100 text-blue-800">
+                                  {project.category}
+                                </Badge>
+                                {project.featured && (
+                                  <Badge className="bg-yellow-100 text-yellow-800">
+                                    <Star className="w-3 h-3 mr-1" />
+                                    مميز
+                                  </Badge>
+                                )}
+                              </div>
+                              
+                              <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                {project.title}
+                              </h3>
+                              
+                              <p className="text-gray-600 mb-3 line-clamp-2">
+                                {project.description}
+                              </p>
+                              
+                              <div className="flex items-center gap-4 text-sm text-gray-500">
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-4 h-4" />
+                                  {project.location}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Eye className="w-4 h-4" />
+                                  {formatNumber(project.views || 0)}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <MessageCircle className="w-4 h-4" />
+                                  {formatNumber(project._count?.comments || 0)}
+                                </span>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 text-blue-600 font-medium group-hover:underline">
+                              مشاهدة
+                              <ArrowUpRight className="w-5 h-5" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+
+      {/* Loading Trigger for Infinite Scroll */}
+      <div ref={loadingRef} className="h-20" />
     </div>
   );
 }

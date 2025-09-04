@@ -25,15 +25,15 @@ export async function GET(request: NextRequest) {
               q
                 ? {
                     OR: [
-                      { title: { contains: q, mode: 'insensitive' } },
-                      { description: { contains: q, mode: 'insensitive' } },
-                      { category: { contains: q, mode: 'insensitive' } },
-                      { location: { contains: q, mode: 'insensitive' } }
+                      { title: { contains: q } },
+                      { description: { contains: q } },
+                      { category: { contains: q } },
+                      { location: { contains: q } }
                     ]
                   }
                 : {},
-              category ? { category: { contains: category, mode: 'insensitive' } } : {},
-              location ? { location: { contains: location, mode: 'insensitive' } } : {}
+              category ? { category: { contains: category } } : {},
+              location ? { location: { contains: location } } : {}
             ]
           }
         });
@@ -45,15 +45,15 @@ export async function GET(request: NextRequest) {
               q
                 ? {
                     OR: [
-                      { title: { contains: q, mode: 'insensitive' } },
-                      { description: { contains: q, mode: 'insensitive' } },
-                      { category: { contains: q, mode: 'insensitive' } },
-                      { location: { contains: q, mode: 'insensitive' } }
+                      { title: { contains: q } },
+                      { description: { contains: q } },
+                      { category: { contains: q } },
+                      { location: { contains: q } }
                     ]
                   }
                 : {},
-              category ? { category: { contains: category, mode: 'insensitive' } } : {},
-              location ? { location: { contains: location, mode: 'insensitive' } } : {}
+              category ? { category: { contains: category } } : {},
+              location ? { location: { contains: location } } : {}
             ]
           },
           select: {
