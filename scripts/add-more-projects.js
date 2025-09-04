@@ -15,7 +15,7 @@ const newProjects = [
     featured: true,
     projectDuration: '5 أيام',
     projectCost: '25000',
-    mediaItems: {
+    media_items: {
       create: [
         {
           type: 'IMAGE',
@@ -26,14 +26,14 @@ const newProjects = [
         }
       ]
     },
-    tags: {
+    project_tags: {
       create: [
         { name: 'مظلات-فاخرة' },
         { name: 'إضاءة-LED' },
         { name: 'تصميم-عصري' }
       ]
     },
-    materials: {
+    project_materials: {
       create: [
         { name: 'قماش-PVC-مقاوم' },
         { name: 'هيكل-حديدي-مجلفن' },
@@ -52,7 +52,7 @@ const newProjects = [
     featured: true,
     projectDuration: '8 أيام',
     projectCost: '45000',
-    mediaItems: {
+    media_items: {
       create: [
         {
           type: 'IMAGE',
@@ -63,14 +63,14 @@ const newProjects = [
         }
       ]
     },
-    tags: {
+    project_tags: {
       create: [
         { name: 'برجولة-خشبية' },
         { name: 'تصميم-طبيعي' },
         { name: 'استراحات' }
       ]
     },
-    materials: {
+    project_materials: {
       create: [
         { name: 'خشب-الأرز-المعالج' },
         { name: 'مسامير-مقاومة-للصدأ' },
@@ -89,7 +89,7 @@ const newProjects = [
     featured: false,
     projectDuration: '6 أيام',
     projectCost: '35000',
-    mediaItems: {
+    media_items: {
       create: [
         {
           type: 'IMAGE',
@@ -100,14 +100,14 @@ const newProjects = [
         }
       ]
     },
-    tags: {
+    project_tags: {
       create: [
         { name: 'ساتر-متحرك' },
         { name: 'تحكم-آلي' },
         { name: 'خصوصية' }
       ]
     },
-    materials: {
+    project_materials: {
       create: [
         { name: 'ألواح-PVC-مقوى' },
         { name: 'نظام-تحكم-كهربائي' },
@@ -126,7 +126,7 @@ const newProjects = [
     featured: true,
     projectDuration: '12 يوم',
     projectCost: '85000',
-    mediaItems: {
+    media_items: {
       create: [
         {
           type: 'IMAGE',
@@ -137,7 +137,7 @@ const newProjects = [
         }
       ]
     },
-    tags: {
+    project_tags: {
       create: [
         { name: 'ساندوتش-بانل' },
         { name: 'عزل-حراري' },
@@ -145,7 +145,7 @@ const newProjects = [
         { name: 'حماية-حريق' }
       ]
     },
-    materials: {
+    project_materials: {
       create: [
         { name: 'ساندوتش-بانل-50مم' },
         { name: 'عازل-البولي-يوريثان' },
@@ -164,7 +164,7 @@ const newProjects = [
     featured: false,
     projectDuration: '15 يوم',
     projectCost: '55000',
-    mediaItems: {
+    media_items: {
       create: [
         {
           type: 'IMAGE',
@@ -175,7 +175,7 @@ const newProjects = [
         }
       ]
     },
-    tags: {
+    project_tags: {
       create: [
         { name: 'تنسيق-حدائق' },
         { name: 'ري-ذكي' },
@@ -183,7 +183,7 @@ const newProjects = [
         { name: 'نباتات-محلية' }
       ]
     },
-    materials: {
+    project_materials: {
       create: [
         { name: 'نباتات-زينة-متنوعة' },
         { name: 'نظام-ري-تلقائي' },
@@ -199,19 +199,19 @@ async function addProjects() {
     console.log('🚀 بدء إضافة المشاريع الجديدة...');
 
     for (const project of newProjects) {
-      const createdProject = await prisma.project.create({
+      const createdProject = await prisma.projects.create({
         data: project,
         include: {
-          mediaItems: true,
-          tags: true,
-          materials: true
+          media_items: true,
+          project_tags: true,
+          project_materials: true
         }
       });
       
       console.log(`✅ تم إضافة المشروع: ${createdProject.title}`);
     }
 
-    const totalProjects = await prisma.project.count();
+    const totalProjects = await prisma.projects.count();
     console.log(`🎉 تم الانتهاء! إجمالي المشاريع: ${totalProjects}`);
 
   } catch (error) {

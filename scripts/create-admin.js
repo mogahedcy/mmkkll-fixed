@@ -14,11 +14,13 @@ async function createAdmin() {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // إنشاء حساب المدير
-    const admin = await prisma.admin.create({
+    const admin = await prisma.admins.create({
       data: {
+        id: 'admin-2024-01',
         username,
         password: hashedPassword,
-        email
+        email,
+        updatedAt: new Date()
       }
     });
 
