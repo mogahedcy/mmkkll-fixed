@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     images: ['https://aldeyarksa.tech/uploads/sawater-1.webp'],
   },
   alternates: {
-    canonical: 'https://aldeyarksa.tech/services/sawater',
+    canonical: '/services/sawater',
   },
   robots: {
     index: true,

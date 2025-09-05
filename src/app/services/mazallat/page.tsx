@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     images: ['https://aldeyarksa.tech/uploads/mazallat-1.webp'],
   },
   alternates: {
-    canonical: 'https://aldeyarksa.tech/services/mazallat',
+    canonical: '/services/mazallat',
   },
   robots: {
     index: true,

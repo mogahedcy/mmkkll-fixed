@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         title: seoTitle,
         description: seoDescription,
         type: 'article',
-        url: `https://aldeyarksa.tech/portfolio/${project.slug || id}`,
+        url: `https://aldeyarksa.tech/portfolio/${id}`,
         siteName: 'محترفين الديار العالمية',
         locale: 'ar_SA',
         images: project.mediaItems?.filter((item: any) => item.type === 'IMAGE').map((item: any) => ({
@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         images: mainImage ? [mainImage.src] : []
       },
       alternates: {
-        canonical: `https://aldeyarksa.tech/portfolio/${project.slug || id}`
+        canonical: `/portfolio/${id}`
       },
       robots: {
         index: true,

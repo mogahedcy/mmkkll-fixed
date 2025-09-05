@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://aldeyarksa.tech/services/landscaping',
+    canonical: '/services/landscaping',
   },
   robots: {
     index: true,

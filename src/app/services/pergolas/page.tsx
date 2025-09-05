@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     images: ['https://aldeyarksa.tech/uploads/pergola-1.jpg'],
   },
   alternates: {
-    canonical: 'https://aldeyarksa.tech/services/pergolas',
+    canonical: '/services/pergolas',
   },
   robots: {
     index: true,

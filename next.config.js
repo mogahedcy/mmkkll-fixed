@@ -94,10 +94,11 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // redirect من /home إلى / لحل مشكلة duplicate content
       {
-        source: '/',
-        destination: '/home',
-        permanent: false,
+        source: '/home',
+        destination: '/',
+        permanent: true,
       },
     ];
   },
