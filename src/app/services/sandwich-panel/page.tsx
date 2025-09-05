@@ -24,6 +24,9 @@ import Footer from '@/components/Footer'
 export const metadata: Metadata = {
   title: 'غرف ساندوتش بانل في جدة | مؤسسة الديار العالمية - أفضل الأسعار',
   description: 'غرف ساندوتش بانل بأعلى جودة في جدة. عزل حراري وصوتي ممتاز، تركيب سريع، أسعار تبدأ من 165 ريال/م². اطلب عرض سعر مجاني الآن!',
+  alternates: {
+    canonical: '/services/sandwich-panel',
+  },
   openGraph: {
     title: 'غرف ساندوتش بانل في جدة | مؤسسة الديار العالمية',
     description: 'غرف ساندوتش بانل بأعلى جودة في جدة. عزل حراري وصوتي ممتاز، تركيب سريع، أسعار تبدأ من 165 ريال/م².',
