@@ -61,11 +61,5 @@
       ]
     }
   ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/home",
-      "permanent": false
-    }
-  ]
+  "redirects": []
 }

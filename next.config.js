@@ -63,6 +63,7 @@ const nextConfig = {
   allowedDevOrigins: [
     'aldeyarksa.tech',
     'www.aldeyarksa.tech',
+    '*.vercel.app',
     '*.replit.dev',
     '*.projects.builder.codes',
     '*.builder.codes',
@@ -96,14 +97,7 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    return [
-      // redirect من /home إلى / لحل مشكلة duplicate content
-      {
-        source: '/home',
-        destination: '/',
-        permanent: true,
-      },
-    ];
+    return [];
   },
 };
 
