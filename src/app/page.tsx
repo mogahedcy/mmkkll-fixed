@@ -5,6 +5,8 @@ import ServicesSection from '@/components/ServicesSection';
 import PortfolioSection from '@/components/PortfolioSection';
 import Footer from '@/components/Footer';
 <meta name="google-adsense-account" content="ca-pub-2797677839499729">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2797677839499729"
+     crossorigin="anonymous"></script>
 export const metadata: Metadata = {
   title: 'محترفين الديار العالمية | أفضل مظلات وبرجولات جدة - خبرة 15 عام',
   description: '🏆 الشركة الرائدة في جدة لتركيب المظلات والبرجولات والسواتر. خبرة 15 عاماً ✅ ضمان 10 سنوات ✅ تركيب احترافي ✅ أسعار منافسة. اتصل الآن للحصول على استشارة مجانية!',
