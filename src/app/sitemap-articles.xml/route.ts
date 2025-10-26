@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { allArticles } from '@/data/all-articles';
 
 // بيانات المقالات العامة المحسنة لـ SEO
 const generalArticles = [
@@ -275,14 +276,14 @@ const serviceArticles = [
 ];
 
 // دمج جميع المقالات
-const allArticles = [...generalArticles, ...serviceArticles];
+const articlesForSitemap = [...generalArticles, ...serviceArticles, ...allArticles];
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
 
   // إنشاء sitemap للمقالات مع تحسينات SEO شاملة
-  const articlesSitemap = allArticles
-    .map((article) => {
+  const articlesSitemap = articlesForSitemap
+    .map((article: any) => {
       const images = `
     <image:image>
       <image:loc>${baseUrl}/images/articles/${article.slug}-main.webp</image:loc>
@@ -303,9 +304,9 @@ export async function GET() {
         <news:name>محترفين الديار العالمية</news:name>
         <news:language>ar</news:language>
       </news:publication>
-      <news:publication_date>${article.publishedDate}</news:publication_date>
+      <news:publication_date>${article.publishedDate || article.publishedDate}</news:publication_date>
       <news:title><![CDATA[${article.title}]]></news:title>
-      <news:keywords><![CDATA[${article.keywords}]]></news:keywords>
+      <news:keywords><![CDATA[${article.keywords || ''}]]></news:keywords>
       <news:stock_tickers>SAUDI_CONSTRUCTION, JEDDAH_SERVICES</news:stock_tickers>
     </news:news>`;
 
@@ -313,8 +314,8 @@ export async function GET() {
   <url>
     <loc>${baseUrl}/articles/${article.slug}</loc>
     <lastmod>${article.lastModified}</lastmod>
-    <changefreq>${article.changefreq}</changefreq>
-    <priority>${article.priority}</priority>
+    <changefreq>${article.changefreq || 'weekly'}</changefreq>
+    <priority>${article.priority || '0.8'}</priority>
     <rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles/${article.slug}" />
     <rs:ln rel="canonical" href="${baseUrl}/articles/${article.slug}" />
     ${images}
@@ -325,15 +326,15 @@ export async function GET() {
         <Attribute name="author">${article.author}</Attribute>
         <Attribute name="description">${article.excerpt}</Attribute>
         <Attribute name="category">${article.category}</Attribute>
-        <Attribute name="keywords">${article.keywords}</Attribute>
+        <Attribute name="keywords">${article.keywords || ''}</Attribute>
         <Attribute name="readTime">${article.readTime}</Attribute>
-        <Attribute name="rating">${article.rating}</Attribute>
-        <Attribute name="views">${article.views}</Attribute>
-        <Attribute name="likes">${article.likes}</Attribute>
-        <Attribute name="featured">${article.featured}</Attribute>
+        <Attribute name="rating">${article.rating || 0}</Attribute>
+        <Attribute name="views">${article.views || 0}</Attribute>
+        <Attribute name="likes">${article.likes || 0}</Attribute>
+        <Attribute name="featured">${article.featured || false}</Attribute>
         <Attribute name="location">جدة، المملكة العربية السعودية</Attribute>
         <Attribute name="company">محترفين الديار العالمية</Attribute>
-        <Attribute name="tags">${article.tags.join(', ')}</Attribute>
+        <Attribute name="tags">${article.tags ? article.tags.join(', ') : ''}</Attribute>
       </DataObject>
     </PageMap>
   </url>`;
@@ -356,7 +357,7 @@ export async function GET() {
       <DataObject type="website">
         <Attribute name="title">مدونة محترفين الديار العالمية</Attribute>
         <Attribute name="description">اكتشف أحدث المقالات والنصائح المتخصصة في مجال المظلات والبرجولات والساندوتش بانل</Attribute>
-        <Attribute name="articlesCount">${allArticles.length}</Attribute>
+        <Attribute name="articlesCount">${articlesForSitemap.length}</Attribute>
         <Attribute name="location">جدة، المملكة العربية السعودية</Attribute>
         <Attribute name="company">محترفين الديار العالمية</Attribute>
       </DataObject>
@@ -380,7 +381,7 @@ export async function GET() {
       'CDN-Cache-Control': 'max-age=1800',
       'Vercel-CDN-Cache-Control': 'max-age=1800',
       'X-Robots-Tag': 'index, follow, all',
-      'X-Articles-Count': allArticles.length.toString(),
+      'X-Articles-Count': articlesForSitemap.length.toString(),
       'X-Last-Updated': new Date().toISOString(),
       'Vary': 'Accept-Encoding',
       'ETag': `"articles-sitemap-${Date.now()}"`,
