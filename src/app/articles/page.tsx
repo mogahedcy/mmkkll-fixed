@@ -7,9 +7,10 @@ import Link from 'next/link';
 import { ArrowLeft, BookOpen, TrendingUp, Eye, Heart, Clock, Tag, Star, Brain, Zap, Calendar, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge'; // Assuming Badge component is available
+import { allArticles as newArticles } from '@/data/all-articles';
 
 // بيانات المقالات الموسعة والشاملة
-const articles = [
+const legacyArticles = [
   {
     id: 1,
     slug: 'best-car-shades-jeddah-2024',
@@ -182,6 +183,15 @@ const articles = [
     keywords: ['أخطاء تركيب المظلات', 'تركيب مظلات آمن', 'سلامة المظلات', 'تركيب احترافي جدة']
   }
 ];
+
+// دمج المقالات القديمة والجديدة
+const articles = [...legacyArticles, ...newArticles.map((article: any) => ({
+  ...article,
+  date: article.publishedDate || new Date().toISOString(),
+  image: article.image || '/uploads/mazallat-1.webp',
+  authorAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(article.author)}&background=0f172a&color=fff`,
+  commentsCount: 0
+}))];
 
 const categories = [
   'الكل',
@@ -403,7 +413,7 @@ export default function ArticlesPage() {
 
                         {/* Tags */}
                         <div className="flex flex-wrap gap-2 mb-5">
-                          {article.tags.slice(0, 3).map((tag, index) => (
+                          {article.tags.slice(0, 3).map((tag: string, index: number) => (
                             <Badge key={`article-tag-${article.id}-${tag}-${index}`} variant="secondary" className="text-xs">
                               #{tag}
                             </Badge>

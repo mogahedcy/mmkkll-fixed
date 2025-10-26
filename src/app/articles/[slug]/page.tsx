@@ -13,9 +13,10 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import SafeHtmlContent from '@/components/SafeHtmlContent';
 import StructuredDataScript from '@/components/StructuredDataScript';
+import { allArticles, getArticleBySlug } from '@/data/all-articles';
 
 // بيانات المقالات الشاملة مع المحتوى التفصيلي
-const articles = [
+const legacyArticles = [
   {
     id: 1,
     slug: 'best-car-shades-jeddah-2024',
@@ -1750,14 +1751,17 @@ const sampleComments = [
   }
 ];
 
-// دالة للعثور على المقال حسب الـ slug
-function getArticleBySlug(slug: string) {
-  return articles.find(article => article.slug === slug);
+// دمج المقالات القديمة والجديدة
+const combinedArticles = [...legacyArticles, ...allArticles];
+
+// دالة للعثور على المقال حسب الـ slug (محدثة)
+function findArticleBySlug(slug: string) {
+  return combinedArticles.find((article: any) => article.slug === slug);
 }
 
-// دالة للحصول على المقالات المشابهة
-function getRelatedArticles(currentId: number, category: string, limit = 3) {
-  return articles
+// دالة للحصول على المقالات المشابهة (محدثة)
+function getRelatedArticles(currentId: number | string, category: string, limit = 3) {
+  return combinedArticles
     .filter(article => article.id !== currentId && article.category === category)
     .slice(0, limit);
 }
@@ -1803,7 +1807,7 @@ interface ArticlePageProps {
 // إنتاج metadata للـ SEO
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = findArticleBySlug(slug);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
 
   if (!article) {
@@ -1838,7 +1842,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = findArticleBySlug(slug);
 
   if (!article) {
     notFound();
