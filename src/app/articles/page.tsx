@@ -190,7 +190,11 @@ const articles = [...legacyArticles, ...newArticles.map((article: any) => ({
   date: article.publishedDate || new Date().toISOString(),
   image: article.image || '/uploads/mazallat-1.webp',
   authorAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(article.author)}&background=0f172a&color=fff`,
-  commentsCount: 0
+  commentsCount: 0,
+  tags: article.tags || [],
+  keywords: article.keywords ? (Array.isArray(article.keywords) ? article.keywords : article.keywords.split(',').map((k: string) => k.trim())) : [],
+  likes: article.likes || 0,
+  views: article.views || 0
 }))];
 
 const categories = [
@@ -224,7 +228,9 @@ export default function ArticlesPage() {
 
     const searchTerms = query.toLowerCase().split(' ');
     const results = articles.filter(article => {
-      const searchableText = `${article.title} ${article.excerpt} ${article.category} ${article.author} ${article.tags.join(' ')} ${article.keywords.join(' ')}`.toLowerCase();
+      const tags = Array.isArray(article.tags) ? article.tags.join(' ') : '';
+      const keywords = Array.isArray(article.keywords) ? article.keywords.join(' ') : (article.keywords || '');
+      const searchableText = `${article.title} ${article.excerpt} ${article.category} ${article.author} ${tags} ${keywords}`.toLowerCase();
       return searchTerms.some(term => searchableText.includes(term));
     });
 
@@ -242,7 +248,9 @@ export default function ArticlesPage() {
     if (searchQuery.trim()) {
       const searchTerms = searchQuery.toLowerCase().split(' ');
       baseArticles = articles.filter(article => {
-        const searchableText = `${article.title} ${article.excerpt} ${article.category} ${article.author} ${article.tags.join(' ')} ${article.keywords.join(' ')}`.toLowerCase();
+        const tags = Array.isArray(article.tags) ? article.tags.join(' ') : '';
+        const keywords = Array.isArray(article.keywords) ? article.keywords.join(' ') : (article.keywords || '');
+        const searchableText = `${article.title} ${article.excerpt} ${article.category} ${article.author} ${tags} ${keywords}`.toLowerCase();
         return searchTerms.some(term => searchableText.includes(term));
       });
     }
@@ -413,7 +421,7 @@ export default function ArticlesPage() {
 
                         {/* Tags */}
                         <div className="flex flex-wrap gap-2 mb-5">
-                          {article.tags.slice(0, 3).map((tag: string, index: number) => (
+                          {(Array.isArray(article.tags) ? article.tags : []).slice(0, 3).map((tag: string, index: number) => (
                             <Badge key={`article-tag-${article.id}-${tag}-${index}`} variant="secondary" className="text-xs">
                               #{tag}
                             </Badge>
