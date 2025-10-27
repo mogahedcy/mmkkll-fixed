@@ -526,10 +526,10 @@ export default function PortfolioPageClient() {
                       <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2 hover:scale-105">
                         {/* Enhanced Image Container */}
                         <div className="relative aspect-[4/3] overflow-hidden">
-                          {mainMedia?.type === 'IMAGE' ? (
+                          {mainMedia ? (
                             <div className="relative w-full h-full">
                               <Image
-                                src={mainMedia.src}
+                                src={mainMedia.type === 'VIDEO' ? (mainMedia.thumbnail || mainMedia.src) : mainMedia.src}
                                 alt={mainMedia.alt || project.title}
                                 fill
                                 className="object-cover transition-all duration-700 group-hover:scale-110"
@@ -539,6 +539,15 @@ export default function PortfolioPageClient() {
                                 placeholder="blur"
                                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                               />
+                              
+                              {/* Video Play Icon Overlay */}
+                              {mainMedia.type === 'VIDEO' && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                  <div className="bg-white/90 rounded-full p-4 shadow-2xl backdrop-blur-sm">
+                                    <Play className="w-8 h-8 text-blue-600 fill-blue-600" />
+                                  </div>
+                                </div>
+                              )}
                               
                               {/* Enhanced Overlay */}
                               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
@@ -554,6 +563,12 @@ export default function PortfolioPageClient() {
                                     <Star className="w-3 h-3" />
                                     مميز
                                   </motion.div>
+                                )}
+                                {mainMedia.type === 'VIDEO' && (
+                                  <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 shadow-lg">
+                                    <Video className="w-3 h-3" />
+                                    فيديو
+                                  </div>
                                 )}
                                 {project.mediaItems?.length > 1 && (
                                   <div className="bg-black/70 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
@@ -668,12 +683,20 @@ export default function PortfolioPageClient() {
                         {mainMedia && (
                           <div className="relative w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
                             <Image
-                              src={mainMedia.src}
+                              src={mainMedia.type === 'VIDEO' ? (mainMedia.thumbnail || mainMedia.src) : mainMedia.src}
                               alt={mainMedia.alt || project.title}
                               fill
                               className="object-cover transition-transform duration-500 group-hover:scale-110"
                               sizes="128px"
                             />
+                            {/* Video Play Icon Overlay */}
+                            {mainMedia.type === 'VIDEO' && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                                <div className="bg-white/90 rounded-full p-2 shadow-lg">
+                                  <Play className="w-5 h-5 text-blue-600 fill-blue-600" />
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                         
