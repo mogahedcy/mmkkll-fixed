@@ -104,13 +104,13 @@ export default function ProjectAddClient() {
     setUploadProgress(0);
 
     const uploadPromises = Array.from(files).map(async (file, index) => {
-      const formData = new FormData();
-      formData.append('file', file);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
 
       try {
         const response = await fetch('/api/upload', {
           method: 'POST',
-          body: formData
+          body: uploadFormData
         });
 
         if (!response.ok) throw new Error('فشل في رفع الملف');
@@ -197,7 +197,7 @@ export default function ProjectAddClient() {
       const result = await response.json();
       
       alert('تم إنشاء المشروع بنجاح! سيتم توجيهك لعرض المشروع.');
-      router.push(`/portfolio/${result.project.id}`);
+      router.push(`/portfolio/${result.project.slug}`);
 
     } catch (error) {
       console.error('خطأ في إنشاء المشروع:', error);

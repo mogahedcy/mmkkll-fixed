@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     if (data.mediaItems && data.mediaItems.length > 0) {
       await prisma.media_items.createMany({
         data: data.mediaItems.map((item: any, index: number) => ({
-          id: Math.random().toString(36).substring(2, 15),
+          id: randomUUID(),
           projectId: project.id,
           type: item.type || 'IMAGE',
           src: item.src,
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     if (data.tags && data.tags.length > 0) {
       await prisma.project_tags.createMany({
         data: data.tags.map((tag: string) => ({
-          id: Math.random().toString(36).substring(2, 15),
+          id: randomUUID(),
           projectId: project.id,
           name: tag,
           createdAt: new Date()
@@ -89,13 +89,25 @@ export async function POST(request: NextRequest) {
     if (data.materials && data.materials.length > 0) {
       await prisma.project_materials.createMany({
         data: data.materials.map((material: string) => ({
-          id: Math.random().toString(36).substring(2, 15),
+          id: randomUUID(),
           projectId: project.id,
           name: material,
           createdAt: new Date()
         }))
       });
     }
+
+    // جلب المشروع مع جميع البيانات المحدثة
+    const fullProject = await prisma.projects.findUnique({
+      where: { id: project.id },
+      include: {
+        media_items: {
+          orderBy: { order: 'asc' }
+        },
+        project_tags: true,
+        project_materials: true
+      }
+    });
 
     // تحديث خريطة الموقع تلقائياً
     try {
@@ -134,7 +146,10 @@ export async function POST(request: NextRequest) {
         id: project.id,
         slug: slug,
         title: project.title,
-        url: `/portfolio/${project.id}`
+        url: `/portfolio/${slug}`,
+        mediaItems: fullProject?.media_items || [],
+        tags: fullProject?.project_tags || [],
+        materials: fullProject?.project_materials || []
       }
     });
 
