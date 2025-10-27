@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    DATABASE_URL: process.env.DATABASE_URL,
-  },
   // Disable ESLint and TypeScript during builds to fix Vercel deployment
   eslint: {
     ignoreDuringBuilds: true,
