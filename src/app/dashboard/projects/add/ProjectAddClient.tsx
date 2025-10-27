@@ -103,7 +103,27 @@ export default function ProjectAddClient() {
     setLoading(true);
     setUploadProgress(0);
 
+    const errors: string[] = [];
+    let successCount = 0;
+
     const uploadPromises = Array.from(files).map(async (file, index) => {
+      // التحقق من حجم الملف قبل الرفع
+      const maxSize = 100 * 1024 * 1024; // 100MB
+      if (file.size > maxSize) {
+        const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+        errors.push(`${file.name}: حجم الملف (${sizeMB}MB) يتجاوز الحد الأقصى (100MB)`);
+        return null;
+      }
+
+      // التحقق من نوع الملف
+      const isImage = file.type.startsWith('image/');
+      const isVideo = file.type.startsWith('video/');
+      
+      if (!isImage && !isVideo) {
+        errors.push(`${file.name}: نوع الملف غير مدعوم`);
+        return null;
+      }
+
       const uploadFormData = new FormData();
       uploadFormData.append('file', file);
 
@@ -113,20 +133,25 @@ export default function ProjectAddClient() {
           body: uploadFormData
         });
 
-        if (!response.ok) throw new Error('فشل في رفع الملف');
-
         const result = await response.json();
+
+        if (!response.ok) {
+          errors.push(`${file.name}: ${result.error || 'فشل في رفع الملف'}`);
+          return null;
+        }
         
         setUploadProgress((index + 1) / files.length * 100);
+        successCount++;
 
         return {
-          type: file.type.startsWith('video/') ? 'VIDEO' as const : 'IMAGE' as const,
+          type: isVideo ? 'VIDEO' as const : 'IMAGE' as const,
           src: result.url,
           title: file.name.split('.')[0],
           alt: `${formData.title || 'مشروع'} - ملف ${index + 1}`
         };
       } catch (error) {
         console.error('خطأ في رفع الملف:', error);
+        errors.push(`${file.name}: خطأ في الاتصال`);
         return null;
       }
     });
@@ -137,6 +162,15 @@ export default function ProjectAddClient() {
     setMediaItems(prev => [...prev, ...validMedia]);
     setLoading(false);
     setUploadProgress(0);
+
+    // عرض رسائل النتائج
+    if (successCount > 0) {
+      alert(`✅ تم رفع ${successCount} من ${files.length} ملف بنجاح!`);
+    }
+    
+    if (errors.length > 0) {
+      alert(`⚠️ فشل رفع بعض الملفات:\n\n${errors.join('\n')}`);
+    }
   };
 
   const addTag = () => {
@@ -380,17 +414,38 @@ export default function ProjectAddClient() {
 
             <div className="space-y-4">
               <div>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*,video/*"
-                  onChange={(e) => handleFileUpload(e.target.files)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
+                <label className="block text-sm font-medium mb-2 text-gray-700">
+                  رفع الصور والفيديوهات
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,video/mp4,video/mov,video/avi,video/webm"
+                    onChange={(e) => handleFileUpload(e.target.files)}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label 
+                    htmlFor="file-upload"
+                    className="cursor-pointer flex flex-col items-center gap-2"
+                  >
+                    <Upload className="h-12 w-12 text-gray-400" />
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium text-blue-600">انقر للرفع</span> أو اسحب الملفات هنا
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      الصور: JPG, PNG, WEBP, GIF (حتى 100MB)
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      الفيديوهات: MP4, MOV, AVI, WEBM (حتى 100MB)
+                    </p>
+                  </label>
+                </div>
                 {loading && (
-                  <div className="mt-2">
+                  <div className="mt-4">
                     <Progress value={uploadProgress} className="w-full" />
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 mt-2 text-center">
                       جاري الرفع... {Math.round(uploadProgress)}%
                     </p>
                   </div>
@@ -398,31 +453,44 @@ export default function ProjectAddClient() {
               </div>
 
               {mediaItems.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {mediaItems.map((item, index) => (
-                    <div key={index} className="relative group">
-                      {item.type === 'IMAGE' ? (
-                        <img
-                          src={item.src}
-                          alt={item.alt}
-                          className="w-full h-24 object-cover rounded-lg"
-                        />
-                      ) : (
-                        <video
-                          src={item.src}
-                          className="w-full h-24 object-cover rounded-lg"
-                          controls
-                        />
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => removeMediaItem(index)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
+                <div>
+                  <p className="text-sm text-gray-600 mb-3">
+                    تم رفع {mediaItems.length} ملف ({mediaItems.filter(m => m.type === 'IMAGE').length} صورة، {mediaItems.filter(m => m.type === 'VIDEO').length} فيديو)
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {mediaItems.map((item, index) => (
+                      <div key={index} className="relative group">
+                        {item.type === 'IMAGE' ? (
+                          <img
+                            src={item.src}
+                            alt={item.alt}
+                            className="w-full h-24 object-cover rounded-lg"
+                          />
+                        ) : (
+                          <div className="relative w-full h-24 bg-gray-900 rounded-lg overflow-hidden">
+                            <video
+                              src={item.src}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                              <div className="bg-white rounded-full p-2">
+                                <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => removeMediaItem(index)}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
