@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
 import ProtectedMedia from '@/components/ProtectedMedia';
+import { isCloudinaryUrl, extractPublicIdFromUrl } from '@/lib/cloudinary';
 import { 
   Search, 
   Filter,
@@ -516,6 +517,24 @@ export default function PortfolioPageClient() {
               {filteredAndSortedProjects.map((project, index) => {
                 const mainMedia = project.mediaItems?.[0];
                 
+                // إنشاء thumbnail للفيديو من Cloudinary تلقائياً
+                const getVideoThumbnail = (videoSrc: string): string => {
+                  if (!videoSrc) return '';
+                  
+                  if (isCloudinaryUrl(videoSrc)) {
+                    const publicId = extractPublicIdFromUrl(videoSrc);
+                    if (publicId) {
+                      return videoSrc.replace('/video/upload/', '/video/upload/w_600,h_400,c_fill,f_jpg,q_auto/');
+                    }
+                  }
+                  
+                  return videoSrc;
+                };
+                
+                const mediaSrc = mainMedia?.type === 'VIDEO' 
+                  ? (mainMedia.thumbnail || getVideoThumbnail(mainMedia.src))
+                  : mainMedia?.src;
+                
                 return viewMode === 'grid' ? (
                   <motion.div
                     key={project.id}
@@ -531,7 +550,7 @@ export default function PortfolioPageClient() {
                           {mainMedia ? (
                             <div className="relative w-full h-full">
                               <Image
-                                src={mainMedia.type === 'VIDEO' ? (mainMedia.thumbnail || mainMedia.src) : mainMedia.src}
+                                src={mediaSrc || '/images/placeholder.jpg'}
                                 alt={mainMedia.alt || project.title}
                                 fill
                                 className="object-cover transition-all duration-700 group-hover:scale-110"

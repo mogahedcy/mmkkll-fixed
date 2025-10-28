@@ -29,16 +29,15 @@ export async function GET() {
         metaDescription: true,
         keywords: true,
         media_items: {
-          where: {
-            type: 'IMAGE'
-          },
           select: { 
+            type: true,
             src: true, 
             alt: true, 
             title: true,
-            description: true
+            description: true,
+            thumbnail: true
           },
-          take: 5,
+          take: 10,
           orderBy: { order: 'asc' }
         },
         project_tags: {
@@ -59,16 +58,17 @@ export async function GET() {
   // إنشاء sitemap للمشاريع مع الوسائط المحسنة
   const projectsSitemap = projects
     .map((project) => {
-      const images = project.media_items
-        ?.map((media: any) => `
-      <image:image>
-        <image:loc>${media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`}</image:loc>
-        <image:caption><![CDATA[${media.alt || media.title || project.title} - ${project.category} في ${project.location} من محترفين الديار العالمية]]></image:caption>
-        <image:title><![CDATA[${project.title} - محترفين الديار العالمية جدة]]></image:title>
-        <image:geo_location><![CDATA[${project.location}, المملكة العربية السعودية]]></image:geo_location>
-        <image:license><![CDATA[${baseUrl}/terms]]></image:license>
-      </image:image>`)
-        .join('') || '';
+      const mediaContent = project.media_items?.map((media: any) => {
+        if (media.type === 'IMAGE') {
+          const imageUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
+          return `<image:image><image:loc>${imageUrl}</image:loc><image:caption><![CDATA[${media.alt || media.title || project.title} - ${project.category} في ${project.location} من محترفين الديار العالمية]]></image:caption><image:title><![CDATA[${project.title} - محترفين الديار العالمية جدة]]></image:title><image:geo_location><![CDATA[${project.location}, المملكة العربية السعودية]]></image:geo_location><image:license><![CDATA[${baseUrl}/terms]]></image:license></image:image>`;
+        } else if (media.type === 'VIDEO') {
+          const videoUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
+          const thumbnailUrl = media.thumbnail ? (media.thumbnail.startsWith('http') ? media.thumbnail : `${baseUrl}${media.thumbnail}`) : '';
+          return `<video:video><video:thumbnail_loc>${thumbnailUrl}</video:thumbnail_loc><video:title><![CDATA[${project.title} - فيديو ${project.category} في ${project.location}]]></video:title><video:description><![CDATA[${media.description || project.description} - محترفين الديار العالمية جدة]]></video:description><video:content_loc>${videoUrl}</video:content_loc><video:player_loc allow_embed="yes">${baseUrl}/portfolio/${project.slug || project.id}</video:player_loc><video:family_friendly>yes</video:family_friendly><video:uploader info="${baseUrl}">محترفين الديار العالمية</video:uploader></video:video>`;
+        }
+        return '';
+      }).join('') || '';
 
       const priority = project.featured ? '0.9' : '0.8';
       const changefreq = project.featured ? 'weekly' : 'monthly';
@@ -104,15 +104,7 @@ export async function GET() {
       </DataObject>
     </PageMap>`;
 
-      return `
-  <url>
-    <loc>${baseUrl}/portfolio/${project.slug || project.id}</loc>
-    <lastmod>${project.updatedAt.toISOString()}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
-    <rs:ln rel="canonical" href="${baseUrl}/portfolio/${project.slug || project.id}" />
-    <rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/portfolio/${project.slug || project.id}" />${images}${structuredData}
-  </url>`;
+      return `<url><loc>${baseUrl}/portfolio/${project.slug || project.id}</loc><lastmod>${project.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><rs:ln rel="canonical" href="${baseUrl}/portfolio/${project.slug || project.id}" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/portfolio/${project.slug || project.id}" />${mediaContent}${structuredData}</url>`;
     })
     .join('');
 
@@ -146,10 +138,8 @@ export async function GET() {
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
-  ${portfolioIndexPage}
-  ${projectsSitemap}
-</urlset>`;
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">${portfolioIndexPage}${projectsSitemap}</urlset>`;
 
   return new Response(sitemap, {
     status: 200,
