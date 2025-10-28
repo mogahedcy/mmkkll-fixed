@@ -1,5 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary';
 
+// هذا الملف للاستخدام في Server Components فقط
+// لاستخدام دوال Cloudinary في Client Components، استخدم cloudinary-helpers.ts
+
 // تكوين Cloudinary
 const isCloudinaryConfigured = Boolean(
   process.env.CLOUDINARY_CLOUD_NAME &&
@@ -373,21 +376,7 @@ export function getImageSrcSet(publicId: string): string {
   }).join(', ');
 }
 
-/**
- * تحقق من صحة رابط Cloudinary
- */
-export function isCloudinaryUrl(url: string): boolean {
-  return url.includes('cloudinary.com') || url.includes('res.cloudinary.com');
-}
-
-/**
- * استخراج معرف العام من رابط Cloudinary
- */
-export function extractPublicIdFromUrl(url: string): string | null {
-  if (!isCloudinaryUrl(url)) return null;
-
-  const matches = url.match(/\/(?:image|video)\/upload\/(?:v\d+\/)?(.+?)(?:\.|$)/);
-  return matches ? matches[1].split('.')[0] : null;
-}
+// إعادة تصدير دوال المساعدة من cloudinary-helpers
+export { isCloudinaryUrl, extractPublicIdFromUrl } from './cloudinary-helpers';
 
 export default cloudinary;

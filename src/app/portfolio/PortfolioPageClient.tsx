@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
 import ProtectedMedia from '@/components/ProtectedMedia';
-import { isCloudinaryUrl, extractPublicIdFromUrl } from '@/lib/cloudinary';
+import { isCloudinaryUrl, extractPublicIdFromUrl } from '@/lib/cloudinary-helpers';
 import { 
   Search, 
   Filter,
