@@ -1,7 +1,7 @@
 
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '@/lib/jwt';
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,10 +15,7 @@ export async function GET(request: NextRequest) {
     }
 
     // فك تشفير الـ token
-    const decoded = jwt.verify(
-      token, 
-      process.env.JWT_SECRET || 'default-secret-key-change-in-production'
-    ) as any;
+    const decoded = verifyToken(token) as any;
 
     // البحث عن المدير
     const admin = await prisma.admins.findUnique({

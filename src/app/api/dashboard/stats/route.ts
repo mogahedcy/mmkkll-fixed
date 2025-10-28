@@ -109,6 +109,108 @@ export async function GET() {
       ? Math.round((totalInteractions / totalProjects) * 100) / 100
       : 0;
 
+    // إحصائيات متقدمة للتقييمات
+    const allComments = await prisma.comments.findMany({
+      select: {
+        rating: true,
+        likes: true,
+        dislikes: true,
+        createdAt: true,
+        projectId: true
+      }
+    });
+
+    // متوسط التقييم الإجمالي
+    const averageRating = allComments.length > 0
+      ? allComments.reduce((sum, c) => sum + c.rating, 0) / allComments.length
+      : 0;
+
+    // توزيع التقييمات
+    const ratingDistribution = {
+      5: allComments.filter(c => c.rating === 5).length,
+      4: allComments.filter(c => c.rating === 4).length,
+      3: allComments.filter(c => c.rating === 3).length,
+      2: allComments.filter(c => c.rating === 2).length,
+      1: allComments.filter(c => c.rating === 1).length
+    };
+
+    // إجمالي الإعجابات وعدم الإعجاب على التعليقات
+    const totalCommentLikes = allComments.reduce((sum, c) => sum + c.likes, 0);
+    const totalCommentDislikes = allComments.reduce((sum, c) => sum + c.dislikes, 0);
+
+    // معدل رضا العملاء (نسبة التقييمات 4-5 نجوم)
+    const positiveRatings = ratingDistribution[5] + ratingDistribution[4];
+    const satisfactionRate = allComments.length > 0
+      ? (positiveRatings / allComments.length) * 100
+      : 0;
+
+    // المشاريع الأكثر تعليقاً
+    const commentsByProject = await prisma.comments.groupBy({
+      by: ['projectId'],
+      _count: { id: true },
+      where: { status: 'APPROVED' },
+      orderBy: { _count: { id: 'desc' } },
+      take: 5
+    });
+
+    const mostCommentedProjectIds = commentsByProject.map(p => p.projectId);
+    const mostCommentedProjects = mostCommentedProjectIds.length
+      ? await prisma.projects.findMany({
+          where: { id: { in: mostCommentedProjectIds } },
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            rating: true,
+            media_items: { take: 1, orderBy: { order: 'asc' }, select: { src: true } }
+          }
+        })
+      : [];
+
+    const topCommentedProjects = commentsByProject.map(cp => {
+      const project = mostCommentedProjects.find(p => p.id === cp.projectId);
+      return project ? {
+        id: project.id,
+        title: project.title,
+        slug: project.slug,
+        rating: project.rating,
+        commentCount: cp._count.id,
+        cover: project.media_items[0]?.src || null
+      } : null;
+    }).filter(Boolean);
+
+    // اتجاهات التقييمات خلال 30 يوم
+    const last30Days = Array.from({ length: 30 }).map((_, idx) => {
+      const day = new Date(now.getTime() - (29 - idx) * 24 * 60 * 60 * 1000);
+      return {
+        date: day.toISOString().slice(0, 10),
+        start: new Date(day.getFullYear(), day.getMonth(), day.getDate()),
+        end: new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1)
+      };
+    });
+
+    const ratingTrends = await Promise.all(
+      last30Days.map(async ({ date, start, end }) => {
+        const dayComments = await prisma.comments.findMany({
+          where: { 
+            createdAt: { gte: start, lt: end },
+            status: 'APPROVED'
+          },
+          select: { rating: true }
+        });
+        
+        const avgRating = dayComments.length > 0
+          ? dayComments.reduce((sum, c) => sum + c.rating, 0) / dayComments.length
+          : 0;
+
+        return {
+          date,
+          count: dayComments.length,
+          averageRating: Math.round(avgRating * 10) / 10
+        };
+      })
+    );
+
     return NextResponse.json({
       success: true,
       stats: {
@@ -133,7 +235,17 @@ export async function GET() {
         status: c.status,
         createdAt: c.createdAt.toISOString(),
         project: c.projects
-      }))
+      })),
+      reviewStats: {
+        averageRating: Math.round(averageRating * 10) / 10,
+        totalReviews: allComments.length,
+        ratingDistribution,
+        totalCommentLikes,
+        totalCommentDislikes,
+        satisfactionRate: Math.round(satisfactionRate * 10) / 10,
+        topCommentedProjects,
+        ratingTrends
+      }
     });
 
   } catch (error) {

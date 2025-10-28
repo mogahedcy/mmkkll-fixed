@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '@/lib/jwt';
 import { prisma } from '@/lib/prisma';
 import OverviewClient from './OverviewClient';
 import type { Metadata } from 'next';
@@ -20,10 +20,7 @@ async function getAdminData() {
       return null;
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || 'default-secret-key-change-in-production'
-    ) as any;
+    const decoded = verifyToken(token) as any;
 
     const admin = await prisma.admins.findUnique({
       where: { id: decoded.adminId },

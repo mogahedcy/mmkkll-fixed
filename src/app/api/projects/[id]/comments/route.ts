@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { randomUUID } from 'crypto';
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '@/lib/jwt';
 
 // نموذج التحقق من بيانات التعليق
 interface CommentRequest {
@@ -225,7 +225,7 @@ export async function PATCH(
     const token = request.cookies.get('admin-token')?.value;
     if (!token) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
     try {
-      jwt.verify(token, process.env.JWT_SECRET || 'default-secret-key-change-in-production');
+      verifyToken(token);
     } catch {
       return NextResponse.json({ error: 'جلسة غير صالحة' }, { status: 401 });
     }
@@ -259,7 +259,7 @@ export async function DELETE(
     const token = request.cookies.get('admin-token')?.value;
     if (!token) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
     try {
-      jwt.verify(token, process.env.JWT_SECRET || 'default-secret-key-change-in-production');
+      verifyToken(token);
     } catch {
       return NextResponse.json({ error: 'جلسة غير صالحة' }, { status: 401 });
     }

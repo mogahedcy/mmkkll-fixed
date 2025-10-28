@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { signToken } from '@/lib/jwt';
 
 function getClientIP(request: NextRequest): string {
   return request.headers.get('x-forwarded-for') ||
@@ -76,13 +76,12 @@ export async function POST(request: NextRequest) {
     }
 
     // إنشاء JWT token
-    const token = jwt.sign(
+    const token = signToken(
       {
         adminId: admin.id,
         username: admin.username
       },
-      process.env.JWT_SECRET || 'default-secret-key-change-in-production', // Changed default secret
-      { expiresIn: '24h' }
+      '24h'
     );
 
     // تحديث تاريخ آخر تسجيل دخول
