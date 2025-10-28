@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web", "postgresql-16"]
+modules = ["nodejs-20", "web"]
 run = "npm run dev"
 
 [nix]
@@ -22,20 +22,6 @@ externalPort = 3002
 
 [[ports]]
 localPort = 5000
-externalPort = 80
-
-[[ports]]
-<<<<<<< HEAD
-localPort = 45737
-externalPort = 4200
-=======
-localPort = 39767
-externalPort = 3003
-
-[[ports]]
-localPort = 45613
-externalPort = 3001
->>>>>>> fa0b332fea8d250f343b9bba20452dea5b1c29af
 
 [workflows]
 runButton = "Project"
@@ -182,13 +168,13 @@ args = "Website Server"
 name = "Website Server"
 author = "agent"
 
-[workflows.workflow.metadata]
-outputType = "webview"
-
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [agent]
 expertMode = true
