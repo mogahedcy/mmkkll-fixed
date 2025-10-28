@@ -35,6 +35,7 @@ import {
   Tag
 } from 'lucide-react';
 import ProjectCommentsSection from '@/components/ProjectCommentsSection';
+import WatermarkOverlay from '@/components/WatermarkOverlay';
 
 interface MediaItem {
   id: string;
@@ -237,21 +238,25 @@ export default function ProjectDetailsClient({ project }: Props) {
             <div className="space-y-6">
               {/* العرض الرئيسي */}
               <div className="relative">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-lg">
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-lg relative">
                   {currentMedia && (
                     <>
                       {currentMedia.type === 'IMAGE' ? (
-                        <Image
-                          key={`image-${selectedMediaIndex}`}
-                          src={currentMedia.src}
-                          alt={currentMedia.title || project.title}
-                          fill
-                          className="object-cover cursor-pointer transition-opacity duration-300"
-                          onClick={() => setIsLightboxOpen(true)}
-                          priority={selectedMediaIndex === 0}
-                        />
+                        <>
+                          <Image
+                            key={`image-${selectedMediaIndex}`}
+                            src={currentMedia.src}
+                            alt={currentMedia.title || project.title}
+                            fill
+                            className="object-cover cursor-pointer transition-opacity duration-300"
+                            onClick={() => setIsLightboxOpen(true)}
+                            priority={selectedMediaIndex === 0}
+                          />
+                          <WatermarkOverlay position="bottom-right" opacity={0.5} size="medium" />
+                        </>
                       ) : (
                         <div className="relative w-full h-full">
+                          <WatermarkOverlay position="bottom-right" opacity={0.5} size="medium" />
                           {videoError ? (
                             <div className="w-full h-full flex items-center justify-center bg-gray-100">
                               <div className="text-center">
@@ -383,13 +388,16 @@ export default function ProjectDetailsClient({ project }: Props) {
                       }`}
                     >
                       {media.type === 'IMAGE' ? (
-                        <Image
-                          src={media.src}
-                          alt=""
-                          width={80}
-                          height={80}
-                          className="w-full h-full object-cover"
-                        />
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={media.src}
+                            alt=""
+                            width={80}
+                            height={80}
+                            className="w-full h-full object-cover"
+                          />
+                          <WatermarkOverlay position="bottom-right" opacity={0.4} size="small" />
+                        </div>
                       ) : (
                         <div className="relative w-full h-full bg-gray-200 flex items-center justify-center">
                           {media.thumbnail ? (
@@ -412,6 +420,7 @@ export default function ProjectDetailsClient({ project }: Props) {
                               }}
                             />
                           )}
+                          <WatermarkOverlay position="bottom-right" opacity={0.3} size="small" />
                           <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                             <Play className="h-4 w-4 text-white" />
                           </div>
@@ -636,30 +645,38 @@ export default function ProjectDetailsClient({ project }: Props) {
                 <X className="h-6 w-6" />
               </Button>
 
-              {currentMedia.type === 'IMAGE' ? (
-                <Image
-                  key={`lightbox-image-${selectedMediaIndex}`}
-                  src={currentMedia.src}
-                  alt={currentMedia.title || project.title}
-                  width={1200}
-                  height={800}
-                  className="max-w-full max-h-[90vh] object-contain"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              ) : (
-                <video
-                  key={`lightbox-video-${selectedMediaIndex}`}
-                  src={currentMedia.src}
-                  className="max-w-full max-h-[90vh] object-contain"
-                  controls
-                  autoPlay
-                  muted={false}
-                  playsInline
-                  onClick={(e) => e.stopPropagation()}
-                  onPlay={() => setIsVideoPlaying(true)}
-                  onPause={() => setIsVideoPlaying(false)}
-                />
-              )}
+              <div className="relative inline-block">
+                {currentMedia.type === 'IMAGE' ? (
+                  <>
+                    <Image
+                      key={`lightbox-image-${selectedMediaIndex}`}
+                      src={currentMedia.src}
+                      alt={currentMedia.title || project.title}
+                      width={1200}
+                      height={800}
+                      className="max-w-full max-h-[90vh] object-contain"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <WatermarkOverlay position="bottom-right" opacity={0.6} size="large" />
+                  </>
+                ) : (
+                  <>
+                    <video
+                      key={`lightbox-video-${selectedMediaIndex}`}
+                      src={currentMedia.src}
+                      className="max-w-full max-h-[90vh] object-contain"
+                      controls
+                      autoPlay
+                      muted={false}
+                      playsInline
+                      onClick={(e) => e.stopPropagation()}
+                      onPlay={() => setIsVideoPlaying(true)}
+                      onPause={() => setIsVideoPlaying(false)}
+                    />
+                    <WatermarkOverlay position="bottom-right" opacity={0.6} size="large" />
+                  </>
+                )}
+              </div>
 
               {/* أزرار التنقل في Lightbox */}
               {project.mediaItems.length > 1 && (
