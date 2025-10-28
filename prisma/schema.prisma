@@ -52,11 +52,26 @@ model comments {
   message         String
   rating          Int               @default(5)
   status          String            @default("APPROVED")
+  likes           Int               @default(0)
+  dislikes        Int               @default(0)
   ip              String?
   userAgent       String?
   createdAt       DateTime          @default(now())
+  comment_likes   comment_likes[]
   comment_replies comment_replies[]
   projects        projects          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model comment_likes {
+  id        String   @id @default(cuid())
+  commentId String
+  ip        String
+  type      String
+  userAgent String?
+  createdAt DateTime @default(now())
+  comments  comments @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, ip])
 }
 
 model media_items {
