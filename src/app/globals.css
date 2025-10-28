@@ -160,3 +160,27 @@ body {
     font-family: var(--font-arabic), sans-serif;
   }
 }
+
+/* حماية الصور والفيديوهات من النسخ والتنزيل */
+img,
+video {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  user-drag: none;
+  pointer-events: auto;
+}
+
+/* منع النقر اليميني والسحب على الصور في المعرض */
+.portfolio-image,
+.project-media {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
