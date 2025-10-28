@@ -266,9 +266,11 @@ export async function GET() {
   // إنشاء sitemap للمقالات العامة
   const generalArticlesSitemap = articlesData
     .map(
-      (article) => `
+      (article) => {
+        const encodedSlug = encodeURIComponent(article.slug);
+        return `
   <url>
-    <loc>${baseUrl}/articles/${article.slug}</loc>
+    <loc>${baseUrl}/articles/${encodedSlug}</loc>
     <lastmod>${article.lastModified}</lastmod>
     <changefreq>${article.changefreq}</changefreq>
     <priority>${article.priority}</priority>
@@ -282,20 +284,23 @@ export async function GET() {
       <news:keywords><![CDATA[${article.keywords}]]></news:keywords>
     </news:news>
     <image:image>
-      <image:loc>${baseUrl}/images/articles/${article.slug}-main.webp</image:loc>
+      <image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc>
       <image:caption><![CDATA[${article.title}]]></image:caption>
       <image:title><![CDATA[${article.title}]]></image:title>
     </image:image>
-  </url>`
+  </url>`;
+      }
     )
     .join('');
 
   // إنشاء sitemap لمقالات الخدمات
   const serviceArticlesSitemap = serviceArticlesData
     .map(
-      (article) => `
+      (article) => {
+        const encodedSlug = encodeURIComponent(article.slug);
+        return `
   <url>
-    <loc>${baseUrl}/articles/${article.slug}</loc>
+    <loc>${baseUrl}/articles/${encodedSlug}</loc>
     <lastmod>${article.lastModified}</lastmod>
     <changefreq>${article.changefreq}</changefreq>
     <priority>${article.priority}</priority>
@@ -309,11 +314,12 @@ export async function GET() {
       <news:keywords><![CDATA[${article.keywords}]]></news:keywords>
     </news:news>
     <image:image>
-      <image:loc>${baseUrl}/images/articles/${article.slug}-main.webp</image:loc>
+      <image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc>
       <image:caption><![CDATA[${article.title}]]></image:caption>
       <image:title><![CDATA[${article.title}]]></image:title>
     </image:image>
-  </url>`
+  </url>`;
+      }
     )
     .join('');
 

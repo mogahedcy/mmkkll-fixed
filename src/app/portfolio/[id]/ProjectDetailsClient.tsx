@@ -402,31 +402,39 @@ export default function ProjectDetailsClient({ project }: Props) {
                           <WatermarkOverlay position="bottom-right" opacity={0.4} size="small" />
                         </div>
                       ) : (
-                        <div className="relative w-full h-full bg-gray-200 flex items-center justify-center">
+                        <div className="relative w-full h-full bg-gray-900 flex items-center justify-center">
                           {media.thumbnail ? (
-                            <Image
-                              src={media.thumbnail}
-                              alt={`معاينة فيديو ${index + 1}`}
-                              fill
-                              className="object-cover"
-                            />
+                            <>
+                              <Image
+                                src={media.thumbnail}
+                                alt={`معاينة فيديو ${index + 1}`}
+                                fill
+                                className="object-cover"
+                              />
+                              <WatermarkOverlay position="bottom-right" opacity={0.3} size="small" />
+                              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                <Play className="h-6 w-6 text-white drop-shadow-lg" />
+                              </div>
+                            </>
                           ) : (
-                            <video
-                              src={media.src}
-                              className="w-full h-full object-cover"
-                              muted
-                              preload="metadata"
-                              onLoadedMetadata={(e) => {
-                                // إنشاء معاينة تلقائية من الفيديو
-                                const video = e.target as HTMLVideoElement;
-                                video.currentTime = 1; // الذهاب للثانية الأولى
-                              }}
-                            />
+                            <>
+                              <video
+                                src={media.src}
+                                className="w-full h-full object-cover"
+                                muted
+                                preload="metadata"
+                                poster={media.thumbnail}
+                                onLoadedMetadata={(e) => {
+                                  const video = e.target as HTMLVideoElement;
+                                  video.currentTime = 1;
+                                }}
+                              />
+                              <WatermarkOverlay position="bottom-right" opacity={0.3} size="small" />
+                              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                <Play className="h-6 w-6 text-white drop-shadow-lg" />
+                              </div>
+                            </>
                           )}
-                          <WatermarkOverlay position="bottom-right" opacity={0.3} size="small" />
-                          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                            <Play className="h-4 w-4 text-white" />
-                          </div>
                         </div>
                       )}
                     </button>

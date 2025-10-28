@@ -284,16 +284,19 @@ export async function GET() {
   // إنشاء sitemap للمقالات مع تحسينات SEO شاملة
   const articlesSitemap = articlesForSitemap
     .map((article: any) => {
+      // تشفير slug لتجنب الفراغات والأحرف الخاصة
+      const encodedSlug = encodeURIComponent(article.slug);
+      
       const images = `
     <image:image>
-      <image:loc>${baseUrl}/images/articles/${article.slug}-main.webp</image:loc>
+      <image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc>
       <image:caption><![CDATA[${article.title} - محترفين الديار العالمية جدة]]></image:caption>
       <image:title><![CDATA[${article.title}]]></image:title>
       <image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location>
       <image:license><![CDATA[https://aldeyarksa.tech/terms]]></image:license>
     </image:image>
     <image:image>
-      <image:loc>${baseUrl}/images/articles/${article.slug}-infographic.webp</image:loc>
+      <image:loc>${baseUrl}/images/articles/${encodedSlug}-infographic.webp</image:loc>
       <image:caption><![CDATA[إنفوجرافيك: ${article.title}]]></image:caption>
       <image:title><![CDATA[${article.title} - إنفوجرافيك توضيحي]]></image:title>
     </image:image>`;
@@ -312,12 +315,12 @@ export async function GET() {
 
       return `
   <url>
-    <loc>${baseUrl}/articles/${article.slug}</loc>
+    <loc>${baseUrl}/articles/${encodedSlug}</loc>
     <lastmod>${article.lastModified}</lastmod>
     <changefreq>${article.changefreq || 'weekly'}</changefreq>
     <priority>${article.priority || '0.8'}</priority>
-    <rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles/${article.slug}" />
-    <rs:ln rel="canonical" href="${baseUrl}/articles/${article.slug}" />
+    <rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles/${encodedSlug}" />
+    <rs:ln rel="canonical" href="${baseUrl}/articles/${encodedSlug}" />
     ${images}
     ${newsMarkup}
     <PageMap>
