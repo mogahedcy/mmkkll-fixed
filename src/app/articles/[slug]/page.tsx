@@ -653,7 +653,7 @@ const legacyArticles = [
     `,
     category: 'ساندوتش بانل',
     author: 'المهندس سعد التقني',
-    authorAvatar: 'https://ui-avatars.com/api/?name=سعد+التقني&background=dc2626&color=fff',
+    authorAvatar: 'https://ui-avatars.com/api/?name=%D8%B3%D8%B9%D8%AF+%D8%A7%D9%84%D8%AA%D9%82%D9%86%D9%8A&background=dc2626&color=fff',
     authorBio: 'مهندس متخصص في أنظمة العزل الحراري والساندوتش بانل مع خبرة 10 سنوات في المشاريع الصناعية.',
     date: '5 نوفمبر 2024',
     readTime: '9 دقائق',
@@ -1768,15 +1768,15 @@ function getRelatedArticles(currentId: number | string, category: string, limit 
 
 // دالة للحصول على المقال السابق والتالي
 function getNavigationArticles(currentId: number) {
-  const currentIndex = articles.findIndex(article => article.id === currentId);
-  const previousArticle = currentIndex > 0 ? articles[currentIndex - 1] : null;
-  const nextArticle = currentIndex < articles.length - 1 ? articles[currentIndex + 1] : null;
+  const currentIndex = combinedArticles.findIndex(article => article.id === currentId);
+  const previousArticle = currentIndex > 0 ? combinedArticles[currentIndex - 1] : null;
+  const nextArticle = currentIndex < combinedArticles.length - 1 ? combinedArticles[currentIndex + 1] : null;
 
   return { previousArticle, nextArticle };
 }
 
 // دالة لإنتاج structured data للـ SEO
-function generateStructuredData(article: typeof articles[0]) {
+function generateStructuredData(article: typeof combinedArticles[0]) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
   const imageUrl = article.image.startsWith('http') ? article.image : `${baseUrl}${article.image}`;
   return {
@@ -1817,25 +1817,25 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     };
   }
 
+  const imageUrl = article.image.startsWith('http') ? article.image : `${baseUrl}${article.image}`;
+  
   return {
-    title: `${article.title} | محترفين الديار العالمية` ,
-    description: article.metaDescription,
-    keywords: article.keywords,
+    title: article.title,
+    description: article.metaDescription || article.excerpt,
     alternates: { canonical: `${baseUrl}/articles/${article.slug}` },
     openGraph: {
       title: article.title,
-      description: article.excerpt,
+      description: article.excerpt || article.metaDescription,
       url: `${baseUrl}/articles/${article.slug}`,
-      images: [article.image.startsWith('http') ? article.image : `${baseUrl}${article.image}`],
+      images: [imageUrl],
       type: 'article',
-      publishedTime: article.date,
-      authors: [article.author]
+      locale: 'ar_SA'
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title,
-      description: article.excerpt,
-      images: [article.image.startsWith('http') ? article.image : `${baseUrl}${article.image}`]
+      description: article.excerpt || article.metaDescription,
+      images: [imageUrl]
     }
   };
 }
