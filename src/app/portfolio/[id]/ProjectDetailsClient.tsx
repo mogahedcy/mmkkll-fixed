@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import ProjectCommentsSection from '@/components/ProjectCommentsSection';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
+import ProtectedMedia from '@/components/ProtectedMedia';
 
 interface MediaItem {
   id: string;
@@ -237,6 +238,7 @@ export default function ProjectDetailsClient({ project }: Props) {
             {/* معرض الوسائط */}
             <div className="space-y-6">
               {/* العرض الرئيسي */}
+              <ProtectedMedia>
               <div className="relative">
                 <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-lg relative">
                   {currentMedia && (
@@ -373,6 +375,7 @@ export default function ProjectDetailsClient({ project }: Props) {
                   {selectedMediaIndex + 1} / {project.mediaItems.length}
                 </div>
               </div>
+              </ProtectedMedia>
 
               {/* معاينات مصغرة */}
               {project.mediaItems.length > 1 && (

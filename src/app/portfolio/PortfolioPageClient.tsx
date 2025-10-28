@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
+import ProtectedMedia from '@/components/ProtectedMedia';
 import { 
   Search, 
   Filter,
@@ -526,7 +527,7 @@ export default function PortfolioPageClient() {
                     <Link href={`/portfolio/${project.slug || project.id}`}>
                       <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2 hover:scale-105">
                         {/* Enhanced Image Container */}
-                        <div className="relative aspect-[4/3] overflow-hidden">
+                        <ProtectedMedia className="relative aspect-[4/3] overflow-hidden">
                           {mainMedia ? (
                             <div className="relative w-full h-full">
                               <Image
@@ -610,7 +611,7 @@ export default function PortfolioPageClient() {
                               <Camera className="w-12 h-12 text-gray-400" />
                             </div>
                           )}
-                        </div>
+                        </ProtectedMedia>
 
                         {/* Enhanced Content */}
                         <div className="p-6">
@@ -685,7 +686,7 @@ export default function PortfolioPageClient() {
                       <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden p-6 flex gap-6 items-center transform hover:-translate-y-1">
                         {/* Image */}
                         {mainMedia && (
-                          <div className="relative w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                          <ProtectedMedia className="relative w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
                             <Image
                               src={mainMedia.type === 'VIDEO' ? (mainMedia.thumbnail || mainMedia.src) : mainMedia.src}
                               alt={mainMedia.alt || project.title}
@@ -703,7 +704,7 @@ export default function PortfolioPageClient() {
                                 </div>
                               </div>
                             )}
-                          </div>
+                          </ProtectedMedia>
                         )}
                         
                         {/* Content */}
