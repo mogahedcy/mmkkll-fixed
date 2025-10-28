@@ -38,6 +38,56 @@ export interface CloudinaryUploadResult {
 }
 
 /**
+ * رفع الشعار إلى Cloudinary (يتم استدعاؤها مرة واحدة فقط)
+ */
+export async function uploadWatermarkToCloudinary(): Promise<void> {
+  if (!isCloudinaryConfigured) {
+    console.warn('⚠️ Cloudinary غير مُعَدّ. تخطي رفع الشعار.');
+    return;
+  }
+
+  try {
+    const fs = await import('fs');
+    const path = await import('path');
+    
+    // قراءة ملف الشعار من public folder
+    const watermarkPath = path.join(process.cwd(), 'public', 'watermark-logo.webp');
+    
+    // التحقق من وجود الملف
+    if (!fs.existsSync(watermarkPath)) {
+      console.warn('⚠️ ملف الشعار غير موجود في:', watermarkPath);
+      return;
+    }
+
+    const watermarkBuffer = fs.readFileSync(watermarkPath);
+
+    // رفع الشعار إلى Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        {
+          folder: 'watermarks',
+          public_id: 'company-watermark',
+          resource_type: 'image',
+          overwrite: true,
+          invalidate: true
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      ).end(watermarkBuffer);
+    });
+
+    console.log('✅ تم رفع الشعار بنجاح إلى Cloudinary:', result);
+  } catch (error) {
+    console.error('❌ خطأ في رفع الشعار:', error);
+  }
+}
+
+/**
  * رفع ملف إلى Cloudinary
  */
 export async function uploadToCloudinary(
@@ -81,24 +131,52 @@ export async function uploadToCloudinary(
       throw new Error(`نوع الملف غير مدعوم: ${file.type}`);
     }
 
-    const defaultOptions = {
-      folder: options.folder || 'portfolio',
-      resource_type: options.resource_type || (isVideo ? 'video' : isImage ? 'image' : 'auto'),
-      public_id: options.public_id,
-      // تحسينات مخصصة حسب نوع الملف
-      transformation: options.transformation || (isVideo ? {
+    // تحضير الشعار كـ overlay - سيتم استخدام public ID للشعار في Cloudinary
+    const watermarkPublicId = 'watermarks/company-watermark';
+    
+    // تحضير transformations كـ array للصور والفيديوهات
+    const baseTransformation = isVideo ? [
+      {
         // إعدادات أساسية للفيديو
         quality: 'auto',
         width: 1280,
         height: 720,
         crop: 'limit',
         bit_rate: '1m'
-      } : {
+      },
+      {
+        // إضافة الشعار
+        overlay: watermarkPublicId,
+        gravity: 'south_east',
+        width: 150,
+        opacity: 60,
+        x: 20,
+        y: 20
+      }
+    ] : [
+      {
         // تحسينات للصور
         quality: 'auto',
         fetch_format: 'auto',
-        flags: 'progressive',
-      }),
+        flags: 'progressive'
+      },
+      {
+        // إضافة الشعار
+        overlay: watermarkPublicId,
+        gravity: 'south_east',
+        width: 150,
+        opacity: 60,
+        x: 20,
+        y: 20
+      }
+    ];
+    
+    const defaultOptions = {
+      folder: options.folder || 'portfolio',
+      resource_type: options.resource_type || (isVideo ? 'video' : isImage ? 'image' : 'auto'),
+      public_id: options.public_id,
+      // استخدام transformation من options أو التحويلات الافتراضية مع الشعار
+      transformation: options.transformation || baseTransformation,
       // إعدادات إضافية
       overwrite: true,
       invalidate: true,
@@ -120,7 +198,7 @@ export async function uploadToCloudinary(
     });
 
     // رفع الملف
-    const result: { secure_url: string; public_id: string } = await new Promise((resolve, reject) => {
+    const result: CloudinaryUploadResult = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         defaultOptions,
         (error, result) => {
@@ -165,8 +243,8 @@ export async function uploadToCloudinary(
         errorMessage = 'حجم الملف كبير جداً. الحد الأقصى للفيديو 100MB';
       } else if (error.message.includes('timeout')) {
         errorMessage = 'انتهت مهلة رفع الملف. جرب ملف أصغر';
-      } else if (isVideo && error.message.includes('resource_type')) {
-        errorMessage = 'نوع الفيديو غير مدعوم. جرب MP4';
+      } else if (error.message.includes('resource_type')) {
+        errorMessage = 'نوع الملف غير مدعوم. جرب صيغة أخرى';
       } else {
         errorMessage = error.message;
       }
