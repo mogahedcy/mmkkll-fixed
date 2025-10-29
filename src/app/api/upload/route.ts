@@ -152,60 +152,54 @@ export async function POST(request: NextRequest) {
 
       try {
         let uploadedFile;
+        let useLocalFallback = !isCloudinaryAvailable;
 
         if (isCloudinaryAvailable) {
-          // رفع إلى Cloudinary مع إعدادات محسنة
-          console.log('☁️ رفع إلى Cloudinary...');
-          
-          // تحسين أسماء الملفات لـ SEO
-          const seoFriendlyName = generateSEOFriendlyName(file.name);
-          
-          const cloudinaryOptions = {
-            folder: 'portfolio/projects',
-            resource_type: (isVideo ? 'video' : 'image') as 'image' | 'video',
-            public_id: `${Date.now()}-${seoFriendlyName}`,
-            transformation: isVideo ? {
-              quality: 'auto',
-              width: 1280,
-              height: 720,
-              crop: 'limit'
-            } : {
-              quality: 'auto',
-              format: 'webp',
-              width: 'auto',
-              crop: 'scale',
-              dpr: 'auto',
-              flags: 'progressive'
+          try {
+            // رفع إلى Cloudinary مع إعدادات محسنة
+            console.log('☁️ محاولة رفع إلى Cloudinary...');
+            
+            // تحسين أسماء الملفات لـ SEO
+            const seoFriendlyName = generateSEOFriendlyName(file.name);
+            
+            const cloudinaryOptions = {
+              folder: 'articles',
+              resource_type: (isVideo ? 'video' : 'image') as 'image' | 'video',
+              public_id: `${Date.now()}-${seoFriendlyName}`
+            };
+
+            const result = await uploadToCloudinary(file, cloudinaryOptions);
+
+            console.log('✅ تم رفع الملف إلى Cloudinary:', result.secure_url);
+
+            uploadedFile = {
+              originalName: file.name,
+              fileName: result.public_id,
+              src: result.secure_url,
+              url: result.secure_url,
+              type: file.type.startsWith('video/') ? 'VIDEO' : 'IMAGE',
+              size: result.bytes,
+              mimeType: file.type,
+              width: result.width || null,
+              height: result.height || null,
+              duration: result.duration || null,
+              cloudinary_public_id: result.public_id,
+              cloudinary_url: result.secure_url,
+              resource_type: result.resource_type,
+              storage_type: 'cloudinary'
+            };
+
+            // التحقق من صحة النتيجة
+            if (!uploadedFile.src) {
+              throw new Error('لم يتم الحصول على رابط صحيح من Cloudinary');
             }
-          };
-
-          const result = await uploadToCloudinary(file, cloudinaryOptions);
-
-          console.log('✅ تم رفع الملف إلى Cloudinary:', result.secure_url);
-
-          uploadedFile = {
-            originalName: file.name,
-            fileName: result.public_id,
-            src: result.secure_url,
-            url: result.secure_url,
-            type: file.type.startsWith('video/') ? 'VIDEO' : 'IMAGE',
-            size: result.bytes,
-            mimeType: file.type,
-            width: result.width || null,
-            height: result.height || null,
-            duration: result.duration || null,
-            cloudinary_public_id: result.public_id,
-            cloudinary_url: result.secure_url,
-            resource_type: result.resource_type,
-            storage_type: 'cloudinary'
-          };
-
-          // التحقق من صحة النتيجة
-          if (!uploadedFile.src) {
-            throw new Error('لم يتم الحصول على رابط صحيح من Cloudinary');
+          } catch (cloudinaryError) {
+            console.warn('⚠️ فشل رفع Cloudinary، التحويل للتخزين المحلي:', cloudinaryError);
+            useLocalFallback = true;
           }
+        }
 
-        } else {
+        if (useLocalFallback) {
           // رفع محلي (fallback)
           console.log('💾 رفع محلي (fallback mode)...');
 

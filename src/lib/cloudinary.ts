@@ -13,11 +13,11 @@ const isCloudinaryConfigured = Boolean(
 
 if (isCloudinaryConfigured) {
   cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME?.trim(),
+    api_key: process.env.CLOUDINARY_API_KEY?.trim(),
+    api_secret: process.env.CLOUDINARY_API_SECRET?.trim(),
   });
-  console.log('✅ Cloudinary configured successfully with cloud:', process.env.CLOUDINARY_CLOUD_NAME);
+  console.log('✅ Cloudinary configured successfully with cloud:', process.env.CLOUDINARY_CLOUD_NAME?.trim());
 } else {
   console.log('⚠️ Cloudinary not configured. Using local fallback mode.');
   console.log('📋 Environment variables status:', {
@@ -134,60 +134,11 @@ export async function uploadToCloudinary(
       throw new Error(`نوع الملف غير مدعوم: ${file.type}`);
     }
 
-    // تحضير الشعار كـ overlay - سيتم استخدام public ID للشعار في Cloudinary
-    const watermarkPublicId = 'watermarks/company-watermark';
-    
-    // تحضير transformations كـ array للصور والفيديوهات
-    const baseTransformation = isVideo ? [
-      {
-        // إعدادات أساسية للفيديو
-        quality: 'auto',
-        width: 1280,
-        height: 720,
-        crop: 'limit',
-        bit_rate: '1m'
-      },
-      {
-        // إضافة الشعار
-        overlay: watermarkPublicId,
-        gravity: 'south_east',
-        width: 150,
-        opacity: 60,
-        x: 20,
-        y: 20
-      }
-    ] : [
-      {
-        // تحسينات للصور
-        quality: 'auto',
-        fetch_format: 'auto',
-        flags: 'progressive'
-      },
-      {
-        // إضافة الشعار
-        overlay: watermarkPublicId,
-        gravity: 'south_east',
-        width: 150,
-        opacity: 60,
-        x: 20,
-        y: 20
-      }
-    ];
-    
     const defaultOptions = {
       folder: options.folder || 'portfolio',
       resource_type: options.resource_type || (isVideo ? 'video' : isImage ? 'image' : 'auto'),
       public_id: options.public_id,
-      // استخدام transformation من options أو التحويلات الافتراضية مع الشعار
-      transformation: options.transformation || baseTransformation,
-      // إعدادات إضافية
-      overwrite: true,
-      invalidate: true,
-      // إعدادات خاصة بالفيديو
-      ...(isVideo && {
-        chunk_size: 6000000, // 6MB chunks for large videos
-        timeout: 120000, // 2 minutes timeout for videos
-      }),
+      transformation: options.transformation,
       ...options
     };
 
