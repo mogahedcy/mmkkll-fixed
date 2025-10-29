@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, TrendingUp, Eye, Heart, MessageCircle, CheckCircle, Trash2, Star, Award, ThumbsUp, ThumbsDown, BarChart3 } from "lucide-react";
+import DatabaseUsage from "@/components/dashboard/DatabaseUsage";
 
 interface TrendPoint { date: string; views: number; likes: number; comments: number }
 interface TopProject { id: string; title: string; slug: string | null; cover: string | null; views: number }
@@ -92,6 +93,9 @@ export default function OverviewClient() {
 
   return (
     <div className="space-y-8">
+      {/* Database Usage */}
+      <DatabaseUsage />
+
       {/* Trends */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card>
