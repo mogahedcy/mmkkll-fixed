@@ -81,26 +81,7 @@ export async function GET(request: NextRequest) {
         orderBy = [{ featured: 'desc' }, { publishedAt: 'desc' }];
     }
 
-    const db: any = prisma as any;
-    const Article = db.articles || db.article;
-
-    if (!Article || !process.env.DATABASE_URL) {
-      return NextResponse.json({
-        success: true,
-        articles: [],
-        total: 0,
-        stats: { total: 0, featured: 0, categories: [] },
-        pagination: {
-          total: 0,
-          page: page ? Number.parseInt(page) : 1,
-          limit: take,
-          totalPages: 0,
-          hasMore: false
-        }
-      });
-    }
-
-    const articles = await Article.findMany({
+    const articles = await prisma.articles.findMany({
       where,
       include: {
         article_media_items: {
@@ -140,13 +121,13 @@ export async function GET(request: NextRequest) {
       slug: article.slug || generateSlug(article.title, article.id)
     }));
 
-    const totalCount = await Article.count({ where });
+    const totalCount = await prisma.articles.count({ where });
 
     // إحصائيات إضافية
     const stats = {
       total: totalCount,
-      featured: await Article.count({ where: { ...where, featured: true } }),
-      categories: await Article.groupBy({
+      featured: await prisma.articles.count({ where: { ...where, featured: true } }),
+      categories: await prisma.articles.groupBy({
         by: ['category'],
         where,
         _count: { category: true }
