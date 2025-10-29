@@ -31,7 +31,8 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
-  Loader2
+  Loader2,
+  RefreshCw
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -108,6 +109,8 @@ export default function ProjectsPage() {
   const [updating, setUpdating] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [indexing, setIndexing] = useState<string | null>(null);
+  const [indexingAll, setIndexingAll] = useState(false);
 
   // جلب المشاريع والإحصائيات
   useEffect(() => {
@@ -254,6 +257,80 @@ export default function ProjectsPage() {
     }
   };
 
+  // طلب أرشفة مشروع واحد
+  const requestIndexing = async (projectId: string, slug: string) => {
+    try {
+      setIndexing(projectId);
+      const url = `/portfolio/${slug}`;
+      
+      const response = await fetch('/api/indexing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          urls: [url],
+          type: 'project' 
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSuccess('تم إرسال طلب الأرشفة إلى محركات البحث');
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError('فشل في إرسال طلب الأرشفة');
+        setTimeout(() => setError(''), 3000);
+      }
+    } catch (error) {
+      console.error('خطأ في طلب الأرشفة:', error);
+      setError('حدث خطأ في طلب الأرشفة');
+      setTimeout(() => setError(''), 3000);
+    } finally {
+      setIndexing(null);
+    }
+  };
+
+  // طلب أرشفة جميع المشاريع المنشورة
+  const requestIndexingAll = async () => {
+    try {
+      setIndexingAll(true);
+      
+      const publishedProjects = projects.filter(p => p.status === 'PUBLISHED');
+      const urls = publishedProjects.map(p => `/portfolio/${p.slug}`);
+
+      if (urls.length === 0) {
+        setError('لا توجد مشاريع منشورة للأرشفة');
+        setTimeout(() => setError(''), 3000);
+        return;
+      }
+
+      const response = await fetch('/api/indexing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          urls,
+          type: 'project' 
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSuccess(`تم إرسال طلب أرشفة ${urls.length} مشروع إلى محركات البحث`);
+        setTimeout(() => setSuccess(''), 4000);
+      } else {
+        setError('فشل في إرسال طلب الأرشفة');
+        setTimeout(() => setError(''), 3000);
+      }
+    } catch (error) {
+      console.error('خطأ في طلب الأرشفة:', error);
+      setError('حدث خطأ في طلب الأرشفة');
+      setTimeout(() => setError(''), 3000);
+    } finally {
+      setIndexingAll(false);
+    }
+  };
+
   // فلترة المشاريع
   const filteredProjects = projects.filter(project => {
     const matchesSearch = searchTerm === '' || 
@@ -308,12 +385,26 @@ export default function ProjectsPage() {
               <h1 className="text-3xl font-bold text-gray-900">إدارة المشاريع</h1>
               <p className="text-gray-600 mt-2">قم بإدارة وتتبع جميع مشاريعك</p>
             </div>
-            <Button asChild className="bg-blue-600 hover:bg-blue-700">
-              <Link href="/dashboard/projects/add">
-                <Plus className="w-5 h-5 ml-2" />
-                إضافة مشروع جديد
-              </Link>
-            </Button>
+            <div className="flex gap-3">
+              <Button 
+                onClick={requestIndexingAll}
+                disabled={indexingAll}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                {indexingAll ? (
+                  <Loader2 className="w-5 h-5 ml-2 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-5 h-5 ml-2" />
+                )}
+                طلب أرشفة الكل
+              </Button>
+              <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                <Link href="/dashboard/projects/add">
+                  <Plus className="w-5 h-5 ml-2" />
+                  إضافة مشروع جديد
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Stats Cards */}
@@ -601,6 +692,20 @@ export default function ProjectsPage() {
                                     <Copy className="w-4 h-4 ml-2" />
                                     نسخ الرابط
                                   </DropdownMenuItem>
+
+                                  {project.status === 'PUBLISHED' && (
+                                    <DropdownMenuItem
+                                      onClick={() => requestIndexing(project.id, project.slug)}
+                                      disabled={indexing === project.id}
+                                    >
+                                      {indexing === project.id ? (
+                                        <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                                      ) : (
+                                        <RefreshCw className="w-4 h-4 ml-2" />
+                                      )}
+                                      طلب أرشفة من محركات البحث
+                                    </DropdownMenuItem>
+                                  )}
 
                                   <DropdownMenuItem
                                     onClick={() => deleteProject(project.id)}
