@@ -38,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 - **Articles System**: Complete blog/articles archive with dynamic sitemap and full CRUD operations
 - **Media Management**: Support for multiple media types per project and article with ordering
 - **SEO Optimization**: Automated sitemap generation, robots.txt, and structured data
+- **Search Engine Indexing**: IndexNow API integration for requesting search engine crawling
 - **Admin Dashboard**: Full-featured management interface for content administration
 
 ## Performance Optimizations
