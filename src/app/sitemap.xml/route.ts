@@ -137,7 +137,7 @@ const articlesData = [
 export async function GET() {
   const baseUrl = 'https://aldeyarksa.tech';
 
-  // الصفحات الثابتة مع أولوية SEO محسنة وكلمات مفتاحية
+  // الصفحات الثابتة مع أولوية SEO محسنة وك��مات مفتاحية
   const staticPages = [
     { 
       url: '', 
@@ -252,10 +252,21 @@ export async function GET() {
     projects = await prisma.projects.findMany({
       where: { status: 'PUBLISHED' },
       select: {
+        id: true,
         slug: true,
-        updatedAt: true
+        title: true,
+        description: true,
+        category: true,
+        location: true,
+        featured: true,
+        createdAt: true,
+        updatedAt: true,
+        media_items: {
+          select: { type: true, src: true, alt: true, title: true }
+        }
       }
     });
+    projects = (projects as any[]).map(p => ({ ...p, mediaItems: p.media_items }));
   } catch (error) {
     console.error('خطأ في جلب المشاريع للخريطة:', error);
     projects = [];
@@ -368,7 +379,7 @@ export async function GET() {
 
         return `
   <url>
-    <loc>${baseUrl}/portfolio/${project.id}</loc>
+    <loc>${baseUrl}/portfolio/${(project as any).slug || (project as any).id}</loc>
     <lastmod>${project.updatedAt.toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${priority}</priority>${images}${videos}

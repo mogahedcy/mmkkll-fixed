@@ -85,7 +85,7 @@ export default function LoginForm() {
           required
           value={formData.username}
           onChange={handleInputChange}
-          placeholder="أدخل اسم المستخدم"
+          placeholder="أدخل ��سم المستخدم"
           className="w-full"
           disabled={isLoading}
         />
@@ -113,6 +113,7 @@ export default function LoginForm() {
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             onClick={() => setShowPassword(!showPassword)}
             disabled={isLoading}
+            aria-label={showPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -125,8 +126,8 @@ export default function LoginForm() {
 
       {message.text && (
         <div className={`flex items-center gap-2 p-3 rounded-lg ${
-          message.type === 'success' 
-            ? 'bg-green-50 border border-green-200 text-green-800' 
+          message.type === 'success'
+            ? 'bg-green-50 border border-green-200 text-green-800'
             : 'bg-red-50 border border-red-200 text-red-800'
         }`}>
           {message.type === 'success' ? (
@@ -137,6 +138,14 @@ export default function LoginForm() {
           <span className="text-sm">{message.text}</span>
         </div>
       )}
+
+      <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center gap-2 text-gray-600">
+          <input id="remember" type="checkbox" className="rounded" disabled={isLoading} />
+          <label htmlFor="remember">تذكرني</label>
+        </div>
+        <span className="text-gray-400">نسيت كلمة المرور؟</span>
+      </div>
 
       <Button
         type="submit"

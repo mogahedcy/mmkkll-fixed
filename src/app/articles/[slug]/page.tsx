@@ -271,7 +271,7 @@ const articles = [
 
           <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <h4 class="font-bold text-lg mb-3">مثبتات ومقويات المفاصل</h4>
-            <p class="text-gray-600 mb-3">براغي وأدوات تثبيت من الستانلس ستيل المقاوم للتآكل</p>
+            <p class="text-gray-600 mb-3">براغي وأ��وات تثبيت من الستانلس ستيل المقاوم للتآكل</p>
             <div class="grid grid-cols-2 gap-4 text-sm">
               <div class="text-gray-500">السعر: 5-15 ريال/قطعة</div>
               <div class="text-gray-500">الفحص: شهرياً</div>
@@ -313,7 +313,7 @@ const articles = [
               <ul class="text-blue-700 space-y-2">
                 <li>• طبق الزيت في اتجاه ألياف الخشب دائماً</li>
                 <li>• تجنب الصيانة في الأيام عالية الرطوبة (أكثر من 70%)</li>
-                <li>• استخدم أدوات الحماية الشخصية عند التعامل مع المواد الكيميائية</li>
+                <li>• استخدم أدوات الحماية الشخصية عند التعامل مع المواد الكيميائ��ة</li>
                 <li>• احتفظ بسجل لأعمال الصيانة وتواريخها</li>
               </ul>
             </div>
@@ -402,7 +402,7 @@ const articles = [
           <Zap class="w-6 h-6 ml-2" />
           مقدمة حول الساندوتش بانل والعزل الحراري
         </h2>
-        <p class="text-gray-700 leading-relaxed mb-6">يُعتبر الساندوتش بانل ثورة حقيقية في مجال البناء والعزل الحراري في السعودية، حيث يوفر توفيراً في الطاقة يصل إلى 40% من تكاليف التكييف. في ظل الارتفاع المستمر لأسعار الطاقة، أصبح الاستثمار في العزل الحراري الجيد ضرورة اقتصادية وبيئية.</p>
+        <p class="text-gray-700 leading-relaxed mb-6">يُعتبر الساندوتش بانل ثورة حقيقية في مجال البناء والعزل الحراري في السعودية، حيث يوفر توفيراً في الطاقة يصل إلى 40% من تكاليف التكييف. في ظل الار��فاع المستمر لأسعار الطاقة، أصبح الاستثمار في العزل الحراري الجيد ضرورة اقتصادية وبيئية.</p>
 
         <div class="bg-green-50 border-r-4 border-green-400 p-6 mb-8 rounded-lg">
           <div class="flex items-start">
@@ -429,7 +429,7 @@ const articles = [
             <h4 class="font-bold text-accent mb-4">بانل البولي يوريثان (PU)</h4>
             <div class="space-y-3">
               <div class="text-sm text-gray-600">
-                <strong>معامل التوصيل الحراري:</strong> 0.022 W/m.K
+                <strong>معامل الت��صيل الحراري:</strong> 0.022 W/m.K
               </div>
               <div class="text-sm text-gray-600">
                 <strong>السماكة المتاحة:</strong> 50-200 مم
@@ -664,7 +664,7 @@ const articles = [
     rating: 4.9,
     commentsCount: 15,
     metaDescription: 'دليل شامل للساندوتش بانل والعزل الحراري في السعودية مع حساب العائد على الاستثمار ومعايير الجودة',
-    keywords: ['ساندوتش بانل السعودية', 'عزل حراري جدة', 'توفير الطاقة', 'بولي يوريثان', 'صوف صخري', 'العزل الحراري']
+    keywords: ['ساندوتش بانل السعودي��', 'عزل حراري جدة', 'توفير الطاقة', 'بولي يوريثان', 'صوف صخري', 'العزل الحراري']
   },
   {
     id: 4,
@@ -992,7 +992,7 @@ const articles = [
     id: 5,
     slug: 'renovation-secrets-modern-techniques',
     title: 'أسرار ترميم الملحقات القديمة بأحدث التقنيات',
-    excerpt: 'كيف تعيد الحياة لملحقاتك القديمة؟ تقنيات حديثة في الترميم والعزل وإضافة اللمسات العصرية. دليل تفصيلي للمراحل والمواد المطلوبة مع تقدير التكاليف والوقت اللازم.',
+    excerpt: 'كيف تعيد الحياة لملحقاتك القديمة؟ تقنيات حديثة ��ي الترميم والعزل وإضافة اللمسات العصرية. دليل تفصيلي للمراحل والمواد المطلوبة مع تقدير التكاليف والوقت اللازم.',
     content: `
       <div class="prose prose-lg max-w-none">
         <h2 class="text-2xl font-bold text-primary mb-6 flex items-center">
@@ -1178,7 +1178,7 @@ const articles = [
               <li>• ألواح شمسية مدمجة لتشغيل المحركات</li>
               <li>• بطاريات ليثيوم للتشغيل الليلي</li>
               <li>• أنظمة إدارة الطاقة الذكية</li>
-              <li>• صفر انبعاثات كربونية</li>
+              <li>• ��فر انبعاثات كربونية</li>
             </ul>
           </div>
         </div>
@@ -1473,7 +1473,7 @@ const articles = [
         </div>
 
         <div class="bg-primary/5 border border-primary/20 rounded-lg p-6">
-          <h4 class="font-bold text-primary mb-3">بيوت شعر حصرية من محترفين الديار</h4>
+          <h4 class="font-bold text-primary mb-3">بيوت شعر حصرية من مح��رفين الديار</h4>
           <p class="text-gray-600 mb-4">نحن متخصصون في صناعة بيوت الشعر التراثية بأحدث التقنيات، مع الحفاظ على الطابع الأصيل والجودة العالية التي تدوم لعقود.</p>
         </div>
       </div>
@@ -1513,7 +1513,7 @@ const articles = [
             <div>
               <h3 class="text-lg font-semibold text-red-800 mb-2">إحصائيات مهمة</h3>
               <ul class="text-red-700 space-y-1">
-                <li>• 70% من حوادث المظلات سببها أخطاء في التركيب</li>
+                <li>• 70% من حوادث المظلات سببها أخطاء في التر��يب</li>
                 <li>• التركيب الصحيح يزيد عمر المظلة 3 أضعاف</li>
                 <li>• 40% من تكاليف الصيانة يمكن تجنبها</li>
                 <li>• الأخطاء الشائعة تقلل مقاومة الرياح بنسبة 60%</li>
@@ -1562,7 +1562,7 @@ const articles = [
                 <h5 class="font-medium text-orange-700 mb-2">المشاكل الناتجة:</h5>
                 <ul class="text-sm text-gray-600 space-y-1">
                   <li>• تآكل سريع في الهيكل المعدني</li>
-                  <li>• تلف القماش من الأشعة فوق البنفسجية</li>
+                  <li>�� تلف القماش من الأشعة فوق البنفسجية</li>
                   <li>• فقدان اللون والشكل</li>
                   <li>• الحاجة لاستبدال مبكر</li>
                 </ul>
@@ -1587,7 +1587,7 @@ const articles = [
             <thead>
               <tr class="bg-gray-50">
                 <th class="border border-gray-300 p-3 text-right">الخطأ</th>
-                <th class="border border-gray-300 p-3 text-right">التأثير</th>
+                <th class="border border-gray-300 p-3 text-right">التأ��ير</th>
                 <th class="border border-gray-300 p-3 text-right">الخطورة</th>
                 <th class="border border-gray-300 p-3 text-right">كيفية التجنب</th>
               </tr>
@@ -1658,7 +1658,7 @@ const articles = [
                 </li>
                 <li class="flex items-start">
                   <input type="checkbox" class="mt-1 ml-2" />
-                  اختبار مقاومة الرياح
+                  اختبار مقاومة الريا��
                 </li>
               </ul>
             </div>
@@ -1683,7 +1683,7 @@ const articles = [
 
         <div class="bg-primary/5 border border-primary/20 rounded-lg p-6">
           <h4 class="font-bold text-primary mb-3">تركيب احترافي مضمون</h4>
-          <p class="text-gray-600 mb-4">فريق محترفين الديار يضمن تركيب المظلات وفق أعلى معايير السلامة والجودة، مع تجنب جميع الأخطاء الشائعة وضمان شامل على العمل.</p>
+          <p class="text-gray-600 mb-4">فريق محترفين الديار يضمن تركيب المظلات وفق أعلى معايير السلامة والجودة، ��ع تجنب جميع الأخطاء الشائعة وضمان شامل على العمل.</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="flex items-center text-sm text-gray-600">
               <Shield class="w-4 h-4 ml-1 text-primary" />
@@ -1708,7 +1708,7 @@ const articles = [
     date: '15 أكتوبر 2024',
     readTime: '8 دقائق',
     image: '/uploads/mazallat-2.webp',
-    tags: ['تركيب', 'أخطاء', 'سلامة'],
+    tags: ['تر��يب', 'أخطاء', 'سلامة'],
     featured: false,
     views: 1120,
     likes: 84,
@@ -1773,30 +1773,24 @@ function getNavigationArticles(currentId: number) {
 
 // دالة لإنتاج structured data للـ SEO
 function generateStructuredData(article: typeof articles[0]) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
+  const imageUrl = article.image.startsWith('http') ? article.image : `${baseUrl}${article.image}`;
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     "headline": article.title,
     "description": article.metaDescription,
-    "image": `https://your-domain.com${article.image}`,
-    "author": {
-      "@type": "Person",
-      "name": article.author
-    },
+    "image": [imageUrl],
+    "author": { "@type": "Person", "name": article.author },
     "publisher": {
       "@type": "Organization",
-      "name": "محترفين الديار",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://your-domain.com/logo.png"
-      }
+      "name": "محترفين الديار العالمية",
+      "logo": { "@type": "ImageObject", "url": `${baseUrl}/favicon.svg` }
     },
     "datePublished": article.date,
     "dateModified": article.date,
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://your-domain.com/articles/${article.slug}`
-    }
+    "mainEntityOfPage": { "@type": "WebPage", "@id": `${baseUrl}/articles/${article.slug}` },
+    "inLanguage": "ar-SA"
   };
 }
 
@@ -1810,6 +1804,7 @@ interface ArticlePageProps {
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
 
   if (!article) {
     return {
@@ -1819,13 +1814,15 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   }
 
   return {
-    title: `${article.title} | محترفين الديار`,
+    title: `${article.title} | محترفين الديار العالمية` ,
     description: article.metaDescription,
     keywords: article.keywords,
+    alternates: { canonical: `${baseUrl}/articles/${article.slug}` },
     openGraph: {
       title: article.title,
       description: article.excerpt,
-      images: [article.image],
+      url: `${baseUrl}/articles/${article.slug}`,
+      images: [article.image.startsWith('http') ? article.image : `${baseUrl}${article.image}`],
       type: 'article',
       publishedTime: article.date,
       authors: [article.author]
@@ -1834,7 +1831,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       card: 'summary_large_image',
       title: article.title,
       description: article.excerpt,
-      images: [article.image]
+      images: [article.image.startsWith('http') ? article.image : `${baseUrl}${article.image}`]
     }
   };
 }
@@ -1854,7 +1851,25 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   return (
     <>
       {/* Structured Data للـ SEO */}
-      <StructuredDataScript data={structuredData} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}` },
+              { "@type": "ListItem", "position": 2, "name": "المقالات", "item": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/articles` },
+              { "@type": "ListItem", "position": 3, "name": article.category, "item": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/articles?category=${encodeURIComponent(article.category)}` },
+              { "@type": "ListItem", "position": 4, "name": article.title, "item": `${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/articles/${article.slug}` }
+            ]
+          })
+        }}
+      />
 
       <Navbar />
 

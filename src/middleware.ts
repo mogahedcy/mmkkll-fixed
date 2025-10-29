@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export const runtime = 'nodejs';
-
 export function middleware(request: NextRequest) {
-  // تبسيط middleware لتجنب الأخطاء
+  // Debug log for visibility
+  console.log('Middleware path:', request.nextUrl.pathname)
   const response = NextResponse.next()
 
-  // Security headers
-  response.headers.set('X-Frame-Options', 'DENY')
+  // Safe security headers that don't block iframe preview
   response.headers.set('X-Content-Type-Options', 'nosniff')
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin')
 
@@ -17,6 +15,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.).*)',
-  ]
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json|images/|uploads/).*)',
+  ],
 }

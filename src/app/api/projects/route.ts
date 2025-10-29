@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
+import { randomUUID } from 'crypto';
 
 // GET - جلب المشاريع مع إحصائيات التفاعل
 export async function GET(request: NextRequest) {
@@ -60,10 +61,17 @@ export async function GET(request: NextRequest) {
         orderBy = [{ featured: 'desc' }, { publishedAt: 'desc' }];
         break;
       case 'popular':
-        orderBy = [{ views: 'desc' }, { likes: 'desc' }];
+        orderBy = [
+          { views: 'desc' },
+          // ترتيب ثانوي حسب عدد الإعجابات الفعلية
+          { project_likes: { _count: 'desc' } } as any
+        ];
         break;
       case 'most-liked':
-        orderBy = [{ likes: 'desc' }, { views: 'desc' }];
+        orderBy = [
+          { project_likes: { _count: 'desc' } } as any,
+          { views: 'desc' }
+        ];
         break;
       case 'highest-rated':
         orderBy = [{ rating: 'desc' }, { views: 'desc' }];
@@ -75,14 +83,33 @@ export async function GET(request: NextRequest) {
         orderBy = [{ featured: 'desc' }, { publishedAt: 'desc' }];
     }
 
-    const projects = await prisma.project.findMany({
+    const db: any = prisma as any;
+    const Project = db.projects || db.project;
+
+    if (!Project || !process.env.DATABASE_URL) {
+      return NextResponse.json({
+        success: true,
+        projects: [],
+        total: 0,
+        stats: { total: 0, featured: 0, categories: [] },
+        pagination: {
+          total: 0,
+          page: page ? Number.parseInt(page) : 1,
+          limit: take,
+          totalPages: 0,
+          hasMore: false
+        }
+      });
+    }
+
+    const projects = await Project.findMany({
       where,
       include: {
-        mediaItems: {
+        media_items: {
           orderBy: { order: 'asc' },
-          take: 5 // محدود للأداء
+          take: 5
         },
-        tags: {
+        project_tags: {
           take: 10
         },
         _count: {
@@ -90,9 +117,9 @@ export async function GET(request: NextRequest) {
             comments: {
               where: { status: 'APPROVED' }
             },
-            likes_users: true,
-            views_users: true,
-            mediaItems: true
+            project_likes: true,
+            project_views: true,
+            media_items: true
           }
         }
       },
@@ -102,24 +129,26 @@ export async function GET(request: NextRequest) {
     });
 
     // تحسين البيانات المُرجعة
-    const formattedProjects = projects.map(project => ({
+    const formattedProjects = projects.map((project: any) => ({
       ...project,
-      views: project._count.views_users || 0,
-      likes: project._count.likes_users || 0,
-      commentsCount: project._count.comments || 0,
-      mediaCount: project._count.mediaItems || 0,
-      excerpt: project.description.substring(0, 150) + '...',
-      readTime: Math.ceil(project.description.length / 200), // تقدير وقت القراءة
+      mediaItems: project.media_items || [],
+      tags: project.project_tags || [],
+      views: project._count?.project_views || 0,
+      likes: project._count?.project_likes || 0,
+      commentsCount: project._count?.comments || 0,
+      mediaCount: project._count?.media_items || 0,
+      excerpt: (project.description || '').substring(0, 150) + '...',
+      readTime: Math.ceil((project.description || '').length / 200),
       slug: project.slug || generateSlug(project.title, project.id)
     }));
 
-    const totalCount = await prisma.project.count({ where });
+    const totalCount = await Project.count({ where });
 
     // إحصائيات إضافية
     const stats = {
       total: totalCount,
-      featured: await prisma.project.count({ where: { ...where, featured: true } }),
-      categories: await prisma.project.groupBy({
+      featured: await Project.count({ where: { ...where, featured: true } }),
+      categories: await Project.groupBy({
         by: ['category'],
         where,
         _count: { category: true }
@@ -185,19 +214,20 @@ export async function POST(request: NextRequest) {
 
     // إنشاء slug فريد
     const slug = generateSlug(title);
-    const existingSlug = await prisma.project.findUnique({
+    const existingSlug = await prisma.projects.findUnique({
       where: { slug }
     });
 
     const finalSlug = existingSlug ? `${slug}-${Date.now()}` : slug;
 
-    const project = await prisma.project.create({
+    const project = await prisma.projects.create({
       data: {
+        id: randomUUID(),
         title,
         description,
         category,
         location,
-        completionDate: new Date(completionDate),
+        completionDate: completionDate ? new Date(completionDate) : new Date(),
         client: client || null,
         featured: featured || false,
         projectDuration: projectDuration || '',
@@ -208,8 +238,10 @@ export async function POST(request: NextRequest) {
         keywords: keywords || `${category}, ${location}, محترفين الديار`,
         status,
         publishedAt: status === 'PUBLISHED' ? new Date() : null,
-        mediaItems: {
+        updatedAt: new Date(),
+        media_items: {
           create: mediaItems?.map((item: any, index: number) => ({
+            id: randomUUID(),
             type: item.type,
             src: item.src || item.url,
             thumbnail: item.thumbnail || item.src || item.url,
@@ -222,24 +254,24 @@ export async function POST(request: NextRequest) {
             caption: item.caption || '',
             order: index
           })) || []
-        },
-
+        }
       },
       include: {
-        mediaItems: true,
+        media_items: true,
         _count: {
           select: {
             comments: true,
-            likes_users: true,
-            views_users: true
+            project_likes: true,
+            project_views: true
           }
         }
       }
     });
 
-    // إنشاء أول مشاهدة (من الإدارة)
-    await prisma.projectView.create({
+    // إ��شاء أول مشاهدة (من الإدارة)
+    await prisma.project_views.create({
       data: {
+        id: randomUUID(),
         projectId: project.id,
         ip,
         userAgent: headersList.get('user-agent') || 'unknown',
@@ -248,7 +280,7 @@ export async function POST(request: NextRequest) {
     });
 
     // تحديث عداد المشاهدات
-    await prisma.project.update({
+    await prisma.projects.update({
       where: { id: project.id },
       data: { views: 1 }
     });
@@ -260,16 +292,14 @@ export async function POST(request: NextRequest) {
       console.warn('فشل في إشعار Google:', error);
     }
 
-    return NextResponse.json({
-      success: true,
-      project: {
-        ...project,
-        views: 1,
-        likes: 0,
-        commentsCount: 0
-      },
-      message: 'تم إضافة المشروع بنجاح'
-    });
+    const formatted = {
+      ...project,
+      mediaItems: project.media_items,
+      views: 1,
+      likes: 0,
+      commentsCount: 0
+    };
+    return NextResponse.json({ success: true, project: formatted, message: 'تم إضافة المشروع بنجاح' });
 
   } catch (error: unknown) {
     console.error('❌ خطأ في إضافة المشروع:', error);
@@ -299,12 +329,22 @@ async function notifyGoogleNewContent(slug: string): Promise<void> {
   const url = `${baseUrl}/portfolio/${slug}`;
 
   try {
-    // إشعار Google بالصفحة الجديدة
+    // إشعار Google بتحديث ال sitemap
     await fetch('https://www.google.com/ping?sitemap=' + encodeURIComponent(`${baseUrl}/sitemap.xml`));
 
-    // يمكن إضافة Google Search Console API هنا
-    console.log('✅ تم إشعار Google بالمحتوى الجديد:', url);
+    // إرسال IndexNow بعنوان الصفحة مباشرة
+    try {
+      await fetch(`${baseUrl}/api/indexnow`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: [url] })
+      });
+    } catch (e) {
+      console.warn('IndexNow submit failed:', e);
+    }
+
+    console.log('✅ تمت إشعارات الفهرسة:', url);
   } catch (error) {
-    console.warn('⚠️ فشل في إشعار Google:', error);
+    console.warn('⚠️ فشل في إشعار محركات البحث:', error);
   }
 }

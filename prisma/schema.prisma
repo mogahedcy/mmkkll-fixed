@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model admin_sessions {
-  id        String   @id
+  id        String   @id @default(cuid())
   adminId   String
   token     String   @unique
   ip        String?
@@ -35,7 +35,7 @@ model admins {
 }
 
 model comment_replies {
-  id        String   @id
+  id        String   @id @default(cuid())
   commentId String
   name      String
   message   String
@@ -78,7 +78,7 @@ model media_items {
 }
 
 model project_likes {
-  id        String   @id
+  id        String   @id @default(cuid())
   projectId String
   ip        String
   userAgent String?
@@ -89,7 +89,7 @@ model project_likes {
 }
 
 model project_materials {
-  id        String   @id
+  id        String   @id @default(cuid())
   projectId String
   name      String
   createdAt DateTime @default(now())
@@ -97,7 +97,7 @@ model project_materials {
 }
 
 model project_tags {
-  id        String   @id
+  id        String   @id @default(cuid())
   projectId String
   name      String
   createdAt DateTime @default(now())
@@ -107,7 +107,7 @@ model project_tags {
 }
 
 model project_views {
-  id        String   @id
+  id        String   @id @default(cuid())
   projectId String
   ip        String
   userAgent String?

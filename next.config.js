@@ -1,4 +1,3 @@
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable ESLint and TypeScript during builds to fix Vercel deployment
@@ -9,9 +8,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   // إعدادات الخادم
-  experimental: {
-    outputStandalone: true,
-  },
+  output: 'standalone',
   // إعدادات خاصة بالتطوير المحلي
   turbopack: {
     resolveAlias: {
@@ -59,10 +56,14 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
   trailingSlash: false,
+  distDir: '.next-dev',
   allowedDevOrigins: [
     'aldeyarksa.tech',
     'www.aldeyarksa.tech',
     '*.replit.dev',
+    '*.projects.builder.codes',
+    '*.builder.codes',
+    '*.fly.dev',
     'localhost',
     '127.0.0.1'
   ],
@@ -72,8 +73,8 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors https: http: 'self';",
           },
           {
             key: 'X-Content-Type-Options',
@@ -88,6 +89,15 @@ const nextConfig = {
             value: '1; mode=block',
           },
         ],
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: false,
       },
     ];
   },

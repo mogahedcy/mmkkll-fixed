@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -249,7 +251,7 @@ export default function PortfolioSection() {
                               }}
                               onLoadedMetadata={(e) => {
                                 const video = e.target as HTMLVideoElement;
-                                video.currentTime = 0.1; // تشغيل من نقطة قريبة للبداية
+                                video.currentTime = 0.1; // تشغيل من نقطة قريبة ��لبداية
                                 video.play().catch(() => {});
                               }}
                               onError={(e) => {
@@ -270,7 +272,7 @@ export default function PortfolioSection() {
                                 attemptPlay();
                               }}
                               onMouseEnter={(e) => {
-                                // تأكيد التشغيل عند المرور بالماوس
+                                // تأكيد التشغي�� عند المرور بالماوس
                                 const video = e.target as HTMLVideoElement;
                                 if (video.paused) {
                                   video.play().catch(() => {});

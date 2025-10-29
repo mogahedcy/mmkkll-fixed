@@ -31,7 +31,7 @@ interface FiltersState {
 interface AdvancedFiltersProps {
   filters: FiltersState;
   onFiltersChange: (filters: Partial<FiltersState>) => void;
-  categories: { id: string; name: string; icon: any }[];
+  categories?: { id: string; name: string; icon: any }[];
 }
 
 const locations = [
@@ -71,7 +71,7 @@ const priceRanges = [
   { value: 'over-100k', label: 'أكثر من 100,000 ريال' }
 ];
 
-export default function AdvancedFilters({ filters, onFiltersChange, categories }: AdvancedFiltersProps) {
+export default function AdvancedFilters({ filters, onFiltersChange, categories = [] }: AdvancedFiltersProps) {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     category: true,
     location: false,
@@ -165,7 +165,7 @@ export default function AdvancedFilters({ filters, onFiltersChange, categories }
         <Card>
           <FilterSection id="category" title="الفئة" icon={Filter}>
             <div className="grid grid-cols-2 gap-2">
-              {categories.map((category) => (
+              {(categories || []).map((category) => (
                 <Button
                   key={category.id}
                   variant={filters.category === category.id ? 'default' : 'outline'}
