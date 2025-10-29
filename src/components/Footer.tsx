@@ -458,8 +458,8 @@ export default function Footer() {
                 شروط الخدمة
               </Link>
               <span className="text-gray-600">•</span>
-              <Link href="https://aldeyarksa.tech" className="text-accent hover:text-white transition-colors font-medium">
-                aldeyarksa.tech
+              <Link href="https://www.aldeyarksa.tech" className="text-accent hover:text-white transition-colors font-medium">
+                www.aldeyarksa.tech
               </Link>
             </div>
           </div>

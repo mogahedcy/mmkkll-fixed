@@ -30,8 +30,8 @@ export default function ProjectStructuredData({ project }: ProjectStructuredData
     "creator": {
       "@type": "Organization",
       "name": "محترفين الديار العالمية",
-      "url": "https://aldeyar-jeddah.com",
-      "logo": "https://aldeyar-jeddah.com/logo.png",
+      "url": "https://www.aldeyarksa.tech",
+      "logo": "https://www.aldeyarksa.tech/images/logo.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "جدة",

@@ -18,11 +18,11 @@ export default function SchemaMarkup({ project }: SchemaMarkupProps) {
     "@type": "CreativeWork",
     "name": project.title,
     "description": project.description,
-    "url": `https://aldeyarksa.tech/portfolio/${project.id}`,
+    "url": `https://www.aldeyarksa.tech/portfolio/${project.id}`,
     "creator": {
       "@type": "Organization",
       "name": "محترفين الديار العالمية",
-      "url": "https://aldeyarksa.tech"
+      "url": "https://www.aldeyarksa.tech"
     },
     "dateCreated": project.createdAt,
     "dateModified": project.updatedAt,

@@ -1,5 +1,5 @@
 export default function StructuredDataScript({ data }: { data?: any | any[] }) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
 
   const organizationData = {
     "@context": "https://schema.org",

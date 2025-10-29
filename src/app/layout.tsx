@@ -11,7 +11,7 @@ const notoSansArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://aldeyarksa.tech'),
+  metadataBase: new URL('https://www.aldeyarksa.tech'),
   title: {
     default: "محترفين الديار العالمية | أفضل مظلات وبرجولات جدة - خبرة 15 عام",
     template: "%s | محترفين الديار العالمية"
@@ -24,19 +24,19 @@ export const metadata: Metadata = {
   robots: "index, follow",
   alternates: {
     languages: {
-      "ar-SA": "https://aldeyarksa.tech",
+      "ar-SA": "https://www.aldeyarksa.tech",
     },
   },
   openGraph: {
     title: "محترفين الديار العالمية - خدمات شاملة في جدة",
     description: "شركة متخصصة في المظلات، البرجولات، السواتر، وتنسيق الحدائق في جدة",
-    url: "https://aldeyarksa.tech",
+    url: "https://www.aldeyarksa.tech",
     siteName: "محترفين الديار العالمية",
     locale: "ar_SA",
     type: "website",
     images: [
       {
-        url: "https://aldeyarksa.tech/favicon.svg",
+        url: "https://www.aldeyarksa.tech/favicon.svg",
         width: 1200,
         height: 630,
         alt: "محترفين الديار العالمية",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "محترفين الديار العالمية",
     description: "خدمات شاملة في المظلات والبرجولات والسواتر في جدة",
-    images: ["https://aldeyarksa.tech/favicon.svg"],
+    images: ["https://www.aldeyarksa.tech/favicon.svg"],
   },
   icons: {
     icon: [
@@ -72,9 +72,9 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "محترفين الديار العالمية",
-  image: "https://aldeyarksa.tech/favicon.svg",
-  "@id": "https://aldeyarksa.tech",
-  url: "https://aldeyarksa.tech",
+  image: "https://www.aldeyarksa.tech/favicon.svg",
+  "@id": "https://www.aldeyarksa.tech",
+  url: "https://www.aldeyarksa.tech",
   telephone: "+966553719009",
   address: {
     "@type": "PostalAddress",

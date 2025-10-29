@@ -1,6 +1,4 @@
 
-import { Service } from '@/types/service';
-
 interface ServiceStructuredDataProps {
   service: {
     name: string;
