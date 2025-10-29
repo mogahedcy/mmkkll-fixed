@@ -111,7 +111,7 @@ export async function GET() {
   const imagesSitemap = allImages
     .map(image => {
       const imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
-      const pageUrl = image.project_url || `${baseUrl}/images`;
+      const pageUrl = image.project_url || `${baseUrl}/portfolio`;
       
       return `
   <url>
