@@ -162,38 +162,21 @@ export async function POST(request: NextRequest) {
           
           const cloudinaryOptions = {
             folder: 'portfolio/projects',
-            resource_type: isVideo ? 'video' : 'image',
+            resource_type: (isVideo ? 'video' : 'image') as 'image' | 'video',
             public_id: `${Date.now()}-${seoFriendlyName}`,
-            use_filename: false,
-            unique_filename: true,
-            overwrite: false,
-            // إضافة metadata للSEO
-            context: {
-              alt: `محترفين الديار العالمية - ${seoFriendlyName}`,
-              caption: `مشروع من محترفين الديار العالمية في جدة`,
-              title: seoFriendlyName
-            },
-            // تحسين خصائص الملفات للويب
             transformation: isVideo ? {
-              // إعدادات أساسية للفيديو فقط
               quality: 'auto',
               width: 1280,
               height: 720,
               crop: 'limit'
             } : {
-              // تحسين للصور
               quality: 'auto',
               format: 'webp',
               width: 'auto',
               crop: 'scale',
               dpr: 'auto',
               flags: 'progressive'
-            },
-            // إعدادات إضافية للأمان والأداء
-            invalidate: true,
-            overwrite: true,
-            unique_filename: true,
-            use_filename: false
+            }
           };
 
           const result = await uploadToCloudinary(file, cloudinaryOptions);
