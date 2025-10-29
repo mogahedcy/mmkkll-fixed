@@ -27,14 +27,16 @@ Preferred communication style: Simple, everyday language.
 - **ORM**: Prisma ORM for type-safe database operations
 - **Schema**: Comprehensive database models including:
   - Projects with media items, tags, and materials
+  - Articles with media items, tags, comments, likes, and views
   - Admin users with role-based access
   - Comments and reviews system
-  - Project interactions and analytics
+  - Project and article interactions and analytics
 - **Migrations**: Database versioning through Prisma migrations
 
 ## Content Management
 - **Portfolio System**: Advanced project showcase with filtering, search, and categorization
-- **Media Management**: Support for multiple media types per project with ordering
+- **Articles System**: Complete blog/articles archive with dynamic sitemap and full CRUD operations
+- **Media Management**: Support for multiple media types per project and article with ordering
 - **SEO Optimization**: Automated sitemap generation, robots.txt, and structured data
 - **Admin Dashboard**: Full-featured management interface for content administration
 
