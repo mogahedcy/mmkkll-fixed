@@ -2,6 +2,22 @@
 
 This is a Next.js-based web application for "محترفين الديار العالمية" (Aldeyar Global Professionals), a Saudi Arabian construction company specializing in pergolas, car shades, awnings, and garden landscaping services in Jeddah. The application serves as a comprehensive business website with portfolio management, project showcase, and content management capabilities.
 
+# Recent Changes (October 29, 2025)
+
+## Articles Management System - Completed
+- ✅ **API Routes**: Full CRUD operations for articles (`/api/articles`, `/api/articles/[id]`)
+- ✅ **Dashboard Pages**: Complete admin interface for managing articles
+  - Article listing page with filtering, search, and statistics (`/dashboard/articles`)
+  - Add new article page with media upload and tags (`/dashboard/articles/add`)
+  - Edit article page with data loading and updates (`/dashboard/articles/[id]/edit`)
+- ✅ **Public Pages**: Dynamic article pages using API data
+  - Articles archive page (`/articles`)
+  - Individual article detail pages (`/articles/[id]`)
+- ✅ **Sitemap**: Dynamic sitemap generation from database (`/sitemap-articles.xml`)
+- ✅ **Dashboard Navigation**: Added articles management links to sidebar menu
+  - "المقالات" (Articles) - Links to articles listing
+  - "إضافة مقال" (Add Article) - Links to add new article form
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
