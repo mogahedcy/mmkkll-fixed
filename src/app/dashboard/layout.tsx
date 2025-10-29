@@ -67,6 +67,21 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <span className="font-medium">إضافة مشروع</span>
             </Link>
             
+            <Link href="/dashboard/articles" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition-all duration-200">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 2h9a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6M9 11h6M9 15h4" />
+              </svg>
+              <span className="font-medium">المقالات</span>
+            </Link>
+            
+            <Link href="/dashboard/articles/add" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-pink-700 transition-all duration-200">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              <span className="font-medium">إضافة مقال</span>
+            </Link>
+            
             <Link href="/dashboard/comments" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition-all duration-200">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
