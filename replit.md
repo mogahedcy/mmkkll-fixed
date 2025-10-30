@@ -4,19 +4,55 @@ This is a Next.js-based web application for "محترفين الديار الع�
 
 # Recent Changes
 
-## October 30, 2025 - SEO Critical Fixes and Google Business Integration
+## October 30, 2025 - Comprehensive SEO Critical Fixes (9 Major Issues)
+- ✅ **Schema JSON-LD Line Breaks Fixed**: Removed formatting from JSON.stringify to eliminate line breaks
+  - Updated CompanyJsonLd.tsx to use minified JSON output
+  - Ensures proper parsing by search engines (Google, Bing, Yandex)
+  
+- ✅ **URL Standardization (www vs non-www)**: Unified all URLs across 24+ files
+  - Standardized on https://www.aldeyarksa.tech across entire codebase
+  - Updated sitemap files, API routes, service pages, and metadata
+  - Prevents duplicate content issues and consolidates SEO authority
+  
+- ✅ **Hreflang Tags Enhancement**: Improved international SEO
+  - Added x-default hreflang tag for language fallback
+  - Implemented relative canonical URLs with metadataBase
+  - Ensures proper language targeting for ar-SA market
+  
+- ✅ **Open Graph URLs Consistency**: Aligned all social media metadata
+  - Unified OG URLs with www subdomain
+  - Fixed Twitter card image URLs
+  - Improves social sharing appearance and tracking
+  
+- ✅ **Viewport Accessibility Fix**: Enhanced mobile user experience
+  - Removed userScalable: false restriction
+  - Increased maximumScale from 1 to 5
+  - Complies with WCAG accessibility guidelines
+  
+- ✅ **Meta Verification Tags Cleanup**: Removed fake verification tags
+  - Deleted dummy verification metadata from page.tsx
+  - Retained only genuine Google Search Console verification
+  - Prevents search engine confusion and penalties
+  
+- ✅ **FAQPage Schema Implementation**: Added structured FAQ data
+  - Created comprehensive FAQ schema with 5 common questions
+  - Properly integrated in <head> via StructuredDataScript
+  - Enables FAQ rich snippets in search results
+  
+- ✅ **Schema Deduplication**: Resolved LocalBusiness conflicts
+  - Eliminated duplicate Organization/LocalBusiness schemas
+  - Single source of truth via StructuredDataScript
+  - Prevents schema validation errors and ranking issues
+
 - ✅ **Google Business Profile Integration**: Linked Google Business Profile to website schema
   - Added Google Business link (https://share.google/GKcHjw3Gl5MX85WmQ) to Schema markup
   - Integrated `sameAs` property in Organization and LocalBusiness schemas
   - Added `hasMap` property for Google Maps integration
-  - Updated CompanyJsonLd.tsx and StructuredDataScript.tsx components
+
 - ✅ **Sitemap XML Optimization**: Fixed critical line break issues in all sitemap files
   - Fixed line breaks in `<loc>`, `<image:loc>`, `<video:content_loc>`, and `<rs:ln>` tags
   - Updated all sitemap files: sitemap.xml, sitemap-projects.xml, sitemap-articles.xml, sitemap-images.xml
   - Ensured all URLs are rendered as single-line strings for proper search engine parsing
-- ✅ **Date Normalization**: Updated static article dates from December 2024 to September-October 2025
-- ✅ **XML Structure Validation**: Maintained proper XML namespaces and SEO extensions (News, Image, Video, PageMap)
-- ✅ **robots.txt Verification**: Confirmed sitemap references are properly formatted
 
 ## October 29, 2025 - Articles Management System
 - ✅ **API Routes**: Full CRUD operations for articles (`/api/articles`, `/api/articles/[id]`)
