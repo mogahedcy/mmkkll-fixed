@@ -117,37 +117,16 @@ export async function GET() {
     .join('');
 
   // إضافة صفحة المعرض الرئيسية
-  const portfolioIndexPage = `
-  <url>
-    <loc>${baseUrl}/portfolio</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <rs:ln rel="canonical" href="${baseUrl}/portfolio" />
-    <rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/portfolio" />
-    <image:image>
-      <image:loc>${baseUrl}/images/portfolio-hero.webp</image:loc>
-      <image:caption><![CDATA[معرض أعمال محترفين الديار العالمية - مشاريع مظلات وسواتر متميزة في جدة]]></image:caption>
-      <image:title><![CDATA[معرض أعمال محترفين الديار العالمية]]></image:title>
-      <image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location>
-    </image:image>
-    <PageMap>
-      <DataObject type="collection">
-        <Attribute name="title">معرض أعمال محترفين الديار العالمية</Attribute>
-        <Attribute name="description">اكتشف أعمالنا المتميزة في المظلات والبرجولات والسواتر وجميع خدماتنا في جدة</Attribute>
-        <Attribute name="projectsCount">${projects.length}</Attribute>
-        <Attribute name="location">جدة، المملكة العربية السعودية</Attribute>
-        <Attribute name="company">محترفين الديار العالمية</Attribute>
-        <Attribute name="services">مظلات، سواتر، برجولات، ساندوتش بانل، تنسيق حدائق، ترميم</Attribute>
-      </DataObject>
-    </PageMap>
-  </url>`;
+  const portfolioIndexPage = `<url><loc>${baseUrl}/portfolio</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><rs:ln rel="canonical" href="${baseUrl}/portfolio" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/portfolio" /><image:image><image:loc>${baseUrl}/images/portfolio-hero.webp</image:loc><image:caption><![CDATA[معرض أعمال محترفين الديار العالمية - مشاريع مظلات وسواتر متميزة في جدة]]></image:caption><image:title><![CDATA[معرض أعمال محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image><PageMap><DataObject type="collection"><Attribute name="title">معرض أعمال محترفين الديار العالمية</Attribute><Attribute name="description">اكتشف أعمالنا المتميزة في المظلات والبرجولات والسواتر وجميع خدماتنا في جدة</Attribute><Attribute name="projectsCount">${projects.length}</Attribute><Attribute name="location">جدة، المملكة العربية السعودية</Attribute><Attribute name="company">محترفين الديار العالمية</Attribute><Attribute name="services">مظلات، سواتر، برجولات، ساندوتش بانل، تنسيق حدائق، ترميم</Attribute></DataObject></PageMap></url>`;
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
-        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">${portfolioIndexPage}${projectsSitemap}</urlset>`;
+        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
+  ${portfolioIndexPage}
+  ${projectsSitemap}
+</urlset>`;
 
   return new Response(sitemap, {
     status: 200,

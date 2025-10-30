@@ -64,29 +64,13 @@ export async function GET() {
         if (media.type === 'IMAGE') {
           const imageUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
           const encodedImageUrl = imageUrl.includes(' ') ? imageUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : imageUrl;
-          return `
-    <image:image>
-      <image:loc>${encodedImageUrl}</image:loc>
-      <image:caption><![CDATA[${media.alt || media.title || article.title} - ${article.category} من محترفين الديار العالمية]]></image:caption>
-      <image:title><![CDATA[${article.title} - محترفين الديار العالمية جدة]]></image:title>
-      <image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location>
-      <image:license><![CDATA[${baseUrl}/terms]]></image:license>
-    </image:image>`;
+          return `<image:image><image:loc>${encodedImageUrl}</image:loc><image:caption><![CDATA[${media.alt || media.title || article.title} - ${article.category} من محترفين الديار العالمية]]></image:caption><image:title><![CDATA[${article.title} - محترفين الديار العالمية جدة]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location><image:license><![CDATA[${baseUrl}/terms]]></image:license></image:image>`;
         } else if (media.type === 'VIDEO') {
           const videoUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
           const thumbnailUrl = media.thumbnail ? (media.thumbnail.startsWith('http') ? media.thumbnail : `${baseUrl}${media.thumbnail}`) : `${baseUrl}/images/video-placeholder.jpg`;
           const encodedVideoUrl = videoUrl.includes(' ') ? videoUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : videoUrl;
           const encodedThumbnailUrl = thumbnailUrl.includes(' ') ? thumbnailUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : thumbnailUrl;
-          return `
-    <video:video>
-      <video:thumbnail_loc>${encodedThumbnailUrl}</video:thumbnail_loc>
-      <video:title><![CDATA[${article.title} - فيديو ${article.category}]]></video:title>
-      <video:description><![CDATA[${media.description || article.excerpt || article.content.substring(0, 200)} - محترفين الديار العالمية جدة]]></video:description>
-      <video:content_loc>${encodedVideoUrl}</video:content_loc>
-      <video:player_loc allow_embed="yes">${baseUrl}/articles/${encodedSlug}</video:player_loc>
-      <video:family_friendly>yes</video:family_friendly>
-      <video:uploader info="${baseUrl}">محترفين الديار العالمية</video:uploader>
-    </video:video>`;
+          return `<video:video><video:thumbnail_loc>${encodedThumbnailUrl}</video:thumbnail_loc><video:title><![CDATA[${article.title} - فيديو ${article.category}]]></video:title><video:description><![CDATA[${media.description || article.excerpt || article.content.substring(0, 200)} - محترفين الديار العالمية جدة]]></video:description><video:content_loc>${encodedVideoUrl}</video:content_loc><video:player_loc allow_embed="yes">${baseUrl}/articles/${encodedSlug}</video:player_loc><video:family_friendly>yes</video:family_friendly><video:uploader info="${baseUrl}">محترفين الديار العالمية</video:uploader></video:video>`;
         }
         return '';
       }).join('') || '';
@@ -102,80 +86,16 @@ export async function GET() {
       const seoDescription = article.metaDescription || article.excerpt || 
         `${article.content.substring(0, 160)}... مقالة متخصصة في ${article.category} من محترفين الديار العالمية`;
 
-      const newsMarkup = `
-    <news:news>
-      <news:publication>
-        <news:name>محترفين الديار العالمية</news:name>
-        <news:language>ar</news:language>
-      </news:publication>
-      <news:publication_date>${article.publishedAt?.toISOString() || article.createdAt.toISOString()}</news:publication_date>
-      <news:title><![CDATA[${seoTitle}]]></news:title>
-      <news:keywords><![CDATA[${keywords}]]></news:keywords>
-    </news:news>`;
+      const newsMarkup = `<news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.publishedAt?.toISOString() || article.createdAt.toISOString()}</news:publication_date><news:title><![CDATA[${seoTitle}]]></news:title><news:keywords><![CDATA[${keywords}]]></news:keywords></news:news>`;
 
-      const structuredData = `
-    <PageMap>
-      <DataObject type="article">
-        <Attribute name="title">${seoTitle}</Attribute>
-        <Attribute name="description">${seoDescription}</Attribute>
-        <Attribute name="author">${article.author}</Attribute>
-        <Attribute name="category">${article.category}</Attribute>
-        <Attribute name="company">محترفين الديار العالمية</Attribute>
-        <Attribute name="featured">${article.featured}</Attribute>
-        <Attribute name="views">${article.views || 0}</Attribute>
-        <Attribute name="likes">${article.likes || 0}</Attribute>
-        <Attribute name="rating">${article.rating || 0}</Attribute>
-        <Attribute name="readTime">${readTime} دقائق</Attribute>
-        <Attribute name="keywords">${keywords}</Attribute>
-        <Attribute name="publishedDate">${article.publishedAt?.toISOString() || article.createdAt.toISOString()}</Attribute>
-        <Attribute name="lastModified">${article.updatedAt.toISOString()}</Attribute>
-        <Attribute name="tags">${article.article_tags?.map((tag: any) => tag.name).join(', ') || ''}</Attribute>
-        <Attribute name="location">جدة، المملكة العربية السعودية</Attribute>
-        <Attribute name="serviceType">مقالات متخصصة في المظلات والبرجولات</Attribute>
-      </DataObject>
-    </PageMap>`;
+      const structuredData = `<PageMap><DataObject type="article"><Attribute name="title">${seoTitle}</Attribute><Attribute name="description">${seoDescription}</Attribute><Attribute name="author">${article.author}</Attribute><Attribute name="category">${article.category}</Attribute><Attribute name="company">محترفين الديار العالمية</Attribute><Attribute name="featured">${article.featured}</Attribute><Attribute name="views">${article.views || 0}</Attribute><Attribute name="likes">${article.likes || 0}</Attribute><Attribute name="rating">${article.rating || 0}</Attribute><Attribute name="readTime">${readTime} دقائق</Attribute><Attribute name="keywords">${keywords}</Attribute><Attribute name="publishedDate">${article.publishedAt?.toISOString() || article.createdAt.toISOString()}</Attribute><Attribute name="lastModified">${article.updatedAt.toISOString()}</Attribute><Attribute name="tags">${article.article_tags?.map((tag: any) => tag.name).join(', ') || ''}</Attribute><Attribute name="location">جدة، المملكة العربية السعودية</Attribute><Attribute name="serviceType">مقالات متخصصة في المظلات والبرجولات</Attribute></DataObject></PageMap>`;
 
-      return `
-  <url>
-    <loc>${baseUrl}/articles/${encodedSlug}</loc>
-    <lastmod>${article.updatedAt.toISOString()}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
-    <rs:ln rel="canonical" href="${baseUrl}/articles/${encodedSlug}" />
-    <rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles/${encodedSlug}" />
-    ${mediaContent}
-    ${newsMarkup}
-    ${structuredData}
-  </url>`;
+      return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><rs:ln rel="canonical" href="${baseUrl}/articles/${encodedSlug}" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles/${encodedSlug}" />${mediaContent}${newsMarkup}${structuredData}</url>`;
     })
     .join('');
 
   // إضافة صفحة المقالات الرئيسية
-  const articlesIndexPage = `
-  <url>
-    <loc>${baseUrl}/articles</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <rs:ln rel="canonical" href="${baseUrl}/articles" />
-    <rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles" />
-    <image:image>
-      <image:loc>${baseUrl}/uploads/mazallat-1.webp</image:loc>
-      <image:caption><![CDATA[أرشيف مقالات محترفين الديار العالمية - مقالات متخصصة في المظلات والبرجولات]]></image:caption>
-      <image:title><![CDATA[أرشيف مقالات محترفين الديار العالمية]]></image:title>
-      <image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location>
-    </image:image>
-    <PageMap>
-      <DataObject type="collection">
-        <Attribute name="title">أرشيف مقالات محترفين الديار العالمية</Attribute>
-        <Attribute name="description">اكتشف أحدث المقالات والنصائح المتخصصة في مجال المظلات والبرجولات والساندوتش بانل</Attribute>
-        <Attribute name="articlesCount">${articles.length}</Attribute>
-        <Attribute name="location">جدة، المملكة العربية السعودية</Attribute>
-        <Attribute name="company">محترفين الديار العالمية</Attribute>
-        <Attribute name="topics">مظلات، برجولات، سواتر، ساندوتش بانل، تنسيق حدائق، ترميم</Attribute>
-      </DataObject>
-    </PageMap>
-  </url>`;
+  const articlesIndexPage = `<url><loc>${baseUrl}/articles</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><rs:ln rel="canonical" href="${baseUrl}/articles" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles" /><image:image><image:loc>${baseUrl}/uploads/mazallat-1.webp</image:loc><image:caption><![CDATA[أرشيف مقالات محترفين الديار العالمية - مقالات متخصصة في المظلات والبرجولات]]></image:caption><image:title><![CDATA[أرشيف مقالات محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image><PageMap><DataObject type="collection"><Attribute name="title">أرشيف مقالات محترفين الديار العالمية</Attribute><Attribute name="description">اكتشف أحدث المقالات والنصائح المتخصصة في مجال المظلات والبرجولات والساندوتش بانل</Attribute><Attribute name="articlesCount">${articles.length}</Attribute><Attribute name="location">جدة، المملكة العربية السعودية</Attribute><Attribute name="company">محترفين الديار العالمية</Attribute><Attribute name="topics">مظلات، برجولات، سواتر، ساندوتش بانل، تنسيق حدائق، ترميم</Attribute></DataObject></PageMap></url>`;
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

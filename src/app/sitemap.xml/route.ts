@@ -6,7 +6,7 @@ const serviceArticlesData = [
     id: 'mazallat-guide',
     slug: 'complete-car-shades-guide-jeddah-2024',
     title: 'دليل مظلات السيارات الشامل في جدة 2024 - أنواع وأسعار وتركيب',
-    lastModified: '2024-12-22T10:00:00.000Z',
+    lastModified: '2025-10-20T10:00:00.000Z',
     priority: '0.95',
     changefreq: 'weekly',
     keywords: 'مظلات سيارات جدة، أسعار مظلات السيارات، تركيب مظلات جدة، مظلات PVC، مظلات حديد'
@@ -15,7 +15,7 @@ const serviceArticlesData = [
     id: 'pergolas-guide',
     slug: 'wooden-pergolas-design-installation-jeddah',
     title: 'البرجولات الخشبية في جدة: التصميم والتركيب والصيانة',
-    lastModified: '2024-12-22T09:00:00.000Z',
+    lastModified: '2025-10-18T09:00:00.000Z',
     priority: '0.95',
     changefreq: 'weekly',
     keywords: 'برجولات خشبية جدة، تصميم برجولات، برجولات حدائق، تركيب برجولات جدة'
@@ -24,7 +24,7 @@ const serviceArticlesData = [
     id: 'sawater-guide',
     slug: 'privacy-screens-installation-jeddah-2024',
     title: 'السواتر في جدة: أفضل الأنواع والأسعار والتركيب المحترف',
-    lastModified: '2024-12-22T08:00:00.000Z',
+    lastModified: '2025-10-16T08:00:00.000Z',
     priority: '0.95',
     changefreq: 'weekly',
     keywords: 'سواتر جدة، سواتر خصوصية، سواتر حديد، سواتر قماش، تركيب سواتر'
@@ -33,7 +33,7 @@ const serviceArticlesData = [
     id: 'landscaping-guide',
     slug: 'garden-landscaping-jeddah-complete-guide',
     title: 'تنسيق الحدائق في جدة: دليل شامل للتصميم والتنفيذ',
-    lastModified: '2024-12-22T07:00:00.000Z',
+    lastModified: '2025-10-14T07:00:00.000Z',
     priority: '0.9',
     changefreq: 'weekly',
     keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية'
@@ -46,7 +46,7 @@ const articlesData = [
     id: 1,
     slug: 'best-car-shades-jeddah-2024',
     title: 'أفضل أنواع مظلات السيارات في جدة 2024 - دليل شامل للاختيار والتركيب',
-    lastModified: '2024-12-20T10:00:00.000Z',
+    lastModified: '2025-10-12T10:00:00.000Z',
     priority: '0.9',
     changefreq: 'weekly',
     keywords: 'مظلات سيارات جدة، أفضل مظلات السيارات، تركيب مظلات جدة، مظلات حديد، مظلات قماش'
@@ -55,7 +55,7 @@ const articlesData = [
     id: 2,
     slug: 'wooden-pergola-maintenance-coastal-climate',
     title: 'صيانة البرجولة الخشبية في المناخ الساحلي - نصائح من خبراء جدة',
-    lastModified: '2024-12-18T10:00:00.000Z',
+    lastModified: '2025-10-10T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'weekly',
     keywords: 'برجولة خشبية جدة، صيانة برجولات، برجولات حدائق، تصميم برجولات جدة'
@@ -64,7 +64,7 @@ const articlesData = [
     id: 3,
     slug: 'sandwich-panel-thermal-insulation-saudi',
     title: 'ساندوتش بانل: الحل الأمثل للعزل الحراري في السعودية',
-    lastModified: '2024-12-16T10:00:00.000Z',
+    lastModified: '2025-10-08T10:00:00.000Z',
     priority: '0.9',
     changefreq: 'weekly',
     keywords: 'ساندوتش بانل جدة، عزل حراري، ألواح ساندوتش بانل، تركيب ساندوتش بانل السعودية'
@@ -73,7 +73,7 @@ const articlesData = [
     id: 4,
     slug: 'smart-fences-privacy-elegance',
     title: 'السواتر الذكية في جدة: خصوصية وأناقة وتقنية حديثة',
-    lastModified: '2024-12-14T10:00:00.000Z',
+    lastModified: '2025-10-06T10:00:00.000Z',
     priority: '0.9',
     changefreq: 'weekly',
     keywords: 'سواتر جدة، سواتر خصوصية، سواتر حديد، تركيب سواتر، سواتر قماش جدة'
@@ -82,7 +82,7 @@ const articlesData = [
     id: 5,
     slug: 'royal-tents-luxury-occasions-guide',
     title: 'خيام ملكية فاخرة في جدة: دليل التصميم والتنفيذ للمناسبات الخاصة',
-    lastModified: '2024-12-12T10:00:00.000Z',
+    lastModified: '2025-09-28T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
     keywords: 'خيام ملكية جدة، خيام فاخرة، تأجير خيام، خيام مناسبات جدة'
@@ -91,7 +91,7 @@ const articlesData = [
     id: 6,
     slug: 'traditional-hair-houses-heritage-modern',
     title: 'بيوت الشعر التراثية في جدة: تجسيد الأصالة مع لمسة عصرية',
-    lastModified: '2024-12-10T10:00:00.000Z',
+    lastModified: '2025-09-26T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
     keywords: 'بيوت شعر جدة، خيام تراثية، بيوت شعر تراثية، خيام بدوية جدة'
@@ -100,7 +100,7 @@ const articlesData = [
     id: 7,
     slug: 'garden-design-trends-saudi-2024',
     title: 'أحدث اتجاهات تصميم وتنسيق الحدائق في جدة والمملكة 2024',
-    lastModified: '2024-12-08T10:00:00.000Z',
+    lastModified: '2025-09-24T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'weekly',
     keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية جدة'
@@ -109,7 +109,7 @@ const articlesData = [
     id: 8,
     slug: 'renovation-secrets-modern-techniques',
     title: 'أسرار ترميم الملحقات بأحدث التقنيات - دليل شامل من خبراء جدة',
-    lastModified: '2024-12-06T10:00:00.000Z',
+    lastModified: '2025-09-22T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
     keywords: 'ترميم ملحقات جدة، تجديد ملحقات، شركة ترميم، ترميم منازل جدة'
@@ -118,7 +118,7 @@ const articlesData = [
     id: 9,
     slug: 'pergola-materials-comparison-jeddah',
     title: 'مقارنة شاملة لمواد البرجولات في جدة: الخشب مقابل الحديد مقابل الألومنيوم',
-    lastModified: '2024-12-04T10:00:00.000Z',
+    lastModified: '2025-09-20T10:00:00.000Z',
     priority: '0.8',
     changefreq: 'monthly',
     keywords: 'برجولات خشبية جدة، برجولات حديد، برجولات ألومنيوم، مقارنة مواد البرجولات'
@@ -127,7 +127,7 @@ const articlesData = [
     id: 10,
     slug: 'seasonal-garden-maintenance-saudi',
     title: 'صيانة الحدائق الموسمية في السعودية: دليل العناية الشاملة',
-    lastModified: '2024-12-02T10:00:00.000Z',
+    lastModified: '2025-09-18T10:00:00.000Z',
     priority: '0.7',
     changefreq: 'monthly',
     keywords: 'صيانة حدائق جدة، العناية بالحدائق، تنسيق حدائق موسمي، ري الحدائق'
@@ -248,103 +248,36 @@ export async function GET() {
   // إنشاء sitemap للصفحات الثابتة
   const staticSitemap = staticPages
     .map(
-      (page) => `
-  <url>
-    <loc>${baseUrl}${page.url}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-    <image:image>
-      <image:loc>${baseUrl}/images/logo.png</image:loc>
-      <image:caption><![CDATA[${page.keywords}]]></image:caption>
-      <image:title><![CDATA[محترفين الديار العالمية - ${page.keywords}]]></image:title>
-    </image:image>
-  </url>`
+      (page) => `<url><loc>${baseUrl}${page.url}</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>${page.changefreq}</changefreq><priority>${page.priority}</priority><image:image><image:loc>${baseUrl}/images/logo.png</image:loc><image:caption><![CDATA[${page.keywords}]]></image:caption><image:title><![CDATA[محترفين الديار العالمية - ${page.keywords}]]></image:title></image:image></url>`
     )
-    .join('');
+    .join('\n  ');
 
   // إنشاء sitemap للمقالات العامة
   const generalArticlesSitemap = articlesData
     .map(
       (article) => {
         const encodedSlug = encodeURIComponent(article.slug);
-        return `
-  <url>
-    <loc>${baseUrl}/articles/${encodedSlug}</loc>
-    <lastmod>${article.lastModified}</lastmod>
-    <changefreq>${article.changefreq}</changefreq>
-    <priority>${article.priority}</priority>
-    <news:news>
-      <news:publication>
-        <news:name>محترفين الديار العالمية</news:name>
-        <news:language>ar</news:language>
-      </news:publication>
-      <news:publication_date>${article.lastModified}</news:publication_date>
-      <news:title><![CDATA[${article.title}]]></news:title>
-      <news:keywords><![CDATA[${article.keywords}]]></news:keywords>
-    </news:news>
-    <image:image>
-      <image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc>
-      <image:caption><![CDATA[${article.title}]]></image:caption>
-      <image:title><![CDATA[${article.title}]]></image:title>
-    </image:image>
-  </url>`;
+        return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.lastModified}</lastmod><changefreq>${article.changefreq}</changefreq><priority>${article.priority}</priority><news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.lastModified}</news:publication_date><news:title><![CDATA[${article.title}]]></news:title><news:keywords><![CDATA[${article.keywords}]]></news:keywords></news:news><image:image><image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc><image:caption><![CDATA[${article.title}]]></image:caption><image:title><![CDATA[${article.title}]]></image:title></image:image></url>`;
       }
     )
-    .join('');
+    .join('\n  ');
 
   // إنشاء sitemap لمقالات الخدمات
   const serviceArticlesSitemap = serviceArticlesData
     .map(
       (article) => {
         const encodedSlug = encodeURIComponent(article.slug);
-        return `
-  <url>
-    <loc>${baseUrl}/articles/${encodedSlug}</loc>
-    <lastmod>${article.lastModified}</lastmod>
-    <changefreq>${article.changefreq}</changefreq>
-    <priority>${article.priority}</priority>
-    <news:news>
-      <news:publication>
-        <news:name>محترفين الديار العالمية</news:name>
-        <news:language>ar</news:language>
-      </news:publication>
-      <news:publication_date>${article.lastModified}</news:publication_date>
-      <news:title><![CDATA[${article.title}]]></news:title>
-      <news:keywords><![CDATA[${article.keywords}]]></news:keywords>
-    </news:news>
-    <image:image>
-      <image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc>
-      <image:caption><![CDATA[${article.title}]]></image:caption>
-      <image:title><![CDATA[${article.title}]]></image:title>
-    </image:image>
-  </url>`;
+        return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.lastModified}</lastmod><changefreq>${article.changefreq}</changefreq><priority>${article.priority}</priority><news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.lastModified}</news:publication_date><news:title><![CDATA[${article.title}]]></news:title><news:keywords><![CDATA[${article.keywords}]]></news:keywords></news:news><image:image><image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc><image:caption><![CDATA[${article.title}]]></image:caption><image:title><![CDATA[${article.title}]]></image:title></image:image></url>`;
       }
     )
-    .join('');
+    .join('\n  ');
 
   // تم نقل sitemap المشاريع إلى ملف منفصل /sitemap-projects.xml
 
   // إضافة روابط الـ sitemaps المنفصلة
-  const sitemapReferences = `
-  <url>
-    <loc>${baseUrl}/sitemap-projects.xml</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/sitemap-articles.xml</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/sitemap-images.xml</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`;
+  const sitemapReferences = `<url><loc>${baseUrl}/sitemap-projects.xml</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.95</priority></url>
+  <url><loc>${baseUrl}/sitemap-articles.xml</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>${baseUrl}/sitemap-images.xml</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`;
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
