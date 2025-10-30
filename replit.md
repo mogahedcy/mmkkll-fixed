@@ -4,7 +4,12 @@ This is a Next.js-based web application for "محترفين الديار الع�
 
 # Recent Changes
 
-## October 30, 2025 - SEO Critical Fixes
+## October 30, 2025 - SEO Critical Fixes and Google Business Integration
+- ✅ **Google Business Profile Integration**: Linked Google Business Profile to website schema
+  - Added Google Business link (https://share.google/GKcHjw3Gl5MX85WmQ) to Schema markup
+  - Integrated `sameAs` property in Organization and LocalBusiness schemas
+  - Added `hasMap` property for Google Maps integration
+  - Updated CompanyJsonLd.tsx and StructuredDataScript.tsx components
 - ✅ **Sitemap XML Optimization**: Fixed critical line break issues in all sitemap files
   - Fixed line breaks in `<loc>`, `<image:loc>`, `<video:content_loc>`, and `<rs:ln>` tags
   - Updated all sitemap files: sitemap.xml, sitemap-projects.xml, sitemap-articles.xml, sitemap-images.xml

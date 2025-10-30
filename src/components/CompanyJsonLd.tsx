@@ -143,7 +143,9 @@ export default function CompanyJsonLd() {
         'https://twitter.com/aldeyar_jeddah',
         'https://www.linkedin.com/company/aldeyar-global',
         'https://www.youtube.com/@aldeyar-jeddah',
+        'https://share.google/GKcHjw3Gl5MX85WmQ',
       ],
+      hasMap: 'https://share.google/GKcHjw3Gl5MX85WmQ',
       keywords:
         'مظلات جدة، سواتر جدة، برجولات جدة، تنسيق حدائق جدة، ساندوتش بانل، بيوت شعر، خيام م��كية، ترميم ملحقات',
       knowsAbout: [

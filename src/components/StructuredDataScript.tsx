@@ -38,11 +38,20 @@ export default function StructuredDataScript({ data }: { data?: any | any[] }) {
       "@type": "OfferCatalog",
       "name": "خدمات محترفين الديار",
       "itemListElement": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "مظلات ا��سيارات", "description": "تركيب مظلات السيارات بأعلى معايير الجودة" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "مظلات السيارات", "description": "تركيب مظلات السيارات بأعلى معايير الجودة" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "البرجولات", "description": "تصميم وتنفيذ برجولات خشبية وحديدية" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "السواتر", "description": "تركيب سواتر الخصوصية والحماية" } }
       ]
-    }
+    },
+    "sameAs": [
+      "https://www.facebook.com/aldeyar.jeddah",
+      "https://www.instagram.com/aldeyar.jeddah",
+      "https://twitter.com/aldeyar_jeddah",
+      "https://www.linkedin.com/company/aldeyar-global",
+      "https://www.youtube.com/@aldeyar-jeddah",
+      "https://share.google/GKcHjw3Gl5MX85WmQ"
+    ],
+    "hasMap": "https://share.google/GKcHjw3Gl5MX85WmQ"
   };
 
   const localBusinessData = {
@@ -69,7 +78,16 @@ export default function StructuredDataScript({ data }: { data?: any | any[] }) {
       "closes": "18:00"
     },
     "priceRange": "$$",
-    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "125" }
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "125" },
+    "sameAs": [
+      "https://www.facebook.com/aldeyar.jeddah",
+      "https://www.instagram.com/aldeyar.jeddah",
+      "https://twitter.com/aldeyar_jeddah",
+      "https://www.linkedin.com/company/aldeyar-global",
+      "https://www.youtube.com/@aldeyar-jeddah",
+      "https://share.google/GKcHjw3Gl5MX85WmQ"
+    ],
+    "hasMap": "https://share.google/GKcHjw3Gl5MX85WmQ"
   };
 
   const websiteData = {
