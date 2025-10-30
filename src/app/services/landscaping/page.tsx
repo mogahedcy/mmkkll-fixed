@@ -32,11 +32,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'تنسيق حدائق جدة - محترفين الديار العالمية',
     description: 'أفضل شركة تنسيق حدائق في جدة - تصميم وزراعة احترافية',
-    url: 'https://aldeyarksa.tech/services/landscaping',
+    url: 'https://www.aldeyarksa.tech/services/landscaping',
     siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://aldeyarksa.tech/uploads/landscaping-1.webp',
+        url: 'https://www.aldeyarksa.tech/uploads/landscaping-1.webp',
         width: 1200,
         height: 630,
         alt: 'تنسيق حدائق جدة - محترفين الديار العالمية',

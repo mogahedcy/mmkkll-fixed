@@ -117,18 +117,18 @@ User-agent: Bytespider
 Disallow: /
 
 # خرائط المواقع المتعددة والمحدثة - محسنة لـ SEO
-Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-index.xml
-Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap.xml
-Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-projects.xml
-Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-articles.xml
-Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech'}/sitemap-images.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap-index.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap-projects.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap-articles.xml
+Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap-images.xml
 
 # توجيه canonical المضيف
-Host: https://aldeyarksa.tech
+Host: https://www.aldeyarksa.tech
 
 # معلومات إضافية للمطورين ومحركات البحث
 # Contact: info@aldeyarksa.tech
-# Website: https://aldeyarksa.tech
+# Website: https://www.aldeyarksa.tech
 # Company: محترفين الديار العالمية
 # Location: جدة، المملكة العربية السعودية
 # Services: مظلات، برجولات، سواتر، تنسيق حدائق`;

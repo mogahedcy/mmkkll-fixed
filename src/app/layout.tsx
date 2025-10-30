@@ -24,7 +24,8 @@ export const metadata: Metadata = {
   robots: "index, follow",
   alternates: {
     languages: {
-      "ar-SA": "https://www.aldeyarksa.tech",
+      "ar-SA": "/",
+      "x-default": "/",
     },
   },
   openGraph: {
@@ -64,60 +65,54 @@ export const metadata: Metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
 };
 
-const structuredData = {
+const faqPageSchema = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "محترفين الديار العالمية",
-  image: "https://www.aldeyarksa.tech/favicon.svg",
-  "@id": "https://www.aldeyarksa.tech",
-  url: "https://www.aldeyarksa.tech",
-  telephone: "+966553719009",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "جدة",
-    addressLocality: "جدة",
-    addressRegion: "مكة",
-    postalCode: "22233",
-    addressCountry: "SA",
-  },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 21.485811,
-    longitude: 39.192505,
-  },
-  openingHoursSpecification: [
+  "@type": "FAQPage",
+  "mainEntity": [
     {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Saturday",
-        "Sunday",
-      ],
-      opens: "08:00",
-      closes: "22:00",
+      "@type": "Question",
+      "name": "ما هي الخدمات التي تقدمها شركة محترفين الديار؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "نقدم 8 خدمات متخصصة شاملة: مظلات سيارات، برجولات حدائق، سواتر خصوصية، ساندوتش بانل، ترميم ملحقات، تنسيق حدائق، بيوت شعر تراثية، وخيام ملكية. جميع خدماتنا متاحة في جدة والمناطق المحيطة."
+      }
     },
     {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Friday",
-      opens: "16:00",
-      closes: "22:00",
+      "@type": "Question",
+      "name": "كم تبلغ مدة الضمان على مظلات السيارات؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "نقدم ضمان شامل لمدة 10 سنوات على جميع مظلات السيارات، يشمل الهيكل المعدني والقماش والتركيب. كما نوفر صيانة دورية مجانية خلال السنة الأولى."
+      }
     },
-  ],
-  sameAs: [
-    "https://www.facebook.com/aldeyar.jeddah",
-    "https://www.instagram.com/aldeyar.jeddah",
-    "https://twitter.com/aldeyar_jeddah",
-  ],
-  description:
-    "محترفين الديار العالمية - شركة متخصصة في جدة تقدم خدمات شاملة: مظلات سيارات، برجولات حدائق، سواتر خصوصية، ساندوتش بانل، ترميم ملحقات، تنسيق حدائق، بيوت شعر تراثية، وخيام ملكية. خبرة 15 عاماً في تصميم وتنفيذ المشاريع بأعلى معايير الجودة في جدة والمملكة العربية السعودية.",
-  priceRange: "SAR",
+    {
+      "@type": "Question",
+      "name": "كم تستغرق عملية تركيب المظلات أو البرجولات؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "عادة ما تستغرق عملية التركيب من يوم إلى 3 أيام حسب حجم المشروع وتعقيده. مظلات السيارات العادية تحتاج يوم واحد، بينما البرجولات الكبيرة قد تحتاج إلى 2-3 أيام."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "هل ساندوتش بانل مناسب للمناخ الحار في جدة؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "نعم، ساندوتش بانل مثالي للمناخ الحار في جدة. يوفر عزل حراري ممتاز يقلل استهلاك الكهرباء بنسبة تصل إلى 40%، ومقاوم للرطوبة والحرارة العالية."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "هل تقدمون عروض أسعار مجانية؟",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "نعم، نقدم عروض أسعار مجانية ومفصلة لجميع خدماتنا. يمكنكم طلب الزيارة المجانية عبر الواتساب أو الاتصال المباشر، وسيقوم مهندسنا بالزيارة وأخذ القياسات وتقديم العرض."
+      }
+    }
+  ]
 };
 
 export default function RootLayout({
@@ -129,7 +124,7 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={notoSansArabic.variable}>
       <head>
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
-        <StructuredDataScript data={structuredData} />
+        <StructuredDataScript data={faqPageSchema} />
       </head>
       <body className="antialiased font-arabic" suppressHydrationWarning={true}>
         <ClientBody>{children}</ClientBody>

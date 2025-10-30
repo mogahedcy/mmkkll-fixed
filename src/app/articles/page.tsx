@@ -17,11 +17,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'أرشيف المقالات | محترفين الديار العالمية',
     description: 'اكتشف مقالاتنا المتخصصة في المظلات والبرجولات والسواتر وتنسيق الحدائق',
-    url: 'https://aldeyarksa.tech/articles',
+    url: 'https://www.aldeyarksa.tech/articles',
     siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://aldeyarksa.tech/uploads/mazallat-1.webp',
+        url: 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp',
         width: 1200,
         height: 630,
         alt: 'أرشيف مقالات محترفين الديار العالمية'
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'أرشيف المقالات | محترفين الديار العالمية',
     description: 'اكتشف مقالاتنا المتخصصة في المظلات والبرجولات',
-    images: ['https://aldeyarksa.tech/uploads/mazallat-1.webp']
+    images: ['https://www.aldeyarksa.tech/uploads/mazallat-1.webp']
   },
   alternates: {
     canonical: '/articles'
@@ -46,13 +46,13 @@ const articlesStructuredData = {
   '@type': 'CollectionPage',
   name: 'أرشيف المقالات - محترفين الديار العالمية',
   description: 'مقالات متخصصة في المظلات والبرجولات والسواتر وتنسيق الحدائق',
-  url: 'https://aldeyarksa.tech/articles',
+  url: 'https://www.aldeyarksa.tech/articles',
   publisher: {
     '@type': 'Organization',
     name: 'محترفين الديار العالمية',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://aldeyarksa.tech/logo.svg'
+      url: 'https://www.aldeyarksa.tech/logo.svg'
     }
   }
 };

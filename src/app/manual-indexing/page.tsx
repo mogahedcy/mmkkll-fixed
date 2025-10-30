@@ -56,23 +56,23 @@ export default function ManualIndexingTestPage() {
   const [testMode, setTestMode] = useState<'quick' | 'detailed'>('detailed');
 
   const defaultPages = [
-    { url: 'https://aldeyarksa.tech/', priority: 'high', category: 'الرئيسية' },
-    { url: 'https://aldeyarksa.tech/services/mazallat/', priority: 'high', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/services/pergolas/', priority: 'high', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/services/sawater/', priority: 'high', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/services/sandwich-panel/', priority: 'medium', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/services/landscaping/', priority: 'high', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/services/renovation/', priority: 'medium', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/services/byoot-shaar/', priority: 'medium', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/services/khayyam/', priority: 'low', category: 'خدمات' },
-    { url: 'https://aldeyarksa.tech/portfolio/', priority: 'high', category: 'أعمال' },
-    { url: 'https://aldeyarksa.tech/articles/', priority: 'high', category: 'محتوى' },
-    { url: 'https://aldeyarksa.tech/about/', priority: 'medium', category: 'معلومات' },
-    { url: 'https://aldeyarksa.tech/contact/', priority: 'medium', category: 'اتصال' },
-    { url: 'https://aldeyarksa.tech/quote/', priority: 'high', category: 'طلبات' },
-    { url: 'https://aldeyarksa.tech/faq/', priority: 'low', category: 'مساعدة' },
-    { url: 'https://aldeyarksa.tech/privacy/', priority: 'low', category: 'قانونية' },
-    { url: 'https://aldeyarksa.tech/terms/', priority: 'low', category: 'قانونية' }
+    { url: 'https://www.aldeyarksa.tech/', priority: 'high', category: 'الرئيسية' },
+    { url: 'https://www.aldeyarksa.tech/services/mazallat/', priority: 'high', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/services/pergolas/', priority: 'high', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/services/sawater/', priority: 'high', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/services/sandwich-panel/', priority: 'medium', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/services/landscaping/', priority: 'high', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/services/renovation/', priority: 'medium', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/services/byoot-shaar/', priority: 'medium', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/services/khayyam/', priority: 'low', category: 'خدمات' },
+    { url: 'https://www.aldeyarksa.tech/portfolio/', priority: 'high', category: 'أعمال' },
+    { url: 'https://www.aldeyarksa.tech/articles/', priority: 'high', category: 'محتوى' },
+    { url: 'https://www.aldeyarksa.tech/about/', priority: 'medium', category: 'معلومات' },
+    { url: 'https://www.aldeyarksa.tech/contact/', priority: 'medium', category: 'اتصال' },
+    { url: 'https://www.aldeyarksa.tech/quote/', priority: 'high', category: 'طلبات' },
+    { url: 'https://www.aldeyarksa.tech/faq/', priority: 'low', category: 'مساعدة' },
+    { url: 'https://www.aldeyarksa.tech/privacy/', priority: 'low', category: 'قانونية' },
+    { url: 'https://www.aldeyarksa.tech/terms/', priority: 'low', category: 'قانونية' }
   ];
 
   const searchEngines = {
@@ -280,7 +280,7 @@ export default function ManualIndexingTestPage() {
             <Textarea
               value={customUrls}
               onChange={(e) => setCustomUrls(e.target.value)}
-              placeholder="https://aldeyarksa.tech/custom-page/&#10;https://aldeyarksa.tech/another-page/"
+              placeholder="https://www.aldeyarksa.tech/custom-page/&#10;https://www.aldeyarksa.tech/another-page/"
               className="min-h-[100px]"
             />
             <p className="text-sm text-gray-500 mt-1">

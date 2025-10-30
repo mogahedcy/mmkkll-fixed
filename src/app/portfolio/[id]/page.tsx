@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         title: seoTitle,
         description: seoDescription,
         type: 'article',
-        url: `https://aldeyarksa.tech/portfolio/${id}`,
+        url: `https://www.aldeyarksa.tech/portfolio/${id}`,
         siteName: 'محترفين الديار العالمية',
         locale: 'ar_SA',
         images: project.mediaItems?.filter((item: any) => item.type === 'IMAGE').map((item: any) => ({
@@ -144,11 +144,11 @@ export default async function ProjectDetailsPage({ params }: Props) {
     "@type": "CreativeWork",
     "name": project.title,
     "description": project.description,
-    "url": `https://aldeyarksa.tech/portfolio/${project.slug || id}`,
+    "url": `https://www.aldeyarksa.tech/portfolio/${project.slug || id}`,
     "creator": {
       "@type": "Organization",
       "name": "محترفين الديار العالمية",
-      "url": "https://aldeyarksa.tech"
+      "url": "https://www.aldeyarksa.tech"
     },
     "dateCreated": project.createdAt,
     "dateModified": project.updatedAt,
@@ -177,9 +177,9 @@ export default async function ProjectDetailsPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      {"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://aldeyarksa.tech"},
-      {"@type": "ListItem", "position": 2, "name": "المشاريع", "item": "https://aldeyarksa.tech/portfolio"},
-      {"@type": "ListItem", "position": 3, "name": project.title, "item": `https://aldeyarksa.tech/portfolio/${project.slug || id}`}
+      {"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://www.aldeyarksa.tech"},
+      {"@type": "ListItem", "position": 2, "name": "المشاريع", "item": "https://www.aldeyarksa.tech/portfolio"},
+      {"@type": "ListItem", "position": 3, "name": project.title, "item": `https://www.aldeyarksa.tech/portfolio/${project.slug || id}`}
     ]
   };
 

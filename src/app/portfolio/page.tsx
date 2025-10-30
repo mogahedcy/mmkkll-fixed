@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'معرض أعمال محترفين الديار العالمية - مشاريع مميزة في جدة',
     description: 'اكتشف أعمالنا المتميزة في المظلات والبرجولات والسواتر وجميع خدماتنا في جدة',
-    url: 'https://aldeyarksa.tech/portfolio',
+    url: 'https://www.aldeyarksa.tech/portfolio',
     siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://aldeyarksa.tech/uploads/mazallat-1.webp',
+        url: 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp',
         width: 1200,
         height: 630,
         alt: 'معرض أعمال محترفين الديار العالمية'
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'معرض أعمال محترفين الديار العالمية',
     description: 'اكتشف مشاريعنا المتميزة في جدة',
-    images: ['https://aldeyarksa.tech/uploads/mazallat-1.webp']
+    images: ['https://www.aldeyarksa.tech/uploads/mazallat-1.webp']
   },
   alternates: {
     canonical: '/portfolio'
@@ -46,7 +46,7 @@ const portfolioStructuredData = {
   "@type": "CollectionPage",
   "name": "معرض أعمال محترفين الديار العالمية",
   "description": "مجموعة شاملة من مشاريعنا المتميزة في جدة",
-  "url": "https://aldeyarksa.tech/portfolio",
+  "url": "https://www.aldeyarksa.tech/portfolio",
   "mainEntity": {
     "@type": "ItemList",
     "name": "مشاريع محترفين الديار العالمية",
@@ -73,8 +73,8 @@ const portfolioStructuredData = {
   "provider": {
     "@type": "Organization",
     "name": "محترفين الديار العالمية",
-    "url": "https://aldeyarksa.tech",
-    "logo": "https://aldeyarksa.tech/logo.png"
+    "url": "https://www.aldeyarksa.tech",
+    "logo": "https://www.aldeyarksa.tech/logo.png"
   }
 };
 

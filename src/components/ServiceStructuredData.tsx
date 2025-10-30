@@ -24,8 +24,8 @@ export default function ServiceStructuredData({ service }: ServiceStructuredData
     "provider": {
       "@type": "Organization",
       "name": service.provider,
-      "url": "https://aldeyarksa.tech",
-      "logo": "https://aldeyarksa.tech/images/logo.png",
+      "url": "https://www.aldeyarksa.tech",
+      "logo": "https://www.aldeyarksa.tech/images/logo.png",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+966-55-371-9009",

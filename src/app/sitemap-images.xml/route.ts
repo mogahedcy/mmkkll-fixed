@@ -2,7 +2,7 @@
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
   
   // الصور الأساسية للموقع
   const staticImages = [

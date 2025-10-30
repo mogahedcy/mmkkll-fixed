@@ -104,8 +104,8 @@ export default function AboutPage() {
     "@type": "Organization",
     "name": "مؤسسة الديار العالمية",
     "description": "مؤسسة رائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً",
-    "url": "https://aldeyarksa.tech",
-    "logo": "https://aldeyarksa.tech/logo.png",
+    "url": "https://www.aldeyarksa.tech",
+    "logo": "https://www.aldeyarksa.tech/logo.png",
     "foundingDate": "2009",
     "founder": "المهندس أحمد السعيد",
     "address": {

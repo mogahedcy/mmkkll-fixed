@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       ? (process.env.NEXT_PUBLIC_BASE_URL.startsWith('http') 
           ? process.env.NEXT_PUBLIC_BASE_URL 
           : `https://${process.env.NEXT_PUBLIC_BASE_URL}`)
-      : 'https://aldeyarksa.tech';
+      : 'https://www.aldeyarksa.tech';
 
     const fullUrls = urls.map((url: string) => 
       url.startsWith('http') ? url : `${baseUrl}${url}`

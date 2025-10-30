@@ -3,20 +3,20 @@ export async function GET(request: Request) {
   const checkUrls = searchParams.get('urls')?.split(',') || [];
 
   const defaultUrls = [
-    'https://aldeyarksa.tech/',
-    'https://aldeyarksa.tech/services/mazallat/',
-    'https://aldeyarksa.tech/services/pergolas/',
-    'https://aldeyarksa.tech/services/sawater/',
-    'https://aldeyarksa.tech/services/sandwich-panel/',
-    'https://aldeyarksa.tech/services/landscaping/',
-    'https://aldeyarksa.tech/services/renovation/',
-    'https://aldeyarksa.tech/services/byoot-shaar/',
-    'https://aldeyarksa.tech/services/khayyam/',
-    'https://aldeyarksa.tech/portfolio/',
-    'https://aldeyarksa.tech/articles/',
-    'https://aldeyarksa.tech/about/',
-    'https://aldeyarksa.tech/contact/',
-    'https://aldeyarksa.tech/quote/'
+    'https://www.aldeyarksa.tech/',
+    'https://www.aldeyarksa.tech/services/mazallat/',
+    'https://www.aldeyarksa.tech/services/pergolas/',
+    'https://www.aldeyarksa.tech/services/sawater/',
+    'https://www.aldeyarksa.tech/services/sandwich-panel/',
+    'https://www.aldeyarksa.tech/services/landscaping/',
+    'https://www.aldeyarksa.tech/services/renovation/',
+    'https://www.aldeyarksa.tech/services/byoot-shaar/',
+    'https://www.aldeyarksa.tech/services/khayyam/',
+    'https://www.aldeyarksa.tech/portfolio/',
+    'https://www.aldeyarksa.tech/articles/',
+    'https://www.aldeyarksa.tech/about/',
+    'https://www.aldeyarksa.tech/contact/',
+    'https://www.aldeyarksa.tech/quote/'
   ];
 
   const urlsToCheck = checkUrls.length > 0 ? checkUrls : defaultUrls;

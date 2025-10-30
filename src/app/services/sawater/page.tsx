@@ -33,11 +33,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'سواتر جدة - محترفين الديار العالمية',
     description: 'أفضل شركة سواتر في جدة - خصوصية وأناقة بأعلى معايير الجودة',
-    url: 'https://aldeyarksa.tech/services/sawater',
+    url: 'https://www.aldeyarksa.tech/services/sawater',
     siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://aldeyarksa.tech/uploads/sawater-1.webp',
+        url: 'https://www.aldeyarksa.tech/uploads/sawater-1.webp',
         width: 1200,
         height: 630,
         alt: 'سواتر جدة - محترفين الديار العالمية',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'سواتر جدة - محترفين الديار العالمية',
     description: 'أفضل شركة سواتر في جدة - خصوصية وأناقة بأعلى معايير الجودة',
-    images: ['https://aldeyarksa.tech/uploads/sawater-1.webp'],
+    images: ['https://www.aldeyarksa.tech/uploads/sawater-1.webp'],
   },
   alternates: {
     canonical: '/services/sawater',

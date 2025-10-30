@@ -23,7 +23,7 @@ async function notifySearchEngine(engineUrl: string, sitemapUrl: string, engineN
     const response = await fetch(`${engineUrl}${encodeURIComponent(sitemapUrl)}`, {
       method: 'GET',
       headers: {
-        'User-Agent': 'AlDeyar-SEO-Bot/1.0 (+https://aldeyarksa.tech)',
+        'User-Agent': 'AlDeyar-SEO-Bot/1.0 (+https://www.aldeyarksa.tech)',
       },
       signal: AbortSignal.timeout(10000),
     });
@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
     }
 
     const defaultSitemaps = [
-      'https://aldeyarksa.tech/sitemap.xml',
-      'https://aldeyarksa.tech/sitemap-images.xml'
+      'https://www.aldeyarksa.tech/sitemap.xml',
+      'https://www.aldeyarksa.tech/sitemap-images.xml'
     ];
 
     const sitemapsToRefresh = sitemaps.length > 0 ? sitemaps : defaultSitemaps;
@@ -126,7 +126,7 @@ export async function GET() {
       optional_fields: ['sitemaps (array)'],
       example: {
         secret: 'your-secret-key',
-        sitemaps: ['https://aldeyarksa.tech/sitemap.xml']
+        sitemaps: ['https://www.aldeyarksa.tech/sitemap.xml']
       }
     },
     supported_engines: SEARCH_ENGINES.map(engine => engine.name),

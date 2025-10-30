@@ -34,11 +34,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'مظلات سيارات جدة - محترفين الديار العالمية',
     description: 'أفضل شركة مظلات سيارات في جدة - تصميم وتنفيذ احترافي بضمان 10 سنوات',
-    url: 'https://aldeyarksa.tech/services/mazallat',
+    url: 'https://www.aldeyarksa.tech/services/mazallat',
     siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://aldeyarksa.tech/uploads/mazallat-1.webp',
+        url: 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp',
         width: 1200,
         height: 630,
         alt: 'مظلات سيارات جدة - محترفين الديار العالمية',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'مظلات سيارات جدة - محترفين الديار العالمية',
     description: 'أفضل شركة مظلات سيارات في جدة - تصميم وتنفيذ احترافي',
-    images: ['https://aldeyarksa.tech/uploads/mazallat-1.webp'],
+    images: ['https://www.aldeyarksa.tech/uploads/mazallat-1.webp'],
   },
   alternates: {
     canonical: '/services/mazallat',
@@ -361,7 +361,7 @@ export default function MazallatPage() {
             "provider": {
               "@type": "LocalBusiness",
               "name": "محترفين الديار",
-              "image": "https://aldeyarksa.tech/uploads/mazallat-1.webp",
+              "image": "https://www.aldeyarksa.tech/uploads/mazallat-1.webp",
               "telephone": "+966553719009",
               "address": {
                 "@type": "PostalAddress",

@@ -80,11 +80,11 @@ export default function CarShadesGuidePage() {
             "publisher": {
               "@type": "Organization",
               "name": "محترفين الديار العالمية",
-              "logo": "https://aldeyarksa.tech/images/logo.png"
+              "logo": "https://www.aldeyarksa.tech/images/logo.png"
             },
             "datePublished": "2024-12-22",
             "dateModified": "2024-12-22",
-            "mainEntityOfPage": "https://aldeyarksa.tech/articles/complete-car-shades-guide-jeddah-2024"
+            "mainEntityOfPage": "https://www.aldeyarksa.tech/articles/complete-car-shades-guide-jeddah-2024"
           })
         }}
       />

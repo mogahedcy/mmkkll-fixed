@@ -93,7 +93,7 @@ export async function GET() {
         type: 'project',
         action: 'created',
         id: '123',
-        url: 'https://aldeyarksa.tech/portfolio/123',
+        url: 'https://www.aldeyarksa.tech/portfolio/123',
         timestamp: new Date().toISOString()
       }
     },

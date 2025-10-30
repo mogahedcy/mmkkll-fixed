@@ -202,7 +202,7 @@ export default function CompanyJsonLd() {
 
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.innerHTML = JSON.stringify(combinedSchema, null, 2);
+    script.innerHTML = JSON.stringify(combinedSchema);
     document.head.appendChild(script);
 
     return () => {

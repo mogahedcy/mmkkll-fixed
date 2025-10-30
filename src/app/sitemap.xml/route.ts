@@ -135,7 +135,7 @@ const articlesData = [
 ];
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aldeyarksa.tech';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
 
   // الصفحات الثابتة مع أولوية SEO محسنة وك��مات مفتاحية
   const staticPages = [

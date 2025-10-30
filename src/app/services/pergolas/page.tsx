@@ -36,11 +36,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'برجولات خشبية جدة - محترفين الديار العالمية',
     description: 'أفضل شركة برجولات في جدة - تصاميم أنيقة وعصرية للحدائق',
-    url: 'https://aldeyarksa.tech/services/pergolas',
+    url: 'https://www.aldeyarksa.tech/services/pergolas',
     siteName: 'محترفين الديار العالمية',
     images: [
       {
-        url: 'https://aldeyarksa.tech/uploads/pergola-1.jpg',
+        url: 'https://www.aldeyarksa.tech/uploads/pergola-1.jpg',
         width: 1200,
         height: 630,
         alt: 'برجولات خشبية جدة - محترفين الديار العالمية',
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'برجولات خشبية جدة - محترفين الديار العالمية',
     description: 'أفضل شركة برجولات في جدة - تصاميم أنيقة وعصرية',
-    images: ['https://aldeyarksa.tech/uploads/pergola-1.jpg'],
+    images: ['https://www.aldeyarksa.tech/uploads/pergola-1.jpg'],
   },
   alternates: {
     canonical: '/services/pergolas',

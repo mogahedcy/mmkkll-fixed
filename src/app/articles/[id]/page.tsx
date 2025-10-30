@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       openGraph: {
         title: seoTitle,
         description: seoDescription,
-        url: `https://aldeyarksa.tech/articles/${article.slug || article.id}`,
+        url: `https://www.aldeyarksa.tech/articles/${article.slug || article.id}`,
         siteName: 'محترفين الديار العالمية',
         images: mainImage ? [
           {
