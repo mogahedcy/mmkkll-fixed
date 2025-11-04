@@ -4,6 +4,15 @@ This is a Next.js-based web application for "محترفين الديار الع�
 
 # Recent Changes
 
+## November 4, 2025 - Testimonials Section Enhancement
+- ✅ **Homepage Testimonials Integration**: Added prominent testimonials section to homepage
+  - Integrated TestimonialsSection component on homepage (Hero → Services → Portfolio → Testimonials → Footer)
+  - Carousel display with 6 customer testimonials featuring auto-play functionality
+  - Hover-to-pause interaction for better user experience
+  - Comprehensive Review Schema (LocalBusiness) for SEO optimization
+  - Aggregate rating: 4.9/5 stars from 6 verified customer reviews
+  - Full structured data for each testimonial with author, rating, service, and review text
+
 ## November 4, 2025 - Missing Schema Implementation (Review & Article)
 - ✅ **IndividualReviewSchema Component**: Created standalone review schema
   - Supports individual review structured data separate from aggregate ratings
