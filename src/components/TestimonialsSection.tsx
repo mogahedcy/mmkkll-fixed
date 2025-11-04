@@ -1,10 +1,9 @@
 'use client';
 
-'use client';
-
 import { useState, useEffect } from 'react';
 import { Star, Quote, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ReviewSchema from './ReviewSchema';
 
 const testimonials = [
   {
@@ -90,8 +89,26 @@ export default function TestimonialsSection() {
 
   const currentTestimonial = testimonials[currentIndex];
 
+  const reviewsForSchema = testimonials.map(t => ({
+    author: t.name,
+    rating: t.rating,
+    reviewBody: t.text,
+    datePublished: `${t.date}-01-01`,
+    title: `تقييم ${t.service}`
+  }));
+
   return (
     <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10">
+      <ReviewSchema
+        serviceName="خدمات محترفين الديار العالمية - مظلات وبرجولات جدة"
+        itemType="LocalBusiness"
+        serviceUrl="https://www.aldeyarksa.tech"
+        aggregateRating={{
+          ratingValue: 4.9,
+          reviewCount: testimonials.length
+        }}
+        reviews={reviewsForSchema}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">

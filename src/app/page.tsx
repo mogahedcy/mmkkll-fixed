@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
 import PortfolioSection from '@/components/PortfolioSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import Footer from '@/components/Footer';
 import { generateLocalBusinessSchema, generateOrganizationSchema } from '@/lib/seo-utils';
 
@@ -72,6 +73,7 @@ export default function HomePage() {
       <HeroSection />
       <ServicesSection />
       <PortfolioSection />
+      <TestimonialsSection />
       <Footer />
     </>
   );
