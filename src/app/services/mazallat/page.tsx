@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Breadcrumb from '@/components/Breadcrumb';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { generateServiceSchema, generateFAQSchema } from '@/lib/seo-utils';
 import {
   Car,
   Shield,
@@ -348,38 +351,35 @@ const articlesData = [
 ];
 
 export default function MazallatPage() {
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'مظلات السيارات', href: '/services/mazallat', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'مظلات سيارات جدة',
+    description: 'أفضل مظلات سيارات في جدة من محترفين الديار. مظلات PVC، مظلات حدائق، مظلات مدارس ومسابح. ضمان 10 سنوات وخبرة 15 عاماً.',
+    areaServed: 'جدة',
+    priceRange: '2500-10000',
+    image: 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp',
+    url: '/services/mazallat'
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "مظلات سيارات جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "محترفين الديار",
-              "image": "https://www.aldeyarksa.tech/uploads/mazallat-1.webp",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل مظلات سيارات في جدة من محترفين الديار. مظلات PVC، مظلات حدائق، مظلات مدارس ومسابح.",
-            "serviceType": ["مظلات سيارات", "مظلات حدائق", "مظلات مدارس", "مظلات مسابح"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "lowPrice": "2500",
-              "highPrice": "10000",
-              "priceCurrency": "SAR"
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <div className="min-h-screen bg-background">
@@ -396,12 +396,8 @@ export default function MazallatPage() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               {/* Breadcrumb */}
-              <div className="inline-flex items-center space-x-2 space-x-reverse bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-8">
-                <Link href="/" className="hover:text-accent transition-colors">الرئيسية</Link>
-                <span>/</span>
-                <Link href="/#services" className="hover:text-accent transition-colors">خدماتنا</Link>
-                <span>/</span>
-                <span>مظلات السيارات</span>
+              <div className="inline-flex mb-8">
+                <Breadcrumb items={breadcrumbItems} className="bg-accent/10 text-accent px-4 py-2 rounded-full font-medium" />
               </div>
 
               {/* Main Heading */}
