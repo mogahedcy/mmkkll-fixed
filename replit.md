@@ -4,6 +4,43 @@ This is a Next.js-based web application for "محترفين الديار الع�
 
 # Recent Changes
 
+## November 4, 2025 - Advanced SEO Enhancement Package
+- ✅ **Reusable Breadcrumb Component**: Created comprehensive breadcrumb navigation system
+  - New Breadcrumb UI component with RTL support and accessibility features
+  - BreadcrumbSchema component for automatic structured data generation
+  - Applied to service pages (mazallat, pergolas) and portfolio pages
+  
+- ✅ **Enhanced SEO Utilities Library**: Comprehensive seo-utils.ts expansion
+  - `generateServiceSchema()`: Automated service structured data with LocalBusiness integration
+  - `generateCreativeWorkSchema()`: Advanced project/portfolio schema with media support
+  - `generateFAQSchema()`: Structured FAQ data for rich snippets
+  - `generateArticleSchema()`: Article markup with publisher information
+  - `generateOpenGraphMetadata()`: Unified Open Graph tag generation
+  - `generateTwitterMetadata()`: Twitter card metadata helper
+  - `generateRobotsMetadata()`: Standardized robots directives
+  - `generateAggregateRatingSchema()`: Rating/review structured data
+  - `generateCanonicalUrl()`: Canonical URL standardization
+
+- ✅ **Service Pages SEO Enhancement**: Applied to mazallat and pergolas as templates
+  - Integrated Breadcrumb UI and Schema components
+  - Improved Service Schema using utility functions
+  - Added FAQ Schema for rich snippet eligibility
+  - Consistent canonical URL implementation
+  - Remaining service pages (sawater, landscaping, sandwich-panel, renovation, byoot-shaar, khayyam) can follow the same pattern
+
+- ✅ **Portfolio/Project Pages Enhancement**:
+  - Updated portfolio/[id]/page.tsx with improved CreativeWork Schema
+  - Added Breadcrumb Schema to project detail pages
+  - Integrated Breadcrumb UI in ProjectDetailsClient component
+  - Automatic image and video structured data generation
+  - Support for aggregate ratings on projects
+
+- ✅ **Schema Markup Architecture**: Scalable approach to structured data
+  - All schema generation centralized in reusable utility functions
+  - Type-safe TypeScript interfaces for schema parameters
+  - Consistent contact information and business details across all schemas
+  - Support for conditional schema properties (ratings, dates, media)
+
 ## October 30, 2025 - Comprehensive SEO Critical Fixes (9 Major Issues)
 - ✅ **Schema JSON-LD Line Breaks Fixed**: Removed formatting from JSON.stringify to eliminate line breaks
   - Updated CompanyJsonLd.tsx to use minified JSON output

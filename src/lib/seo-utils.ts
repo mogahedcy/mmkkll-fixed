@@ -352,3 +352,74 @@ export function generateAggregateRatingSchema(data: {
     "worstRating": data.worstRating || 1
   };
 }
+
+export function generateOpenGraphMetadata(data: {
+  title: string;
+  description: string;
+  url: string;
+  type?: 'website' | 'article';
+  image?: string;
+  imageAlt?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+}) {
+  return {
+    title: data.title,
+    description: data.description,
+    url: generateCanonicalUrl(data.url),
+    siteName: SITE_NAME,
+    locale: 'ar_SA',
+    type: data.type || 'website',
+    images: [
+      {
+        url: data.image || `${BASE_URL}/favicon.svg`,
+        width: 1200,
+        height: 630,
+        alt: data.imageAlt || data.title,
+      },
+    ],
+    ...(data.publishedTime && { publishedTime: data.publishedTime }),
+    ...(data.modifiedTime && { modifiedTime: data.modifiedTime }),
+  };
+}
+
+export function generateTwitterMetadata(data: {
+  title: string;
+  description: string;
+  image?: string;
+}) {
+  return {
+    card: 'summary_large_image' as const,
+    title: data.title,
+    description: data.description,
+    images: [data.image || `${BASE_URL}/favicon.svg`],
+  };
+}
+
+export function generateRobotsMetadata(options?: {
+  index?: boolean;
+  follow?: boolean;
+  maxImagePreview?: 'none' | 'standard' | 'large';
+  maxSnippet?: number;
+  maxVideoPreview?: number;
+}) {
+  const {
+    index = true,
+    follow = true,
+    maxImagePreview = 'large',
+    maxSnippet = -1,
+    maxVideoPreview = -1
+  } = options || {};
+
+  return {
+    index,
+    follow,
+    googleBot: {
+      index,
+      follow,
+      'max-image-preview': maxImagePreview,
+      'max-snippet': maxSnippet,
+      'max-video-preview': maxVideoPreview,
+    },
+  };
+}

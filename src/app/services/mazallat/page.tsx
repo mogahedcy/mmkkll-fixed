@@ -6,7 +6,14 @@ import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { generateServiceSchema, generateFAQSchema } from '@/lib/seo-utils';
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata,
+  generateCanonicalUrl
+} from '@/lib/seo-utils';
 import {
   Car,
   Shield,
@@ -29,47 +36,33 @@ import {
   Target
 } from 'lucide-react';
 
+const pageTitle = 'مظلات سيارات جدة - محترفين الديار العالمية | أفضل الأسعار والتركيب المحترف';
+const pageDescription = 'شركة مظلات سيارات جدة الرائدة - تصميم وتنفيذ مظلات السيارات PVC وحديدية بأعلى معايير الجودة. ضمان 10 سنوات، خدمة 24/7، أسعار منافسة في السوق السعودي.';
+const pageUrl = '/services/mazallat';
+const pageImage = 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp';
+
 export const metadata: Metadata = {
-  title: 'مظلات سيارات جدة - محترفين الديار العالمية | أفضل الأسعار والتركيب المحترف',
-  description: 'شركة مظلات سيارات جدة الرائدة - تصميم وتنفيذ مظلات السيارات PVC وحديدية بأعلى معايير الجودة. ضمان 10 سنوات، خدمة 24/7، أسعار منافسة في السوق السعودي.',
+  title: pageTitle,
+  description: pageDescription,
   keywords: 'مظلات سيارات جدة، مظلات PVC، مظلات حديد، تركيب مظلات، شركة مظلات جدة، أسعار مظلات السيارات، محترفين الديار العالمية',
   authors: [{ name: 'محترفين الديار العالمية' }],
-  openGraph: {
-    title: 'مظلات سيارات جدة - محترفين الديار العالمية',
-    description: 'أفضل شركة مظلات سيارات في جدة - تصميم وتنفيذ احترافي بضمان 10 سنوات',
-    url: 'https://www.aldeyarksa.tech/services/mazallat',
-    siteName: 'محترفين الديار العالمية',
-    images: [
-      {
-        url: 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp',
-        width: 1200,
-        height: 630,
-        alt: 'مظلات سيارات جدة - محترفين الديار العالمية',
-      },
-    ],
-    locale: 'ar_SA',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'مظلات سيارات جدة - محترفين الديار العالمية',
-    description: 'أفضل شركة مظلات سيارات في جدة - تصميم وتنفيذ احترافي',
-    images: ['https://www.aldeyarksa.tech/uploads/mazallat-1.webp'],
-  },
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'مظلات سيارات جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/mazallat',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  robots: generateRobotsMetadata(),
 };
 
 const heroFeatures = [

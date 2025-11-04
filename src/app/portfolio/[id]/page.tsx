@@ -3,7 +3,12 @@ import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
-import { generateCreativeWorkSchema } from '@/lib/seo-utils';
+import { 
+  generateCreativeWorkSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata 
+} from '@/lib/seo-utils';
 import ProjectDetailsClient from './ProjectDetailsClient';
 
 interface Props {
@@ -62,6 +67,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const mainImage = project.mediaItems?.find(item => item.type === 'IMAGE');
     const seoTitle = `${project.title} في ${project.location} | محترفين الديار العالمية جدة`;
     const seoDescription = `${project.description.substring(0, 150)}... مشروع ${project.category} في ${project.location} من محترفين الديار العالمية - أفضل شركة مظلات وسواتر في جدة`;
+    const pageUrl = `/portfolio/${id}`;
 
     return {
       title: seoTitle,
@@ -78,41 +84,23 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         project.location,
         project.title
       ].join(', '),
-      openGraph: {
+      openGraph: generateOpenGraphMetadata({
         title: seoTitle,
         description: seoDescription,
+        url: pageUrl,
         type: 'article',
-        url: `https://www.aldeyarksa.tech/portfolio/${id}`,
-        siteName: 'محترفين الديار العالمية',
-        locale: 'ar_SA',
-        images: project.mediaItems?.filter((item: any) => item.type === 'IMAGE').map((item: any) => ({
-          url: item.src,
-          width: 1200,
-          height: 630,
-          alt: `${project.title} - محترفين الديار العالمية جدة`,
-          type: 'image/webp'
-        })) || []
-      },
-      twitter: {
-        card: 'summary_large_image',
+        image: mainImage?.src,
+        imageAlt: `${project.title} - محترفين الديار العالمية جدة`
+      }),
+      twitter: generateTwitterMetadata({
         title: seoTitle,
         description: seoDescription.substring(0, 200),
-        images: mainImage ? [mainImage.src] : []
-      },
+        image: mainImage?.src
+      }),
       alternates: {
-        canonical: `/portfolio/${id}`
+        canonical: generateCanonicalUrl(pageUrl)
       },
-      robots: {
-        index: true,
-        follow: true,
-        googleBot: {
-          index: true,
-          follow: true,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
-          'max-video-preview': -1
-        }
-      }
+      robots: generateRobotsMetadata()
     };
   } catch (error) {
     return {

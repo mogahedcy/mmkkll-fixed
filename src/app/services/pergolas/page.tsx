@@ -6,7 +6,13 @@ import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { generateServiceSchema, generateFAQSchema } from '@/lib/seo-utils';
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata 
+} from '@/lib/seo-utils';
 import {
   TreePine,
   Home,
@@ -31,47 +37,33 @@ import {
   Sun
 } from 'lucide-react';
 
+const pageTitle = 'برجولات خشبية جدة - محترفين الديار العالمية | تصاميم أنيقة وعصرية';
+const pageDescription = 'برجولات خشبية وحديدية في جدة - تصاميم عصرية للحدائق والمساحات الخارجية. جودة عالية، ضمان شامل 10 سنوات، تركيب احترافي في جميع أنحاء جدة والمنطقة الغربية.';
+const pageUrl = '/services/pergolas';
+const pageImage = 'https://www.aldeyarksa.tech/uploads/pergola-1.jpg';
+
 export const metadata: Metadata = {
-  title: 'برجولات خشبية جدة - محترفين الديار العالمية | تصاميم أنيقة وعصرية',
-  description: 'برجولات خشبية وحديدية في جدة - تصاميم عصرية للحدائق والمساحات الخارجية. جودة عالية، ضمان شامل 10 سنوات، تركيب احترافي في جميع أنحاء جدة والمنطقة الغربية.',
+  title: pageTitle,
+  description: pageDescription,
   keywords: 'برجولات جدة، برجولات خشبية، برجولات حديد، تصميم برجولات، برجولات حدائق، تركيب برجولات، شركة برجولات جدة، محترفين الديار العالمية',
   authors: [{ name: 'محترفين الديار العالمية' }],
-  openGraph: {
-    title: 'برجولات خشبية جدة - محترفين الديار العالمية',
-    description: 'أفضل شركة برجولات في جدة - تصاميم أنيقة وعصرية للحدائق',
-    url: 'https://www.aldeyarksa.tech/services/pergolas',
-    siteName: 'محترفين الديار العالمية',
-    images: [
-      {
-        url: 'https://www.aldeyarksa.tech/uploads/pergola-1.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'برجولات خشبية جدة - محترفين الديار العالمية',
-      },
-    ],
-    locale: 'ar_SA',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'برجولات خشبية جدة - محترفين الديار العالمية',
-    description: 'أفضل شركة برجولات في جدة - تصاميم أنيقة وعصرية',
-    images: ['https://www.aldeyarksa.tech/uploads/pergola-1.jpg'],
-  },
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'برجولات خشبية جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/pergolas',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  robots: generateRobotsMetadata(),
 };
 
 const heroFeatures = [
