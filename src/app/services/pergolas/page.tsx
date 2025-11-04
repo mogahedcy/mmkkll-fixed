@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Breadcrumb from '@/components/Breadcrumb';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { generateServiceSchema, generateFAQSchema } from '@/lib/seo-utils';
 import {
   TreePine,
   Home,
@@ -387,43 +390,35 @@ const relatedServices = [
 ];
 
 export default function PergolasPage() {
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'البرجولات', href: '/services/pergolas', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'برجولات جدة - خشبية وحديدية',
+    description: 'أفضل برجولات في جدة من محترفين الديار. برجولات خشبية، حديدية، ألومنيوم وحدائق. ضمان 15 عاماً وتصاميم عصرية.',
+    areaServed: 'جدة',
+    priceRange: '200-500',
+    image: 'https://ext.same-assets.com/3372524550/1177626593.jpeg',
+    url: '/services/pergolas'
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "برجولات جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "محترفين الديار",
-              "image": "https://ext.same-assets.com/3372524550/1177626593.jpeg",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل برجولات في جدة من محترفين الديار. برجولات خشبية، برجولات حديدية، برجولات ألومنيوم، برجولات حدائق.",
-            "serviceType": ["برجولات خشبية", "برجولات حديدية", "برجولات ألومنيوم", "برجولات حدائق"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "lowPrice": "200",
-              "highPrice": "500",
-              "priceCurrency": "SAR",
-              "priceSpecification": {
-                "@type": "UnitPriceSpecification",
-                "priceCurrency": "SAR",
-                "unitText": "متر مربع"
-              }
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <div className="min-h-screen bg-background">
@@ -440,12 +435,8 @@ export default function PergolasPage() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               {/* Breadcrumb */}
-              <div className="inline-flex items-center space-x-2 space-x-reverse bg-green/10 text-green-600 px-4 py-2 rounded-full text-sm font-medium mb-8">
-                <Link href="/" className="hover:text-green-700 transition-colors">الرئيسية</Link>
-                <span>/</span>
-                <Link href="/#services" className="hover:text-green-700 transition-colors">خدماتنا</Link>
-                <span>/</span>
-                <span>البرجولات</span>
+              <div className="inline-flex mb-8">
+                <Breadcrumb items={breadcrumbItems} className="bg-green/10 text-green-600 px-4 py-2 rounded-full font-medium" />
               </div>
 
               {/* Main Heading */}
