@@ -8,17 +8,26 @@ interface Review {
 
 interface ReviewSchemaProps {
   serviceName: string;
+  itemType?: 'Service' | 'Product' | 'LocalBusiness';
+  serviceUrl?: string;
   aggregateRating?: {
     ratingValue: number;
     reviewCount: number;
   };
   reviews?: Review[];
+  provider?: {
+    name: string;
+    url?: string;
+  };
 }
 
 export default function ReviewSchema({ 
-  serviceName, 
+  serviceName,
+  itemType = 'Service',
+  serviceUrl,
   aggregateRating = { ratingValue: 4.8, reviewCount: 156 },
-  reviews 
+  reviews,
+  provider
 }: ReviewSchemaProps) {
   const defaultReviews: Review[] = [
     {
@@ -53,10 +62,25 @@ export default function ReviewSchema({
 
   const reviewsToUse = reviews || defaultReviews;
 
+  const defaultProvider = {
+    name: 'محترفين الديار العالمية',
+    url: 'https://www.aldeyarksa.tech'
+  };
+
+  const providerData = provider || defaultProvider;
+
   const reviewSchema = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": itemType,
     "name": serviceName,
+    ...(serviceUrl && { "url": serviceUrl }),
+    ...(itemType === 'Service' && {
+      "provider": {
+        "@type": "Organization",
+        "name": providerData.name,
+        ...(providerData.url && { "url": providerData.url })
+      }
+    }),
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": aggregateRating.ratingValue.toString(),

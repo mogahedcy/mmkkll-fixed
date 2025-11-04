@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ArticleDetailsClient from './ArticleDetailsClient';
+import ArticleSchema from '@/components/ArticleSchema';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -107,8 +108,45 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
+  const mainImage = article.mediaItems?.find((item: any) => item.type === 'IMAGE');
+  const allImages = article.mediaItems
+    ?.filter((item: any) => item.type === 'IMAGE')
+    .map((item: any) => item.src) || [];
+  
+  const articleUrl = `https://www.aldeyarksa.tech/articles/${article.slug || article.id}`;
+  const articleKeywords = [
+    article.category,
+    'محترفين الديار',
+    'جدة',
+    'السعودية',
+    ...(article.tags || []).map((t: any) => t.name)
+  ];
+
+  const plainTextContent = article.content
+    ?.replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim() || '';
+  
+  const wordCount = plainTextContent.split(/\s+/).length;
+
   return (
     <>
+      <ArticleSchema
+        headline={article.title}
+        description={article.excerpt || article.content?.substring(0, 160) || ''}
+        author={{
+          name: article.author || 'محترفين الديار العالمية',
+          url: 'https://www.aldeyarksa.tech'
+        }}
+        datePublished={article.publishedAt}
+        dateModified={article.updatedAt || article.publishedAt}
+        image={allImages.length > 0 ? allImages : (mainImage?.src ? [mainImage.src] : undefined)}
+        url={articleUrl}
+        articleBody={plainTextContent}
+        keywords={articleKeywords}
+        articleSection={article.category}
+        wordCount={wordCount}
+      />
       <Navbar />
       <ArticleDetailsClient article={article} />
       <Footer />

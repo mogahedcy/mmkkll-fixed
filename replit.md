@@ -4,6 +4,34 @@ This is a Next.js-based web application for "محترفين الديار الع�
 
 # Recent Changes
 
+## November 4, 2025 - Missing Schema Implementation (Review & Article)
+- ✅ **IndividualReviewSchema Component**: Created standalone review schema
+  - Supports individual review structured data separate from aggregate ratings
+  - Flexible itemReviewed property supporting Service, Product, LocalBusiness, Organization types
+  - Full reviewer information with author details and publisher data
+  - Compliant with Google's Review snippet requirements
+  
+- ✅ **ArticleSchema Component**: Complete article structured data implementation
+  - Full Article schema with headline, description, author, and publisher
+  - Automatic image array generation from article media items
+  - Word count calculation for articleBody
+  - Support for keywords, articleSection, and publication dates
+  - Integrated in individual article pages (/articles/[id])
+  
+- ✅ **Enhanced ReviewSchema Component**: Improved existing review schema
+  - Added itemType parameter for flexible Service/Product/LocalBusiness reviews
+  - Provider information support for service-based reviews
+  - Service URL integration for better linking
+  - Backward compatible with existing implementations
+  - Default provider set to 'محترفين الديار العالمية'
+
+- ✅ **Article Pages Enhancement**: 
+  - Integrated ArticleSchema in /articles/[id]/page.tsx
+  - Automatic plain text extraction from HTML content
+  - Word count calculation for SEO optimization
+  - Multiple image support in structured data
+  - Complete metadata alignment with schema markup
+
 ## November 4, 2025 - Advanced SEO Enhancement Package
 - ✅ **Reusable Breadcrumb Component**: Created comprehensive breadcrumb navigation system
   - New Breadcrumb UI component with RTL support and accessibility features
