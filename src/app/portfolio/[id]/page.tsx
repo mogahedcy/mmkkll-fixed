@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import { generateCreativeWorkSchema } from '@/lib/seo-utils';
 import ProjectDetailsClient from './ProjectDetailsClient';
 
 interface Props {
@@ -139,62 +141,38 @@ export default async function ProjectDetailsPage({ params }: Props) {
   const images = project.mediaItems?.filter((item: any) => item.type === 'IMAGE') || [];
   const videos = project.mediaItems?.filter((item: any) => item.type === 'VIDEO') || [];
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    "name": project.title,
-    "description": project.description,
-    "url": `https://www.aldeyarksa.tech/portfolio/${project.slug || id}`,
-    "creator": {
-      "@type": "Organization",
-      "name": "محترفين الديار العالمية",
-      "url": "https://www.aldeyarksa.tech"
-    },
-    "dateCreated": project.createdAt,
-    "dateModified": project.updatedAt,
-    "locationCreated": {
-      "@type": "Place",
-      "name": project.location
-    },
-    "category": project.category,
-    "image": images.map((item: any) => ({
-      "@type": "ImageObject",
-      "url": item.src,
-      "caption": item.title || project.title,
-      "encodingFormat": "image/jpeg"
-    })),
-    "video": videos.map((item: any) => ({
-      "@type": "VideoObject",
-      "name": item.title || project.title,
-      "description": item.description || project.description,
-      "contentUrl": item.src,
-      "encodingFormat": "video/mp4",
-      "uploadDate": project.createdAt
-    }))
-  };
+  const breadcrumbItems = [
+    { label: 'المشاريع', href: '/portfolio' },
+    { label: project.title, href: `/portfolio/${project.slug || id}`, current: true }
+  ];
 
-  const breadcrumbs = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://www.aldeyarksa.tech"},
-      {"@type": "ListItem", "position": 2, "name": "المشاريع", "item": "https://www.aldeyarksa.tech/portfolio"},
-      {"@type": "ListItem", "position": 3, "name": project.title, "item": `https://www.aldeyarksa.tech/portfolio/${project.slug || id}`}
-    ]
-  };
+  const structuredData = generateCreativeWorkSchema({
+    name: project.title,
+    description: project.description,
+    url: `/portfolio/${project.slug || id}`,
+    category: project.category,
+    location: project.location,
+    dateCreated: project.createdAt,
+    dateModified: project.updatedAt,
+    images: images.map((item: any) => ({
+      url: item.src,
+      caption: item.title || project.title
+    })),
+    videos: videos.map((item: any) => ({
+      name: item.title || project.title,
+      description: item.description || project.description,
+      contentUrl: item.src,
+      uploadDate: project.createdAt
+    }))
+  });
 
   return (
     <>
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbs),
         }}
       />
       <Navbar />

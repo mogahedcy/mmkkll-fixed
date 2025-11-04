@@ -268,3 +268,87 @@ export function generateVideoObjectSchema(videos: Array<{
     ...(video.duration && { "duration": video.duration })
   }));
 }
+
+export function generateCreativeWorkSchema(data: {
+  name: string;
+  description: string;
+  url: string;
+  category?: string;
+  location?: string;
+  dateCreated?: string;
+  dateModified?: string;
+  images?: Array<{ url: string; caption?: string }>;
+  videos?: Array<{ name: string; description: string; contentUrl: string; uploadDate?: string }>;
+  aggregateRating?: {
+    ratingValue: number;
+    reviewCount: number;
+  };
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": data.name,
+    "description": data.description,
+    "url": generateCanonicalUrl(data.url),
+    "creator": {
+      "@type": "Organization",
+      "name": SITE_NAME,
+      "url": BASE_URL,
+      "telephone": "+966553719009",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "جدة",
+        "addressCountry": "SA"
+      }
+    },
+    ...(data.dateCreated && { "dateCreated": data.dateCreated }),
+    ...(data.dateModified && { "dateModified": data.dateModified }),
+    ...(data.location && {
+      "locationCreated": {
+        "@type": "Place",
+        "name": data.location
+      }
+    }),
+    ...(data.category && { "category": data.category }),
+    ...(data.images && data.images.length > 0 && {
+      "image": data.images.map((img) => ({
+        "@type": "ImageObject",
+        "url": img.url,
+        "caption": img.caption || data.name
+      }))
+    }),
+    ...(data.videos && data.videos.length > 0 && {
+      "video": data.videos.map((video) => ({
+        "@type": "VideoObject",
+        "name": video.name,
+        "description": video.description,
+        "contentUrl": video.contentUrl,
+        "uploadDate": video.uploadDate || data.dateCreated
+      }))
+    }),
+    ...(data.aggregateRating && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": data.aggregateRating.ratingValue,
+        "reviewCount": data.aggregateRating.reviewCount,
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    })
+  };
+}
+
+export function generateAggregateRatingSchema(data: {
+  ratingValue: number;
+  reviewCount: number;
+  bestRating?: number;
+  worstRating?: number;
+}) {
+  return {
+    "@type": "AggregateRating",
+    "ratingValue": data.ratingValue,
+    "reviewCount": data.reviewCount,
+    "bestRating": data.bestRating || 5,
+    "worstRating": data.worstRating || 1
+  };
+}

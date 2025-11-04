@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import Breadcrumb from '@/components/Breadcrumb';
 import {
   ArrowLeft,
   Calendar,
@@ -86,9 +87,14 @@ const categories = [
 
 interface Props {
   project: Project;
+  projectId: string;
 }
 
-export default function ProjectDetailsClient({ project }: Props) {
+export default function ProjectDetailsClient({ project, projectId }: Props) {
+  const breadcrumbItems = [
+    { label: 'المشاريع', href: '/portfolio' },
+    { label: project.title, href: `/portfolio/${projectId}`, current: true }
+  ];
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -204,6 +210,9 @@ export default function ProjectDetailsClient({ project }: Props) {
       {/* شريط التنقل العلوي */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="mb-3">
+            <Breadcrumb items={breadcrumbItems} />
+          </div>
           <div className="flex items-center justify-between">
             <Button variant="ghost" asChild>
               <Link href="/portfolio">
