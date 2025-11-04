@@ -1,5 +1,15 @@
 import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
+import Breadcrumb from '@/components/Breadcrumb'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata,
+  generateCanonicalUrl
+} from '@/lib/seo-utils'
 import {
   Star,
   Phone,
@@ -23,26 +33,33 @@ import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
+const pageTitle = 'ترميم ملحقات في جدة | مؤسسة الديار العالمية - مقاول ترميم محترف';
+const pageDescription = 'ترميم ملحقات منزلية وتجارية في جدة. إعادة تأهيل المباني والملحقات القديمة، إصلاح التشققات، صيانة شاملة. خبرة 15 عاماً في الترميم. اطلب عرض سعر مجاني!';
+const pageUrl = '/services/renovation';
+const pageImage = 'https://ext.same-assets.com/2228747888/11390105.webp';
+
 export const metadata: Metadata = {
-  title: 'ترميم ملحقات في جدة | مؤسسة الديار العالمية - مقاول ترميم محترف',
-  description: 'ترميم ملحقات منزلية وتجارية في جدة. إعادة تأهيل المباني والملحقات القديمة، إصلاح التشققات، صيانة شاملة. خبرة 15 عاماً في الترميم. اطلب عرض سعر مجاني!',
+  title: pageTitle,
+  description: pageDescription,
+  keywords: 'ترميم ملحقات جدة، ترميم منازل، إصلاح تشققات، صيانة شاملة، مقاول ترميم، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'ترميم ملحقات في جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/renovation',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  openGraph: {
-    title: 'ترميم ملحقات في جدة | مؤسسة الديار العالمية',
-    description: 'ترميم ملحقات منزلية وتجارية في جدة. إعادة تأهيل المباني والملحقات القديمة، إصلاح التشققات، صيانة شاملة.',
-    images: [
-      {
-        url: 'https://ext.same-assets.com/2228747888/11390105.webp',
-        width: 1200,
-        height: 630,
-        alt: 'ترميم ملحقات في جدة - مؤسسة الديار العالمية'
-      }
-    ],
-    type: 'website',
-    locale: 'ar_SA'
-  }
+  robots: generateRobotsMetadata(),
 }
 
 const heroFeatures = [
@@ -275,39 +292,35 @@ export default function RenovationPage() {
   const whatsappMessage = "السلام عليكم، أريد الاستفسار عن خدمة ترميم الملحقات وطلب عرض سعر."
   const whatsappURL = `https://wa.me/966553719009?text=${encodeURIComponent(whatsappMessage)}`
 
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'الترميم', href: '/services/renovation', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'ترميم ملحقات في جدة - منزلية وتجارية',
+    description: 'أفضل ترميم ملحقات في جدة من مؤسسة الديار العالمية. ترميم منزلي، تجاري، إصلاح تشققات وصيانة شاملة. ضمان 5 سنوات.',
+    areaServed: 'جدة',
+    priceRange: '150-400',
+    image: pageImage,
+    url: pageUrl
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "ترميم ملحقات في جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "مؤسسة الديار العالمية",
-              "image": "https://ext.same-assets.com/2228747888/11390105.webp",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل ترميم ملحقات في جدة من مؤسسة الديار العالمية. ترميم منزلي، تجاري، إصلاح تشققات وصيانة شاملة.",
-            "serviceType": ["ترميم ملحقات منزلية", "ترميم ملحقات تجارية", "إصلاح التشققات", "صيانة شاملة"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "priceCurrency": "SAR",
-              "lowPrice": "150",
-              "highPrice": "400",
-              "description": "سعر المتر المربع"
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <Navbar />
@@ -324,13 +337,9 @@ export default function RenovationPage() {
 
           <div className="relative z-10 text-center max-w-6xl mx-auto">
             {/* Breadcrumb */}
-            <nav className="flex justify-center items-center space-x-2 space-x-reverse text-sm text-gray-600 mb-8">
-              <Link href="/" className="hover:text-orange-600 transition-colors">الرئيسية</Link>
-              <span>/</span>
-              <Link href="/#services" className="hover:text-orange-600 transition-colors">خدماتنا</Link>
-              <span>/</span>
-              <span className="text-orange-600 font-medium">ترميم ملحقات</span>
-            </nav>
+            <div className="mb-8 flex justify-center">
+              <Breadcrumb items={breadcrumbItems} />
+            </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">

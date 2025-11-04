@@ -1,9 +1,19 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Breadcrumb from '@/components/Breadcrumb';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata,
+  generateCanonicalUrl
+} from '@/lib/seo-utils';
 import {
   Shield,
   Eye,
@@ -25,47 +35,33 @@ import {
   Users
 } from 'lucide-react';
 
+const pageTitle = 'سواتر جدة - محترفين الديار العالمية | خصوصية وأناقة عالية الجودة';
+const pageDescription = 'سواتر جدة بأعلى معايير الجودة - سواتر حديد، قماش، وخشب للخصوصية والحماية. تصاميم أنيقة، ضمان شامل 10 سنوات، خدمة 24/7 في جميع أنحاء جدة والمنطقة الغربية.';
+const pageUrl = '/services/sawater';
+const pageImage = 'https://www.aldeyarksa.tech/uploads/sawater-1.webp';
+
 export const metadata: Metadata = {
-  title: 'سواتر جدة - محترفين الديار العالمية | خصوصية وأناقة عالية الجودة',
-  description: 'سواتر جدة بأعلى معايير الجودة - سواتر حديد، قماش، وخشب للخصوصية والحماية. تصاميم أنيقة، ضمان شامل 10 سنوات، خدمة 24/7 في جميع أنحاء جدة والمنطقة الغربية.',
+  title: pageTitle,
+  description: pageDescription,
   keywords: 'سواتر جدة، سواتر حديد، سواتر قماش، سواتر خشب، سواتر خصوصية، تركيب سواتر، شركة سواتر جدة، محترفين الديار العالمية',
   authors: [{ name: 'محترفين الديار العالمية' }],
-  openGraph: {
-    title: 'سواتر جدة - محترفين الديار العالمية',
-    description: 'أفضل شركة سواتر في جدة - خصوصية وأناقة بأعلى معايير الجودة',
-    url: 'https://www.aldeyarksa.tech/services/sawater',
-    siteName: 'محترفين الديار العالمية',
-    images: [
-      {
-        url: 'https://www.aldeyarksa.tech/uploads/sawater-1.webp',
-        width: 1200,
-        height: 630,
-        alt: 'سواتر جدة - محترفين الديار العالمية',
-      },
-    ],
-    locale: 'ar_SA',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'سواتر جدة - محترفين الديار العالمية',
-    description: 'أفضل شركة سواتر في جدة - خصوصية وأناقة بأعلى معايير الجودة',
-    images: ['https://www.aldeyarksa.tech/uploads/sawater-1.webp'],
-  },
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'سواتر جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/sawater',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  robots: generateRobotsMetadata(),
 };
 
 const heroFeatures = [
@@ -320,43 +316,35 @@ const relatedServices = [
 ];
 
 export default function SawaterPage() {
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'السواتر', href: '/services/sawater', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'سواتر جدة - حديد وخشب وقماش وشينكو',
+    description: 'أفضل سواتر في جدة من محترفين الديار. سواتر حديد، سواتر خشبية، سواتر قماش، سواتر شينكو. ضمان 15 سنة وخامات عالية الجودة.',
+    areaServed: 'جدة',
+    priceRange: '80-300',
+    image: pageImage,
+    url: pageUrl
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "سواتر جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "محترفين الديار",
-              "image": "https://ext.same-assets.com/742929371/1378182230.jpeg",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل سواتر في جدة من محترفين الديار. سواتر حديد، سواتر خشبية، سواتر قماش، سواتر شينكو.",
-            "serviceType": ["سواتر حديد", "سواتر خشبية", "سواتر قماش", "سواتر شينكو"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "lowPrice": "80",
-              "highPrice": "300",
-              "priceCurrency": "SAR",
-              "priceSpecification": {
-                "@type": "UnitPriceSpecification",
-                "priceCurrency": "SAR",
-                "unitText": "متر"
-              }
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <div className="min-h-screen bg-background">
@@ -373,12 +361,8 @@ export default function SawaterPage() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               {/* Breadcrumb */}
-              <div className="inline-flex items-center space-x-2 space-x-reverse bg-blue/10 text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-8">
-                <Link href="/" className="hover:text-blue-700 transition-colors">الرئيسية</Link>
-                <span>/</span>
-                <Link href="/#services" className="hover:text-blue-700 transition-colors">خدماتنا</Link>
-                <span>/</span>
-                <span>السواتر</span>
+              <div className="mb-8 flex justify-center">
+                <Breadcrumb items={breadcrumbItems} />
               </div>
 
               {/* Main Heading */}

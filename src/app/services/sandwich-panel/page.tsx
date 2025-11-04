@@ -1,5 +1,15 @@
 import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
+import Breadcrumb from '@/components/Breadcrumb'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata,
+  generateCanonicalUrl
+} from '@/lib/seo-utils'
 import {
   Star,
   Phone,
@@ -21,26 +31,33 @@ import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
+const pageTitle = 'غرف ساندوتش بانل في جدة | مؤسسة الديار العالمية - أفضل الأسعار';
+const pageDescription = 'غرف ساندوتش بانل بأعلى جودة في جدة. عزل حراري وصوتي ممتاز، تركيب سريع، أسعار تبدأ من 165 ريال/م². اطلب عرض سعر مجاني الآن!';
+const pageUrl = '/services/sandwich-panel';
+const pageImage = 'https://ext.same-assets.com/165531043/871301785.webp';
+
 export const metadata: Metadata = {
-  title: 'غرف ساندوتش بانل في جدة | مؤسسة الديار العالمية - أفضل الأسعار',
-  description: 'غرف ساندوتش بانل بأعلى جودة في جدة. عزل حراري وصوتي ممتاز، تركيب سريع، أسعار تبدأ من 165 ريال/م². اطلب عرض سعر مجاني الآن!',
+  title: pageTitle,
+  description: pageDescription,
+  keywords: 'ساندوتش بانل جدة، غرف ساندوتش بانل، مستودعات ساندوتش بانل، عزل حراري، عزل صوتي، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'غرف ساندوتش بانل في جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/sandwich-panel',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  openGraph: {
-    title: 'غرف ساندوتش بانل في جدة | مؤسسة الديار العالمية',
-    description: 'غرف ساندوتش بانل بأعلى جودة في جدة. عزل حراري وصوتي ممتاز، تركيب سريع، أسعار تبدأ من 165 ريال/م².',
-    images: [
-      {
-        url: 'https://ext.same-assets.com/165531043/871301785.webp',
-        width: 1200,
-        height: 630,
-        alt: 'غرف ساندوتش بانل في جدة - مؤسسة الديار العالمية'
-      }
-    ],
-    type: 'website',
-    locale: 'ar_SA'
-  }
+  robots: generateRobotsMetadata(),
 }
 
 const heroFeatures = [
@@ -238,39 +255,35 @@ export default function SandwichPanelPage() {
   const whatsappMessage = "السلام عليكم، أريد الاستفسار عن خدمة ساندوتش بانل وطلب عرض سعر."
   const whatsappURL = `https://wa.me/966553719009?text=${encodeURIComponent(whatsappMessage)}`
 
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'ساندوتش بانل', href: '/services/sandwich-panel', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'غرف ساندوتش بانل في جدة - سكنية وتجارية وصناعية',
+    description: 'أفضل غرف ساندوتش بانل في جدة من مؤسسة الديار العالمية. غرف سكنية، تجارية، صناعية ومستودعات. عزل حراري وصوتي ممتاز. ضمان 10 سنوات.',
+    areaServed: 'جدة',
+    priceRange: '165-220',
+    image: pageImage,
+    url: pageUrl
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "غرف ساندوتش بانل في جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "مؤسسة الديار العالمية",
-              "image": "https://ext.same-assets.com/165531043/871301785.webp",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل غرف ساندوتش بانل في جدة من مؤسسة الديار العالمية. غرف سكنية، تجارية، صناعية ومستودعات.",
-            "serviceType": ["غرف ساندوتش بانل سكنية", "غرف ساندوتش بانل تجارية", "غرف ساندوتش بانل صناعية", "مستودعات ساندوتش بانل"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "priceCurrency": "SAR",
-              "lowPrice": "165",
-              "highPrice": "220",
-              "description": "سعر المتر المربع"
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <Navbar />
@@ -287,13 +300,9 @@ export default function SandwichPanelPage() {
 
           <div className="relative z-10 text-center max-w-6xl mx-auto">
             {/* Breadcrumb */}
-            <nav className="flex justify-center items-center space-x-2 space-x-reverse text-sm text-gray-600 mb-8">
-              <Link href="/" className="hover:text-blue-600 transition-colors">الرئيسية</Link>
-              <span>/</span>
-              <Link href="/#services" className="hover:text-blue-600 transition-colors">خدماتنا</Link>
-              <span>/</span>
-              <span className="text-blue-600 font-medium">ساندوتش بانل</span>
-            </nav>
+            <div className="mb-8 flex justify-center">
+              <Breadcrumb items={breadcrumbItems} />
+            </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">

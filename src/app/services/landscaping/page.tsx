@@ -1,5 +1,15 @@
 import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
+import Breadcrumb from '@/components/Breadcrumb'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata,
+  generateCanonicalUrl
+} from '@/lib/seo-utils'
 import {
   Star,
   Phone,
@@ -24,41 +34,33 @@ import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
+const pageTitle = 'تنسيق حدائق جدة - محترفين الديار العالمية | تصميم وزراعة احترافية';
+const pageDescription = 'خدمات تنسيق الحدائق في جدة والمنطقة الغربية - تصميم حدائق منزلية وعامة، زراعة النباتات المحلية، أنظمة الري الحديثة والذكية. فريق متخصص، ضمان شامل، صيانة دورية.';
+const pageUrl = '/services/landscaping';
+const pageImage = 'https://www.aldeyarksa.tech/uploads/landscaping-1.webp';
+
 export const metadata: Metadata = {
-  title: 'تنسيق حدائق جدة - محترفين الديار العالمية | تصميم وزراعة احترافية',
-  description: 'خدمات تنسيق الحدائق في جدة والمنطقة الغربية - تصميم حدائق منزلية وعامة، زراعة النباتات المحلية، أنظمة الري الحديثة والذكية. فريق متخصص، ضمان شامل، صيانة دورية.',
+  title: pageTitle,
+  description: pageDescription,
   keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية، زراعة نباتات، أنظمة ري، تيل صناعي، محترفين الديار العالمية',
   authors: [{ name: 'محترفين الديار العالمية' }],
-  openGraph: {
-    title: 'تنسيق حدائق جدة - محترفين الديار العالمية',
-    description: 'أفضل شركة تنسيق حدائق في جدة - تصميم وزراعة احترافية',
-    url: 'https://www.aldeyarksa.tech/services/landscaping',
-    siteName: 'محترفين الديار العالمية',
-    images: [
-      {
-        url: 'https://www.aldeyarksa.tech/uploads/landscaping-1.webp',
-        width: 1200,
-        height: 630,
-        alt: 'تنسيق حدائق جدة - محترفين الديار العالمية',
-      },
-    ],
-    locale: 'ar_SA',
-    type: 'website',
-  },
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'تنسيق حدائق جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/landscaping',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  robots: generateRobotsMetadata(),
 };
 
 const heroFeatures = [
@@ -313,39 +315,35 @@ export default function LandscapingPage() {
   const whatsappMessage = "السلام عليكم، أريد الاستفسار عن خدمة تنسيق الحدائق وطلب عرض سعر."
   const whatsappURL = `https://wa.me/966553719009?text=${encodeURIComponent(whatsappMessage)}`
 
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'تنسيق الحدائق', href: '/services/landscaping', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'تنسيق حدائق في جدة - منزلية وخارجية وفلل',
+    description: 'أفضل تنسيق حدائق في جدة من مؤسسة الديار العالمية. حدائق منزلية، خارجية، فلل وصيانة. زراعة نباتات محلية وأنظمة ري حديثة.',
+    areaServed: 'جدة',
+    priceRange: '150-250',
+    image: pageImage,
+    url: pageUrl
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "تنسيق حدائق في جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "مؤسسة الديار العالمية",
-              "image": "https://ext.same-assets.com/4049809232/447736083.jpeg",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل تنسيق حدائق في جدة من مؤسسة الديار العالمية. حدائق منزلية، خارجية، فلل وصيانة.",
-            "serviceType": ["تنسيق حدائق منزلية", "تنسيق حدائق خارجية", "تنسيق حدائق فلل", "صيانة حدائق"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "priceCurrency": "SAR",
-              "lowPrice": "150",
-              "highPrice": "250",
-              "description": "سعر المتر المربع"
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <Navbar />
@@ -362,13 +360,9 @@ export default function LandscapingPage() {
 
           <div className="relative z-10 text-center max-w-6xl mx-auto">
             {/* Breadcrumb */}
-            <nav className="flex justify-center items-center space-x-2 space-x-reverse text-sm text-gray-600 mb-8">
-              <Link href="/" className="hover:text-green-600 transition-colors">الرئيسية</Link>
-              <span>/</span>
-              <Link href="/#services" className="hover:text-green-600 transition-colors">خدماتنا</Link>
-              <span>/</span>
-              <span className="text-green-600 font-medium">تنسيق حدائق</span>
-            </nav>
+            <div className="mb-8 flex justify-center">
+              <Breadcrumb items={breadcrumbItems} />
+            </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">

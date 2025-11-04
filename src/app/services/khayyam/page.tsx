@@ -1,9 +1,19 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Breadcrumb from '@/components/Breadcrumb';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata,
+  generateCanonicalUrl
+} from '@/lib/seo-utils';
 import {
   Crown,
   Shield,
@@ -26,25 +36,33 @@ import {
   Gift
 } from 'lucide-react';
 
+const pageTitle = 'خيام ملكية جدة | محترفين الديار العالمية - أفضل خيام فاخرة للمناسبات';
+const pageDescription = 'أفضل خيام ملكية فاخرة في جدة من محترفين الديار العالمية. خيام أفراح، خيام مناسبات، خيام VIP، خيام عزاء. تصميم وتنفيذ احترافي وضمان شامل. اتصل الآن للحصول على عرض سعر مجاني.';
+const pageUrl = '/services/khayyam';
+const pageImage = 'https://ext.same-assets.com/200922472/870035748.jpeg';
+
 export const metadata: Metadata = {
-  title: 'خيام ملكية جدة | محترفين الديار العالمية - أفضل خيام فاخرة للمناسبات',
-  description: 'أفضل خيام ملكية فاخرة في جدة من محترفين الديار العالمية. خيام أفراح، خيام مناسبات، خيام VIP، خيام عزاء. تصميم وتنفيذ احترافي وضمان شامل. اتصل الآن للحصول على عرض سعر مجاني.',
+  title: pageTitle,
+  description: pageDescription,
   keywords: 'خيام ملكية جدة، خيام أفراح، خيام مناسبات، خيام VIP، خيام عزاء، خيام فاخرة، تأجير خيام، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'خيام ملكية جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/khayyam',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  openGraph: {
-    title: 'خيام ملكية جدة | محترفين الديار العالمية',
-    description: 'أفضل خيام ملكية فاخرة في جدة بأعلى جودة وأفضل الأسعار. خبرة 15 عاماً في تصميم وتنفيذ الخيام الملكية.',
-    images: [
-      {
-        url: 'https://ext.same-assets.com/200922472/870035748.jpeg',
-        width: 1200,
-        height: 630,
-        alt: 'خيام ملكية جدة - محترفين الديار',
-      },
-    ],
-  },
+  robots: generateRobotsMetadata(),
 };
 
 const heroFeatures = [
@@ -299,38 +317,35 @@ const relatedServices = [
 ];
 
 export default function KhayyamPage() {
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'الخيام الملكية', href: '/services/khayyam', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'خيام ملكية جدة - أفراح ومناسبات وVIP',
+    description: 'أفضل خيام ملكية فاخرة في جدة من محترفين الديار. خيام أفراح، خيام مناسبات، خيام VIP، خيام عزاء. تصميم وتنفيذ احترافي. ضمان 10 سنوات.',
+    areaServed: 'جدة',
+    priceRange: '8000-20000',
+    image: pageImage,
+    url: pageUrl
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "خيام ملكية جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "محترفين الديار",
-              "image": "https://ext.same-assets.com/200922472/870035748.jpeg",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل خيام ملكية فاخرة في جدة من محترفين الديار. خيام أفراح، خيام مناسبات، خيام VIP، خيام عزاء.",
-            "serviceType": ["خيام ملكية فاخرة", "خيام أفراح", "خيام مناسبات", "خيام VIP", "خيام عزاء"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "lowPrice": "8000",
-              "highPrice": "50000",
-              "priceCurrency": "SAR"
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <div className="min-h-screen bg-background">
@@ -347,12 +362,8 @@ export default function KhayyamPage() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               {/* Breadcrumb */}
-              <div className="inline-flex items-center space-x-2 space-x-reverse bg-purple/10 text-purple-600 px-4 py-2 rounded-full text-sm font-medium mb-8">
-                <Link href="/" className="hover:text-purple-700 transition-colors">الرئيسية</Link>
-                <span>/</span>
-                <Link href="/#services" className="hover:text-purple-700 transition-colors">خدماتنا</Link>
-                <span>/</span>
-                <span>الخيام الملكية</span>
+              <div className="mb-8 flex justify-center">
+                <Breadcrumb items={breadcrumbItems} />
               </div>
 
               {/* Main Heading */}

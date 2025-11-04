@@ -1,5 +1,15 @@
 import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
+import Breadcrumb from '@/components/Breadcrumb'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
+import { 
+  generateServiceSchema, 
+  generateFAQSchema,
+  generateOpenGraphMetadata,
+  generateTwitterMetadata,
+  generateRobotsMetadata,
+  generateCanonicalUrl
+} from '@/lib/seo-utils'
 import {
   Star,
   Phone,
@@ -21,26 +31,33 @@ import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
+const pageTitle = 'بيوت شعر في جدة | مؤسسة الديار العالمية - أفضل تصاميم البيوت الشعبية';
+const pageDescription = 'بيوت شعر ملكية وعربية تقليدية في جدة. تصميم وتنفيذ بيوت شعر فاخرة للمجالس والحدائق بأعلى معايير الجودة. اطلب عرض سعر مجاني الآن!';
+const pageUrl = '/services/byoot-shaar';
+const pageImage = 'https://ext.same-assets.com/3073684241/1858852453.jpeg';
+
 export const metadata: Metadata = {
-  title: 'بيوت شعر في جدة | مؤسسة الديار العالمية - أفضل تصاميم البيوت الشعبية',
-  description: 'بيوت شعر ملكية وعربية تقليدية في جدة. تصميم وتنفيذ بيوت شعر فاخرة للمجالس والحدائق بأعلى معايير الجودة. اطلب عرض سعر مجاني الآن!',
+  title: pageTitle,
+  description: pageDescription,
+  keywords: 'بيوت شعر جدة، بيوت شعر ملكية، بيوت شعر عربية، مجالس شعر، خيام تراثية، محترفين الديار العالمية',
+  authors: [{ name: 'محترفين الديار العالمية' }],
+  openGraph: generateOpenGraphMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    url: pageUrl,
+    image: pageImage,
+    imageAlt: 'بيوت شعر ملكية في جدة - محترفين الديار العالمية',
+    type: 'website'
+  }),
+  twitter: generateTwitterMetadata({
+    title: pageTitle,
+    description: pageDescription,
+    image: pageImage
+  }),
   alternates: {
-    canonical: '/services/byoot-shaar',
+    canonical: generateCanonicalUrl(pageUrl),
   },
-  openGraph: {
-    title: 'بيوت شعر في جدة | مؤسسة الديار العالمية',
-    description: 'بيوت شعر ملكية وعربية تقليدية في جدة. تصميم وتنفيذ بيوت شعر فاخرة للمجالس والحدائق بأعلى معايير الجودة.',
-    images: [
-      {
-        url: 'https://ext.same-assets.com/3073684241/1858852453.jpeg',
-        width: 1200,
-        height: 630,
-        alt: 'بيوت شعر ملكية في جدة - مؤسسة الديار العالمية'
-      }
-    ],
-    type: 'website',
-    locale: 'ar_SA'
-  }
+  robots: generateRobotsMetadata(),
 }
 
 const heroFeatures = [
@@ -245,38 +262,35 @@ export default function ByootShaarPage() {
   const whatsappMessage = "السلام عليكم، أريد الاستفسار عن خدمة بيوت الشعر وطلب عرض سعر."
   const whatsappURL = `https://wa.me/966553719009?text=${encodeURIComponent(whatsappMessage)}`
 
+  const breadcrumbItems = [
+    { label: 'خدماتنا', href: '/#services' },
+    { label: 'بيوت الشعر', href: '/services/byoot-shaar', current: true }
+  ];
+
+  const serviceSchema = generateServiceSchema({
+    name: 'بيوت شعر في جدة - ملكية وعربية وللمجالس',
+    description: 'بيوت شعر ملكية وعربية تقليدية في جدة. تصميم وتنفيذ بيوت شعر فاخرة للمجالس والحدائق بأعلى معايير الجودة. ضمان 10 سنوات.',
+    areaServed: 'جدة',
+    priceRange: '5000-8000',
+    image: pageImage,
+    url: pageUrl
+  });
+
+  const faqSchema = generateFAQSchema(faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  })));
+
   return (
     <>
-      {/* Structured Data for SEO */}
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "بيوت شعر في جدة",
-            "provider": {
-              "@type": "LocalBusiness",
-              "name": "مؤسسة الديار العالمية",
-              "image": "https://ext.same-assets.com/3073684241/1858852453.jpeg",
-              "telephone": "+966553719009",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "جدة",
-                "addressCountry": "SA"
-              }
-            },
-            "areaServed": "جدة",
-            "description": "أفضل بيوت شعر في جدة من مؤسسة الديار العالمية. بيوت شعر ملكية، عربية، للمجالس والحدائق.",
-            "serviceType": ["بيوت شعر ملكية", "بيوت شعر عربية", "بيوت شعر مجالس", "بيوت شعر حدائق"],
-            "offers": {
-              "@type": "AggregateOffer",
-              "priceCurrency": "SAR",
-              "lowPrice": "5000",
-              "highPrice": "15000"
-            }
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
       <Navbar />
@@ -293,13 +307,9 @@ export default function ByootShaarPage() {
 
           <div className="relative z-10 text-center max-w-6xl mx-auto">
             {/* Breadcrumb */}
-            <nav className="flex justify-center items-center space-x-2 space-x-reverse text-sm text-gray-600 mb-8">
-              <Link href="/" className="hover:text-blue-600 transition-colors">الرئيسية</Link>
-              <span>/</span>
-              <Link href="/#services" className="hover:text-blue-600 transition-colors">خدماتنا</Link>
-              <span>/</span>
-              <span className="text-blue-600 font-medium">بيوت شعر</span>
-            </nav>
+            <div className="mb-8 flex justify-center">
+              <Breadcrumb items={breadcrumbItems} />
+            </div>
 
             {/* Main Heading */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
