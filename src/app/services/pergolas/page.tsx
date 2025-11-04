@@ -11,7 +11,8 @@ import {
   generateFAQSchema,
   generateOpenGraphMetadata,
   generateTwitterMetadata,
-  generateRobotsMetadata 
+  generateRobotsMetadata,
+  generateCanonicalUrl
 } from '@/lib/seo-utils';
 import {
   TreePine,
