@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Breadcrumb from '@/components/Breadcrumb';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import ReviewSchema from '@/components/ReviewSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -336,6 +337,14 @@ export default function KhayyamPage() {
     answer: faq.answer
   })));
 
+  const reviewSchemaData = {
+    serviceName: 'خيام ملكية جدة - محترفين الديار العالمية',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  };
+
   return (
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
@@ -347,6 +356,7 @@ export default function KhayyamPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <ReviewSchema {...reviewSchemaData} />
 
       <div className="min-h-screen bg-background">
         {/* Navigation */}
@@ -604,7 +614,7 @@ export default function KhayyamPage() {
                   {/* Rating */}
                   <div className="flex items-center mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={`testimonial-star-${testimonial.id || testimonial.author}-${i}`} className="w-5 h-5 text-yellow-400 fill-current" />
+                      <Star key={`testimonial-star-${testimonial.id}-${i}`} className="w-5 h-5 text-yellow-400 fill-current" />
                     ))}
                   </div>
 

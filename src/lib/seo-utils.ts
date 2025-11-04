@@ -423,3 +423,174 @@ export function generateRobotsMetadata(options?: {
     },
   };
 }
+
+export function generateLocalBusinessSchema(data?: {
+  name?: string;
+  description?: string;
+  image?: string;
+  priceRange?: string;
+  openingHours?: string[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${BASE_URL}/#localbusiness`,
+    "name": data?.name || SITE_NAME,
+    "description": data?.description || "شركة رائدة في جدة متخصصة في تصميم وتركيب المظلات، البرجولات، السواتر، تنسيق الحدائق وبيوت الشعر. نقدم خدمات عالية الجودة مع ضمان شامل وأسعار منافسة.",
+    "image": data?.image || `${BASE_URL}/favicon.svg`,
+    "url": BASE_URL,
+    "telephone": "+966553719009",
+    "email": "info@aldeyarksa.tech",
+    "priceRange": data?.priceRange || "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "شارع الأمير سلطان",
+      "addressLocality": "جدة",
+      "addressRegion": "منطقة مكة المكرمة",
+      "postalCode": "21423",
+      "addressCountry": "SA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 21.5433,
+      "longitude": 39.1728
+    },
+    "openingHoursSpecification": data?.openingHours || [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Saturday",
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday"
+        ],
+        "opens": "08:00",
+        "closes": "18:00"
+      }
+    ],
+    "areaServed": {
+      "@type": "City",
+      "name": "جدة",
+      "containedInPlace": {
+        "@type": "AdministrativeArea",
+        "name": "منطقة مكة المكرمة"
+      }
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "خدمات محترفين الديار العالمية",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "مظلات السيارات",
+            "description": "تصميم وتركيب مظلات سيارات عالية الجودة"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "البرجولات",
+            "description": "برجولات خشبية وحديدية للحدائق والمساحات الخارجية"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "السواتر",
+            "description": "سواتر حديد وقماش للخصوصية والحماية"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "تنسيق الحدائق",
+            "description": "تصميم وتنسيق حدائق احترافية"
+          }
+        }
+      ]
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "187",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "sameAs": [
+      "https://www.facebook.com/aldeyarksa",
+      "https://www.instagram.com/aldeyarksa",
+      "https://twitter.com/aldeyarksa"
+    ]
+  };
+}
+
+export function generateOrganizationSchema(data?: {
+  name?: string;
+  description?: string;
+  logo?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${BASE_URL}/#organization`,
+    "name": data?.name || SITE_NAME,
+    "description": data?.description || "محترفين الديار العالمية - شركة رائدة في مجال تركيب المظلات والبرجولات والسواتر في جدة. نقدم خدمات متميزة بأعلى معايير الجودة.",
+    "url": BASE_URL,
+    "logo": {
+      "@type": "ImageObject",
+      "url": data?.logo || `${BASE_URL}/favicon.svg`,
+      "width": "512",
+      "height": "512"
+    },
+    "image": data?.logo || `${BASE_URL}/favicon.svg`,
+    "telephone": "+966553719009",
+    "email": "info@aldeyarksa.tech",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "شارع الأمير سلطان",
+      "addressLocality": "جدة",
+      "addressRegion": "منطقة مكة المكرمة",
+      "postalCode": "21423",
+      "addressCountry": "SA"
+    },
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+966553719009",
+        "contactType": "customer service",
+        "email": "info@aldeyarksa.tech",
+        "areaServed": "SA",
+        "availableLanguage": ["Arabic", "English"]
+      },
+      {
+        "@type": "ContactPoint",
+        "telephone": "+966553719009",
+        "contactType": "sales",
+        "email": "sales@aldeyarksa.tech",
+        "areaServed": "SA",
+        "availableLanguage": "Arabic"
+      }
+    ],
+    "founder": {
+      "@type": "Person",
+      "name": "محترفين الديار"
+    },
+    "foundingDate": "2010",
+    "areaServed": {
+      "@type": "City",
+      "name": "جدة"
+    },
+    "sameAs": [
+      "https://www.facebook.com/aldeyarksa",
+      "https://www.instagram.com/aldeyarksa",
+      "https://twitter.com/aldeyarksa"
+    ]
+  };
+}

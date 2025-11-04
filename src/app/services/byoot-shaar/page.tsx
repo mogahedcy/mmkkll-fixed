@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import Breadcrumb from '@/components/Breadcrumb'
 import BreadcrumbSchema from '@/components/BreadcrumbSchema'
+import ReviewSchema from '@/components/ReviewSchema'
 import { 
   generateServiceSchema, 
   generateFAQSchema,
@@ -281,6 +282,14 @@ export default function ByootShaarPage() {
     answer: faq.answer
   })));
 
+  const reviewSchemaData = {
+    serviceName: 'بيوت شعر جدة - محترفين الديار العالمية',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  };
+
   return (
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
@@ -292,6 +301,7 @@ export default function ByootShaarPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <ReviewSchema {...reviewSchemaData} />
 
       <Navbar />
 

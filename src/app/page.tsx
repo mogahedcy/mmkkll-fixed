@@ -4,6 +4,7 @@ import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
 import PortfolioSection from '@/components/PortfolioSection';
 import Footer from '@/components/Footer';
+import { generateLocalBusinessSchema, generateOrganizationSchema } from '@/lib/seo-utils';
 
 export const metadata: Metadata = {
   title: 'محترفين الديار العالمية | أفضل مظلات وبرجولات جدة - خبرة 15 عام',
@@ -43,8 +44,30 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const localBusinessSchema = generateLocalBusinessSchema({
+    name: 'محترفين الديار العالمية',
+    description: 'شركة رائدة في جدة متخصصة في تصميم وتركيب المظلات، البرجولات، السواتر، تنسيق الحدائق وبيوت الشعر. خبرة 15 عاماً، ضمان شامل 10 سنوات، أسعار منافسة.',
+    image: 'https://www.aldeyarksa.tech/images/hero-bg.webp',
+    priceRange: '$$'
+  });
+
+  const organizationSchema = generateOrganizationSchema({
+    name: 'محترفين الديار العالمية',
+    description: 'محترفين الديار العالمية - شركة رائدة في مجال تركيب المظلات والبرجولات والسواتر في جدة. نقدم خدمات متميزة بأعلى معايير الجودة.',
+    logo: 'https://www.aldeyarksa.tech/favicon.svg'
+  });
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      
       <Navbar />
       <HeroSection />
       <ServicesSection />

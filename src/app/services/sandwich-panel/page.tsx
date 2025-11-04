@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import Breadcrumb from '@/components/Breadcrumb'
 import BreadcrumbSchema from '@/components/BreadcrumbSchema'
+import ReviewSchema from '@/components/ReviewSchema'
 import { 
   generateServiceSchema, 
   generateFAQSchema,
@@ -274,6 +275,14 @@ export default function SandwichPanelPage() {
     answer: faq.answer
   })));
 
+  const reviewSchemaData = {
+    serviceName: 'ساندوتش بانل جدة - محترفين الديار العالمية',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  };
+
   return (
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
@@ -285,6 +294,7 @@ export default function SandwichPanelPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <ReviewSchema {...reviewSchemaData} />
 
       <Navbar />
 

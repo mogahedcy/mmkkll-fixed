@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Breadcrumb from '@/components/Breadcrumb';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import ReviewSchema from '@/components/ReviewSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -363,6 +364,14 @@ export default function MazallatPage() {
     answer: faq.answer
   })));
 
+  const reviewSchemaData = {
+    serviceName: 'مظلات سيارات جدة - محترفين الديار العالمية',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  };
+
   return (
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
@@ -374,6 +383,7 @@ export default function MazallatPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <ReviewSchema {...reviewSchemaData} />
 
       <div className="min-h-screen bg-background">
         {/* Navigation */}
