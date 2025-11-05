@@ -46,28 +46,33 @@ const nextConfig = {
       },
     ],
     formats: ['image/webp', 'image/avif'],
-    qualities: [16, 32, 48, 64, 75, 90, 100],
-    minimumCacheTTL: 60,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 86400,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    unoptimized: true,
+    unoptimized: false,
   },
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
   trailingSlash: false,
   distDir: '.next',
-  allowedDevOrigins: [
-    'aldeyarksa.tech',
-    'www.aldeyarksa.tech',
-    '*.vercel.app',
-    '*.replit.dev',
-    '*.projects.builder.codes',
-    '*.builder.codes',
-    '*.fly.dev',
-    'localhost',
-    '127.0.0.1'
-  ],
+  reactStrictMode: true,
+  productionBrowserSourceMaps: false,
+  experimental: {
+    allowedOrigins: [
+      'aldeyarksa.tech',
+      'www.aldeyarksa.tech',
+      '*.vercel.app',
+      '*.replit.dev',
+      '*.projects.builder.codes',
+      '*.builder.codes',
+      '*.fly.dev',
+      'localhost',
+      '127.0.0.1'
+    ]
+  },
   async headers() {
     return [
       {
@@ -88,6 +93,42 @@ const nextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+        ],
+      },
+      {
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/uploads/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/favicon.svg',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=604800, stale-while-revalidate=86400',
           },
         ],
       },
