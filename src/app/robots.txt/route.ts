@@ -9,12 +9,14 @@ Allow: /services/
 Allow: /articles/
 Allow: /api/sitemap/
 
+# السماح بالموارد الأساسية (CSS/JS) لمحركات البحث
+Allow: /_next/static/
+
 # منع فهرسة المناطق الحساسة والإدارية
 Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /api/upload/
 Disallow: /login/
-Disallow: /_next/
 Disallow: /test-*
 Disallow: /.well-known/
 Disallow: /*?*utm_*
@@ -28,6 +30,7 @@ Disallow: /api/dashboard/
 # السماح لمحركات البحث الرئيسية بالفهرسة المكثفة
 User-agent: Googlebot
 Allow: /
+Allow: /_next/static/
 Crawl-delay: 0.5
 Request-rate: 1/1s
 Visit-time: 0600-2300
@@ -49,6 +52,7 @@ Crawl-delay: 0.5
 # Bing Bot - محرك البحث الثاني في السعودية
 User-agent: bingbot
 Allow: /
+Allow: /_next/static/
 Crawl-delay: 0.5
 Request-rate: 1/1s
 Disallow: /dashboard/
@@ -58,6 +62,7 @@ Disallow: /login/
 # Yandex Bot - مهم للأسواق الدولية
 User-agent: YandexBot
 Allow: /
+Allow: /_next/static/
 Crawl-delay: 1
 Request-rate: 1/2s
 Disallow: /dashboard/
@@ -67,6 +72,7 @@ Disallow: /login/
 # Baidu Bot للأسواق الآسيوية والعمالة الآسيوية في السعودية
 User-agent: Baiduspider
 Allow: /
+Allow: /_next/static/
 Crawl-delay: 1
 Disallow: /dashboard/
 Disallow: /api/auth/
@@ -75,6 +81,7 @@ Disallow: /login/
 # DuckDuckGo Bot - محرك بحث صاعد
 User-agent: DuckDuckBot
 Allow: /
+Allow: /_next/static/
 Crawl-delay: 1
 
 # محركات البحث العربية المحلية
