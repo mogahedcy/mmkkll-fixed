@@ -257,7 +257,7 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                           <Image
                             key={`image-${selectedMediaIndex}`}
                             src={currentMedia.src}
-                            alt={currentMedia.title || project.title}
+                            alt={`${currentMedia.title || project.title} - مشروع ${project.category} في ${project.location} من محترفين الديار العالمية جدة`}
                             fill
                             className="object-cover cursor-pointer transition-opacity duration-300"
                             onClick={() => setIsLightboxOpen(true)}
@@ -403,7 +403,7 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                         <div className="relative w-full h-full">
                           <Image
                             src={media.src}
-                            alt=""
+                            alt={`صورة ${index + 1} من مشروع ${project.title} في ${project.location}`}
                             width={80}
                             height={80}
                             className="w-full h-full object-cover"
@@ -671,7 +671,7 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                     <Image
                       key={`lightbox-image-${selectedMediaIndex}`}
                       src={currentMedia.src}
-                      alt={currentMedia.title || project.title}
+                      alt={`${currentMedia.title || project.title} - مشروع ${project.category} في ${project.location} من محترفين الديار العالمية جدة`}
                       width={1200}
                       height={800}
                       className="max-w-full max-h-[90vh] object-contain"

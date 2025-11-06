@@ -52,62 +52,70 @@ async function getProject(id: string) {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-  try {
-    const { id } = await params;
-    // جلب بيانات المشروع
-    const project = await getProject(id);
+  const { id } = await params;
+  
+  const project = await getProject(id);
 
-    if (!project) {
-      return {
-        title: 'المشروع غير موجود | محترفين الديار العالمية',
-        description: 'المشروع المطلوب غير متوفر'
-      };
-    }
-
-    const mainImage = project.mediaItems?.find(item => item.type === 'IMAGE');
-    const seoTitle = `${project.title} في ${project.location} | محترفين الديار العالمية جدة`;
-    const seoDescription = `${project.description.substring(0, 150)}... مشروع ${project.category} في ${project.location} من محترفين الديار العالمية - أفضل شركة مظلات وسواتر في جدة`;
-    const pageUrl = `/portfolio/${id}`;
-
+  if (!project) {
     return {
-      title: seoTitle,
-      description: seoDescription,
-      keywords: [
-        project.category,
-        'جدة',
-        'السعودية',
-        'مظلات',
-        'سواتر',
-        'برجولات',
-        'تنسيق حدائق',
-        'محترفين الديار',
-        project.location,
-        project.title
-      ].join(', '),
-      openGraph: generateOpenGraphMetadata({
+      title: 'المشروع غير موجود | محترفين الديار العالمية',
+      description: 'المشروع المطلوب غير متوفر',
+      robots: 'noindex, nofollow'
+    };
+  }
+
+  const mainImage = project.mediaItems?.find((item: any) => item.type === 'IMAGE');
+  const imageUrl = mainImage?.src || 'https://www.aldeyarksa.tech/favicon.svg';
+  const seoTitle = `${project.title} في ${project.location} | محترفين الديار العالمية جدة`;
+  const seoDescription = `${project.description.substring(0, 150)}... مشروع ${project.category} في ${project.location} من محترفين الديار العالمية - أفضل شركة مظلات وسواتر في جدة`;
+  const pageUrl = `/portfolio/${project.slug || id}`;
+  const fullUrl = `https://www.aldeyarksa.tech${pageUrl}`;
+
+  return {
+    title: seoTitle,
+    description: seoDescription,
+    keywords: [
+      project.category,
+      'جدة',
+      'السعودية',
+      'مظلات',
+      'سواتر',
+      'برجولات',
+      'تنسيق حدائق',
+      'محترفين الديار',
+      project.location,
+      project.title
+    ].join(', '),
+    openGraph: {
+      ...generateOpenGraphMetadata({
         title: seoTitle,
         description: seoDescription,
         url: pageUrl,
         type: 'article',
-        image: mainImage?.src,
-        imageAlt: `${project.title} - محترفين الديار العالمية جدة`
+        image: imageUrl,
+        imageAlt: `${project.title} - محترفين الديار العالمية جدة`,
+        publishedTime: project.createdAt,
+        modifiedTime: project.updatedAt
       }),
-      twitter: generateTwitterMetadata({
-        title: seoTitle,
-        description: seoDescription.substring(0, 200),
-        image: mainImage?.src
-      }),
-      alternates: {
-        canonical: generateCanonicalUrl(pageUrl)
-      },
-      robots: generateRobotsMetadata()
-    };
-  } catch (error) {
-    return {
-      title: 'خطأ | محترفين الديار العالمية',
-      description: 'حدث خطأ في تحميل المشروع'
-    };
-  }
+      type: 'article',
+      publishedTime: project.createdAt,
+      modifiedTime: project.updatedAt || project.createdAt,
+      authors: ['محترفين الديار العالمية']
+    },
+    twitter: generateTwitterMetadata({
+      title: seoTitle,
+      description: seoDescription.substring(0, 200),
+      image: imageUrl
+    }),
+    alternates: {
+      canonical: fullUrl,
+      languages: {
+        'ar-SA': fullUrl,
+        'x-default': fullUrl
+      }
+    },
+    robots: generateRobotsMetadata()
+  };
 }
 
 export function generateViewport() {
@@ -151,7 +159,11 @@ export default async function ProjectDetailsPage({ params }: Props) {
       description: item.description || project.description,
       contentUrl: item.src,
       uploadDate: project.createdAt
-    }))
+    })),
+    aggregateRating: project._count?.comments > 0 && project.rating > 0 ? {
+      ratingValue: project.rating,
+      reviewCount: project._count.comments
+    } : undefined
   });
 
   return (

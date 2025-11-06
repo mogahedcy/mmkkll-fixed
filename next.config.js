@@ -60,19 +60,17 @@ const nextConfig = {
   distDir: '.next',
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
-  experimental: {
-    allowedOrigins: [
-      'aldeyarksa.tech',
-      'www.aldeyarksa.tech',
-      '*.vercel.app',
-      '*.replit.dev',
-      '*.projects.builder.codes',
-      '*.builder.codes',
-      '*.fly.dev',
-      'localhost',
-      '127.0.0.1'
-    ]
-  },
+  allowedDevOrigins: [
+    'aldeyarksa.tech',
+    'www.aldeyarksa.tech',
+    '*.vercel.app',
+    '*.replit.dev',
+    '*.projects.builder.codes',
+    '*.builder.codes',
+    '*.fly.dev',
+    'localhost',
+    '127.0.0.1'
+  ],
   async headers() {
     return [
       {
