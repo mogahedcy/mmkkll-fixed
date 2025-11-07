@@ -49,6 +49,7 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 604800,
+    qualities: [75, 85, 90, 95],
     loader: 'default',
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -61,17 +62,20 @@ const nextConfig = {
   distDir: '.next',
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
-  allowedDevOrigins: [
-    'aldeyarksa.tech',
-    'www.aldeyarksa.tech',
-    '*.vercel.app',
-    '*.replit.dev',
-    '*.projects.builder.codes',
-    '*.builder.codes',
-    '*.fly.dev',
-    'localhost',
-    '127.0.0.1'
-  ],
+  allowedDevOrigins: process.env.NEXT_PUBLIC_ALLOWED_DEV_ORIGINS 
+    ? process.env.NEXT_PUBLIC_ALLOWED_DEV_ORIGINS.split(',')
+    : [
+        'aldeyarksa.tech',
+        'www.aldeyarksa.tech',
+        '*.vercel.app',
+        '*.replit.dev',
+        '*.pike.replit.dev',
+        '*.projects.builder.codes',
+        '*.builder.codes',
+        '*.fly.dev',
+        'localhost',
+        '127.0.0.1'
+      ],
   async headers() {
     return [
       {
