@@ -222,18 +222,18 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
             </Button>
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              <Button variant={isLiked ? 'default' : 'outline'} size="sm" onClick={handleToggleLike} className="flex-1 sm:flex-initial text-xs sm:text-sm">
-                <Heart className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isLiked ? 'fill-current' : ''}`} />
+              <Button variant={isLiked ? 'default' : 'outline'} onClick={handleToggleLike} className="flex-1 sm:flex-initial px-4 py-2.5 text-sm">
+                <Heart className={`h-4 w-4 ml-2 ${isLiked ? 'fill-current' : ''}`} />
                 <span className="hidden sm:inline">{isLiked ? 'إلغاء الإعجاب' : 'إعجاب'}</span>
                 <span className="sm:hidden">❤️</span>
               </Button>
-              <Button variant="outline" size="sm" onClick={handleShare} className="flex-1 sm:flex-initial text-xs sm:text-sm">
-                <Share2 className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
+              <Button variant="outline" onClick={handleShare} className="flex-1 sm:flex-initial px-4 py-2.5 text-sm">
+                <Share2 className="h-4 w-4 ml-2" />
                 <span className="hidden sm:inline">مشاركة</span>
                 <span className="sm:hidden">↗</span>
               </Button>
-              <Button variant="outline" size="sm" className="hidden sm:flex text-xs sm:text-sm">
-                <Download className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
+              <Button variant="outline" className="hidden sm:flex px-4 py-2.5 text-sm">
+                <Download className="h-4 w-4 ml-2" />
                 تحميل الكتالوج
               </Button>
             </div>

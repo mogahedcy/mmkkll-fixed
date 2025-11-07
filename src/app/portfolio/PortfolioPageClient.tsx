@@ -374,19 +374,18 @@ export default function PortfolioPageClient() {
                   <motion.div key={category.value} whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
                     <Button
                       variant={selectedCategory === category.value ? 'default' : 'outline'}
-                      size="sm"
                       onClick={() => handleCategoryChange(category.value)}
-                      className={`rounded-xl sm:rounded-2xl transition-all duration-300 px-3 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 font-bold shadow-lg hover:shadow-2xl text-xs sm:text-sm md:text-base
+                      className={`rounded-xl sm:rounded-2xl transition-all duration-300 px-4 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4 font-bold shadow-lg hover:shadow-2xl text-sm md:text-base
                         ${selectedCategory === category.value 
                           ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-2xl transform scale-105' 
                           : 'bg-white/90 backdrop-blur-sm border-2 sm:border-3 border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-800 hover:shadow-xl'
                         }`}
                     >
-                      <span className="text-base sm:text-xl md:text-2xl ml-1 sm:ml-2 md:ml-3">{category.icon}</span>
+                      <span className="text-xl md:text-2xl ml-2 md:ml-3">{category.icon}</span>
                       <span className="hidden sm:inline">{category.label}</span>
                       <span className="sm:hidden">{category.label.split(' ')[0]}</span>
                       {selectedCategory === category.value && (
-                        <CheckCircle className="mr-1 sm:mr-2 md:mr-3 w-4 h-4 sm:w-5 sm:h-5" />
+                        <CheckCircle className="mr-2 md:mr-3 w-4 h-4 sm:w-5 sm:h-5" />
                       )}
                     </Button>
                   </motion.div>
@@ -425,28 +424,26 @@ export default function PortfolioPageClient() {
                 <div className="flex bg-gray-100 rounded-xl sm:rounded-2xl p-1 border border-gray-200">
                   <Button
                     variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                    size="sm"
                     onClick={() => setViewMode('grid')}
-                    className={`rounded-lg sm:rounded-xl transition-all duration-300 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 font-medium text-xs sm:text-sm
+                    className={`rounded-lg sm:rounded-xl transition-all duration-300 px-4 sm:px-4 md:px-6 py-2.5 sm:py-2.5 md:py-3 font-medium text-sm
                       ${viewMode === 'grid' 
                         ? 'bg-white shadow-lg text-blue-600 border-2 border-blue-200' 
                         : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
                       }`}
                   >
-                    <Grid3X3 className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
+                    <Grid3X3 className="w-5 h-5 ml-2" />
                     <span className="hidden sm:inline">شبكة</span>
                   </Button>
                   <Button
                     variant={viewMode === 'list' ? 'default' : 'ghost'}
-                    size="sm"
                     onClick={() => setViewMode('list')}
-                    className={`rounded-lg sm:rounded-xl transition-all duration-300 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 font-medium text-xs sm:text-sm
+                    className={`rounded-lg sm:rounded-xl transition-all duration-300 px-4 sm:px-4 md:px-6 py-2.5 sm:py-2.5 md:py-3 font-medium text-sm
                       ${viewMode === 'list' 
                         ? 'bg-white shadow-lg text-blue-600 border-2 border-blue-200' 
                         : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
                       }`}
                   >
-                    <List className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
+                    <List className="w-5 h-5 ml-2" />
                     <span className="hidden sm:inline">قائمة</span>
                   </Button>
                 </div>
