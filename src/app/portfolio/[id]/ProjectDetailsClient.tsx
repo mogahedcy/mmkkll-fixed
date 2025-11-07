@@ -209,29 +209,31 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
     <div className="bg-gray-50 min-h-screen">
       {/* شريط التنقل العلوي */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="mb-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="mb-2 sm:mb-3">
             <Breadcrumb items={breadcrumbItems} />
           </div>
-          <div className="flex items-center justify-between">
-            <Button variant="ghost" asChild>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+            <Button variant="ghost" size="sm" asChild>
               <Link href="/portfolio">
-                <ArrowLeft className="h-5 w-5 ml-2" />
-                العودة للمعرض
+                <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
+                <span className="text-sm sm:text-base">العودة للمعرض</span>
               </Link>
             </Button>
 
-            <div className="flex items-center gap-3">
-              <Button variant={isLiked ? 'default' : 'outline'} size="sm" onClick={handleToggleLike}>
-                <Heart className={`h-4 w-4 ml-2 ${isLiked ? 'fill-current' : ''}`} />
-                {isLiked ? 'إلغاء الإعجاب' : 'إعجاب'}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <Button variant={isLiked ? 'default' : 'outline'} size="sm" onClick={handleToggleLike} className="flex-1 sm:flex-initial text-xs sm:text-sm">
+                <Heart className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isLiked ? 'fill-current' : ''}`} />
+                <span className="hidden sm:inline">{isLiked ? 'إلغاء الإعجاب' : 'إعجاب'}</span>
+                <span className="sm:hidden">❤️</span>
               </Button>
-              <Button variant="outline" size="sm" onClick={handleShare}>
-                <Share2 className="h-4 w-4 ml-2" />
-                مشاركة
+              <Button variant="outline" size="sm" onClick={handleShare} className="flex-1 sm:flex-initial text-xs sm:text-sm">
+                <Share2 className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
+                <span className="hidden sm:inline">مشاركة</span>
+                <span className="sm:hidden">↗</span>
               </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 ml-2" />
+              <Button variant="outline" size="sm" className="hidden sm:flex text-xs sm:text-sm">
+                <Download className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
                 تحميل الكتالوج
               </Button>
             </div>
@@ -240,9 +242,9 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
       </div>
 
       {/* قسم العرض الرئيسي */}
-      <section className="py-8">
+      <section className="py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
 
             {/* معرض الوسائط */}
             <div className="space-y-6">
@@ -388,7 +390,7 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
 
               {/* معاينات مصغرة */}
               {project.mediaItems.length > 1 && (
-                <div className="grid grid-cols-6 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
                   {project.mediaItems.map((media, index) => (
                     <button
                       key={media.id}
@@ -470,7 +472,7 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                   )}
                 </div>
 
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                   {project.title}
                 </h1>
 
@@ -505,16 +507,16 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                   </div>
                 </div>
 
-                <p className="text-lg text-gray-700 leading-relaxed">
+                <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
                   {project.description}
                 </p>
               </div>
 
               {/* تفاصيل المشروع */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-xl font-bold mb-6 text-gray-900">تفاصيل المشروع</h3>
+              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-gray-900">تفاصيل المشروع</h3>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div className="space-y-4">
                     <div className="flex items-center">
                       <MapPin className="h-5 w-5 ml-3 text-blue-500" />
@@ -580,7 +582,7 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
 
               {/* الكلمات المفتاحية والمواد */}
               {(project.tags.length > 0 || project.materials.length > 0) && (
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
                   {project.tags.length > 0 && (
                     <div className="mb-6">
                       <h4 className="font-semibold mb-3 flex items-center">

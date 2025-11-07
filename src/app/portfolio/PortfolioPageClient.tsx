@@ -250,83 +250,83 @@ export default function PortfolioPageClient() {
               </motion.div>
             </div>
             
-            <h1 className="text-6xl md:text-7xl font-black mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6">
               <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
                 إبداع وجودة
               </span>
-              <span className="block text-4xl md:text-5xl text-gray-800 mt-2">
+              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-800 mt-2">
                 في كل مشروع نقوم به
               </span>
             </h1>
             
-            <p className="text-2xl text-gray-700 mb-10 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 mb-10 max-w-4xl mx-auto leading-relaxed px-4">
               استكشف أكثر من <span className="font-black text-blue-600">{formatNumber(stats.total)}</span> مشروع متميز
               ينتشر في جدة والمناطق المحيطة، كل مشروع يحكي قصة نجاح
             </p>
 
             {/* Enhanced Quick Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto mb-12 px-4">
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
                 <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-4xl font-black">{formatNumber(stats.total)}+</div>
-                    <Award className="w-10 h-10 text-blue-200 group-hover:rotate-12 transition-transform duration-300" />
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="text-3xl sm:text-4xl font-black">{formatNumber(stats.total)}+</div>
+                    <Award className="w-8 h-8 sm:w-10 sm:h-10 text-blue-200 group-hover:rotate-12 transition-transform duration-300" />
                   </div>
-                  <div className="text-blue-100 font-bold text-lg">مشروع ناجح</div>
-                  <div className="text-blue-200 text-sm mt-2">في جميع أنحاء المملكة</div>
+                  <div className="text-blue-100 font-bold text-base sm:text-lg">مشروع ناجح</div>
+                  <div className="text-blue-200 text-xs sm:text-sm mt-1 sm:mt-2">في جميع أنحاء المملكة</div>
                 </div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-green-500 to-green-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
                 <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-4xl font-black">{stats.categories.length}</div>
-                    <Target className="w-10 h-10 text-green-200 group-hover:rotate-12 transition-transform duration-300" />
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="text-3xl sm:text-4xl font-black">{stats.categories.length}</div>
+                    <Target className="w-8 h-8 sm:w-10 sm:h-10 text-green-200 group-hover:rotate-12 transition-transform duration-300" />
                   </div>
-                  <div className="text-green-100 font-bold text-lg">خدمة متخصصة</div>
-                  <div className="text-green-200 text-sm mt-2">لكافة احتياجاتكم</div>
+                  <div className="text-green-100 font-bold text-base sm:text-lg">خدمة متخصصة</div>
+                  <div className="text-green-200 text-xs sm:text-sm mt-1 sm:mt-2">لكافة احتياجاتكم</div>
                 </div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
                 <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-4xl font-black">15+</div>
-                    <Clock className="w-10 h-10 text-purple-200 group-hover:rotate-12 transition-transform duration-300" />
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="text-3xl sm:text-4xl font-black">15+</div>
+                    <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-purple-200 group-hover:rotate-12 transition-transform duration-300" />
                   </div>
-                  <div className="text-purple-100 font-bold text-lg">عام خبرة</div>
-                  <div className="text-purple-200 text-sm mt-2">في السوق السعودي</div>
+                  <div className="text-purple-100 font-bold text-base sm:text-lg">عام خبرة</div>
+                  <div className="text-purple-200 text-xs sm:text-sm mt-1 sm:mt-2">في السوق السعودي</div>
                 </div>
               </motion.div>
               
               <motion.div 
                 whileHover={{ scale: 1.05, y: -5 }}
-                className="group bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
+                className="group bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer relative overflow-hidden"
               >
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/20 rounded-full blur-xl" />
                 <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                 <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-4xl font-black">{formatNumber(stats.featured)}</div>
-                    <Star className="w-10 h-10 text-orange-200 group-hover:rotate-12 transition-transform duration-300" />
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="text-3xl sm:text-4xl font-black">{formatNumber(stats.featured)}</div>
+                    <Star className="w-8 h-8 sm:w-10 sm:h-10 text-orange-200 group-hover:rotate-12 transition-transform duration-300" />
                   </div>
-                  <div className="text-orange-100 font-bold text-lg">مشروع مميز</div>
-                  <div className="text-orange-200 text-sm mt-2">حاز على جوائز</div>
+                  <div className="text-orange-100 font-bold text-base sm:text-lg">مشروع مميز</div>
+                  <div className="text-orange-200 text-xs sm:text-sm mt-1 sm:mt-2">حاز على جوائز</div>
                 </div>
               </motion.div>
             </div>
@@ -362,30 +362,31 @@ export default function PortfolioPageClient() {
             </motion.div>
 
             {/* Premium Categories */}
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-3">
-                <Filter className="w-6 h-6" />
+            <div className="text-center px-4">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-3">
+                <Filter className="w-5 h-5 sm:w-6 sm:h-6" />
                 اختر تخصصك المفضل
-                <Zap className="w-6 h-6" />
+                <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
               </h3>
               
-              <div className="flex flex-wrap gap-4 justify-center max-w-6xl mx-auto">
+              <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center max-w-6xl mx-auto">
                 {categories.map((category) => (
                   <motion.div key={category.value} whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
                     <Button
                       variant={selectedCategory === category.value ? 'default' : 'outline'}
-                      size="lg"
+                      size="sm"
                       onClick={() => handleCategoryChange(category.value)}
-                      className={`rounded-2xl transition-all duration-300 px-8 py-4 font-bold shadow-lg hover:shadow-2xl text-base
+                      className={`rounded-xl sm:rounded-2xl transition-all duration-300 px-3 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 font-bold shadow-lg hover:shadow-2xl text-xs sm:text-sm md:text-base
                         ${selectedCategory === category.value 
                           ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-2xl transform scale-105' 
-                          : 'bg-white/90 backdrop-blur-sm border-3 border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-800 hover:shadow-xl'
+                          : 'bg-white/90 backdrop-blur-sm border-2 sm:border-3 border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-800 hover:shadow-xl'
                         }`}
                     >
-                      <span className="text-2xl ml-3">{category.icon}</span>
-                      <span>{category.label}</span>
+                      <span className="text-base sm:text-xl md:text-2xl ml-1 sm:ml-2 md:ml-3">{category.icon}</span>
+                      <span className="hidden sm:inline">{category.label}</span>
+                      <span className="sm:hidden">{category.label.split(' ')[0]}</span>
                       {selectedCategory === category.value && (
-                        <CheckCircle className="mr-3 w-5 h-5" />
+                        <CheckCircle className="mr-1 sm:mr-2 md:mr-3 w-4 h-4 sm:w-5 sm:h-5" />
                       )}
                     </Button>
                   </motion.div>
@@ -394,18 +395,19 @@ export default function PortfolioPageClient() {
             </div>
 
             {/* Advanced Controls */}
-            <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-gray-200 shadow-xl">
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-3">
-                  <label className="text-lg font-bold text-gray-800 flex items-center gap-2">
-                    <SortAsc className="w-5 h-5" />
-                    ترتيب النتائج:
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-stretch lg:items-center justify-between bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-200 shadow-xl">
+              <div className="flex items-center gap-3 sm:gap-6 w-full lg:w-auto">
+                <div className="flex items-center gap-2 sm:gap-3 flex-1 lg:flex-initial">
+                  <label className="text-sm sm:text-base md:text-lg font-bold text-gray-800 flex items-center gap-1 sm:gap-2 whitespace-nowrap">
+                    <SortAsc className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">ترتيب النتائج:</span>
+                    <span className="sm:hidden">ترتيب:</span>
                   </label>
-                  <div className="relative">
+                  <div className="relative flex-1 lg:flex-initial">
                     <select
                       value={sortBy}
                       onChange={(e) => handleSortChange(e.target.value)}
-                      className="px-6 py-3 bg-white border-2 border-gray-200 rounded-2xl text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 appearance-none pr-12 cursor-pointer transition-all duration-300 font-medium"
+                      className="w-full px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl text-sm sm:text-base md:text-lg focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 appearance-none pr-8 sm:pr-10 md:pr-12 cursor-pointer transition-all duration-300 font-medium"
                     >
                       {sortOptions.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -413,43 +415,43 @@ export default function PortfolioPageClient() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                    <ChevronDown className="absolute left-2 sm:left-3 md:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 pointer-events-none" />
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <span className="text-lg font-bold text-gray-700">طريقة العرض:</span>
-                <div className="flex bg-gray-100 rounded-2xl p-1 border border-gray-200">
+              <div className="flex items-center gap-2 sm:gap-3 md:gap-4 w-full lg:w-auto justify-between lg:justify-end">
+                <span className="text-sm sm:text-base md:text-lg font-bold text-gray-700 whitespace-nowrap hidden sm:inline">طريقة العرض:</span>
+                <div className="flex bg-gray-100 rounded-xl sm:rounded-2xl p-1 border border-gray-200">
                   <Button
                     variant={viewMode === 'grid' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setViewMode('grid')}
-                    className={`rounded-xl transition-all duration-300 px-6 py-3 font-medium
+                    className={`rounded-lg sm:rounded-xl transition-all duration-300 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 font-medium text-xs sm:text-sm
                       ${viewMode === 'grid' 
                         ? 'bg-white shadow-lg text-blue-600 border-2 border-blue-200' 
                         : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
                       }`}
                   >
-                    <Grid3X3 className="w-5 h-5 ml-2" />
-                    شبكة
+                    <Grid3X3 className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
+                    <span className="hidden sm:inline">شبكة</span>
                   </Button>
                   <Button
                     variant={viewMode === 'list' ? 'default' : 'ghost'}
                     size="sm"
                     onClick={() => setViewMode('list')}
-                    className={`rounded-xl transition-all duration-300 px-6 py-3 font-medium
+                    className={`rounded-lg sm:rounded-xl transition-all duration-300 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 font-medium text-xs sm:text-sm
                       ${viewMode === 'list' 
                         ? 'bg-white shadow-lg text-blue-600 border-2 border-blue-200' 
                         : 'text-gray-600 hover:text-gray-800 hover:bg-white/50'
                       }`}
                   >
-                    <List className="w-5 h-5 ml-2" />
-                    قائمة
+                    <List className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-2" />
+                    <span className="hidden sm:inline">قائمة</span>
                   </Button>
                 </div>
                 
-                <div className="text-lg font-bold text-gray-600 bg-gray-100 px-4 py-2 rounded-xl">
+                <div className="text-sm sm:text-base md:text-lg font-bold text-gray-600 bg-gray-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl whitespace-nowrap">
                   {filteredAndSortedProjects.length} نتيجة
                 </div>
               </div>
