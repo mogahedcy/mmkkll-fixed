@@ -489,8 +489,8 @@ export default function PortfolioPageClient() {
               <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
                 <Search className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-3xl font-bold text-gray-800 mb-4">لا توجد مشاريع مطابقة</h3>
-              <p className="text-xl text-gray-600 mb-8">جرب تغيير معايير البحث أو الفلاتر المختارة</p>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4">لا توجد مشاريع مطابقة</h3>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-8">جرب تغيير معايير البحث أو الفلاتر المختارة</p>
               <Button
                 onClick={() => {
                   setSearchTerm('');
@@ -701,10 +701,10 @@ export default function PortfolioPageClient() {
                     className="group"
                   >
                     <Link href={`/portfolio/${project.slug || project.id}`}>
-                      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden p-6 flex gap-6 items-center transform hover:-translate-y-1">
+                      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center transform hover:-translate-y-1">
                         {/* Image */}
                         {mainMedia && (
-                          <ProtectedMedia className="relative w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                          <ProtectedMedia className="relative w-full sm:w-32 h-48 sm:h-24 rounded-xl overflow-hidden flex-shrink-0">
                             <Image
                               src={mainMedia.type === 'VIDEO' ? (mainMedia.thumbnail || mainMedia.src) : mainMedia.src}
                               alt={mainMedia.alt || project.title}
@@ -741,33 +741,33 @@ export default function PortfolioPageClient() {
                                 )}
                               </div>
                               
-                              <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                                 {project.title}
                               </h3>
                               
-                              <p className="text-gray-600 mb-3 line-clamp-2">
+                              <p className="text-sm sm:text-base text-gray-600 mb-3 line-clamp-2">
                                 {project.description}
                               </p>
                               
-                              <div className="flex items-center gap-4 text-sm text-gray-500">
+                              <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-500">
                                 <span className="flex items-center gap-1">
-                                  <MapPin className="w-4 h-4" />
-                                  {project.location}
+                                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                                  <span className="truncate">{project.location}</span>
                                 </span>
                                 <span className="flex items-center gap-1">
-                                  <Eye className="w-4 h-4" />
+                                  <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
                                   {formatNumber(project.views || 0)}
                                 </span>
-                                <span className="flex items-center gap-1">
-                                  <MessageCircle className="w-4 h-4" />
+                                <span className="flex items-center gap-1 hidden sm:flex">
+                                  <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                                   {formatNumber(project._count?.comments || 0)}
                                 </span>
                               </div>
                             </div>
                             
-                            <div className="flex items-center gap-2 text-blue-600 font-medium group-hover:underline">
-                              مشاهدة
-                              <ArrowUpRight className="w-5 h-5" />
+                            <div className="flex items-center gap-2 text-blue-600 font-medium group-hover:underline text-sm sm:text-base">
+                              <span className="hidden sm:inline">مشاهدة</span>
+                              <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                           </div>
                         </div>

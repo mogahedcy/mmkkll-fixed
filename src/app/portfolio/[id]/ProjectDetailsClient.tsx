@@ -213,8 +213,8 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
           <div className="mb-2 sm:mb-3">
             <Breadcrumb items={breadcrumbItems} />
           </div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
-            <Button variant="ghost" size="sm" asChild>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0">
+            <Button variant="ghost" size="sm" asChild className="justify-start sm:justify-center">
               <Link href="/portfolio">
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
                 <span className="text-sm sm:text-base">العودة للمعرض</span>
@@ -222,17 +222,17 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
             </Button>
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              <Button variant={isLiked ? 'default' : 'outline'} onClick={handleToggleLike} className="flex-1 sm:flex-initial px-4 py-2.5 text-sm">
-                <Heart className={`h-4 w-4 ml-2 ${isLiked ? 'fill-current' : ''}`} />
+              <Button variant={isLiked ? 'default' : 'outline'} onClick={handleToggleLike} className="flex-1 sm:flex-initial px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm">
+                <Heart className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isLiked ? 'fill-current' : ''}`} />
                 <span className="hidden sm:inline">{isLiked ? 'إلغاء الإعجاب' : 'إعجاب'}</span>
-                <span className="sm:hidden">❤️</span>
+                <span className="sm:hidden text-base">❤️</span>
               </Button>
-              <Button variant="outline" onClick={handleShare} className="flex-1 sm:flex-initial px-4 py-2.5 text-sm">
-                <Share2 className="h-4 w-4 ml-2" />
+              <Button variant="outline" onClick={handleShare} className="flex-1 sm:flex-initial px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm">
+                <Share2 className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
                 <span className="hidden sm:inline">مشاركة</span>
-                <span className="sm:hidden">↗</span>
+                <span className="sm:hidden text-base">↗</span>
               </Button>
-              <Button variant="outline" className="hidden sm:flex px-4 py-2.5 text-sm">
+              <Button variant="outline" className="hidden md:flex px-4 py-2.5 text-sm">
                 <Download className="h-4 w-4 ml-2" />
                 تحميل الكتالوج
               </Button>
@@ -390,7 +390,7 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
 
               {/* معاينات مصغرة */}
               {project.mediaItems.length > 1 && (
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
+                <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-6 gap-2">
                   {project.mediaItems.map((media, index) => (
                     <button
                       key={media.id}
@@ -472,11 +472,11 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                   )}
                 </div>
 
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
                   {project.title}
                 </h1>
 
-                <div className="flex items-center gap-6 mb-6">
+                <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -491,18 +491,18 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                     <span className="mr-2 text-lg font-semibold">{project.rating.toFixed(1)}</span>
                   </div>
 
-                  <div className="flex items-center gap-4 text-gray-600">
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm sm:text-base text-gray-600">
                     <span className="flex items-center">
-                      <Eye className="h-4 w-4 ml-1" />
-                      {viewsCount}
+                      <Eye className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
+                      <span className="text-xs sm:text-sm">{viewsCount}</span>
                     </span>
                     <button onClick={handleToggleLike} className="flex items-center hover:text-red-600 transition-colors">
-                      <Heart className={`h-4 w-4 ml-1 ${isLiked ? 'text-red-600 fill-current' : ''}`} />
-                      {likesCount}
+                      <Heart className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 ${isLiked ? 'text-red-600 fill-current' : ''}`} />
+                      <span className="text-xs sm:text-sm">{likesCount}</span>
                     </button>
                     <span className="flex items-center">
-                      <MessageCircle className="h-4 w-4 ml-1" />
-                      {commentsCount}
+                      <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
+                      <span className="text-xs sm:text-sm">{commentsCount}</span>
                     </span>
                   </div>
                 </div>
@@ -618,16 +618,16 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
               )}
 
               {/* أزرار الإجراء */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="flex-1" asChild>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Button size="lg" className="flex-1 text-sm sm:text-base py-3" asChild>
                   <Link href="/contact">
-                    <Phone className="h-5 w-5 ml-2" />
+                    <Phone className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
                     تواصل معنا
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="flex-1" asChild>
+                <Button size="lg" variant="outline" className="flex-1 text-sm sm:text-base py-3" asChild>
                   <Link href="/quote">
-                    <Quote className="h-5 w-5 ml-2" />
+                    <Quote className="h-4 w-4 sm:h-5 sm:w-5 ml-2" />
                     احصل على عرض سعر
                   </Link>
                 </Button>
