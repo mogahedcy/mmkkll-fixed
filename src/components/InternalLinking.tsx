@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useMemo } from 'react';
 import Link from 'next/link';
 
 interface InternalLinkingProps {
@@ -22,7 +23,7 @@ export default function InternalLinking({ currentPage, category, location }: Int
     { href: '/portfolio/reviews', text: 'آراء العملاء', keywords: ['آراء', 'تقييمات'] }
   ];
 
-  const getRelevantLinks = () => {
+  const relevantLinks = useMemo(() => {
     const allLinks = [...serviceLinks, ...portfolioLinks];
     return allLinks.filter(link => 
       link.href !== currentPage &&
@@ -30,9 +31,7 @@ export default function InternalLinking({ currentPage, category, location }: Int
         category.toLowerCase().includes(keyword.toLowerCase())
       ))
     ).slice(0, 4);
-  };
-
-  const relevantLinks = getRelevantLinks();
+  }, [currentPage, category]);
 
   if (relevantLinks.length === 0) return null;
 

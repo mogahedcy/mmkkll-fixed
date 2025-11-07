@@ -14,6 +14,7 @@ interface LazyImageProps {
   placeholder?: 'blur' | 'empty';
   fill?: boolean;
   sizes?: string;
+  quality?: number;
   onLoad?: () => void;
   onError?: () => void;
 }
@@ -30,6 +31,7 @@ export function LazyImage({
   placeholder = 'blur',
   fill = false,
   sizes,
+  quality = 85,
   onLoad,
   onError,
   ...props
@@ -124,6 +126,7 @@ export function LazyImage({
           height={fill ? undefined : height}
           fill={fill}
           sizes={sizes || (fill ? defaultSizes : undefined)}
+          quality={quality}
           priority={priority}
           placeholder={placeholder}
           blurDataURL={blurDataURL}
