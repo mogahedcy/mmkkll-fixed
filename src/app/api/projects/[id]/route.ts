@@ -10,9 +10,14 @@ export async function GET(
     const resolvedParams = await params;
     const param = resolvedParams.id;
 
-    // السماح باستخدام المعرف أو الslug
-    let project = await prisma.projects.findUnique({
-      where: { id: param },
+    // السماح باستخدام المعرف أو الslug - استعلام واحد محسّن
+    const project = await prisma.projects.findFirst({
+      where: {
+        OR: [
+          { id: param },
+          { slug: param }
+        ]
+      },
       include: {
         media_items: { orderBy: { order: 'asc' } },
         project_tags: true,
@@ -20,18 +25,6 @@ export async function GET(
         _count: { select: { comments: true, project_likes: true } }
       }
     });
-
-    if (!project) {
-      project = await prisma.projects.findUnique({
-        where: { slug: param },
-        include: {
-          media_items: { orderBy: { order: 'asc' } },
-          project_tags: true,
-          project_materials: true,
-          _count: { select: { comments: true, project_likes: true } }
-        }
-      });
-    }
 
     if (!project) {
       return NextResponse.json({ error: 'المشروع غير موجود' }, { status: 404 });

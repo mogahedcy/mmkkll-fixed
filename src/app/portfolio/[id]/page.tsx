@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
@@ -15,8 +16,9 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-// دالة لجلب بيانات المشروع من API
-async function getProject(id: string) {
+// دالة محسّنة مع cache لمنع duplicate calls في نفس الـ render
+// استخدام no-store للحفاظ على دقة إحصاءات المشاهدات
+const getProject = cache(async (id: string) => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
       ? (process.env.NEXT_PUBLIC_BASE_URL.startsWith('http') 
@@ -24,7 +26,7 @@ async function getProject(id: string) {
           : `https://${process.env.NEXT_PUBLIC_BASE_URL}`)
       : 'http://localhost:5000';
     const response = await fetch(`${baseUrl}/api/projects/${id}`, {
-      cache: 'no-store', // تجديد ��لبيانات في كل طلب
+      cache: 'no-store', // dynamic للحفاظ على دقة views و interactions
     });
 
     if (!response.ok) {
@@ -49,7 +51,7 @@ async function getProject(id: string) {
 
     return null;
   }
-}
+});
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;

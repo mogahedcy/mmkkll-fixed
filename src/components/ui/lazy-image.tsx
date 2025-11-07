@@ -11,7 +11,7 @@ interface LazyImageProps {
   height?: number;
   className?: string;
   priority?: boolean;
-  placeholder?: string;
+  placeholder?: 'blur' | 'empty';
   fill?: boolean;
   sizes?: string;
   onLoad?: () => void;

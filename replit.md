@@ -4,6 +4,33 @@ This is a Next.js-based web application for "محترفين الديار الع�
 
 # Recent Changes
 
+## November 7, 2025 - Performance Optimizations Package
+- ✅ **Database Query Optimization**: Merged duplicate Prisma queries in API routes
+  - Changed from two sequential `findUnique` calls to single `findFirst` with OR operator
+  - Reduces database round trips from 2 to 1 for project lookups by id/slug
+  - Applied in `src/app/api/projects/[id]/route.ts`
+
+- ✅ **React Cache Integration**: Added request deduplication for data fetching
+  - Wrapped `getProject` function with React `cache()` to prevent duplicate calls
+  - Maintains `cache: 'no-store'` to preserve analytics accuracy (views, interactions)
+  - Prevents redundant API calls within same render cycle (e.g., metadata + component)
+
+- ✅ **Schema Markup Reduction**: Removed generic BreadcrumbList from global scripts
+  - Eliminated duplicate breadcrumb structured data from `StructuredDataScript`
+  - Retained page-specific `BreadcrumbSchema` components for accuracy
+  - Reduces schema redundancy and potential SEO conflicts
+
+- ✅ **Image Caching Enhancement**: Improved Next.js image optimization settings
+  - Increased `minimumCacheTTL` from 86400 (1 day) to 604800 (7 days)
+  - Fixed TypeScript placeholder type in LazyImage component
+  - Better browser caching for static image assets
+
+- ✅ **Error Boundary Implementation**: Added proper error handling across routes
+  - Created `error.tsx` for root-level error boundary
+  - Added specific error boundaries for `/portfolio/[id]` and `/articles/[id]`
+  - User-friendly error messages with retry and navigation options
+  - Client-side error logging for debugging
+
 ## November 4, 2025 - Testimonials Section Enhancement
 - ✅ **Homepage Testimonials Integration**: Added prominent testimonials section to homepage
   - Integrated TestimonialsSection component on homepage (Hero → Services → Portfolio → Testimonials → Footer)

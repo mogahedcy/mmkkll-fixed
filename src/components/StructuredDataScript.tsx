@@ -102,17 +102,6 @@ export default function StructuredDataScript({ data }: { data?: any | any[] }) {
     }
   };
 
-  const breadcrumbData = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": baseUrl },
-      { "@type": "ListItem", "position": 2, "name": "خدماتنا", "item": `${baseUrl}/#services` },
-      { "@type": "ListItem", "position": 3, "name": "معرض الأعمال", "item": `${baseUrl}/portfolio` },
-      { "@type": "ListItem", "position": 4, "name": "اتصل بنا", "item": `${baseUrl}/contact` }
-    ]
-  };
-
   const extraData = Array.isArray(data) ? data : data ? [data] : [];
 
   return (
@@ -120,7 +109,6 @@ export default function StructuredDataScript({ data }: { data?: any | any[] }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessData) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteData) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }} />
       {extraData.map((d, i) => (
         <script key={`structured-extra-${i}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }} />
       ))}
