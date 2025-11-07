@@ -283,7 +283,7 @@ export async function GET() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   ${staticSitemap}
   ${generalArticlesSitemap}
   ${serviceArticlesSitemap}

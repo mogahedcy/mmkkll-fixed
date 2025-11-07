@@ -88,21 +88,19 @@ export async function GET() {
 
       const newsMarkup = `<news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.publishedAt?.toISOString() || article.createdAt.toISOString()}</news:publication_date><news:title><![CDATA[${seoTitle}]]></news:title><news:keywords><![CDATA[${keywords}]]></news:keywords></news:news>`;
 
-      const structuredData = `<PageMap><DataObject type="article"><Attribute name="title">${seoTitle}</Attribute><Attribute name="description">${seoDescription}</Attribute><Attribute name="author">${article.author}</Attribute><Attribute name="category">${article.category}</Attribute><Attribute name="company">محترفين الديار العالمية</Attribute><Attribute name="featured">${article.featured}</Attribute><Attribute name="views">${article.views || 0}</Attribute><Attribute name="likes">${article.likes || 0}</Attribute><Attribute name="rating">${article.rating || 0}</Attribute><Attribute name="readTime">${readTime} دقائق</Attribute><Attribute name="keywords">${keywords}</Attribute><Attribute name="publishedDate">${article.publishedAt?.toISOString() || article.createdAt.toISOString()}</Attribute><Attribute name="lastModified">${article.updatedAt.toISOString()}</Attribute><Attribute name="tags">${article.article_tags?.map((tag: any) => tag.name).join(', ') || ''}</Attribute><Attribute name="location">جدة، المملكة العربية السعودية</Attribute><Attribute name="serviceType">مقالات متخصصة في المظلات والبرجولات</Attribute></DataObject></PageMap>`;
-
-      return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><rs:ln rel="canonical" href="${baseUrl}/articles/${encodedSlug}" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles/${encodedSlug}" />${mediaContent}${newsMarkup}${structuredData}</url>`;
+      return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><xhtml:link rel="canonical" href="${baseUrl}/articles/${encodedSlug}" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/articles/${encodedSlug}" />${mediaContent}${newsMarkup}</url>`;
     })
     .join('');
 
   // إضافة صفحة المقالات الرئيسية
-  const articlesIndexPage = `<url><loc>${baseUrl}/articles</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><rs:ln rel="canonical" href="${baseUrl}/articles" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/articles" /><image:image><image:loc>${baseUrl}/uploads/mazallat-1.webp</image:loc><image:caption><![CDATA[أرشيف مقالات محترفين الديار العالمية - مقالات متخصصة في المظلات والبرجولات]]></image:caption><image:title><![CDATA[أرشيف مقالات محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image><PageMap><DataObject type="collection"><Attribute name="title">أرشيف مقالات محترفين الديار العالمية</Attribute><Attribute name="description">اكتشف أحدث المقالات والنصائح المتخصصة في مجال المظلات والبرجولات والساندوتش بانل</Attribute><Attribute name="articlesCount">${articles.length}</Attribute><Attribute name="location">جدة، المملكة العربية السعودية</Attribute><Attribute name="company">محترفين الديار العالمية</Attribute><Attribute name="topics">مظلات، برجولات، سواتر، ساندوتش بانل، تنسيق حدائق، ترميم</Attribute></DataObject></PageMap></url>`;
+  const articlesIndexPage = `<url><loc>${baseUrl}/articles</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="canonical" href="${baseUrl}/articles" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/articles" /><image:image><image:loc>${baseUrl}/uploads/mazallat-1.webp</image:loc><image:caption><![CDATA[أرشيف مقالات محترفين الديار العالمية - مقالات متخصصة في المظلات والبرجولات]]></image:caption><image:title><![CDATA[أرشيف مقالات محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image></url>`;
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   ${articlesIndexPage}
   ${articlesSitemap}
 </urlset>`;

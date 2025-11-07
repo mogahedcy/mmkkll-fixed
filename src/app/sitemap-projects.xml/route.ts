@@ -90,40 +90,18 @@ export async function GET() {
       const seoDescription = project.metaDescription || 
         `${project.description.substring(0, 150)}... مشروع ${project.category} في ${project.location} من محترفين الديار العالمية - أفضل شركة مظلات وسواتر في جدة`;
 
-      // البيانات المنظمة للمشروع
-      const structuredData = `
-    <PageMap>
-      <DataObject type="project">
-        <Attribute name="title">${seoTitle}</Attribute>
-        <Attribute name="description">${seoDescription}</Attribute>
-        <Attribute name="category">${project.category}</Attribute>
-        <Attribute name="location">${project.location}</Attribute>
-        <Attribute name="company">محترفين الديار العالمية</Attribute>
-        <Attribute name="featured">${project.featured}</Attribute>
-        <Attribute name="views">${project.views || 0}</Attribute>
-        <Attribute name="likes">${project.likes || 0}</Attribute>
-        <Attribute name="rating">${project.rating || 0}</Attribute>
-        <Attribute name="keywords">${keywords}</Attribute>
-        <Attribute name="publishedDate">${project.publishedAt?.toISOString() || project.createdAt.toISOString()}</Attribute>
-        <Attribute name="lastModified">${project.updatedAt.toISOString()}</Attribute>
-        <Attribute name="tags">${project.project_tags?.map((tag: any) => tag.name).join(', ') || ''}</Attribute>
-        <Attribute name="serviceArea">جدة، مكة المكرمة، المملكة العربية السعودية</Attribute>
-        <Attribute name="businessType">تركيب مظلات وسواتر وبرجولات</Attribute>
-      </DataObject>
-    </PageMap>`;
-
-      return `<url><loc>${baseUrl}/portfolio/${encodedSlug}</loc><lastmod>${project.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><rs:ln rel="canonical" href="${baseUrl}/portfolio/${encodedSlug}" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/portfolio/${encodedSlug}" />${mediaContent}${structuredData}</url>`;
+      return `<url><loc>${baseUrl}/portfolio/${encodedSlug}</loc><lastmod>${project.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><xhtml:link rel="canonical" href="${baseUrl}/portfolio/${encodedSlug}" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/portfolio/${encodedSlug}" />${mediaContent}</url>`;
     })
     .join('');
 
   // إضافة صفحة المعرض الرئيسية
-  const portfolioIndexPage = `<url><loc>${baseUrl}/portfolio</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><rs:ln rel="canonical" href="${baseUrl}/portfolio" /><rs:ln rel="alternate" hreflang="ar" href="${baseUrl}/portfolio" /><image:image><image:loc>${baseUrl}/images/portfolio-hero.webp</image:loc><image:caption><![CDATA[معرض أعمال محترفين الديار العالمية - مشاريع مظلات وسواتر متميزة في جدة]]></image:caption><image:title><![CDATA[معرض أعمال محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image><PageMap><DataObject type="collection"><Attribute name="title">معرض أعمال محترفين الديار العالمية</Attribute><Attribute name="description">اكتشف أعمالنا المتميزة في المظلات والبرجولات والسواتر وجميع خدماتنا في جدة</Attribute><Attribute name="projectsCount">${projects.length}</Attribute><Attribute name="location">جدة، المملكة العربية السعودية</Attribute><Attribute name="company">محترفين الديار العالمية</Attribute><Attribute name="services">مظلات، سواتر، برجولات، ساندوتش بانل، تنسيق حدائق، ترميم</Attribute></DataObject></PageMap></url>`;
+  const portfolioIndexPage = `<url><loc>${baseUrl}/portfolio</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="canonical" href="${baseUrl}/portfolio" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/portfolio" /><image:image><image:loc>${baseUrl}/images/portfolio-hero.webp</image:loc><image:caption><![CDATA[معرض أعمال محترفين الديار العالمية - مشاريع مظلات وسواتر متميزة في جدة]]></image:caption><image:title><![CDATA[معرض أعمال محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image></url>`;
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
-        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   ${portfolioIndexPage}
   ${projectsSitemap}
 </urlset>`;

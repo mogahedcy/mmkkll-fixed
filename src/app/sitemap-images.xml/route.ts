@@ -113,14 +113,14 @@ export async function GET() {
       const imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
       const pageUrl = image.project_url || `${baseUrl}/portfolio`;
       
-      return `<url><loc>${pageUrl}</loc><image:image><image:loc>${imageUrl}</image:loc><image:caption><![CDATA[${image.caption}]]></image:caption><image:title><![CDATA[${image.title}]]></image:title><image:geo_location><![CDATA[${image.location}]]></image:geo_location><image:license><![CDATA[${baseUrl}/terms]]></image:license></image:image><lastmod>${new Date().toISOString()}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><rs:ln rel="canonical" href="${pageUrl}" /><rs:ln rel="alternate" hreflang="ar" href="${pageUrl}" /></url>`;
+      return `<url><loc>${pageUrl}</loc><image:image><image:loc>${imageUrl}</image:loc><image:caption><![CDATA[${image.caption}]]></image:caption><image:title><![CDATA[${image.title}]]></image:title><image:geo_location><![CDATA[${image.location}]]></image:geo_location><image:license><![CDATA[${baseUrl}/terms]]></image:license></image:image><lastmod>${new Date().toISOString()}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="canonical" href="${pageUrl}" /><xhtml:link rel="alternate" hreflang="ar" href="${pageUrl}" /></url>`;
     })
     .join('\n  ');
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:rs="http://www.robotstxt.org/schemas/sitemap-extensions/1.0">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   ${imagesSitemap}
 </urlset>`;
 
