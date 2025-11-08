@@ -35,7 +35,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
 const pageTitle = 'ترميم ملحقات في جدة | محترفين الديار العالمية - مقاول ترميم محترف';
-const pageDescription = 'ترميم ملحقات منزلية وتجارية في جدة. إعادة تأهيل المباني والملحقات القديمة، إصلاح التشققات، صيانة شاملة. خبرة 15 عاماً في الترميم. اطلب عرض سعر مجاني!';
+const pageDescription = 'ترميم فلل ومنازل وملحقات في جدة | خبرة 15 عاماً بضمان 5 سنوات. إصلاح تشققات، عزل، صيانة شاملة. مواد أصلية وفريق محترف. عرض سعر مجاني: 0553719009';
 const pageUrl = '/services/renovation';
 const pageImage = 'https://ext.same-assets.com/2228747888/11390105.webp';
 

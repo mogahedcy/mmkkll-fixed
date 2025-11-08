@@ -36,7 +36,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
 const pageTitle = 'تنسيق حدائق جدة - محترفين الديار العالمية | تصميم وزراعة احترافية';
-const pageDescription = 'خدمات تنسيق الحدائق في جدة والمنطقة الغربية - تصميم حدائق منزلية وعامة، زراعة النباتات المحلية، أنظمة الري الحديثة والذكية. فريق متخصص، ضمان شامل، صيانة دورية.';
+const pageDescription = 'تنسيق حدائق منزلية وعامة في جدة | تصميم احترافي وزراعة نباتات محلية بضمان سنتين. أنظمة ري حديثة وتيل صناعي. أسعار تبدأ من 150 ريال/م². استشارة: 0553719009';
 const pageUrl = '/services/landscaping';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/landscaping-1.webp';
 
