@@ -37,7 +37,7 @@ import {
   Gift
 } from 'lucide-react';
 
-const pageTitle = 'خيام ملكية جدة | محترفين الديار العالمية - أفضل خيام فاخرة للمناسبات';
+const pageTitle = 'خيام ملكية جدة | محترفين الديار العالمية';
 const pageDescription = 'خيام ملكية فاخرة للأفراح والمناسبات في جدة | تصاميم حصرية بضمان 10 سنوات. خيام VIP وعزاء بأقمشة فخمة. أسعار تبدأ من 8,000 ريال. احجز الآن: 0553719009';
 const pageUrl = '/services/khayyam';
 const pageImage = 'https://ext.same-assets.com/200922472/870035748.jpeg';

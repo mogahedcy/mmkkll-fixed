@@ -37,7 +37,7 @@ import {
   Target
 } from 'lucide-react';
 
-const pageTitle = 'مظلات سيارات جدة - محترفين الديار العالمية | أفضل الأسعار والتركيب المحترف';
+const pageTitle = 'مظلات سيارات جدة | محترفين الديار العالمية';
 const pageDescription = 'أفضل مظلات سيارات وحدائق في جدة | تصاميم عصرية بضمان 10 سنوات. مظلات PVC مقاومة للأشعة والأمطار. أسعار تبدأ من 2,500 ريال. استشارة مجانية: 0553719009';
 const pageUrl = '/services/mazallat';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp';

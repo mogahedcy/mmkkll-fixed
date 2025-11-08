@@ -36,7 +36,7 @@ import {
   Users
 } from 'lucide-react';
 
-const pageTitle = 'سواتر جدة - محترفين الديار العالمية | خصوصية وأناقة عالية الجودة';
+const pageTitle = 'سواتر جدة | محترفين الديار العالمية';
 const pageDescription = 'سواتر حديد وقماش وخشب في جدة | خصوصية وحماية بضمان 10 سنوات. تصاميم أنيقة مقاومة للعوامل الجوية. أسعار تبدأ من 180 ريال/متر. استشارة مجانية: 0553719009';
 const pageUrl = '/services/sawater';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/sawater-1.webp';

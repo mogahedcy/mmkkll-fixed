@@ -39,7 +39,7 @@ import {
   Sun
 } from 'lucide-react';
 
-const pageTitle = 'برجولات خشبية جدة - محترفين الديار العالمية | تصاميم أنيقة وعصرية';
+const pageTitle = 'برجولات جدة | محترفين الديار العالمية';
 const pageDescription = 'برجولات خشبية وحديدية فاخرة في جدة | تصاميم عصرية للحدائق بضمان 10 سنوات. خامات عالية الجودة مقاومة للعوامل الجوية. أسعار تبدأ من 3,000 ريال. اتصل: 0553719009';
 const pageUrl = '/services/pergolas';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/pergola-1.jpg';

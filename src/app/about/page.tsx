@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button'
 import StructuredDataScript from '@/components/StructuredDataScript'
 
 export const metadata: Metadata = {
-  title: 'عن محترفين الديار | محترفين الديار العالمية - خبرة 15 عام في جدة',
+  title: 'عن محترفين الديار العالمية | خبرة 15 عام',
   description: 'تعرف على محترفين الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً. فريق محترف، جودة عالية، وخدمة متميزة.',
   openGraph: {
     title: 'عن محترفين الديار | محترفين الديار العالمية',
