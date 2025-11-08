@@ -452,22 +452,23 @@ export function generateLocalBusinessSchema(data?: {
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 21.5433,
-      "longitude": 39.1728
+      "latitude": 21.4858,
+      "longitude": 39.1925
     },
     "openingHoursSpecification": data?.openingHours || [
       {
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": [
-          "Saturday",
-          "Sunday",
           "Monday",
           "Tuesday",
           "Wednesday",
-          "Thursday"
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
         ],
-        "opens": "08:00",
-        "closes": "18:00"
+        "opens": "00:00",
+        "closes": "23:59"
       }
     ],
     "areaServed": {
@@ -518,8 +519,8 @@ export function generateLocalBusinessSchema(data?: {
     },
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "187",
+      "ratingValue": "4.8",
+      "reviewCount": "127",
       "bestRating": "5",
       "worstRating": "1"
     },
