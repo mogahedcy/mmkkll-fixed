@@ -6,6 +6,7 @@ import ReviewSchema from '@/components/ReviewSchema'
 import { 
   generateServiceSchema, 
   generateFAQSchema,
+  generateProductSchema,
   generateOpenGraphMetadata,
   generateTwitterMetadata,
   generateRobotsMetadata,
@@ -35,15 +36,15 @@ import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
-const pageTitle = 'تنسيق حدائق جدة | محترفين الديار العالمية';
-const pageDescription = 'تنسيق حدائق منزلية وعامة في جدة | تصميم احترافي وزراعة نباتات محلية بضمان سنتين. أنظمة ري حديثة وتيل صناعي. أسعار تبدأ من 150 ريال/م². استشارة: 0553719009';
+const pageTitle = 'تنسيق حدائق جدة - ضمان سنتين | محترفين الديار';
+const pageDescription = 'تصميم وتنسيق حدائق بجدة بضمان سنتين. زراعة نباتات محلية وأنظمة ري حديثة. أسعار تبدأ من 150 ريال/م². استشارة مجانية';
 const pageUrl = '/services/landscaping';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/landscaping-1.webp';
 
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
-  keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية، زراعة نباتات، أنظمة ري، تيل صناعي، محترفين الديار العالمية',
+  keywords: 'تنسيق حدائق جدة، تصميم حدائق، شركة تنسيق حدائق، حدائق منزلية، زراعة نباتات، أنظمة ري، تيل صناعي',
   authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: generateOpenGraphMetadata({
     title: pageTitle,
@@ -335,8 +336,20 @@ export default function LandscapingPage() {
     answer: faq.answer
   })));
 
+  const productSchema = generateProductSchema({
+    name: 'خدمة تنسيق حدائق منزلية - جدة',
+    description: 'تصميم وتنسيق حدائق احترافية مع زراعة نباتات محلية وأنظمة ري حديثة. ضمان سنتين على جميع الأعمال.',
+    image: [pageImage],
+    category: 'تنسيق حدائق',
+    brand: 'محترفين الديار',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  });
+
   const reviewSchemaData = {
-    serviceName: 'تنسيق حدائق جدة - محترفين الديار العالمية',
+    serviceName: 'تنسيق حدائق جدة - محترفين الديار',
     aggregateRating: {
       ratingValue: 4.9,
       reviewCount: 167
@@ -349,6 +362,10 @@ export default function LandscapingPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
       <script
         type="application/ld+json"

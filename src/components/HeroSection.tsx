@@ -17,15 +17,15 @@ import 'swiper/css/pagination';
 const slides = [
   {
     url: '/images/slider1.webp',
-    alt: 'slide 1',
+    alt: 'مظلات وبرجولات حدائق فاخرة في جدة',
   },
   {
     url: '/images/slider2.webp',
-    alt: 'slide 2',
+    alt: 'تركيب مظلات سيارات عصرية بجودة عالية',
   },
   {
     url: '/images/slider3.webp',
-    alt: 'slide 3',
+    alt: 'سواتر خصوصية وتنسيق حدائق احترافي',
   },
 ];
 
@@ -104,24 +104,24 @@ export default function HeroSection() {
 
         {/* Subheading */}
         <p className="text-xl mb-8 text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-          🏆 <strong>الشركة الرائدة</strong> في جدة لتركيب المظلات والبرجولات والسواتر وتنسيق الحدائق
+          خبرة 15 عاماً في تركيب المظلات والبرجولات والسواتر وتنسيق الحدائق
           <br />
-          ✅ ضمان شامل 10 سنوات ✅ تركيب احترافي ✅ أسعار تنافسية ✅ خدمة عملاء 24/7
+          ضمان شامل 10 سنوات • تركيب احترافي • أسعار تنافسية • خدمة عملاء 24/7
         </p>
 
         {/* Key Features */}
         <div className="flex flex-wrap justify-center items-center gap-8 mb-10 text-sm text-muted-foreground">
           <div className="flex items-center space-x-2 space-x-reverse bg-white/20 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
             <MapPin className="w-5 h-5 text-accent" />
-            <span className="font-medium">8 خدمات متخصصة في جدة وضواحيها</span>
+            <span className="font-medium">8 خدمات متخصصة بالمدينة وضواحيها</span>
           </div>
           <div className="flex items-center space-x-2 space-x-reverse bg-white/20 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
             <Clock className="w-5 h-5 text-accent" />
-            <span className="font-medium">ضمان شامل 10 سنوات على جميع الخدمات</span>
+            <span className="font-medium">ضمان شامل 10 سنوات على كافة الأعمال</span>
           </div>
           <div className="flex items-center space-x-2 space-x-reverse bg-white/20 px-4 py-2 rounded-full shadow-sm backdrop-blur-sm">
             <Star className="w-5 h-5 text-accent" />
-            <span className="font-medium">أكثر من 5000 مشروع ناجح ومميز</span>
+            <span className="font-medium">أكثر من 5000 مشروع منجز بنجاح</span>
           </div>
         </div>
 

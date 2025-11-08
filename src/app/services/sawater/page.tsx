@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { 
   generateServiceSchema, 
   generateFAQSchema,
+  generateProductSchema,
   generateOpenGraphMetadata,
   generateTwitterMetadata,
   generateRobotsMetadata,
@@ -36,15 +37,15 @@ import {
   Users
 } from 'lucide-react';
 
-const pageTitle = 'سواتر جدة | محترفين الديار العالمية';
-const pageDescription = 'سواتر حديد وقماش وخشب في جدة | خصوصية وحماية بضمان 10 سنوات. تصاميم أنيقة مقاومة للعوامل الجوية. أسعار تبدأ من 180 ريال/متر. استشارة مجانية: 0553719009';
+const pageTitle = 'سواتر جدة - ضمان 10 سنوات | محترفين الديار';
+const pageDescription = 'تركيب سواتر حديد وقماش بجدة بضمان 10 سنوات. خصوصية وحماية تامة. أسعار تبدأ من 180 ريال/متر. استشارة مجانية';
 const pageUrl = '/services/sawater';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/sawater-1.webp';
 
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
-  keywords: 'سواتر جدة، سواتر حديد، سواتر قماش، سواتر خشب، سواتر خصوصية، تركيب سواتر، شركة سواتر جدة، محترفين الديار العالمية',
+  keywords: 'سواتر جدة، سواتر حديد، سواتر قماش، سواتر خشب، سواتر خصوصية، تركيب سواتر، شركة سواتر',
   authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: generateOpenGraphMetadata({
     title: pageTitle,
@@ -336,8 +337,20 @@ export default function SawaterPage() {
     answer: faq.answer
   })));
 
+  const productSchema = generateProductSchema({
+    name: 'سواتر حديد عالية الجودة - جدة',
+    description: 'سواتر خصوصية من الحديد والقماش عالية الجودة توفر حماية كاملة. ضمان 15 سنة على جميع الخامات.',
+    image: [pageImage],
+    category: 'سواتر خارجية',
+    brand: 'محترفين الديار',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  });
+
   const reviewSchemaData = {
-    serviceName: 'سواتر جدة - محترفين الديار العالمية',
+    serviceName: 'سواتر جدة - محترفين الديار',
     aggregateRating: {
       ratingValue: 4.9,
       reviewCount: 167
@@ -350,6 +363,10 @@ export default function SawaterPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
       <script
         type="application/ld+json"

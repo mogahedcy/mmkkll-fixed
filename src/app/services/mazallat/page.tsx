@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { 
   generateServiceSchema, 
   generateFAQSchema,
+  generateProductSchema,
   generateOpenGraphMetadata,
   generateTwitterMetadata,
   generateRobotsMetadata,
@@ -37,15 +38,15 @@ import {
   Target
 } from 'lucide-react';
 
-const pageTitle = 'مظلات سيارات جدة | محترفين الديار العالمية';
-const pageDescription = 'أفضل مظلات سيارات وحدائق في جدة | تصاميم عصرية بضمان 10 سنوات. مظلات PVC مقاومة للأشعة والأمطار. أسعار تبدأ من 2,500 ريال. استشارة مجانية: 0553719009';
+const pageTitle = 'مظلات سيارات جدة - ضمان 10 سنوات | محترفين الديار';
+const pageDescription = 'تركيب مظلات سيارات وحدائق بجدة بضمان 10 سنوات. مظلات PVC مقاومة للأشعة والأمطار. أسعار تبدأ من 2,500 ريال. استشارة مجانية';
 const pageUrl = '/services/mazallat';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/mazallat-1.webp';
 
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
-  keywords: 'مظلات سيارات جدة، مظلات PVC، مظلات حديد، تركيب مظلات، شركة مظلات جدة، أسعار مظلات السيارات، محترفين الديار العالمية',
+  keywords: 'مظلات سيارات جدة، مظلات PVC، مظلات حديد، تركيب مظلات، شركة مظلات، أسعار مظلات سيارات',
   authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: generateOpenGraphMetadata({
     title: pageTitle,
@@ -364,8 +365,20 @@ export default function MazallatPage() {
     answer: faq.answer
   })));
 
+  const productSchema = generateProductSchema({
+    name: 'مظلات سيارات PVC - جدة',
+    description: 'مظلات سيارات عالية الجودة مصنوعة من PVC مقاوم للحرارة والأشعة فوق البنفسجية. ضمان 10 سنوات على الخامات والتركيب.',
+    image: ['https://www.aldeyarksa.tech/uploads/mazallat-1.webp'],
+    category: 'مظلات خارجية',
+    brand: 'محترفين الديار',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  });
+
   const reviewSchemaData = {
-    serviceName: 'مظلات سيارات جدة - محترفين الديار العالمية',
+    serviceName: 'مظلات سيارات جدة - محترفين الديار',
     aggregateRating: {
       ratingValue: 4.9,
       reviewCount: 167
@@ -378,6 +391,10 @@ export default function MazallatPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
       <script
         type="application/ld+json"

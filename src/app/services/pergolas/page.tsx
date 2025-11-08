@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { 
   generateServiceSchema, 
   generateFAQSchema,
+  generateProductSchema,
   generateOpenGraphMetadata,
   generateTwitterMetadata,
   generateRobotsMetadata,
@@ -39,15 +40,15 @@ import {
   Sun
 } from 'lucide-react';
 
-const pageTitle = 'برجولات جدة | محترفين الديار العالمية';
-const pageDescription = 'برجولات خشبية وحديدية فاخرة في جدة | تصاميم عصرية للحدائق بضمان 10 سنوات. خامات عالية الجودة مقاومة للعوامل الجوية. أسعار تبدأ من 3,000 ريال. اتصل: 0553719009';
+const pageTitle = 'برجولات جدة - ضمان 10 سنوات | محترفين الديار';
+const pageDescription = 'تركيب برجولات خشبية وحديدية بجدة بضمان 10 سنوات. تصاميم عصرية مقاومة للعوامل الجوية. أسعار تبدأ من 3,000 ريال. استشارة مجانية';
 const pageUrl = '/services/pergolas';
 const pageImage = 'https://www.aldeyarksa.tech/uploads/pergola-1.jpg';
 
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
-  keywords: 'برجولات جدة، برجولات خشبية، برجولات حديد، تصميم برجولات، برجولات حدائق، تركيب برجولات، شركة برجولات جدة، محترفين الديار العالمية',
+  keywords: 'برجولات جدة، برجولات خشبية، برجولات حديد، تصميم برجولات، برجولات حدائق، تركيب برجولات، شركة برجولات',
   authors: [{ name: 'محترفين الديار العالمية' }],
   openGraph: generateOpenGraphMetadata({
     title: pageTitle,
@@ -403,8 +404,20 @@ export default function PergolasPage() {
     answer: faq.answer
   })));
 
+  const productSchema = generateProductSchema({
+    name: 'برجولات خشبية فاخرة - جدة',
+    description: 'برجولات حدائق خشبية وحديدية عالية الجودة مقاومة للعوامل الجوية. تصاميم عصرية وضمان 10 سنوات.',
+    image: ['https://ext.same-assets.com/3372524550/1177626593.jpeg'],
+    category: 'برجولات خارجية',
+    brand: 'محترفين الديار',
+    aggregateRating: {
+      ratingValue: 4.9,
+      reviewCount: 167
+    }
+  });
+
   const reviewSchemaData = {
-    serviceName: 'برجولات جدة - محترفين الديار العالمية',
+    serviceName: 'برجولات جدة - محترفين الديار',
     aggregateRating: {
       ratingValue: 4.9,
       reviewCount: 167
@@ -417,6 +430,10 @@ export default function PergolasPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
       <script
         type="application/ld+json"
