@@ -3,6 +3,7 @@ import { Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
 import StructuredDataScript from "@/components/StructuredDataScript";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -128,6 +129,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-arabic" suppressHydrationWarning={true}>
         <ClientBody>{children}</ClientBody>
+        <WhatsAppWidget />
       </body>
     </html>
   );

@@ -364,12 +364,34 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div className="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-              <div className="text-center text-gray-600">
-                <MapPin className="w-16 h-16 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">خريطة الموقع</h3>
-                <p>جدة، المملكة العربية السعودية</p>
-                <p className="text-sm mt-2">نخدم جميع أحياء ومناطق جدة</p>
+            <div className="relative rounded-lg overflow-hidden h-96 shadow-xl">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3710.5678!2d39.192505!3d21.485811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDI5JzA4LjkiTiAzOcKwMTEnMzMuMCJF!5e0!3m2!1sar!2ssa!4v1234567890123!5m2!1sar!2ssa"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="موقع مؤسسة الديار العالمية في جدة"
+                className="grayscale-0 hover:grayscale-0 transition-all"
+              />
+              <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-4 max-w-xs">
+                <div className="flex items-start">
+                  <MapPin className="w-5 h-5 text-primary mr-2 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-bold text-gray-900">محترفين الديار العالمية</h4>
+                    <p className="text-sm text-gray-600 mt-1">جدة، المملكة العربية السعودية</p>
+                    <a 
+                      href="https://maps.google.com/?q=21.485811,39.192505" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline mt-2 inline-block"
+                    >
+                      فتح في خرائط جوجل ←
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
