@@ -214,7 +214,7 @@ export default function Footer() {
                   </div>
                   <div className="flex items-center space-x-2 space-x-reverse bg-white/10 rounded-full px-4 py-2">
                     <Mail className="w-4 h-4 text-accent" />
-                    <Link href="mailto:info@aldeyarksa.tech" className="text-white hover:text-accent transition-colors font-medium">
+                    <Link href="mailto:ksaaldeyar@gmail.com" className="text-white hover:text-accent transition-colors font-medium">
                       البريد الإلكتروني
                     </Link>
                   </div>
@@ -345,8 +345,8 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-400 mb-1">البريد الإلكتروني</p>
-                  <Link href="mailto:info@aldeyarksa.tech" className="text-white hover:text-accent transition-colors font-medium">
-                    info@aldeyarksa.tech
+                  <Link href="mailto:ksaaldeyar@gmail.com" className="text-white hover:text-accent transition-colors font-medium">
+                    ksaaldeyar@gmail.com
                   </Link>
                 </div>
               </div>

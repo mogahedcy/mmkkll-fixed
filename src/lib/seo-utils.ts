@@ -137,7 +137,7 @@ export function generateServiceSchema(data: {
       "name": SITE_NAME,
       "image": data.image || `${BASE_URL}/favicon.svg`,
       "telephone": "+966553719009",
-      "email": "info@aldeyarksa.tech",
+      "email": "ksaaldeyar@gmail.com",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "شارع الأمير سلطان",
@@ -440,7 +440,7 @@ export function generateLocalBusinessSchema(data?: {
     "image": data?.image || `${BASE_URL}/favicon.svg`,
     "url": BASE_URL,
     "telephone": "+966553719009",
-    "email": "info@aldeyarksa.tech",
+    "email": "ksaaldeyar@gmail.com",
     "priceRange": data?.priceRange || "$$",
     "address": {
       "@type": "PostalAddress",
@@ -551,7 +551,7 @@ export function generateOrganizationSchema(data?: {
     },
     "image": data?.logo || `${BASE_URL}/favicon.svg`,
     "telephone": "+966553719009",
-    "email": "info@aldeyarksa.tech",
+    "email": "ksaaldeyar@gmail.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "شارع الأمير سلطان",
@@ -565,7 +565,7 @@ export function generateOrganizationSchema(data?: {
         "@type": "ContactPoint",
         "telephone": "+966553719009",
         "contactType": "customer service",
-        "email": "info@aldeyarksa.tech",
+        "email": "ksaaldeyar@gmail.com",
         "areaServed": "SA",
         "availableLanguage": ["Arabic", "English"]
       },
@@ -573,7 +573,7 @@ export function generateOrganizationSchema(data?: {
         "@type": "ContactPoint",
         "telephone": "+966553719009",
         "contactType": "sales",
-        "email": "sales@aldeyarksa.tech",
+        "email": "ksaaldeyar@gmail.com",
         "areaServed": "SA",
         "availableLanguage": "Arabic"
       }

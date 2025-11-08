@@ -158,8 +158,8 @@ export default function Navbar() {
               </div>
               <div className="flex items-center space-x-2 space-x-reverse">
                 <Mail className="w-4 h-4" />
-                <Link href="mailto:info@aldeyarksa.tech" className="hover:text-white/80 transition-colors text-sm">
-                  info@aldeyarksa.tech
+                <Link href="mailto:ksaaldeyar@gmail.com" className="hover:text-white/80 transition-colors text-sm">
+                  ksaaldeyar@gmail.com
                 </Link>
               </div>
               <div className="flex items-center space-x-2 space-x-reverse">

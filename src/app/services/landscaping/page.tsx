@@ -695,7 +695,7 @@ export default function LandscapingPage() {
                   اتصل الآن
                 </Button>
               </Link>
-              <Link href="mailto:info@aldeyar-jeddah.com">
+              <Link href="mailto:ksaaldeyar@gmail.com">
                 <Button size="lg" variant="outline" className="text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20">
                   <Mail className="w-5 h-5 mr-2" />
                   راسلنا

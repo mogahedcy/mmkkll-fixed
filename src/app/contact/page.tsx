@@ -49,8 +49,8 @@ const contactMethods = [
     icon: Mail,
     title: 'البريد الإلكتروني',
     description: 'نرد خلال 24 ساعة كحد أقصى',
-    value: 'info@aldeyar-jeddah.com',
-    action: 'mailto:info@aldeyar-jeddah.com',
+    value: 'ksaaldeyar@gmail.com',
+    action: 'mailto:ksaaldeyar@gmail.com',
     buttonText: 'أرسل إيميل'
   },
   {
@@ -93,7 +93,7 @@ export default function ContactPage() {
               "@type": "LocalBusiness",
               "name": "مؤسسة الديار العالمية",
               "telephone": "+966553719009",
-              "email": "info@aldeyar-jeddah.com",
+              "email": "ksaaldeyar@gmail.com",
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "جدة",

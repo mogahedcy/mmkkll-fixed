@@ -97,7 +97,7 @@ export default function QuotePage() {
               "@type": "LocalBusiness",
               "name": "مؤسسة الديار العالمية",
               "telephone": "+966553719009",
-              "email": "info@aldeyar-jeddah.com",
+              "email": "ksaaldeyar@gmail.com",
               "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "جدة",

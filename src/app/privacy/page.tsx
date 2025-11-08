@@ -246,7 +246,7 @@ export default function PrivacyPage() {
                   إذا كان لديك أي أسئلة حول سياسة الخصوصية هذه أو ممارسات البيانات الخاصة بنا، يرجى التواصل معنا:
                 </p>
                 <div className="space-y-2 text-gray-700">
-                  <p><strong>البريد الإلكتروني:</strong> privacy@aldeyar-jeddah.com</p>
+                  <p><strong>البريد الإلكتروني:</strong> ksaaldeyar@gmail.com</p>
                   <p><strong>الهاتف:</strong> +966 55 371 9009</p>
                   <p><strong>العنوان:</strong> جدة، المملكة العربية السعودية</p>
                 </div>

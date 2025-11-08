@@ -134,7 +134,7 @@ Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/si
 Host: https://www.aldeyarksa.tech
 
 # معلومات إضافية للمطورين ومحركات البحث
-# Contact: info@aldeyarksa.tech
+# Contact: ksaaldeyar@gmail.com
 # Website: https://www.aldeyarksa.tech
 # Company: محترفين الديار العالمية
 # Location: جدة، المملكة العربية السعودية
