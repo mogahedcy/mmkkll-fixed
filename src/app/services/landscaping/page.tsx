@@ -323,7 +323,7 @@ export default function LandscapingPage() {
 
   const serviceSchema = generateServiceSchema({
     name: 'تنسيق حدائق في جدة - منزلية وخارجية وفلل',
-    description: 'أفضل تنسيق حدائق في جدة من مؤسسة الديار العالمية. حدائق منزلية، خارجية، فلل وصيانة. زراعة نباتات محلية وأنظمة ري حديثة.',
+    description: 'أفضل تنسيق حدائق في جدة من محترفين الديار العالمية. حدائق منزلية، خارجية، فلل وصيانة. زراعة نباتات محلية وأنظمة ري حديثة.',
     areaServed: 'جدة',
     priceRange: '150-250',
     image: pageImage,
@@ -384,7 +384,7 @@ export default function LandscapingPage() {
 
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              مؤسسة الديار العالمية - خبرة 15 عاماً في تصميم وتنسيق الحدائق المنزلية والعامة.
+              محترفين الديار العالمية - خبرة 15 عاماً في تصميم وتنسيق الحدائق المنزلية والعامة.
               تصاميم مبتكرة وأحدث التقنيات وأفضل النباتات المحلية
             </p>
 

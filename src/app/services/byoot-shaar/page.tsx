@@ -32,7 +32,7 @@ import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
-const pageTitle = 'بيوت شعر في جدة | مؤسسة الديار العالمية - أفضل تصاميم البيوت الشعبية';
+const pageTitle = 'بيوت شعر في جدة | محترفين الديار العالمية - أفضل تصاميم البيوت الشعبية';
 const pageDescription = 'بيوت شعر ملكية وعربية تقليدية في جدة. تصميم وتنفيذ بيوت شعر فاخرة للمجالس والحدائق بأعلى معايير الجودة. اطلب عرض سعر مجاني الآن!';
 const pageUrl = '/services/byoot-shaar';
 const pageImage = 'https://ext.same-assets.com/3073684241/1858852453.jpeg';
@@ -331,7 +331,7 @@ export default function ByootShaarPage() {
 
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              مؤسسة الديار العالمية - خبرة 15 عاماً في تصميم وتنفيذ بيوت شعر ملكية وعربية تقليدية.
+              محترفين الديار العالمية - خبرة 15 عاماً في تصميم وتنفيذ بيوت شعر ملكية وعربية تقليدية.
               أقمشة عالية الجودة، تصاميم أصيلة، وضمان شامل 10 سنوات
             </p>
 

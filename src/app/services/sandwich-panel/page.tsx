@@ -32,7 +32,7 @@ import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
-const pageTitle = 'غرف ساندوتش بانل في جدة | مؤسسة الديار العالمية - أفضل الأسعار';
+const pageTitle = 'غرف ساندوتش بانل في جدة | محترفين الديار العالمية - أفضل الأسعار';
 const pageDescription = 'غرف ساندوتش بانل بأعلى جودة في جدة. عزل حراري وصوتي ممتاز، تركيب سريع، أسعار تبدأ من 165 ريال/م². اطلب عرض سعر مجاني الآن!';
 const pageUrl = '/services/sandwich-panel';
 const pageImage = 'https://ext.same-assets.com/165531043/871301785.webp';

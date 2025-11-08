@@ -23,11 +23,11 @@ import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
-  title: 'طلب عرض سعر | مؤسسة الديار العالمية - احصل على عرض مجاني',
-  description: 'احصل على عرض سعر مجاني ومفصل من مؤسسة الديار العالمية في جدة. أسعار تنافسية، جودة عالية، وضمان شامل على جميع الخدمات.',
+  title: 'طلب عرض سعر | محترفين الديار العالمية - احصل على عرض مجاني',
+  description: 'احصل على عرض سعر مجاني ومفصل من محترفين الديار العالمية في جدة. أسعار تنافسية، جودة عالية، وضمان شامل على جميع الخدمات.',
   openGraph: {
-    title: 'طلب عرض سعر | مؤسسة الديار العالمية',
-    description: 'احصل على عرض سعر مجاني ومفصل من مؤسسة الديار العالمية في جدة.',
+    title: 'طلب عرض سعر | محترفين الديار العالمية',
+    description: 'احصل على عرض سعر مجاني ومفصل من محترفين الديار العالمية في جدة.',
     type: 'website',
     locale: 'ar_SA'
   }
@@ -91,11 +91,11 @@ export default function QuotePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            "name": "طلب عرض سعر - مؤسسة الديار العالمية",
+            "name": "طلب عرض سعر - محترفين الديار العالمية",
             "description": "احصل على عرض سعر مجاني ومفصل لجميع خدماتنا",
             "provider": {
               "@type": "LocalBusiness",
-              "name": "مؤسسة الديار العالمية",
+              "name": "محترفين الديار العالمية",
               "telephone": "+966553719009",
               "email": "ksaaldeyar@gmail.com",
               "address": {

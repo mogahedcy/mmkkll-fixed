@@ -20,11 +20,11 @@ import { Button } from '@/components/ui/button'
 import StructuredDataScript from '@/components/StructuredDataScript'
 
 export const metadata: Metadata = {
-  title: 'عن محترفين الديار | مؤسسة الديار العالمية - خبرة 15 عام في جدة',
-  description: 'تعرف على مؤسسة الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً. فريق محترف، جودة عالية، وخدمة متميزة.',
+  title: 'عن محترفين الديار | محترفين الديار العالمية - خبرة 15 عام في جدة',
+  description: 'تعرف على محترفين الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً. فريق محترف، جودة عالية، وخدمة متميزة.',
   openGraph: {
-    title: 'عن محترفين الديار | مؤسسة الديار العالمية',
-    description: 'تعرف على مؤسسة الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً.',
+    title: 'عن محترفين الديار | محترفين الديار العالمية',
+    description: 'تعرف على محترفين الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً.',
     type: 'website',
     locale: 'ar_SA'
   }
@@ -102,8 +102,8 @@ export default function AboutPage() {
   const organizationData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "مؤسسة الديار العالمية",
-    "description": "مؤسسة رائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً",
+    "name": "محترفين الديار العالمية",
+    "description": "شركة رائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً",
     "url": "https://www.aldeyarksa.tech",
     "logo": "https://www.aldeyarksa.tech/logo.png",
     "foundingDate": "2009",
@@ -143,12 +143,10 @@ export default function AboutPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                  نحن <span className="text-primary">محترفين الديار</span>
-                  <br />
-                  رائدون في التميز منذ 2009
+                  نحن <span className="text-primary">محترفين الديار</span> - رائدون في التميز منذ 2009
                 </h1>
                 <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                  مؤسسة الديار العالمية، شريكك الموثوق في تحويل الأحلام إلى واقع.
+                  محترفين الديار العالمية، شريكك الموثوق في تحويل الأحلام إلى واقع.
                   نقدم خدمات شاملة ومتكاملة في جدة منذ أكثر من 15 عاماً،
                   بخبرة واسعة وفريق محترف يضمن لك أعلى معايير الجودة والإتقان.
                 </p>
@@ -261,7 +259,7 @@ export default function AboutPage() {
                 رحلة التطور والنمو
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                محطات مهمة في تاريخ مؤسسة الديار العالمية
+                محطات مهمة في تاريخ محترفين الديار العالمية
               </p>
             </div>
 

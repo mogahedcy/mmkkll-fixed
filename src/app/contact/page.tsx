@@ -18,11 +18,11 @@ import { Button } from '@/components/ui/button'
 import StructuredDataScript from '@/components/StructuredDataScript'
 
 export const metadata: Metadata = {
-  title: 'تواصل معنا | مؤسسة الديار العالمية - خدمة العملاء 24/7',
-  description: 'تواصل مع فريق مؤسسة الديار العالمية في جدة. خدمة عملاء متميزة 24/7، استشارة مجانية، وردود سريعة على جميع استفساراتكم.',
+  title: 'تواصل معنا | محترفين الديار العالمية - خدمة العملاء 24/7',
+  description: 'تواصل مع فريق محترفين الديار العالمية في جدة. خدمة عملاء متميزة 24/7، استشارة مجانية، وردود سريعة على جميع استفساراتكم.',
   openGraph: {
-    title: 'تواصل معنا | مؤسسة الديار العالمية',
-    description: 'تواصل مع فريق مؤسسة الديار العالمية في جدة. خدمة عملاء متميزة 24/7 واستشارة مجانية.',
+    title: 'تواصل معنا | محترفين الديار العالمية',
+    description: 'تواصل مع فريق محترفين الديار العالمية في جدة. خدمة عملاء متميزة 24/7 واستشارة مجانية.',
     type: 'website',
     locale: 'ar_SA'
   }
@@ -91,7 +91,7 @@ export default function ContactPage() {
             "@type": "ContactPage",
             "mainEntity": {
               "@type": "LocalBusiness",
-              "name": "مؤسسة الديار العالمية",
+              "name": "محترفين الديار العالمية",
               "telephone": "+966553719009",
               "email": "ksaaldeyar@gmail.com",
               "address": {
@@ -360,7 +360,7 @@ export default function ContactPage() {
                 موقعنا في جدة
               </h2>
               <p className="text-xl text-gray-600">
-                مؤسسة الديار العالمية - في خدمتكم في جميع أنحاء جدة
+                محترفين الديار العالمية - في خدمتكم في جميع أنحاء جدة
               </p>
             </div>
 
@@ -373,7 +373,7 @@ export default function ContactPage() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="موقع مؤسسة الديار العالمية في جدة"
+                title="موقع محترفين الديار العالمية في جدة"
                 className="grayscale-0 hover:grayscale-0 transition-all"
               />
               <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-4 max-w-xs">
