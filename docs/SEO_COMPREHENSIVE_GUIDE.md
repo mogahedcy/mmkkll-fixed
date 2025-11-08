@@ -49,7 +49,7 @@
   "name": "محترفين الديار العالمية",
   "description": "شركة رائدة في جدة متخصصة في تصميم وتركيب المظلات...",
   "telephone": "+966553719009",
-  "email": "info@aldeyarksa.tech",
+  "email": "ksaaldeyar@gmail.com",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "شارع الأمير سلطان",
