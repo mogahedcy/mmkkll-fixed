@@ -98,7 +98,7 @@ export default function TestimonialsSection() {
   }));
 
   return (
-    <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10">
+    <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-accent/5">
       <ReviewSchema
         serviceName="خدمات محترفين الديار العالمية - مظلات وبرجولات جدة"
         itemType="LocalBusiness"
@@ -110,73 +110,84 @@ export default function TestimonialsSection() {
         reviews={reviewsForSchema}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-            شهادات عملائنا الكرام في جدة
+        {/* Enhanced Section Header */}
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 bg-accent/10 px-6 py-3 rounded-full mb-6">
+            <Star className="w-5 h-5 text-accent fill-current" />
+            <span className="font-bold text-accent">تقييم 4.9 من 5</span>
+            <Star className="w-5 h-5 text-accent fill-current" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-black text-primary mb-6">
+            آراء عملائنا السعداء
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            نفخر بثقة عملائنا وآرائهم الإيجابية في خدماتنا. إليكم بعض شهادات العملاء
-            الذين تعاملوا مع محترفين الديار واختبروا جودة خدماتنا المتميزة
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            ثقة أكثر من 5000 عميل في جدة
           </p>
         </div>
 
-        {/* Main Testimonial Display */}
-        <div className="max-w-4xl mx-auto mb-12">
+        {/* Enhanced Main Testimonial Display */}
+        <div className="max-w-5xl mx-auto mb-16">
           <div
-            className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 relative overflow-hidden"
+            className="bg-gradient-to-br from-white to-accent/5 rounded-3xl shadow-2xl p-10 md:p-16 relative overflow-hidden border-2 border-accent/20"
             onMouseEnter={() => setIsAutoPlay(false)}
             onMouseLeave={() => setIsAutoPlay(true)}
           >
+            {/* Decorative Elements */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-accent/10 to-transparent rounded-full -mr-20 -mt-20" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tl from-amber-500/10 to-transparent rounded-full -ml-16 -mb-16" />
+
             {/* Quote Icon */}
-            <div className="absolute top-6 right-6 text-accent/20">
-              <Quote className="w-16 h-16" />
+            <div className="absolute top-8 right-8 text-accent/10">
+              <Quote className="w-20 h-20" />
             </div>
 
             {/* Rating Stars */}
-            <div className="flex items-center justify-center mb-6">
+            <div className="flex items-center justify-center mb-8 gap-2">
               {[...Array(currentTestimonial.rating)].map((_, i) => (
-                <Star key={`star-${currentTestimonial.id}-${i}`} className="w-6 h-6 text-yellow-400 fill-current" />
+                <Star key={`star-${currentTestimonial.id}-${i}`} className="w-8 h-8 text-amber-400 fill-current drop-shadow-lg" />
               ))}
             </div>
 
             {/* Testimonial Text */}
-            <blockquote className="text-xl md:text-2xl text-center text-primary leading-relaxed mb-8 font-medium">
+            <blockquote className="text-2xl md:text-3xl text-center text-primary leading-relaxed mb-10 font-bold relative z-10">
               "{currentTestimonial.text}"
             </blockquote>
 
-            {/* Client Info */}
-            <div className="text-center">
-              <div className="font-bold text-lg text-primary mb-1">
+            {/* Enhanced Client Info */}
+            <div className="text-center relative z-10">
+              <div className="w-16 h-16 bg-gradient-to-br from-accent to-amber-500 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold shadow-xl">
+                {currentTestimonial.name.charAt(0)}
+              </div>
+              <div className="font-black text-xl text-primary mb-2">
                 {currentTestimonial.name}
               </div>
-              <div className="text-muted-foreground mb-2">
+              <div className="text-muted-foreground mb-3 font-medium">
                 {currentTestimonial.location}
               </div>
-              <div className="inline-flex items-center bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium">
-                خدمة: {currentTestimonial.service}
+              <div className="inline-flex items-center bg-gradient-to-r from-accent/20 to-amber-500/20 text-accent px-6 py-3 rounded-full text-sm font-bold border-2 border-accent/30">
+                {currentTestimonial.service}
               </div>
             </div>
 
-            {/* Navigation Arrows */}
-            <div className="absolute top-1/2 transform -translate-y-1/2 left-4">
+            {/* Enhanced Navigation Arrows */}
+            <div className="absolute top-1/2 transform -translate-y-1/2 left-6">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={prevTestimonial}
-                className="rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                className="rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 bg-white hover:bg-accent hover:text-white border-2 w-12 h-12"
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-6 h-6" />
               </Button>
             </div>
-            <div className="absolute top-1/2 transform -translate-y-1/2 right-4">
+            <div className="absolute top-1/2 transform -translate-y-1/2 right-6">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={nextTestimonial}
-                className="rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                className="rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 bg-white hover:bg-accent hover:text-white border-2 w-12 h-12"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ArrowLeft className="w-6 h-6" />
               </Button>
             </div>
           </div>
@@ -195,35 +206,47 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        {/* All Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {/* Enhanced All Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.id}
-              className={`bg-white rounded-xl p-6 shadow-lg transition-all duration-300 cursor-pointer ${
-                index === currentIndex ? 'ring-2 ring-accent shadow-xl' : 'hover:shadow-xl'
+              className={`bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer hover:-translate-y-2 ${
+                index === currentIndex 
+                  ? 'ring-4 ring-accent shadow-2xl scale-105' 
+                  : 'hover:shadow-2xl'
               }`}
               onClick={() => setCurrentIndex(index)}
             >
               {/* Rating */}
-              <div className="flex items-center mb-4">
+              <div className="flex items-center gap-1 mb-5">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={`star-grid-${testimonial.id}-${i}`} className="w-4 h-4 text-yellow-400 fill-current" />
+                  <Star key={`star-grid-${testimonial.id}-${i}`} className="w-5 h-5 text-amber-400 fill-current" />
                 ))}
               </div>
 
               {/* Text */}
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+              <p className="text-base text-gray-700 mb-6 leading-relaxed font-medium min-h-[80px]">
                 "{testimonial.text}"
               </p>
 
-              {/* Client Info */}
-              <div className="border-t pt-4">
-                <div className="font-semibold text-primary text-sm">
-                  {testimonial.name}
+              {/* Enhanced Client Info */}
+              <div className="border-t-2 border-gray-100 pt-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-accent to-amber-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <div>
+                    <div className="font-bold text-primary text-base">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {testimonial.location}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  {testimonial.location} • {testimonial.service}
+                <div className="mt-4 bg-accent/10 text-accent px-4 py-2 rounded-lg text-sm font-bold text-center">
+                  {testimonial.service}
                 </div>
               </div>
             </div>

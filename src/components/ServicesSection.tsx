@@ -16,47 +16,41 @@ const services = [
   {
     id: 'mazallat',
     title: 'مظلات السيارات',
-    description: 'حماية سيارتك بتصاميم عصرية وخامات عالية الجودة مقاومة للعوامل الجوية',
+    description: 'حماية فاخرة بتصاميم عصرية',
     icon: Car,
     features: [
-      'حماية كاملة من الشمس والأمطار',
-      'تصاميم عصرية متنوعة',
-      'خامات عالية الجودة'
+      'حماية كاملة من الشمس',
+      'تصاميم متنوعة'
     ],
     href: '/services/mazallat',
-    price: 'تبدأ من 2500 ريال',
+    price: 'من 2,500 ر.س',
     bgColor: 'bg-blue-50',
     iconColor: 'text-blue-600',
+    badge: 'الأكثر طلباً',
+    badgeColor: 'bg-red-500'
   },
   {
     id: 'sandwich-panel',
-    title: 'ساندوتش بانل احترافي',
-    description: 'تركيب وتوريد ساندوتش بانل بأعلى المعايير للمباني التجارية والمستودعات والمصانع',
+    title: 'ساندوتش بانل',
+    description: 'عزل حراري وصوتي احترافي',
     icon: Home,
     features: [
-      'ساندوتش بانل عازل للحرارة والصوت',
-      'ساندوتش بانل حوائط خارجية وداخلية',
-      'ساندوتش بانل أسقف مقاوم للحريق',
-      'ساندوتش بانل مستودعات ومصانع',
-      'ساندوتش بانل ألوان متعددة',
-      'تركيب ساندوتش بانل احترافي'
+      'عازل للحرارة والصوت',
+      'مقاوم للحريق'
     ],
     href: '/services/sandwich-panel',
+    price: 'حسب المساحة',
     bgColor: 'bg-orange-50',
     iconColor: 'text-orange-600',
   },
   {
     id: 'renovation',
     title: 'ترميم الملحقات',
-    description: 'خدمات شاملة لترميم الفلل والاستراحات والمجالس بأحدث المواد والتقنيات',
+    description: 'تجديد شامل بأحدث التقنيات',
     icon: Wrench,
     features: [
-      'ترميم فلل وقصور راقية',
-      'ترميم منازل واستراحات',
-      'ترميم مجالس ومرافق',
-      'صيانة وإصلاح شامل',
-      'تجديد المرافق والملاحق',
-      'ترميم بأحدث المواد والتقنيات'
+      'ترميم فلل واستراحات',
+      'صيانة شاملة'
     ],
     href: '/services/renovation',
     bgColor: 'bg-teal-50',
@@ -65,49 +59,41 @@ const services = [
   {
     id: 'pergolas',
     title: 'برجولات الحدائق',
-    description: 'تصاميم فاخرة خشبية وحديدية تضفي جمالاً استثنائياً على حدائق المنازل والفلل',
+    description: 'تصاميم فاخرة تضفي جمالاً استثنائياً',
     icon: TreePine,
     features: [
-      'برجولات خشبية طبيعية معالجة',
-      'برجولات حديدية مقاومة للصدأ',
-      'برجولات قماشية قابلة للطي',
-      'تصاميم حصرية ومميزة',
-      'برجولات حدائق فلل راقية',
-      'تركيب برجولات احترافي'
+      'خشبية وحديدية',
+      'تصاميم حصرية'
     ],
     href: '/services/pergolas',
+    price: 'من 3,500 ر.س',
     bgColor: 'bg-green-50',
     iconColor: 'text-green-600',
+    badge: 'مميز',
+    badgeColor: 'bg-amber-500'
   },
   {
     id: 'sawater',
-    title: 'السواتر والخصوصية',
-    description: 'خيارات متنوعة من PVC والحديد والقماش لضمان الخصوصية التامة والحماية من العوامل الجوية',
+    title: 'السواتر',
+    description: 'خصوصية تامة وحماية مضمونة',
     icon: Shield,
     features: [
-      'سواتر PVC عالية الجودة',
-      'سواتر حديدية مقاومة للعوامل الجوية',
-      'سواتر قماشية مرنة ومتينة',
-      'خصوصية كاملة 100%',
-      'تشكيلة واسعة من الألوان والتصاميم',
-      'سواتر للحدائق والفلل'
+      'PVC وحديد وقماش',
+      'خصوصية 100%'
     ],
     href: '/services/sawater',
+    price: 'من 1,800 ر.س',
     bgColor: 'bg-purple-50',
     iconColor: 'text-purple-600',
   },
   {
     id: 'byoot-shaar',
-    title: 'بيوت الشعر التراثية',
-    description: 'تصاميم أصيلة تحافظ على التراث السعودي العريق مع لمسة عصرية تناسب الاستخدام الحديث',
+    title: 'بيوت الشعر',
+    description: 'تراث أصيل بلمسة عصرية',
     icon: Home,
     features: [
-      'بيوت شعر تراثية أصيلة 100%',
-      'تصنيع يدوي متقن ومتخصص',
-      'بيوت شعر للمناسبات والاستراحات',
-      'تراث سعودي عريق',
-      'مواد طبيعية عالية الجودة',
-      'تصاميم تراثية وعصرية'
+      'تصنيع يدوي متقن',
+      'تراث سعودي أصيل'
     ],
     href: '/services/byoot-shaar',
     bgColor: 'bg-amber-50',
@@ -116,15 +102,11 @@ const services = [
   {
     id: 'landscaping',
     title: 'تنسيق الحدائق',
-    description: 'تصميم احترافي للحدائق مع زراعة نباتات مناسبة وأنظمة ري حديثة وتيل صناعي',
+    description: 'تصميم احترافي وأنظمة ري ذكية',
     icon: Flower,
     features: [
-      'تنسيق حدائق فلل ومنازل راقية',
-      'تصميم حدائق عصرية ومميزة',
-      'زراعة نباتات مناسبة للمناخ',
-      'أنظمة ري حديثة وذكية',
-      'تيل صناعي عالي الجودة',
-      'صيانة دورية للحدائق'
+      'تصميم عصري',
+      'نباتات مناسبة للمناخ'
     ],
     href: '/services/landscaping',
     bgColor: 'bg-emerald-50',
@@ -133,15 +115,11 @@ const services = [
   {
     id: 'khayyam',
     title: 'الخيام الملكية',
-    description: 'تصاميم فاخرة بمواصفات عالمية للمناسبات الخاصة والأفراح والاستراحات',
+    description: 'فخامة عالمية للمناسبات الخاصة',
     icon: Tent,
     features: [
-      'خيام ملكية فاخرة للمناسبات',
-      'تصاميم ملكية حصرية وراقية',
-      'أقمشة عالية الجودة والفخامة',
-      'خيام أفراح ومناسبات خاصة',
-      'مناسبة لجميع المناسبات',
-      'تركيب وتجهيز كامل'
+      'تصاميم ملكية حصرية',
+      'مناسبات وأفراح'
     ],
     href: '/services/khayyam',
     bgColor: 'bg-rose-50',
@@ -163,28 +141,35 @@ export default function ServicesSection() {
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "خدمات محترفين الديار العالمية",
-      "itemListElement": services.map(service => ({
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": service.title,
-          "description": service.description,
-          "serviceType": service.title,
-          "url": `https://yourdomain.com${service.href}`,
-          "offers": service.price ? {
+      "itemListElement": services
+        .filter(service => {
+          // Only include services with valid numeric pricing
+          const numericPrice = service.price ? service.price.replace(/[^\d]/g, '') : '';
+          return numericPrice && numericPrice.length > 0;
+        })
+        .map(service => {
+          const numericPrice = service.price!.replace(/[^\d]/g, '');
+          
+          return {
             "@type": "Offer",
-            "price": service.price.replace(/[^\d]/g, ''),
+            "itemOffered": {
+              "@type": "Service",
+              "name": service.title,
+              "description": service.description,
+              "serviceType": service.title,
+              "url": `https://yourdomain.com${service.href}`
+            },
+            "price": numericPrice,
             "priceCurrency": "SAR",
             "priceSpecification": {
               "@type": "UnitPriceSpecification",
               "priceCurrency": "SAR",
-              "price": service.price.replace(/[^\d]/g, ''),
+              "price": numericPrice,
               "unitText": "ريال سعودي"
             },
             "description": service.price
-          } : undefined
-        }
-      }))
+          };
+        })
     }
   };
 
@@ -206,50 +191,59 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {/* Enhanced Services Grid with More Spacing */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
           {services.map((service) => {
             const IconComponent = service.icon;
             return (
-              <div key={service.id} className="group hover:shadow-xl transition-all duration-300 bg-white rounded-xl overflow-hidden border">
-                {/* Service Header */}
-                <div className={`${service.bgColor} p-6 text-center`}>
-                  <div className={`inline-flex items-center justify-center w-16 h-16 ${service.iconColor} bg-white rounded-full mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className="w-8 h-8" />
+              <div key={service.id} className="group relative hover:shadow-2xl transition-all duration-500 bg-white rounded-2xl overflow-hidden border-2 border-transparent hover:border-accent hover:-translate-y-2">
+                {/* Badge for Popular Services */}
+                {service.badge && (
+                  <div className={`absolute top-3 right-3 ${service.badgeColor} text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg z-10 animate-pulse`}>
+                    {service.badge}
                   </div>
-                  <h3 className="text-xl font-bold text-primary mb-2">
+                )}
+
+                {/* Service Header */}
+                <div className={`${service.bgColor} p-8 text-center relative`}>
+                  <div className={`inline-flex items-center justify-center w-20 h-20 ${service.iconColor} bg-white rounded-2xl mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
+                    <IconComponent className="w-10 h-10" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary mb-2">
                     {service.title}
                   </h3>
                 </div>
 
-                {/* Service Content */}
-                <div className="p-6">
-                  <p className="text-muted-foreground mb-4 leading-relaxed text-sm">
+                {/* Service Content with More Padding */}
+                <div className="p-8">
+                  <p className="text-muted-foreground mb-6 leading-relaxed text-base font-medium">
                     {service.description}
                   </p>
 
-                  {/* Features */}
-                  <ul className="space-y-2 mb-4">
+                  {/* Minimal Features */}
+                  <ul className="space-y-3 mb-6">
                     {service.features.map((feature, index) => (
                       <li key={`${service.id}-feature-${index}`} className="flex items-center text-sm text-muted-foreground">
-                        <div className="w-2 h-2 bg-accent rounded-full ml-3" />
-                        {feature}
+                        <div className="w-2.5 h-2.5 bg-gradient-to-r from-accent to-amber-500 rounded-full ml-3 group-hover:scale-125 transition-transform" />
+                        <span className="font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
-                  {/* Price if available */}
+                  {/* Price Badge */}
                   {service.price && (
-                    <p className="text-sm font-semibold text-primary mb-4">
-                      السعر: {service.price}
-                    </p>
+                    <div className="bg-gradient-to-r from-accent/10 to-amber-500/10 rounded-xl p-4 mb-6 text-center">
+                      <p className="text-lg font-bold bg-gradient-to-r from-accent to-amber-600 bg-clip-text text-transparent">
+                        {service.price}
+                      </p>
+                    </div>
                   )}
 
-                  {/* CTA Button */}
-                  <Button asChild variant="outline" className="w-full group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-all duration-300">
+                  {/* Enhanced CTA Button */}
+                  <Button asChild variant="outline" className="w-full group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-amber-500 group-hover:text-white group-hover:border-transparent transition-all duration-500 py-6 font-bold shadow-md group-hover:shadow-xl">
                     <Link href={service.href} className="flex items-center justify-center space-x-2 space-x-reverse">
-                      <span>تفاصيل أكثر</span>
-                      <ArrowLeft className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      <span>التفاصيل</span>
+                      <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform duration-300" />
                     </Link>
                   </Button>
                 </div>
