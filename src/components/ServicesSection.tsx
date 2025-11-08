@@ -154,15 +154,15 @@ export default function ServicesSection() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "serviceType": "خدمات محترفين الديار",
+    "serviceType": "خدمات محترفين الديار العالمية",
     "provider": {
       "@type": "Organization",
-      "name": "محترفين الديار",
+      "name": "محترفين الديار العالمية",
       "url": "https://yourdomain.com"
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "خدمات محترفين الديار",
+      "name": "خدمات محترفين الديار العالمية",
       "itemListElement": services.map(service => ({
         "@type": "Offer",
         "itemOffered": {

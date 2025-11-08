@@ -47,7 +47,7 @@ export default function ProjectStructuredData({ project }: ProjectStructuredData
       "سواتر",
       "برجولات",
       "تنسيق حدائق",
-      "محترفين الديار"
+      "محترفين الديار العالمية"
     ].join(", "),
     "locationCreated": {
       "@type": "Place",

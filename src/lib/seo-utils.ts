@@ -580,7 +580,7 @@ export function generateOrganizationSchema(data?: {
     ],
     "founder": {
       "@type": "Person",
-      "name": "محترفين الديار"
+      "name": "محترفين الديار العالمية"
     },
     "foundingDate": "2010",
     "areaServed": {
