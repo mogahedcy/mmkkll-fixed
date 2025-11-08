@@ -263,7 +263,7 @@ export default function SandwichPanelPage() {
 
   const serviceSchema = generateServiceSchema({
     name: 'غرف ساندوتش بانل في جدة - سكنية وتجارية وصناعية',
-    description: 'أفضل غرف ساندوتش بانل في جدة من مؤسسة الديار العالمية. غرف سكنية، تجارية، صناعية ومستودعات. عزل حراري وصوتي ممتاز. ضمان 10 سنوات.',
+    description: 'أفضل غرف ساندوتش بانل في جدة من محترفين الديار العالمية. غرف سكنية، تجارية، صناعية ومستودعات. عزل حراري وصوتي ممتاز. ضمان 10 سنوات.',
     areaServed: 'جدة',
     priceRange: '165-220',
     image: pageImage,
@@ -324,7 +324,7 @@ export default function SandwichPanelPage() {
 
             {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              مؤسسة الديار العالمية - خبرة 15 عاماً في تصميم وتنفيذ غرف ساندوتش بانل عالية الجودة.
+              محترفين الديار العالمية - خبرة 15 عاماً في تصميم وتنفيذ غرف ساندوتش بانل عالية الجودة.
               عزل حراري وصوتي فائق، تركيب سريع، أسعار تبدأ من 165 ريال/م²
             </p>
 
