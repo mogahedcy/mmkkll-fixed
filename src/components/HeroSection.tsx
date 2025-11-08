@@ -82,79 +82,73 @@ export default function HeroSection() {
 
       {/* Hero Content */}
       <div className="relative z-20 text-center text-white px-4 max-w-7xl mx-auto">
-        {/* Trust Badges Row */}
-        <div className="flex flex-wrap justify-center items-center gap-4 mb-8 animate-fade-in">
-          <div className="bg-gradient-to-br from-amber-500 to-amber-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 transform hover:scale-105 transition-transform">
-            <Star className="w-4 h-4 fill-current" />
-            <span>خبرة 15+ عاماً</span>
+        {/* Trust Badges - محسن للجوال */}
+        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8 animate-fade-in px-4">
+          <div className="bg-gradient-to-br from-amber-500 to-amber-600 text-white px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 rounded-full text-xs sm:text-sm font-bold shadow-xl flex items-center gap-1.5 sm:gap-2 transform hover:scale-105 transition-transform">
+            <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-current flex-shrink-0" />
+            <span className="whitespace-nowrap">خبرة 15+ عاماً</span>
           </div>
-          <div className="bg-gradient-to-br from-green-500 to-green-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 transform hover:scale-105 transition-transform">
-            <Shield className="w-4 h-4" />
-            <span>ضمان 10 سنوات</span>
+          <div className="bg-gradient-to-br from-green-500 to-green-600 text-white px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 rounded-full text-xs sm:text-sm font-bold shadow-xl flex items-center gap-1.5 sm:gap-2 transform hover:scale-105 transition-transform">
+            <Shield className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="whitespace-nowrap">ضمان 10 سنوات</span>
           </div>
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 transform hover:scale-105 transition-transform">
-            <Award className="w-4 h-4" />
-            <span>+5000 مشروع</span>
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 rounded-full text-xs sm:text-sm font-bold shadow-xl flex items-center gap-1.5 sm:gap-2 transform hover:scale-105 transition-transform">
+            <Award className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="whitespace-nowrap">+5000 مشروع</span>
           </div>
         </div>
 
-        {/* Main Heading with Animation */}
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-slide-up">
-          <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+        {/* Main Heading - محسن للقراءة على الجوال */}
+        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 sm:mb-6 leading-tight animate-slide-up px-4">
+          <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent block">
             محترفين الديار
           </span>
-          <span className="block text-3xl md:text-5xl lg:text-6xl mt-3 bg-gradient-to-r from-accent via-amber-400 to-accent bg-clip-text text-transparent font-extrabold">
+          <span className="block text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl mt-2 sm:mt-3 bg-gradient-to-r from-accent via-amber-400 to-accent bg-clip-text text-transparent font-extrabold">
             رواد المظلات والبرجولات في جدة
           </span>
         </h1>
 
-        {/* Simplified Subheading */}
-        <p className="text-xl md:text-2xl mb-10 text-gray-200 leading-relaxed max-w-3xl mx-auto font-medium">
+        {/* Subheading - مبسط للجوال */}
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 text-gray-200 leading-relaxed max-w-3xl mx-auto font-medium px-4">
           حماية فاخرة • تصاميم عصرية • جودة مضمونة
         </p>
 
-        {/* Enhanced CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-16">
-          <Button asChild size="lg" className="text-lg px-10 py-7 h-auto shadow-2xl bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 transform hover:scale-105 transition-all duration-300">
-            <Link href="https://wa.me/+966553719009" className="flex items-center space-x-3 space-x-reverse">
-              <MessageCircle className="w-6 h-6" />
-              <span className="font-bold">استشارة مجانية الآن</span>
+        {/* أزرار CTA محسّنة للجوال */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 justify-center items-stretch sm:items-center mb-8 sm:mb-12 md:mb-16 px-4 max-w-2xl mx-auto">
+          <Button asChild size="lg" className="w-full sm:w-auto text-base sm:text-lg font-bold shadow-2xl bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 transform hover:scale-105 transition-all duration-300 active:scale-95">
+            <Link href="https://wa.me/+966553719009" className="flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse">
+              <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+              <span>استشارة مجانية الآن</span>
             </Link>
           </Button>
 
-          <Button asChild variant="outline" size="lg" className="text-lg px-10 py-7 h-auto shadow-xl bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-bold transform hover:scale-105 transition-all duration-300">
-            <Link href="tel:+966553719009" className="flex items-center space-x-3 space-x-reverse">
-              <Phone className="w-6 h-6" />
-              <span>966553719009+</span>
+          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto text-base sm:text-lg shadow-xl bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-bold transform hover:scale-105 transition-all duration-300 active:scale-95">
+            <Link href="tel:+966553719009" className="flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse">
+              <Phone className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+              <span className="text-sm sm:text-base">966553719009+</span>
             </Link>
           </Button>
         </div>
 
-        {/* All Services Quick Access */}
-        <div className="flex flex-wrap justify-center gap-3 text-sm max-w-4xl mx-auto">
-          <Link href="/services/mazallat" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+        {/* روابط سريعة للخدمات - محسن للجوال */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5 md:gap-3 text-xs sm:text-sm max-w-4xl mx-auto px-4">
+          <Link href="/services/mazallat" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             مظلات سيارات
           </Link>
-          <Link href="/services/pergolas" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+          <Link href="/services/pergolas" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             برجولات
           </Link>
-          <Link href="/services/sawater" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+          <Link href="/services/sawater" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             سواتر
           </Link>
-          <Link href="/services/sandwich-panel" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+          <Link href="/services/sandwich-panel" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             ساندوتش بانل
           </Link>
-          <Link href="/services/renovation" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
-            ترميم
-          </Link>
-          <Link href="/services/landscaping" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+          <Link href="/services/landscaping" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
             تنسيق حدائق
           </Link>
-          <Link href="/services/byoot-shaar" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+          <Link href="/services/byoot-shaar" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
             بيوت شعر
-          </Link>
-          <Link href="/services/khayyam" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
-            خيام ملكية
           </Link>
         </div>
       </div>

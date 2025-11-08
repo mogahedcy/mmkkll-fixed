@@ -34,7 +34,14 @@ Preferred communication style: Simple, everyday language.
 ## SEO & Performance
 - **SEO Optimization**: Automated sitemap generation, robots.txt, comprehensive structured data (Article, Service, CreativeWork, Review, FAQ, LocalBusiness), canonical URLs, hreflang tags, and Google Business Profile integration.
 - **Search Engine Indexing**: IndexNow API integration.
-- **Performance Optimizations**: Cloudinary for image/video CDN, lazy loading, code splitting, caching, database query optimization (Prisma), React `cache()` for deduplication, and bundle optimization with Turbopack.
+- **Performance Optimizations**: 
+  - **Image Optimization**: Next.js Image with AVIF/WebP formats, optimized device sizes (up to 1920px), quality set to 75%, extended cache TTL (30 days)
+  - **Font Loading**: Noto Sans Arabic with 3 weights only (400, 500, 700), display: swap for faster rendering, preload enabled
+  - **Code Splitting**: Lazy loading components, dynamic imports, Turbopack for faster builds
+  - **Bundle Analysis**: @next/bundle-analyzer integrated (run `bun run analyze`)
+  - **CSS Optimization**: Tailwind CSS with PurgeCSS, future flags enabled for better performance
+  - **Database**: Query optimization with Prisma, React `cache()` for deduplication
+  - **CDN**: Cloudinary for image/video delivery
 
 ## Security Measures
 - **Authentication**: Secure admin login with encrypted sessions.
@@ -71,4 +78,31 @@ Preferred communication style: Simple, everyday language.
 - **Biome**: Code formatting and linting.
 - **ESLint**: Code quality checks.
 - **PostCSS**: CSS processing.
+- **Bundle Analyzer**: @next/bundle-analyzer for monitoring bundle size.
 - **Vercel**: Deployment platform.
+
+# Recent Performance Improvements (November 2024)
+
+## Image Optimization
+- Reduced maximum device size from 3840px to 1920px for faster mobile loading
+- Changed image quality from 85% to 75% across all components
+- Prioritized AVIF format over WebP for better compression
+- Extended image cache TTL from 7 days to 30 days
+- Optimized responsive image sizes for different screen sizes
+
+## Font Loading
+- Reduced Noto Sans Arabic font weights from 5 to 3 (removed 300 and 600)
+- Added `display: swap` to prevent FOIT (Flash of Invisible Text)
+- Enabled font preloading for faster initial render
+
+## Bundle Size
+- Integrated @next/bundle-analyzer for monitoring
+- Run `bun run analyze` to generate bundle size reports
+- Enabled Tailwind CSS future flags for better tree-shaking
+
+## Expected Performance Improvements
+- **First Contentful Paint (FCP)**: Target < 1.8s
+- **Largest Contentful Paint (LCP)**: Target < 2.5s  
+- **Time to Interactive (TTI)**: Target < 3.8s
+- **Image size reduction**: ~30-40% smaller files
+- **Font loading time**: ~25% faster initial render

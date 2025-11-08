@@ -191,58 +191,58 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* Enhanced Services Grid with More Spacing */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+        {/* محسّن للجوال - بطاقات مبسطة */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-10 mb-16">
           {services.map((service) => {
             const IconComponent = service.icon;
             return (
-              <div key={service.id} className="group relative hover:shadow-2xl transition-all duration-500 bg-white rounded-2xl overflow-hidden border-2 border-transparent hover:border-accent hover:-translate-y-2">
+              <div key={service.id} className="group relative hover:shadow-2xl transition-all duration-500 bg-white rounded-xl md:rounded-2xl overflow-hidden border-2 border-transparent hover:border-accent hover:-translate-y-1 md:hover:-translate-y-2 active:scale-98">
                 {/* Badge for Popular Services */}
                 {service.badge && (
-                  <div className={`absolute top-3 right-3 ${service.badgeColor} text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg z-10 animate-pulse`}>
+                  <div className={`absolute top-2 right-2 md:top-3 md:right-3 ${service.badgeColor} text-white px-2 py-1 md:px-3 md:py-1 rounded-full text-xs font-bold shadow-lg z-10`}>
                     {service.badge}
                   </div>
                 )}
 
-                {/* Service Header */}
-                <div className={`${service.bgColor} p-8 text-center relative`}>
-                  <div className={`inline-flex items-center justify-center w-20 h-20 ${service.iconColor} bg-white rounded-2xl mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
-                    <IconComponent className="w-10 h-10" />
+                {/* Service Header - مبسط للجوال */}
+                <div className={`${service.bgColor} p-5 md:p-8 text-center relative`}>
+                  <div className={`inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 ${service.iconColor} bg-white rounded-xl md:rounded-2xl mb-3 md:mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
+                    <IconComponent className="w-8 h-8 md:w-10 md:h-10" />
                   </div>
-                  <h3 className="text-2xl font-bold text-primary mb-2">
+                  <h3 className="text-xl md:text-2xl font-bold text-primary leading-tight">
                     {service.title}
                   </h3>
                 </div>
 
-                {/* Service Content with More Padding */}
-                <div className="p-8">
-                  <p className="text-muted-foreground mb-6 leading-relaxed text-base font-medium">
+                {/* Service Content - محسن للقراءة على الجوال */}
+                <div className="p-4 sm:p-6 md:p-8">
+                  <p className="text-muted-foreground mb-4 md:mb-6 leading-relaxed text-sm md:text-base font-medium">
                     {service.description}
                   </p>
 
-                  {/* Minimal Features */}
-                  <ul className="space-y-3 mb-6">
-                    {service.features.map((feature, index) => (
-                      <li key={`${service.id}-feature-${index}`} className="flex items-center text-sm text-muted-foreground">
-                        <div className="w-2.5 h-2.5 bg-gradient-to-r from-accent to-amber-500 rounded-full ml-3 group-hover:scale-125 transition-transform" />
+                  {/* Features - مخفي جزئياً على الجوال الصغير */}
+                  <ul className="space-y-2 md:space-y-3 mb-4 md:mb-6">
+                    {service.features.slice(0, 2).map((feature, index) => (
+                      <li key={`${service.id}-feature-${index}`} className="flex items-center text-xs md:text-sm text-muted-foreground">
+                        <div className="w-2 h-2 md:w-2.5 md:h-2.5 bg-gradient-to-r from-accent to-amber-500 rounded-full ml-2 md:ml-3 flex-shrink-0 group-hover:scale-125 transition-transform" />
                         <span className="font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
-                  {/* Price Badge */}
+                  {/* Price Badge - محسن للجوال */}
                   {service.price && (
-                    <div className="bg-gradient-to-r from-accent/10 to-amber-500/10 rounded-xl p-4 mb-6 text-center">
-                      <p className="text-lg font-bold bg-gradient-to-r from-accent to-amber-600 bg-clip-text text-transparent">
+                    <div className="bg-gradient-to-r from-accent/10 to-amber-500/10 rounded-lg md:rounded-xl p-3 md:p-4 mb-4 md:mb-6 text-center">
+                      <p className="text-base md:text-lg font-bold bg-gradient-to-r from-accent to-amber-600 bg-clip-text text-transparent">
                         {service.price}
                       </p>
                     </div>
                   )}
 
-                  {/* Enhanced CTA Button */}
-                  <Button asChild variant="outline" className="w-full group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-amber-500 group-hover:text-white group-hover:border-transparent transition-all duration-500 py-6 font-bold shadow-md group-hover:shadow-xl">
+                  {/* زر CTA محسّن للمس */}
+                  <Button asChild variant="outline" size="default" className="w-full group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-amber-500 group-hover:text-white group-hover:border-transparent transition-all duration-500 font-bold shadow-md group-hover:shadow-xl">
                     <Link href={service.href} className="flex items-center justify-center space-x-2 space-x-reverse">
-                      <span>التفاصيل</span>
+                      <span>اطلب عرض سعر</span>
                       <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform duration-300" />
                     </Link>
                   </Button>
@@ -252,25 +252,25 @@ export default function ServicesSection() {
           })}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-primary mb-4">
+        {/* Bottom CTA - محسن للجوال */}
+        <div className="text-center bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl md:rounded-2xl p-5 sm:p-6 md:p-8">
+          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-3 md:mb-4 leading-tight">
             استشارة مجانية لجميع الخدمات
           </h3>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-muted-foreground mb-5 md:mb-6 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
             فريقنا المتخصص جاهز لمساعدتك في اختيار الحل الأمثل لمشروعك
             وتقديم المشورة المهنية لضمان أفضل النتائج
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg">
-              <Link href="https://wa.me/+966553719009" className="flex items-center space-x-2 space-x-reverse">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-2xl mx-auto">
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <Link href="https://wa.me/+966553719009" className="flex items-center justify-center space-x-2 space-x-reverse">
                 <span>تواصل معنا الآن</span>
                 <ArrowLeft className="w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/portfolio" className="flex items-center space-x-2 space-x-reverse">
-                <span>شاهد جميع أعمالنا المتنوعة</span>
+            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+              <Link href="/portfolio" className="flex items-center justify-center space-x-2 space-x-reverse">
+                <span>شاهد أعمالنا</span>
                 <ArrowLeft className="w-4 h-4" />
               </Link>
             </Button>
