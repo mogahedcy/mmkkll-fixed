@@ -2,11 +2,18 @@ import type { Config } from "tailwindcss";
 
 export default {
     darkMode: ["class"],
-    content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+    content: {
+      files: [
+        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+      ],
+      relative: true,
+    },
+    future: {
+      hoverOnlyWhenSupported: true,
+      respectDefaultRingColorOpacity: true,
+    },
   theme: {
     extend: {
       colors: {

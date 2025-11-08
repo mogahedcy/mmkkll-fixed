@@ -8,7 +8,9 @@ import WhatsAppWidget from "@/components/WhatsAppWidget";
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
   subsets: ["arabic"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
+  display: 'swap',
+  preload: true,
 });
 
 export const metadata: Metadata = {

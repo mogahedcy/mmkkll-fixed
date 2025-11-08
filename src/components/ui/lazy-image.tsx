@@ -31,7 +31,7 @@ export function LazyImage({
   placeholder = 'blur',
   fill = false,
   sizes,
-  quality = 85,
+  quality = 75,
   onLoad,
   onError,
   ...props
