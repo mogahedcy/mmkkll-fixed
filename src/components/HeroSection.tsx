@@ -130,8 +130,8 @@ export default function HeroSection() {
           </Button>
         </div>
 
-        {/* Minimal Quick Access */}
-        <div className="flex flex-wrap justify-center gap-4 text-sm">
+        {/* All Services Quick Access */}
+        <div className="flex flex-wrap justify-center gap-3 text-sm max-w-4xl mx-auto">
           <Link href="/services/mazallat" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
             مظلات سيارات
           </Link>
@@ -143,6 +143,18 @@ export default function HeroSection() {
           </Link>
           <Link href="/services/sandwich-panel" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
             ساندوتش بانل
+          </Link>
+          <Link href="/services/renovation" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+            ترميم
+          </Link>
+          <Link href="/services/landscaping" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+            تنسيق حدائق
+          </Link>
+          <Link href="/services/byoot-shaar" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+            بيوت شعر
+          </Link>
+          <Link href="/services/khayyam" className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 text-white font-medium">
+            خيام ملكية
           </Link>
         </div>
       </div>
