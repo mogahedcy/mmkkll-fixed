@@ -129,6 +129,13 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={notoSansArabic.variable}>
       <head>
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/slider1.webp"
+          type="image/webp"
+          fetchPriority="high"
+        />
         <StructuredDataScript data={faqPageSchema} />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>

@@ -1,12 +1,27 @@
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
-import PortfolioSection from '@/components/PortfolioSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
-import StickyWhatsApp from '@/components/StickyWhatsApp';
-import Footer from '@/components/Footer';
 import { generateLocalBusinessSchema, generateOrganizationSchema } from '@/lib/seo-utils';
+
+const PortfolioSection = dynamic(() => import('@/components/PortfolioSection'), {
+  loading: () => <div className="min-h-[400px] animate-pulse bg-gray-100" />,
+  ssr: true
+});
+
+const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSection'), {
+  loading: () => <div className="min-h-[300px] animate-pulse bg-gray-50" />,
+  ssr: true
+});
+
+const StickyWhatsApp = dynamic(() => import('@/components/StickyWhatsApp'), {
+  ssr: false
+});
+
+const Footer = dynamic(() => import('@/components/Footer'), {
+  ssr: true
+});
 
 export const metadata: Metadata = {
   title: 'محترفين الديار | مظلات وبرجولات - ضمان 10 سنوات',

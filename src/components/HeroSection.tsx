@@ -26,32 +26,14 @@ const slides = [
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [slides.length, mounted]);
-
-  if (!mounted) {
-    return (
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-10 text-center text-white">
-          <div className="animate-pulse">جاري التحميل...</div>
-        </div>
-      </section>
-    );
-  }
+  }, [slides.length]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
@@ -69,9 +51,12 @@ export default function HeroSection() {
               alt={slide.alt}
               fill
               style={{ objectFit: 'cover' }}
-              quality={75}
+              quality={index === 0 ? 75 : 65}
               priority={index === 0}
+              loading={index === 0 ? 'eager' : 'lazy'}
               sizes="100vw"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMyMzI3MmEiLz48L3N2Zz4="
             />
           </div>
         ))}
