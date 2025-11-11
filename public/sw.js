@@ -13,22 +13,28 @@ const STATIC_ASSETS = [
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif', '.svg'];
 
 self.addEventListener('install', (event) => {
+  console.log('⚙️ Service Worker installing...');
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
-      return cache.addAll(STATIC_ASSETS.filter(asset => asset !== '/offline.html'));
+      console.log('📦 Caching static assets:', STATIC_ASSETS);
+      return cache.addAll(STATIC_ASSETS);
     })
   );
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
+  console.log('✅ Service Worker activated');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
           .filter((name) => name.startsWith('aldeyar-') && 
                            ![CACHE_NAME, STATIC_CACHE, DYNAMIC_CACHE, IMAGE_CACHE].includes(name))
-          .map((name) => caches.delete(name))
+          .map((name) => {
+            console.log('🗑️ Deleting old cache:', name);
+            return caches.delete(name);
+          })
       );
     })
   );
