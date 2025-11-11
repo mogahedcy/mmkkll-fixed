@@ -7,6 +7,8 @@ import WhatsAppWidget from "@/components/WhatsAppWidget";
 import BottomNavigation from "@/components/BottomNavigation";
 import FloatingCallButton from "@/components/FloatingCallButton";
 import { WebVitals } from "./web-vitals";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -151,6 +153,8 @@ export default function RootLayout({
         <StructuredDataScript data={faqPageSchema} />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
+        <GoogleAnalytics />
+        <ServiceWorkerRegister />
         <WebVitals />
         <ClientBody>{children}</ClientBody>
         <WhatsAppWidget />
