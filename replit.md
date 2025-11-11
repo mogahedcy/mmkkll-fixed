@@ -8,53 +8,44 @@ Preferred communication style: Simple, everyday language.
 
 # System Architecture
 
-## Frontend Architecture
-- **Framework**: Next.js 15.5.0 with App Router and React 18
-- **Styling**: Tailwind CSS with custom component library using Shadcn/UI and Radix UI primitives
-- **Typography**: Noto Sans Arabic for Arabic content
-- **Animations**: Framer Motion for smooth UI transitions
-- **Image Management**: Next.js Image optimization with WebP/AVIF support.
+## Frontend
+- **Framework**: Next.js 15.5.0 with App Router and React 18.
+- **Styling**: Tailwind CSS, Shadcn/UI, Radix UI.
+- **Typography**: Noto Sans Arabic.
+- **Animations**: Framer Motion.
+- **Image Management**: Next.js Image optimization (WebP/AVIF).
+- **UI/UX**: Responsive design with mobile-first considerations, including optimized typography, touch-friendly interfaces, and mobile navigation components (bottom nav bar, floating call button). Consistent branding with theme-color meta tag.
 
-## Backend Architecture
-- **API Routes**: Next.js App Router API routes
-- **Authentication**: JWT-based admin authentication with bcrypt hashing and secure session management.
-- **File Upload**: Multi-format file upload system for images and videos with enhanced video support:
-  - Image uploads: up to 100MB
-  - Video uploads: up to 200MB via Cloudinary
-  - Extended timeout for large video files (5 minutes)
-  - Chunked upload support for videos (6MB chunks)
-  - Intelligent fallback to local storage if Cloudinary unavailable
-  - Comprehensive error messages with recovery guidance
+## Backend
+- **API Routes**: Next.js App Router API routes.
+- **Authentication**: JWT-based admin authentication with bcrypt and secure sessions.
+- **File Upload**: Multi-format file upload (images up to 100MB, videos up to 200MB via Cloudinary) with chunked uploads, extended timeouts, and intelligent fallback to local storage.
 - **Content Management**: RESTful API for project and content CRUD operations.
 
-## Database Design
-- **ORM**: Prisma ORM for type-safe operations.
-- **Schema**: Models for Projects (with media, tags, materials), Articles (with media, tags, comments, likes, views), Admin Users, and interaction analytics.
+## Database
+- **ORM**: Prisma ORM.
+- **Schema**: Models for Projects (media, tags, materials), Articles (media, tags, comments, likes, views), Admin Users, and analytics.
 
 ## Content Management System (CMS)
-- **Portfolio**: Advanced project showcase with filtering, search, and categorization.
-- **Articles**: Complete blog/articles archive with dynamic sitemap generation and full CRUD.
-- **Media Management**: Support for multiple media types per project/article with ordering.
-- **Admin Dashboard**: Full-featured interface for content administration.
+- **Features**: Advanced project showcase, blog/articles archive, dynamic sitemap generation, comprehensive media management, and a full-featured admin dashboard.
 
 ## SEO & Performance
-- **SEO Optimization**: Automated sitemap generation, robots.txt, comprehensive structured data (Article, Service, CreativeWork, Review, FAQ, LocalBusiness), canonical URLs, hreflang tags, and Google Business Profile integration.
-- **Search Engine Indexing**: IndexNow API integration.
-- **Performance Optimizations**: 
-  - **Image Optimization**: Next.js Image with AVIF/WebP formats, optimized device sizes (up to 1920px), quality set to 75%, extended cache TTL (30 days)
-  - **Font Loading**: Noto Sans Arabic with 3 weights only (400, 500, 700), display: swap for faster rendering, preload enabled
-  - **Code Splitting**: Lazy loading components, dynamic imports, Turbopack for faster builds
-  - **Bundle Analysis**: @next/bundle-analyzer integrated (run `bun run analyze`)
-  - **CSS Optimization**: Tailwind CSS with PurgeCSS, future flags enabled for better performance
-  - **Database**: Query optimization with Prisma, React `cache()` for deduplication
-  - **CDN**: Cloudinary for image/video delivery
+- **SEO**: Automated sitemap generation, robots.txt, structured data (Article, Service, CreativeWork, Review, FAQ, LocalBusiness), canonical URLs, hreflang, Google Business Profile integration, IndexNow API.
+- **Performance**:
+    - **Image Optimization**: Next.js Image with AVIF/WebP, optimized device sizes (up to 1920px), 75% quality, extended cache TTL, priority loading for critical images.
+    - **Font Loading**: Noto Sans Arabic (3 weights), `display: swap`, preloading.
+    - **Code Splitting**: Lazy loading components, dynamic imports.
+    - **Caching**: React `cache()`, CDN via Cloudinary.
+    - **PWA**: Service Worker with versioned caching, offline support, PWA manifest, and "Add to Home Screen" capability.
+    - **Web Vitals Monitoring**: Integrated component for real-time FCP, LCP, CLS, TTFB, INP tracking, with GA4 forwarding.
+    - **Resource Hints**: DNS Prefetch, Preconnect, Prefetch for critical resources.
 
-## Security Measures
-- **Authentication**: Secure admin login with encrypted sessions.
-- **Input Validation**: Zod schemas for API request validation.
-- **Rate Limiting**: Express rate limiting for API endpoints.
-- **Content Security**: DOMPurify for safe HTML rendering.
-- **Environment Variables**: Secure configuration management.
+## Security
+- **Authentication**: Secure admin login.
+- **Input Validation**: Zod schemas for API requests.
+- **Rate Limiting**: Express rate limiting.
+- **Content Security**: DOMPurify for HTML rendering.
+- **Configuration**: Secure environment variable management.
 
 # External Dependencies
 
@@ -80,151 +71,12 @@ Preferred communication style: Simple, everyday language.
 - **DOMPurify**: HTML sanitization.
 - **Zod**: Runtime type validation.
 
+## Analytics
+- **Google Analytics 4**: For comprehensive site analytics and Web Vitals tracking.
+
 ## Development & Deployment
 - **Biome**: Code formatting and linting.
 - **ESLint**: Code quality checks.
 - **PostCSS**: CSS processing.
-- **Bundle Analyzer**: @next/bundle-analyzer for monitoring bundle size.
+- **@next/bundle-analyzer**: For monitoring bundle size.
 - **Vercel**: Deployment platform.
-
-# Recent Performance Improvements (November 2024)
-
-## Critical LCP Optimizations (November 11, 2024)
-Based on PageSpeed Insights analysis showing LCP of 4.1s, implemented targeted improvements:
-
-### Hero Section SSR Enhancement
-- **Removed mounted guard** from HeroSection component to enable immediate server-side rendering
-- Hero image now renders instantly on first paint without waiting for hydration
-- Eliminated ~1-2s delay from client-side state initialization
-
-### Image Quality Optimization
-- **Hero first slide**: 75% quality (previously 85%)
-- **Hero slides 2-3**: 65% quality (previously 70%)
-- Added `priority` attribute to first hero image for preload
-- Added `loading="eager"` for first slide, `loading="lazy"` for slides 2-3
-- Implemented blur placeholder for all hero images
-- Added preload link in layout.tsx for critical hero image
-
-### Code Splitting with SSR Preservation
-- **PortfolioSection**: Dynamic import with `ssr: true` for SEO-critical content
-- **TestimonialsSection**: Dynamic import with `ssr: true` for social proof visibility
-- **Footer**: Dynamic import with `ssr: true` for contact information accessibility
-- **StickyWhatsApp**: Dynamic import with `ssr: false` (client-only widget)
-- Maintains immediate content visibility while splitting client-side JS bundles
-
-## Image Optimization
-- Reduced maximum device size from 3840px to 1920px for faster mobile loading
-- Changed image quality from 85% to 75% across all components
-- Prioritized AVIF format over WebP for better compression
-- Extended image cache TTL from 7 days to 30 days
-- Optimized responsive image sizes for different screen sizes
-
-## Font Loading
-- Reduced Noto Sans Arabic font weights from 5 to 3 (removed 300 and 600)
-- Added `display: swap` to prevent FOIT (Flash of Invisible Text)
-- Enabled font preloading for faster initial render
-
-## Bundle Size
-- Integrated @next/bundle-analyzer for monitoring
-- Run `bun run analyze` to generate bundle size reports
-- Enabled Tailwind CSS future flags for better tree-shaking
-
-## Performance Targets
-- **First Contentful Paint (FCP)**: Target < 1.8s
-- **Largest Contentful Paint (LCP)**: Target < 2.5s (improved from 4.1s)
-- **Time to Interactive (TTI)**: Target < 3.8s
-- **Image size reduction**: ~30-40% smaller files
-- **Font loading time**: ~25% faster initial render
-
-## Next Steps for Performance Validation
-1. Re-run PageSpeed Insights on mobile to measure actual LCP improvement
-2. Monitor hero image file sizes to ensure they stay within performance budget
-3. Verify slider lazy loading on slow networks
-
-## Additional Performance & Infrastructure Improvements (November 11, 2025)
-
-### Next.js 15 Compatibility Fix
-- **Fixed dynamic import error**: Removed `ssr: false` option from StickyWhatsApp dynamic import
-- In Next.js 15, `ssr: false` is not allowed in Server Components
-- The component already has `'use client'` directive, so SSR behavior is handled automatically
-- Resolved 500 error on homepage
-
-### Resource Hints & Preloading
-- **Added theme-color meta tag**: #059669 (brand green) for better mobile browser integration
-- **DNS Prefetch**: Added for Cloudinary (res.cloudinary.com) and Google Fonts
-- **Preconnect**: Established early connections to Cloudinary and Google Fonts with CORS support
-- **Prefetch**: Added for critical pages (/portfolio, /contact) to improve navigation speed
-- Expected improvement: ~200-400ms faster resource loading
-
-### Web Vitals Monitoring
-- **Created Web Vitals component**: Real-time monitoring of Core Web Vitals
-- Development logging: Console output for FCP, LCP, CLS, TTFB, INP
-- Production ready: Automatic integration with Google Analytics (gtag) when available
-- Current metrics: FCP 996ms (good), TTFB 388.5ms (good)
-
-### System Dependencies
-- **Installed OpenSSL**: Fixed Prisma client initialization error
-- Resolved "libssl.so.3: cannot open shared object file" error
-- Database connection now working properly
-
-### Configuration Cleanup
-- **Removed invalid config**: Deleted `images.qualities` from next.config.js
-- Next.js doesn't support array of qualities; quality is set per-image or globally
-- All images already have quality settings in their respective components
-
-### Performance Results
-- **Load Complete**: 0.50-0.70ms (excellent)
-- **FCP (First Contentful Paint)**: 996ms - rated "good" by Web Vitals
-- **TTFB (Time to First Byte)**: 388.5ms - rated "good" by Web Vitals
-- All core pages (/, /portfolio, /contact) responding with 200 OK
-- API endpoints working without errors
-
-# Mobile Experience Enhancements (November 2024)
-
-## Typography for Mobile
-- Enforced 16px minimum font size across all mobile devices
-- Increased line-height to 1.7-1.8 for better readability on small screens
-- Optimized heading sizes with responsive scaling (text-3xl on mobile → text-8xl on desktop)
-- Added letter-spacing for improved text clarity
-
-## Touch-Friendly Interface
-- **Button Sizes**: Minimum 44x44px tap targets on mobile (Apple guidelines)
-- **Spacing**: 8px minimum between interactive elements
-- **Active States**: Added active:scale-95 for visual feedback on touch
-- **Full-width CTAs**: Primary buttons span full width on mobile for easier interaction
-
-## Mobile Navigation Components
-- **Bottom Navigation Bar**: Fixed bottom navigation with 5 key actions (Home, Services, WhatsApp, Search, Contact)
-- **Floating Call Button**: Animated call button appears after 300px scroll, positioned to avoid bottom nav
-- **Improved Mobile Menu**: Touch-optimized hamburger menu with larger touch targets and clear visual hierarchy
-
-## Service Cards Optimization
-- Reduced padding and margins on mobile (p-4 vs p-8 on desktop)
-- Simplified content - showing only top 2 features on mobile
-- Larger icons (w-16 h-16) and clearer CTAs
-- Responsive border-radius (rounded-xl on mobile, rounded-2xl on desktop)
-
-## Hero Section Mobile-First Design
-- Responsive trust badges with flexible wrapping
-- Multi-tier heading sizes (text-3xl → text-8xl across breakpoints)
-- Full-width CTA buttons with prominent sizing
-- Hidden secondary service links on smallest screens to reduce clutter
-
-## Image Optimization for Mobile
-- Added 400px device size for sub-640px devices
-- Created ResponsiveImage component with lazy loading and loading states
-- Maintained AVIF/WebP priority with 75% quality
-- Optimized sizes attribute for mobile: `(max-width: 640px) 100vw`
-
-## Mobile-Specific UX Patterns
-- Touch target utility class (.touch-target) for consistent 44x44px sizing
-- Pull-to-refresh consideration in scroll handlers
-- Swipe-friendly carousel implementations
-- Bottom sheet pattern for mobile actions
-- Body padding (pb-16) to accommodate bottom navigation
-
-## Expected Mobile UX Improvements
-- **Bounce Rate**: Expected 15-20% reduction due to improved readability
-- **Tap Success Rate**: Target >95% with 44x44px minimum touch targets
-- **Mobile Conversion**: Expected 10-15% increase from clearer CTAs
-- **Session Duration**: Target +25% from improved content accessibility
