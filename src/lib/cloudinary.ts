@@ -100,6 +100,7 @@ export async function uploadToCloudinary(
     public_id?: string;
     resource_type?: 'auto' | 'image' | 'video' | 'raw';
     transformation?: any;
+    timeout?: number;
   } = {}
 ): Promise<CloudinaryUploadResult> {
   // التحقق من إعداد Cloudinary
@@ -134,11 +135,16 @@ export async function uploadToCloudinary(
       throw new Error(`نوع الملف غير مدعوم: ${file.type}`);
     }
 
+    // تحديد timeout حسب نوع الملف (أطول للفيديو)
+    const uploadTimeout = options.timeout || (isVideo ? 300000 : 120000); // 5 دقائق للفيديو، 2 دقيقة للصور
+
     const defaultOptions = {
       folder: options.folder || 'portfolio',
       resource_type: options.resource_type || (isVideo ? 'video' : isImage ? 'image' : 'auto'),
       public_id: options.public_id,
       transformation: options.transformation,
+      timeout: uploadTimeout,
+      chunk_size: isVideo ? 6000000 : undefined, // 6MB chunks للفيديو لتحسين الرفع
       ...options
     };
 
@@ -148,12 +154,13 @@ export async function uploadToCloudinary(
       size: file.size,
       folder: defaultOptions.folder,
       resource_type: defaultOptions.resource_type,
-      sizeInMB: (file.size / 1024 / 1024).toFixed(2) + 'MB'
+      sizeInMB: (file.size / 1024 / 1024).toFixed(2) + 'MB',
+      timeout: `${uploadTimeout / 1000}s`
     });
 
-    // رفع الملف
+    // رفع الملف مع timeout مدمج من Cloudinary
     const result: CloudinaryUploadResult = await new Promise((resolve, reject) => {
-      cloudinary.uploader.upload_stream(
+      const uploadStream = cloudinary.uploader.upload_stream(
         defaultOptions,
         (error, result) => {
           if (error) {
@@ -178,7 +185,8 @@ export async function uploadToCloudinary(
             reject(new Error('لم يتم إرجاع نتيجة من Cloudinary'));
           }
         }
-      ).end(buffer);
+      );
+      uploadStream.end(buffer);
     });
 
     return result;
@@ -193,12 +201,14 @@ export async function uploadToCloudinary(
         errorMessage = 'اسم Cloud غير صحيح في إعدادات Cloudinary';
       } else if (error.message.includes('Invalid API key')) {
         errorMessage = 'API Key غير صحيح في إعدادات Cloudinary';
-      } else if (error.message.includes('file size')) {
-        errorMessage = 'حجم الملف كبير جداً. الحد الأقصى للفيديو 100MB';
-      } else if (error.message.includes('timeout')) {
-        errorMessage = 'انتهت مهلة رفع الملف. جرب ملف أصغر';
-      } else if (error.message.includes('resource_type')) {
-        errorMessage = 'نوع الملف غير مدعوم. جرب صيغة أخرى';
+      } else if (error.message.includes('file size') || error.message.includes('File size too large')) {
+        errorMessage = 'حجم الملف كبير جداً. الحد الأقصى للفيديو 200MB';
+      } else if (error.message.includes('timeout') || error.message.includes('انتهت مهلة')) {
+        errorMessage = 'انتهت مهلة رفع الملف. يرجى المحاولة مرة أخرى أو استخدام ملف أصغر';
+      } else if (error.message.includes('resource_type') || error.message.includes('unsupported format')) {
+        errorMessage = 'نوع الملف غير مدعوم. الصيغ المدعومة: MP4, MOV, AVI, WebM';
+      } else if (error.message.includes('network') || error.message.includes('ECONNREFUSED')) {
+        errorMessage = 'خطأ في الاتصال بالإنترنت. تحقق من الاتصال وحاول مرة أخرى';
       } else {
         errorMessage = error.message;
       }

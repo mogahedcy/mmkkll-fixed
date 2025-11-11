@@ -104,24 +104,34 @@ export default function ProjectAddClient() {
     setUploadProgress(0);
 
     const errors: string[] = [];
+    const warnings: string[] = [];
     let successCount = 0;
 
     const uploadPromises = Array.from(files).map(async (file, index) => {
-      // التحقق من حجم الملف قبل الرفع
-      const maxSize = 100 * 1024 * 1024; // 100MB
-      if (file.size > maxSize) {
-        const sizeMB = (file.size / 1024 / 1024).toFixed(1);
-        errors.push(`${file.name}: حجم الملف (${sizeMB}MB) يتجاوز الحد الأقصى (100MB)`);
-        return null;
-      }
-
-      // التحقق من نوع الملف
+      // التحقق من نوع الملف أولاً
       const isImage = file.type.startsWith('image/');
       const isVideo = file.type.startsWith('video/');
       
       if (!isImage && !isVideo) {
-        errors.push(`${file.name}: نوع الملف غير مدعوم`);
+        errors.push(`${file.name}: نوع الملف غير مدعوم. الصيغ المدعومة: الصور (JPG, PNG, WebP) والفيديو (MP4, MOV, WebM)`);
         return null;
+      }
+
+      // التحقق من حجم الملف مع حدود مختلفة للصور والفيديو
+      const maxImageSize = 100 * 1024 * 1024; // 100MB للصور
+      const maxVideoSize = 200 * 1024 * 1024; // 200MB للفيديو
+      const maxSize = isVideo ? maxVideoSize : maxImageSize;
+      
+      if (file.size > maxSize) {
+        const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+        const maxSizeMB = (maxSize / 1024 / 1024).toFixed(0);
+        errors.push(`${file.name}: حجم الملف (${sizeMB}MB) يتجاوز الحد الأقصى (${maxSizeMB}MB للـ${isVideo ? 'فيديو' : 'صور'})`);
+        return null;
+      }
+
+      // تحذير للملفات الكبيرة
+      if (isVideo && file.size > 50 * 1024 * 1024) {
+        warnings.push(`${file.name}: الملف كبير (${(file.size / 1024 / 1024).toFixed(1)}MB)، قد يستغرق الرفع عدة دقائق`);
       }
 
       const uploadFormData = new FormData();
@@ -136,7 +146,8 @@ export default function ProjectAddClient() {
         const result = await response.json();
 
         if (!response.ok) {
-          errors.push(`${file.name}: ${result.error || 'فشل في رفع الملف'}`);
+          const errorMsg = result.error || result.details || 'فشل في رفع الملف';
+          errors.push(`${file.name}: ${errorMsg}`);
           return null;
         }
         
@@ -145,13 +156,14 @@ export default function ProjectAddClient() {
 
         return {
           type: isVideo ? 'VIDEO' as const : 'IMAGE' as const,
-          src: result.url,
+          src: result.url || result.files?.[0]?.url || result.files?.[0]?.src,
           title: file.name.split('.')[0],
           alt: `${formData.title || 'مشروع'} - ملف ${index + 1}`
         };
       } catch (error) {
         console.error('خطأ في رفع الملف:', error);
-        errors.push(`${file.name}: خطأ في الاتصال`);
+        const errorMsg = error instanceof Error ? error.message : 'خطأ في الاتصال بالخادم';
+        errors.push(`${file.name}: ${errorMsg}`);
         return null;
       }
     });
@@ -163,13 +175,28 @@ export default function ProjectAddClient() {
     setLoading(false);
     setUploadProgress(0);
 
-    // عرض رسائل النتائج
+    // عرض رسائل النتائج مع معلومات مفيدة
+    let message = '';
+    
     if (successCount > 0) {
-      alert(`✅ تم رفع ${successCount} من ${files.length} ملف بنجاح!`);
+      message += `✅ تم رفع ${successCount} من ${files.length} ملف بنجاح!\n\n`;
+    }
+    
+    if (warnings.length > 0 && successCount > 0) {
+      message += `💡 ملاحظات:\n${warnings.join('\n')}\n\n`;
     }
     
     if (errors.length > 0) {
-      alert(`⚠️ فشل رفع بعض الملفات:\n\n${errors.join('\n')}`);
+      message += `⚠️ فشل رفع ${errors.length} ملف:\n${errors.join('\n')}\n\n`;
+      message += `📌 نصائح:\n`;
+      message += `• تأكد من نوع الملف (الصيغ المدعومة: JPG, PNG, WebP, MP4, MOV, WebM)\n`;
+      message += `• تحقق من حجم الملف (حد أقصى: 100MB للصور، 200MB للفيديو)\n`;
+      message += `• تأكد من اتصال الإنترنت لديك\n`;
+      message += `• للفيديوهات الكبيرة: انتظر بضع دقائق إضافية`;
+    }
+    
+    if (message) {
+      alert(message);
     }
   };
 

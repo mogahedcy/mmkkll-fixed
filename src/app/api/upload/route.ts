@@ -27,6 +27,7 @@ function generateSEOFriendlyName(originalName: string): string {
 // إعدادات محسنة للرفع
 const UPLOAD_CONFIG = {
   maxFileSize: isCloudinaryAvailable ? 100 * 1024 * 1024 : 50 * 1024 * 1024, // 100MB/50MB
+  maxVideoSize: 200 * 1024 * 1024, // 200MB للفيديو على Cloudinary
   maxFiles: 20, // حد أقصى 20 ملف في المرة الواحدة
   allowedImageTypes: [
     'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 
@@ -34,7 +35,7 @@ const UPLOAD_CONFIG = {
   ],
   allowedVideoTypes: [
     'video/mp4', 'video/mov', 'video/avi', 'video/webm', 
-    'video/quicktime', 'video/x-msvideo', 'video/mkv'
+    'video/quicktime', 'video/x-msvideo', 'video/mkv', 'video/x-matroska'
   ],
   compressionQuality: {
     image: { quality: 85, width: 1920, height: 1080 },
@@ -114,14 +115,15 @@ export async function POST(request: NextRequest) {
         continue;
       }
 
-      // التحقق من حجم الملف مع رسائل مفصلة
-      if (file.size > UPLOAD_CONFIG.maxFileSize) {
-        const maxSizeMB = (UPLOAD_CONFIG.maxFileSize / 1024 / 1024).toFixed(0);
+      // التحقق من حجم الملف مع رسائل مفصلة (حجم مختلف للفيديو)
+      const maxAllowedSize = isVideo && isCloudinaryAvailable ? UPLOAD_CONFIG.maxVideoSize : UPLOAD_CONFIG.maxFileSize;
+      if (file.size > maxAllowedSize) {
+        const maxSizeMB = (maxAllowedSize / 1024 / 1024).toFixed(0);
         const fileSizeMB = (file.size / 1024 / 1024).toFixed(1);
         console.log(`❌ ملف كبير جداً: ${fileSizeMB}MB > ${maxSizeMB}MB`);
         uploadedFiles.push({
           originalName: file.name,
-          error: `حجم الملف ${fileSizeMB}MB يتجاوز الحد الأقصى ${maxSizeMB}MB`,
+          error: `حجم الملف ${fileSizeMB}MB يتجاوز الحد الأقصى ${maxSizeMB}MB${isVideo ? ' للفيديو' : ''}`,
           type: 'ERROR'
         });
         continue;
@@ -248,8 +250,8 @@ export async function POST(request: NextRequest) {
     }
 
     // فصل الملفات الناجحة عن الخاطئة
-    const successfulFiles = uploadedFiles.filter(file => file.type !== 'ERROR');
-    const failedFiles = uploadedFiles.filter(file => file.type === 'ERROR');
+    const successfulFiles = uploadedFiles.filter(f => f && f.type !== 'ERROR');
+    const failedFiles = uploadedFiles.filter(f => f && f.type === 'ERROR');
 
     console.log('📊 نتيجة الرفع:', {
       successful: successfulFiles.length,
