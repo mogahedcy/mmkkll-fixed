@@ -6,6 +6,7 @@ import StructuredDataScript from "@/components/StructuredDataScript";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import BottomNavigation from "@/components/BottomNavigation";
 import FloatingCallButton from "@/components/FloatingCallButton";
+import { WebVitals } from "./web-vitals";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -128,7 +129,14 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" data-scroll-behavior="smooth" className={notoSansArabic.variable}>
       <head>
+        <meta name="theme-color" content="#059669" />
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
+        
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
         <link
           rel="preload"
           as="image"
@@ -136,9 +144,14 @@ export default function RootLayout({
           type="image/webp"
           fetchPriority="high"
         />
+        
+        <link rel="prefetch" href="/portfolio" />
+        <link rel="prefetch" href="/contact" />
+        
         <StructuredDataScript data={faqPageSchema} />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
+        <WebVitals />
         <ClientBody>{children}</ClientBody>
         <WhatsAppWidget />
         <FloatingCallButton />
