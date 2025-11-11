@@ -3,6 +3,7 @@ run = "npm run dev"
 
 [nix]
 channel = "stable-25_05"
+packages = ["openssl"]
 
 [deployment]
 run = ["sh", "-c", "npm start"]
@@ -27,6 +28,10 @@ externalPort = 8080
 [[ports]]
 localPort = 36271
 externalPort = 3001
+
+[[ports]]
+localPort = 43253
+externalPort = 3003
 
 [workflows]
 runButton = "Project"

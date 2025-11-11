@@ -15,9 +15,7 @@ const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSecti
   ssr: true
 });
 
-const StickyWhatsApp = dynamic(() => import('@/components/StickyWhatsApp'), {
-  ssr: false
-});
+const StickyWhatsApp = dynamic(() => import('@/components/StickyWhatsApp'));
 
 const Footer = dynamic(() => import('@/components/Footer'), {
   ssr: true
