@@ -18,7 +18,13 @@ Preferred communication style: Simple, everyday language.
 ## Backend Architecture
 - **API Routes**: Next.js App Router API routes
 - **Authentication**: JWT-based admin authentication with bcrypt hashing and secure session management.
-- **File Upload**: Multi-format file upload system for images and videos.
+- **File Upload**: Multi-format file upload system for images and videos with enhanced video support:
+  - Image uploads: up to 100MB
+  - Video uploads: up to 200MB via Cloudinary
+  - Extended timeout for large video files (5 minutes)
+  - Chunked upload support for videos (6MB chunks)
+  - Intelligent fallback to local storage if Cloudinary unavailable
+  - Comprehensive error messages with recovery guidance
 - **Content Management**: RESTful API for project and content CRUD operations.
 
 ## Database Design
