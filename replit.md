@@ -52,7 +52,11 @@ Preferred communication style: Simple, everyday language.
     - **Batch Processing**: Parallel issue detection and fixing for better performance
 - **AI Article Agent**:
     - **Automated Content Creation**: AI-powered article generation with SEO optimization
-    - **Smart Image Selection**: Automatically selects and integrates relevant images from Unsplash
+    - **Smart Image Selection**: Multi-tier image search system using Google Custom Search API
+      * **3-Tier Licensing Strategy**: Progressively searches CC licenses (broad → limited) then unrestricted images
+      * **Intelligent Retry Logic**: Attempts 3 images per query with automatic fallback
+      * **Image Upload**: Downloads and uploads images to Cloudinary for reliable hosting
+      * **Fallback System**: Uses default placeholder images if all searches fail
     - **Image Alt Text Generation**: AI-generated alt text for all images
     - **Bulk Article Generation**: Create multiple articles simultaneously (up to 10 at once)
     - **Content Analysis**: Automatic SEO scoring and optimization suggestions
@@ -114,6 +118,8 @@ Preferred communication style: Simple, everyday language.
 
 ## Environment Variables
 - **GOOGLE_AI_API_KEY**: Google Gemini AI API key for SEO analysis and content generation.
+- **GOOGLE_API_KEY**: Google Custom Search API key for image search (100 searches/day free tier).
+- **GOOGLE_SEARCH_ENGINE_ID**: Google Custom Search Engine ID for image search configuration.
 - **CLOUDINARY_CLOUD_NAME**, **CLOUDINARY_API_KEY**, **CLOUDINARY_API_SECRET**: Cloudinary credentials for media management.
 - **DATABASE_URL**: PostgreSQL database connection string (Neon).
 
@@ -144,6 +150,7 @@ Preferred communication style: Simple, everyday language.
 ## Analytics & AI
 - **Google Analytics 4**: For comprehensive site analytics and Web Vitals tracking.
 - **Google Gemini AI**: Gemini 2.5 Flash model for advanced SEO analysis and content generation (free tier).
+- **Google Custom Search API**: Image search for automated article image selection (100 searches/day free tier).
 
 ## Development & Deployment
 - **Biome**: Code formatting and linting.
