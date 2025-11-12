@@ -46,7 +46,7 @@ interface FixResult {
 }
 
 export default function AutomationClient() {
-  const [activeTab, setActiveTab] = useState<'generate' | 'fix' | 'schedule'>('generate');
+  const [activeTab, setActiveTab] = useState<'smart' | 'generate' | 'fix' | 'schedule'>('smart');
   
   const [topics, setTopics] = useState<TopicInput[]>([
     { id: '1', topic: '', keywords: '', category: 'برجولات' }
@@ -67,6 +67,13 @@ export default function AutomationClient() {
     fixEnabled: false,
     fixFrequency: 'weekly',
   });
+
+  const [smartNiche, setSmartNiche] = useState('');
+  const [smartCount, setSmartCount] = useState(5);
+  const [smartAutoPublish, setSmartAutoPublish] = useState(false);
+  const [smartLoading, setSmartLoading] = useState(false);
+  const [smartResults, setSmartResults] = useState<any>(null);
+  const [smartProgress, setSmartProgress] = useState(0);
 
   const addTopic = () => {
     setTopics([
@@ -153,8 +160,51 @@ export default function AutomationClient() {
     }
   };
 
+  const handleSmartGenerate = async () => {
+    if (!smartNiche.trim()) {
+      alert('يرجى إدخال مجال البحث أو الموضوع');
+      return;
+    }
+
+    if (smartCount < 1 || smartCount > 10) {
+      alert('عدد المقالات يجب أن يكون بين 1 و 10');
+      return;
+    }
+
+    setSmartLoading(true);
+    setSmartResults(null);
+    setSmartProgress(0);
+
+    try {
+      const response = await fetch('/api/ai-agent/smart-auto-generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          niche: smartNiche,
+          count: smartCount,
+          autoPublish: smartAutoPublish
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSmartResults(data);
+        setSmartProgress(100);
+      } else {
+        alert(data.error || 'حدث خطأ أثناء التوليد الذكي');
+      }
+    } catch (error: any) {
+      alert('حدث خطأ في الاتصال');
+      console.error(error);
+    } finally {
+      setSmartLoading(false);
+    }
+  };
+
   const tabs = [
-    { id: 'generate', label: 'توليد المقالات', icon: Sparkles },
+    { id: 'smart', label: 'التوليد الذكي', icon: Sparkles },
+    { id: 'generate', label: 'توليد عادي', icon: FileText },
     { id: 'fix', label: 'إصلاح SEO', icon: Wrench },
     { id: 'schedule', label: 'الجدولة', icon: Calendar }
   ];
@@ -198,6 +248,208 @@ export default function AutomationClient() {
             );
           })}
         </div>
+
+        {activeTab === 'smart' && (
+          <div className="grid lg:grid-cols-2 gap-6">
+            <Card className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <Sparkles className="w-6 h-6 text-purple-600" />
+                  التوليد الذكي بالذكاء الاصطناعي
+                </h2>
+                <Badge variant="outline" className="bg-purple-50 text-purple-700">
+                  مدعوم بـ Gemini AI
+                </Badge>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <div className="flex gap-3">
+                  <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-blue-800">
+                    <p className="font-semibold mb-1">كيف يعمل التوليد الذكي؟</p>
+                    <ul className="list-disc list-inside space-y-1 text-blue-700">
+                      <li>يحلل المنافسين في نتائج البحث الأولى</li>
+                      <li>يختار العناوين والكلمات المفتاحية الأكثر نجاحاً</li>
+                      <li>يكتب محتوى بأسلوب بشري طبيعي ومتطور</li>
+                      <li>يختار الصور المناسبة تلقائياً</li>
+                      <li>يحسّن المقالات لمحركات البحث</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    المجال أو الموضوع العام
+                  </label>
+                  <input
+                    type="text"
+                    value={smartNiche}
+                    onChange={(e) => setSmartNiche(e.target.value)}
+                    placeholder="مثال: برجولات خشبية، مظلات حدائق، تنسيق حدائق منزلية"
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    disabled={smartLoading}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    سيقوم الذكاء الاصطناعي بتحليل المنافسين واقتراح مقالات ذكية
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    عدد المقالات (1-10)
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={smartCount}
+                    onChange={(e) => setSmartCount(parseInt(e.target.value) || 1)}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                    disabled={smartLoading}
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="smart-auto-publish"
+                    checked={smartAutoPublish}
+                    onChange={(e) => setSmartAutoPublish(e.target.checked)}
+                    disabled={smartLoading}
+                    className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                  />
+                  <label htmlFor="smart-auto-publish" className="text-sm font-medium">
+                    نشر المقالات تلقائياً (بدون مراجعة)
+                  </label>
+                </div>
+
+                <Button
+                  onClick={handleSmartGenerate}
+                  disabled={smartLoading || !smartNiche.trim()}
+                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                >
+                  {smartLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                      جاري التحليل والتوليد الذكي...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4 ml-2" />
+                      بدء التوليد الذكي
+                    </>
+                  )}
+                </Button>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-600" />
+                النتائج والإحصائيات
+              </h3>
+
+              {smartLoading && (
+                <div className="text-center py-12">
+                  <Loader2 className="w-12 h-12 animate-spin text-purple-600 mx-auto mb-4" />
+                  <p className="text-gray-600 font-medium">جاري تحليل المنافسين...</p>
+                  <p className="text-sm text-gray-500 mt-2">قد يستغرق هذا عدة دقائق</p>
+                  <Progress value={smartProgress} className="mt-4" />
+                </div>
+              )}
+
+              {!smartLoading && !smartResults && (
+                <div className="text-center py-12 text-gray-400">
+                  <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                  <p>ابدأ التوليد الذكي لرؤية النتائج هنا</p>
+                </div>
+              )}
+
+              {smartResults && (
+                <div className="space-y-4">
+                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+                    <h4 className="font-bold text-green-900 mb-3">📊 ملخص التوليد</h4>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div className="bg-white rounded p-2">
+                        <p className="text-gray-600">نجح</p>
+                        <p className="text-2xl font-bold text-green-600">
+                          {smartResults.analysis?.stats?.successCount || 0}
+                        </p>
+                      </div>
+                      <div className="bg-white rounded p-2">
+                        <p className="text-gray-600">متوسط SEO</p>
+                        <p className="text-2xl font-bold text-purple-600">
+                          {smartResults.analysis?.stats?.averageSeoScore || 0}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {smartResults.analysis?.competitorInsights && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-bold text-blue-900 mb-2">🔍 رؤى المنافسين</h4>
+                      <div className="text-sm text-blue-800 space-y-2">
+                        <div>
+                          <p className="font-semibold">الجمهور المستهدف:</p>
+                          <p className="text-blue-700">{smartResults.analysis.competitorInsights.targetAudience}</p>
+                        </div>
+                        <div>
+                          <p className="font-semibold">الأسلوب:</p>
+                          <p className="text-blue-700">{smartResults.analysis.competitorInsights.toneAndStyle}</p>
+                        </div>
+                        <div>
+                          <p className="font-semibold">أهم الكلمات المفتاحية:</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {smartResults.analysis.competitorInsights.topKeywords?.slice(0, 5).map((kw: string, i: number) => (
+                              <Badge key={i} variant="outline" className="text-xs">
+                                {kw}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-gray-800">المقالات المولّدة:</h4>
+                    {smartResults.results?.map((result: any, index: number) => (
+                      <div
+                        key={index}
+                        className={`border rounded-lg p-3 ${
+                          result.success
+                            ? 'bg-green-50 border-green-200'
+                            : 'bg-red-50 border-red-200'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <p className="font-medium text-gray-900">{result.title}</p>
+                            {result.seoScore && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                SEO: {result.seoScore}/100
+                              </p>
+                            )}
+                            {result.error && (
+                              <p className="text-sm text-red-600 mt-1">{result.error}</p>
+                            )}
+                          </div>
+                          {result.success ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                          ) : (
+                            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </Card>
+          </div>
+        )}
 
         {activeTab === 'generate' && (
           <div className="grid lg:grid-cols-2 gap-6">

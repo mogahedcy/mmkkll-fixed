@@ -80,6 +80,11 @@ Preferred communication style: Simple, everyday language.
 - **Content Security**: DOMPurify for HTML rendering.
 - **Configuration**: Secure environment variable management.
 
+## Environment Variables
+- **GOOGLE_AI_API_KEY**: Google Gemini AI API key for SEO analysis and content generation.
+- **CLOUDINARY_CLOUD_NAME**, **CLOUDINARY_API_KEY**, **CLOUDINARY_API_SECRET**: Cloudinary credentials for media management.
+- **DATABASE_URL**: PostgreSQL database connection string (Neon).
+
 # External Dependencies
 
 ## Core Technologies
