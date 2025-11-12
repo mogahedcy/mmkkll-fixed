@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Briefcase, Phone, MessageCircle, Search } from 'lucide-react';
+import { Home, Briefcase, Phone, MessageCircle, FolderKanban } from 'lucide-react';
 
 const navItems = [
   {
@@ -22,9 +22,9 @@ const navItems = [
     external: true,
   },
   {
-    label: 'البحث',
-    href: '/search',
-    icon: Search,
+    label: 'معرض الأعمال',
+    href: '/portfolio',
+    icon: FolderKanban,
   },
   {
     label: 'اتصل بنا',
