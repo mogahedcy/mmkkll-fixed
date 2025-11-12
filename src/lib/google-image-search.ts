@@ -44,7 +44,7 @@ export class GoogleImageSearch {
       imageSize?: 'huge' | 'large' | 'medium' | 'small';
       imageType?: 'clipart' | 'face' | 'lineart' | 'stock' | 'photo' | 'animated';
       safe?: 'active' | 'off';
-      rights?: string;
+      rights?: string | null;
     } = {}
   ): Promise<Array<{
     url: string;
@@ -60,19 +60,29 @@ export class GoogleImageSearch {
     }
 
     try {
-      const defaultRights = 'cc_publicdomain,cc_attribute';
-      
-      const params = new URLSearchParams({
+      const baseParams: Record<string, string> = {
         key: this.apiKey,
         cx: this.searchEngineId,
         q: query,
         searchType: 'image',
         num: String(options.num || 3),
         safe: options.safe || 'active',
-        rights: options.rights || defaultRights,
-        ...(options.imageSize && { imgSize: options.imageSize }),
-        ...(options.imageType && { imgType: options.imageType }),
-      });
+      };
+
+      if (options.rights === undefined) {
+        baseParams.rights = 'cc_publicdomain,cc_attribute';
+      } else if (options.rights !== null && options.rights !== '') {
+        baseParams.rights = options.rights;
+      }
+
+      if (options.imageSize) {
+        baseParams.imgSize = options.imageSize;
+      }
+      if (options.imageType) {
+        baseParams.imgType = options.imageType;
+      }
+      
+      const params = new URLSearchParams(baseParams);
 
       const url = `${this.baseUrl}?${params.toString()}`;
       

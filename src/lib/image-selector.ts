@@ -66,53 +66,87 @@ export class ImageSelector {
   ): Promise<Array<{ src: string; alt: string; description: string; type: 'IMAGE' | 'VIDEO' }>> {
     const suggestions = await this.suggestImages(title, content, keywords, imageCount);
     
+    if (suggestions.length === 0) {
+      console.warn('⚠️ فشل في اقتراح الصور من AI');
+      return [];
+    }
+
     const images: Array<{ src: string; alt: string; description: string; type: 'IMAGE' | 'VIDEO' }> = [];
     
     for (const suggestion of suggestions) {
-      try {
-        console.log(`🔍 البحث عن صورة: ${suggestion.query}`);
-        
-        const searchResults = await googleImageSearch.searchImages(suggestion.query, {
-          num: 1,
-          imageSize: 'large',
-          imageType: 'photo',
-          safe: 'active',
-          rights: 'cc_publicdomain',
-        });
-        
-        if (searchResults.length > 0) {
-          const imageUrl = searchResults[0].url;
+      let imageFound = false;
+
+      console.log(`🔍 البحث عن صورة: ${suggestion.query}`);
+
+      const rightsOptions: Array<string | null> = [
+        'cc_publicdomain,cc_attribute,cc_sharealike,cc_noncommercial',
+        'cc_publicdomain,cc_attribute',
+        null,
+      ];
+
+      for (let attemptIndex = 0; attemptIndex < rightsOptions.length && !imageFound; attemptIndex++) {
+        try {
+          const rights = rightsOptions[attemptIndex];
+          const rightsLabel = rights === null ? 'جميع الصور' : rights;
           
-          const uploadedUrl = await googleImageSearch.downloadAndUploadImage(
-            imageUrl,
-            suggestion.alt_text
-          );
-          
-          if (uploadedUrl) {
-            images.push({
-              src: uploadedUrl,
-              alt: suggestion.alt_text,
-              description: suggestion.description,
-              type: 'IMAGE' as const
-            });
-            console.log(`✅ تمت إضافة الصورة: ${suggestion.alt_text}`);
+          console.log(`  🔄 المحاولة ${attemptIndex + 1}: البحث في (${rightsLabel})`);
+
+          const searchResults = await googleImageSearch.searchImages(suggestion.query, {
+            num: 3,
+            imageSize: 'large',
+            imageType: 'photo',
+            safe: 'active',
+            rights: rights,
+          });
+
+          if (searchResults.length > 0) {
+            for (const result of searchResults) {
+              try {
+                const uploadedUrl = await googleImageSearch.downloadAndUploadImage(
+                  result.url,
+                  suggestion.alt_text
+                );
+
+                if (uploadedUrl) {
+                  images.push({
+                    src: uploadedUrl,
+                    alt: suggestion.alt_text,
+                    description: suggestion.description,
+                    type: 'IMAGE' as const
+                  });
+                  console.log(`  ✅ تمت إضافة الصورة من (${rightsLabel}): ${suggestion.alt_text}`);
+                  imageFound = true;
+                  break;
+                }
+              } catch (uploadError) {
+                console.warn(`  ⚠️ فشل رفع صورة، جرب التالية...`);
+                continue;
+              }
+            }
+          } else {
+            console.log(`  ⚠️ لم يتم العثور على نتائج في هذه الفئة`);
           }
+        } catch (error) {
+          console.error(`  ❌ خطأ في المحاولة ${attemptIndex + 1}:`, error);
         }
-      } catch (error) {
-        console.error(`❌ فشل الحصول على صورة لـ: ${suggestion.query}`, error);
+      }
+
+      if (!imageFound) {
+        console.warn(`❌ فشل الحصول على صورة لـ: ${suggestion.query} بعد كل المحاولات`);
       }
     }
-    
+
     if (images.length === 0) {
-      console.warn('⚠️ لم يتم العثور على صور، استخدام الصور الافتراضية');
-      return suggestions.map(() => ({
+      console.warn('⚠️ لم يتم العثور على أي صور، استخدام الصور الافتراضية');
+      return suggestions.slice(0, imageCount).map(() => ({
         src: '/uploads/pergola-1.jpg',
         alt: 'صورة افتراضية',
         description: 'صورة افتراضية',
         type: 'IMAGE' as const
       }));
     }
-    
+
+    console.log(`✅ تم اختيار ${images.length} صورة بنجاح`);
     return images;
   }
 }
