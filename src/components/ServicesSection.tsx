@@ -242,7 +242,7 @@ export default function ServicesSection() {
                   {/* زر CTA محسّن للمس */}
                   <Button asChild variant="outline" size="default" className="w-full group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-amber-500 group-hover:text-white group-hover:border-transparent transition-all duration-500 font-bold shadow-md group-hover:shadow-xl">
                     <Link href={service.href} className="flex items-center justify-center space-x-2 space-x-reverse">
-                      <span>اطلب عرض سعر</span>
+                      <span>مزيد من المعلومات</span>
                       <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform duration-300" />
                     </Link>
                   </Button>

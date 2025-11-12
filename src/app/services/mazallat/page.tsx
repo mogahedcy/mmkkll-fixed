@@ -526,9 +526,9 @@ export default function MazallatPage() {
                     </div>
 
                     {/* CTA Button */}
-                    <Link href={`https://wa.me/+966553719009?text=أرغب في الحصول على عرض سعر لـ ${service.title}`} target="_blank">
+                    <Link href={`https://wa.me/+966553719009?text=أرغب في الحصول على معلومات عن ${service.title}`} target="_blank">
                       <Button className="w-full group-hover:bg-accent transition-colors">
-                        اطلب عرض سعر
+                        مزيد من المعلومات
                         <ArrowLeft className="w-4 h-4 mr-2" />
                       </Button>
                     </Link>

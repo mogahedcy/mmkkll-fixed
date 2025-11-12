@@ -483,9 +483,9 @@ export default function KhayyamPage() {
                     </div>
 
                     {/* CTA Button */}
-                    <Link href={`https://wa.me/+966553719009?text=أرغب في الحصول على عرض سعر لـ ${tent.title}`} target="_blank">
+                    <Link href={`https://wa.me/+966553719009?text=أرغب في الحصول على معلومات عن ${tent.title}`} target="_blank">
                       <Button className="w-full group-hover:bg-purple-600 transition-colors">
-                        اطلب عرض سعر
+                        مزيد من المعلومات
                         <ArrowLeft className="w-4 h-4 mr-2" />
                       </Button>
                     </Link>
