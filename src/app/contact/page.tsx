@@ -16,6 +16,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
 import StructuredDataScript from '@/components/StructuredDataScript'
+import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
   title: 'تواصل معنا | محترفين الديار العالمية - خدمة العملاء 24/7',
@@ -24,18 +25,33 @@ export const metadata: Metadata = {
   authors: [{ name: 'محترفين الديار العالمية' }],
   robots: 'index, follow',
   alternates: {
-    canonical: '/contact'
+    canonical: generateCanonicalUrl('/contact'),
+    languages: {
+      'ar-SA': '/contact',
+      'x-default': '/contact',
+    },
   },
   openGraph: {
     title: 'تواصل معنا | محترفين الديار العالمية',
     description: 'تواصل مع فريق محترفين الديار العالمية في جدة. خدمة عملاء متميزة 24/7 واستشارة مجانية.',
+    url: generateCanonicalUrl('/contact'),
+    siteName: 'محترفين الديار العالمية',
     type: 'website',
-    locale: 'ar_SA'
+    locale: 'ar_SA',
+    images: [
+      {
+        url: 'https://www.aldeyarksa.tech/favicon.svg',
+        width: 1200,
+        height: 630,
+        alt: 'تواصل معنا - محترفين الديار العالمية',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'تواصل معنا | محترفين الديار العالمية',
-    description: 'خدمة عملاء متميزة 24/7 واستشارة مجانية في جدة'
+    description: 'خدمة عملاء متميزة 24/7 واستشارة مجانية في جدة',
+    images: ['https://www.aldeyarksa.tech/favicon.svg'],
   }
 }
 

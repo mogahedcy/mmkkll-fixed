@@ -3,6 +3,7 @@ import { Shield, Eye, Lock, FileText, Users, Globe, AlertCircle, CheckCircle } f
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
   title: 'سياسة الخصوصية | محترفين الديار العالمية',
@@ -11,18 +12,33 @@ export const metadata: Metadata = {
   authors: [{ name: 'محترفين الديار العالمية' }],
   robots: 'index, follow',
   alternates: {
-    canonical: '/privacy'
+    canonical: generateCanonicalUrl('/privacy'),
+    languages: {
+      'ar-SA': '/privacy',
+      'x-default': '/privacy',
+    },
   },
   openGraph: {
     title: 'سياسة الخصوصية | محترفين الديار العالمية',
     description: 'سياسة الخصوصية لمحترفين الديار العالمية. نحن ملتزمون بحماية خصوصيتك وبياناتك الشخصية.',
+    url: generateCanonicalUrl('/privacy'),
+    siteName: 'محترفين الديار العالمية',
     type: 'website',
-    locale: 'ar_SA'
+    locale: 'ar_SA',
+    images: [
+      {
+        url: 'https://www.aldeyarksa.tech/favicon.svg',
+        width: 1200,
+        height: 630,
+        alt: 'سياسة الخصوصية - محترفين الديار العالمية',
+      },
+    ],
   },
   twitter: {
     card: 'summary',
     title: 'سياسة الخصوصية | محترفين الديار العالمية',
-    description: 'حماية بياناتك وخصوصيتك أولويتنا'
+    description: 'حماية بياناتك وخصوصيتك أولويتنا',
+    images: ['https://www.aldeyarksa.tech/favicon.svg'],
   }
 }
 

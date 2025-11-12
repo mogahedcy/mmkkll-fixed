@@ -14,6 +14,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
+import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
   title: 'الأسئلة الشائعة | محترفين الديار العالمية - إجابات شاملة',
@@ -22,18 +23,33 @@ export const metadata: Metadata = {
   authors: [{ name: 'محترفين الديار العالمية' }],
   robots: 'index, follow',
   alternates: {
-    canonical: '/faq'
+    canonical: generateCanonicalUrl('/faq'),
+    languages: {
+      'ar-SA': '/faq',
+      'x-default': '/faq',
+    },
   },
   openGraph: {
     title: 'الأسئلة الشائعة | محترفين الديار العالمية',
     description: 'إجابات شاملة على الأسئلة الشائعة حول خدمات محترفين الديار العالمية في جدة.',
+    url: generateCanonicalUrl('/faq'),
+    siteName: 'محترفين الديار العالمية',
     type: 'website',
-    locale: 'ar_SA'
+    locale: 'ar_SA',
+    images: [
+      {
+        url: 'https://www.aldeyarksa.tech/favicon.svg',
+        width: 1200,
+        height: 630,
+        alt: 'الأسئلة الشائعة - محترفين الديار العالمية',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'الأسئلة الشائعة | محترفين الديار العالمية',
-    description: 'إجابات شاملة على الأسئلة الشائعة حول خدماتنا في جدة'
+    description: 'إجابات شاملة على الأسئلة الشائعة حول خدماتنا في جدة',
+    images: ['https://www.aldeyarksa.tech/favicon.svg'],
   }
 }
 

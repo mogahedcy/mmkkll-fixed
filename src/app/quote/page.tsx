@@ -21,6 +21,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
+import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
   title: 'طلب عرض سعر | محترفين الديار العالمية - احصل على عرض مجاني',
@@ -29,18 +30,33 @@ export const metadata: Metadata = {
   authors: [{ name: 'محترفين الديار العالمية' }],
   robots: 'index, follow',
   alternates: {
-    canonical: '/quote'
+    canonical: generateCanonicalUrl('/quote'),
+    languages: {
+      'ar-SA': '/quote',
+      'x-default': '/quote',
+    },
   },
   openGraph: {
     title: 'طلب عرض سعر | محترفين الديار العالمية',
     description: 'احصل على عرض سعر مجاني ومفصل من محترفين الديار العالمية في جدة.',
+    url: generateCanonicalUrl('/quote'),
+    siteName: 'محترفين الديار العالمية',
     type: 'website',
-    locale: 'ar_SA'
+    locale: 'ar_SA',
+    images: [
+      {
+        url: 'https://www.aldeyarksa.tech/favicon.svg',
+        width: 1200,
+        height: 630,
+        alt: 'طلب عرض سعر - محترفين الديار العالمية',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'طلب عرض سعر | محترفين الديار العالمية',
-    description: 'احصل على عرض سعر مجاني ومفصل - أسعار تنافسية وجودة عالية'
+    description: 'احصل على عرض سعر مجاني ومفصل - أسعار تنافسية وجودة عالية',
+    images: ['https://www.aldeyarksa.tech/favicon.svg'],
   }
 }
 

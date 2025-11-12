@@ -3,6 +3,7 @@ import { FileText, Scale, Handshake, AlertTriangle, CheckCircle, Shield, Clock, 
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
   title: 'شروط الخدمة | محترفين الديار العالمية - الشروط والأحكام',
@@ -11,18 +12,33 @@ export const metadata: Metadata = {
   authors: [{ name: 'محترفين الديار العالمية' }],
   robots: 'index, follow',
   alternates: {
-    canonical: '/terms'
+    canonical: generateCanonicalUrl('/terms'),
+    languages: {
+      'ar-SA': '/terms',
+      'x-default': '/terms',
+    },
   },
   openGraph: {
     title: 'شروط الخدمة | محترفين الديار العالمية',
     description: 'شروط وأحكام الخدمة لمحترفين الديار العالمية. تعرف على الشروط والأحكام التي تحكم استخدام خدماتنا.',
+    url: generateCanonicalUrl('/terms'),
+    siteName: 'محترفين الديار العالمية',
     type: 'website',
-    locale: 'ar_SA'
+    locale: 'ar_SA',
+    images: [
+      {
+        url: 'https://www.aldeyarksa.tech/favicon.svg',
+        width: 1200,
+        height: 630,
+        alt: 'شروط الخدمة - محترفين الديار العالمية',
+      },
+    ],
   },
   twitter: {
     card: 'summary',
     title: 'شروط الخدمة | محترفين الديار العالمية',
-    description: 'الشروط والأحكام التي تحكم استخدام خدماتنا'
+    description: 'الشروط والأحكام التي تحكم استخدام خدماتنا',
+    images: ['https://www.aldeyarksa.tech/favicon.svg'],
   }
 }
 

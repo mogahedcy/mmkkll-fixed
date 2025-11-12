@@ -18,16 +18,43 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
 import StructuredDataScript from '@/components/StructuredDataScript'
+import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
   title: 'عن محترفين الديار العالمية | خبرة 15 عام',
   description: 'تعرف على محترفين الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً. فريق محترف، جودة عالية، وخدمة متميزة.',
+  keywords: 'محترفين الديار، عن الشركة، خبرة 15 عام، شركة مظلات جدة، تاريخ الشركة، قيم الشركة',
+  authors: [{ name: 'محترفين الديار العالمية' }],
+  robots: 'index, follow',
+  alternates: {
+    canonical: generateCanonicalUrl('/about'),
+    languages: {
+      'ar-SA': '/about',
+      'x-default': '/about',
+    },
+  },
   openGraph: {
     title: 'عن محترفين الديار | محترفين الديار العالمية',
     description: 'تعرف على محترفين الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً.',
+    url: generateCanonicalUrl('/about'),
+    siteName: 'محترفين الديار العالمية',
     type: 'website',
-    locale: 'ar_SA'
-  }
+    locale: 'ar_SA',
+    images: [
+      {
+        url: 'https://www.aldeyarksa.tech/favicon.svg',
+        width: 1200,
+        height: 630,
+        alt: 'عن محترفين الديار العالمية',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'عن محترفين الديار | محترفين الديار العالمية',
+    description: 'تعرف على محترفين الديار العالمية، الرائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً.',
+    images: ['https://www.aldeyarksa.tech/favicon.svg'],
+  },
 }
 
 const stats = [
