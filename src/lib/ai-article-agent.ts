@@ -204,31 +204,14 @@ export class AIArticleAgent {
   }
 
   private generateSlug(title: string): string {
-    const arabicToEnglish: { [key: string]: string } = {
-      'ا': 'a', 'أ': 'a', 'إ': 'i', 'آ': 'a',
-      'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j',
-      'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'th',
-      'ر': 'r', 'ز': 'z', 'س': 's', 'ش': 'sh',
-      'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z',
-      'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'q',
-      'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
-      'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a',
-      'ة': 'h', ' ': '-'
-    };
-
-    let slug = title.toLowerCase();
-    
-    for (const [arabic, english] of Object.entries(arabicToEnglish)) {
-      slug = slug.replace(new RegExp(arabic, 'g'), english);
-    }
-
-    slug = slug
-      .replace(/[^\w\s-]/g, '')
+    let slug = title
+      .trim()
       .replace(/\s+/g, '-')
+      .replace(/[،؛؟!@#$%^&*()+=\[\]{};:"\\|<>\/]/g, '')
       .replace(/-+/g, '-')
-      .trim();
+      .replace(/^-+|-+$/g, '');
 
-    return `${slug}-${Date.now()}`;
+    return slug || `article-${Date.now()}`;
   }
 }
 
