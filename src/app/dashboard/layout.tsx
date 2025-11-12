@@ -105,6 +105,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <span className="mr-auto text-xs bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-2 py-1 rounded-full">جديد</span>
             </Link>
             
+            <Link href="/dashboard/automation" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50 hover:text-red-700 transition-all duration-200">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span className="font-medium">الأتمتة الذكية</span>
+              <span className="mr-auto text-xs bg-gradient-to-r from-red-500 to-rose-500 text-white px-2 py-1 rounded-full">تلقائي</span>
+            </Link>
+            
             <hr className="my-4 border-gray-200" />
             
             <Link href="/portfolio" target="_blank" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">
