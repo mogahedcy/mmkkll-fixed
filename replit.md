@@ -95,6 +95,7 @@ Preferred communication style: Simple, everyday language.
       * Input: niche, article count (1-10), auto-publish flag
       * Output: Generated articles with SEO scores, competitor insights, analysis data
       * Tracks `webSearchUsed` status (currently false in mock mode)
+    - **Documentation**: See `docs/SMART-GENERATION-GUIDE.md` for detailed usage guide and testing instructions
 - **Performance**:
     - **Image Optimization**: Next.js Image with AVIF/WebP, optimized device sizes (up to 1920px), 75% quality, extended cache TTL, priority loading for critical images.
     - **Font Loading**: Noto Sans Arabic (3 weights), `display: swap`, preloading.
