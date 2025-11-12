@@ -119,22 +119,22 @@ export default function HeroSection() {
         {/* روابط سريعة للخدمات - محسن للجوال */}
         <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5 md:gap-3 text-xs sm:text-sm max-w-4xl mx-auto px-4">
           <Link href="/services/mazallat" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
-            مظلات سيارات
+            مظلات سيارات جدة
           </Link>
           <Link href="/services/pergolas" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
-            برجولات
+            برجولات حدائق جدة
           </Link>
           <Link href="/services/sawater" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
-            سواتر
+            سواتر خصوصية جدة
           </Link>
           <Link href="/services/sandwich-panel" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
-            ساندوتش بانل
+            ساندوتش بانل جدة
           </Link>
           <Link href="/services/landscaping" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
-            تنسيق حدائق
+            تنسيق حدائق جدة
           </Link>
           <Link href="/services/byoot-shaar" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
-            بيوت شعر
+            بيوت شعر تراثية
           </Link>
         </div>
       </div>
