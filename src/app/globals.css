@@ -81,6 +81,42 @@ body {
   scroll-behavior: smooth;
 }
 
+/* تحسينات Core Web Vitals - CLS Prevention */
+.aspect-ratio-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-ratio-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.aspect-ratio-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+/* منع Layout Shift عند تحميل الصور */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* تحسين الأداء باستخدام GPU */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* تحسين الأنيميشن باستخدام Transform */
+.animate-smooth {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+/* Touch target size for better mobile UX and INP */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 /* تحسينات للنصوص العربية */
 .font-arabic {
   font-family: var(--font-arabic), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
