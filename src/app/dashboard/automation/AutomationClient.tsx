@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -64,9 +64,15 @@ export default function AutomationClient() {
     generateEnabled: false,
     generateFrequency: 'daily',
     generateCount: 3,
+    generateNiche: '',
+    generateAutoPublish: false,
     fixEnabled: false,
     fixFrequency: 'weekly',
   });
+
+  const [scheduleLoading, setScheduleLoading] = useState(false);
+  const [scheduleLogs, setScheduleLogs] = useState<any[]>([]);
+  const [logsLoading, setLogsLoading] = useState(false);
 
   const [smartNiche, setSmartNiche] = useState('');
   const [smartCount, setSmartCount] = useState(5);
@@ -157,6 +163,80 @@ export default function AutomationClient() {
       console.error(error);
     } finally {
       setFixLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'schedule') {
+      loadScheduleSettings();
+      loadScheduleLogs();
+    }
+  }, [activeTab]);
+
+  const loadScheduleSettings = async () => {
+    try {
+      const response = await fetch('/api/automation/schedule');
+      const data = await response.json();
+      
+      if (data.success && data.schedule) {
+        setScheduleSettings({
+          generateEnabled: data.schedule.generateEnabled || false,
+          generateFrequency: data.schedule.generateFrequency || 'daily',
+          generateCount: data.schedule.generateCount || 3,
+          generateNiche: data.schedule.generateNiche || '',
+          generateAutoPublish: data.schedule.generateAutoPublish || false,
+          fixEnabled: data.schedule.fixEnabled || false,
+          fixFrequency: data.schedule.fixFrequency || 'weekly',
+        });
+      }
+    } catch (error) {
+      console.error('Error loading schedule settings:', error);
+    }
+  };
+
+  const loadScheduleLogs = async () => {
+    setLogsLoading(true);
+    try {
+      const response = await fetch('/api/automation/logs?limit=10');
+      const data = await response.json();
+      
+      if (data.success) {
+        setScheduleLogs(data.logs || []);
+      }
+    } catch (error) {
+      console.error('Error loading logs:', error);
+    } finally {
+      setLogsLoading(false);
+    }
+  };
+
+  const saveScheduleSettings = async () => {
+    if (scheduleSettings.generateEnabled && !scheduleSettings.generateNiche) {
+      alert('يرجى إدخال مجال للتوليد الذكي');
+      return;
+    }
+
+    setScheduleLoading(true);
+    try {
+      const response = await fetch('/api/automation/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(scheduleSettings)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('✅ تم حفظ الإعدادات بنجاح!');
+        await loadScheduleLogs();
+      } else {
+        alert(data.error || 'حدث خطأ في الحفظ');
+      }
+    } catch (error: any) {
+      alert('حدث خطأ في الاتصال');
+      console.error(error);
+    } finally {
+      setScheduleLoading(false);
     }
   };
 
@@ -762,128 +842,249 @@ export default function AutomationClient() {
         )}
 
         {activeTab === 'schedule' && (
-          <Card className="p-6 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-              <Settings className="w-6 h-6 text-purple-600" />
-              إعدادات الجدولة
-            </h2>
-
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                <div className="text-sm text-yellow-800">
-                  <p className="font-medium mb-1">ملاحظة مهمة</p>
-                  <p>
-                    الجدولة التلقائية تتطلب إعداد Cron job منفصل. الإعدادات هنا هي للمرجع فقط.
-                    يمكنك حفظ تفضيلاتك، ولكن ستحتاج إلى تكوين نظام الجدولة بشكل منفصل لتفعيلها.
-                  </p>
-                </div>
-              </div>
-            </div>
-
+          <div className="grid lg:grid-cols-2 gap-6">
             <div className="space-y-6">
-              <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-purple-600" />
-                    توليد المقالات التلقائي
-                  </h3>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={scheduleSettings.generateEnabled}
-                      onChange={(e) => setScheduleSettings({
-                        ...scheduleSettings,
-                        generateEnabled: e.target.checked
-                      })}
-                      className="w-4 h-4"
-                    />
-                    <span className="text-sm font-medium">مفعّل</span>
-                  </label>
-                </div>
+              <Card className="p-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                  <Settings className="w-6 h-6 text-purple-600" />
+                  إعدادات الجدولة
+                </h2>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">التكرار</label>
-                    <select
-                      value={scheduleSettings.generateFrequency}
-                      onChange={(e) => setScheduleSettings({
-                        ...scheduleSettings,
-                        generateFrequency: e.target.value
-                      })}
-                      className="w-full p-2 border rounded-lg"
-                      disabled={!scheduleSettings.generateEnabled}
-                    >
-                      <option value="daily">يومياً</option>
-                      <option value="weekly">أسبوعياً</option>
-                      <option value="monthly">شهرياً</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      عدد المقالات لكل دفعة: {scheduleSettings.generateCount}
-                    </label>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      value={scheduleSettings.generateCount}
-                      onChange={(e) => setScheduleSettings({
-                        ...scheduleSettings,
-                        generateCount: parseInt(e.target.value)
-                      })}
-                      className="w-full"
-                      disabled={!scheduleSettings.generateEnabled}
-                    />
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <div className="text-sm text-blue-800">
+                      <p className="font-medium mb-1">نظام الجدولة جاهز!</p>
+                      <p>
+                        احفظ إعداداتك هنا، وسيتم تنفيذها تلقائياً حسب الجدول المحدد.
+                        للتفعيل الكامل، قم بإعداد Cron job يستدعي: <code className="bg-blue-100 px-1 rounded">/api/cron/scheduled-tasks</code>
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold flex items-center gap-2">
-                    <Wrench className="w-5 h-5 text-blue-600" />
-                    إصلاح SEO التلقائي
-                  </h3>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={scheduleSettings.fixEnabled}
-                      onChange={(e) => setScheduleSettings({
-                        ...scheduleSettings,
-                        fixEnabled: e.target.checked
-                      })}
-                      className="w-4 h-4"
-                    />
-                    <span className="text-sm font-medium">مفعّل</span>
-                  </label>
-                </div>
+                <div className="space-y-6">
+                  <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-bold flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-purple-600" />
+                        التوليد الذكي التلقائي
+                      </h3>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={scheduleSettings.generateEnabled}
+                          onChange={(e) => setScheduleSettings({
+                            ...scheduleSettings,
+                            generateEnabled: e.target.checked
+                          })}
+                          className="w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">مفعّل</span>
+                      </label>
+                    </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">التكرار</label>
-                  <select
-                    value={scheduleSettings.fixFrequency}
-                    onChange={(e) => setScheduleSettings({
-                      ...scheduleSettings,
-                      fixFrequency: e.target.value
-                    })}
-                    className="w-full p-2 border rounded-lg"
-                    disabled={!scheduleSettings.fixEnabled}
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          المجال أو الموضوع العام *
+                        </label>
+                        <input
+                          type="text"
+                          value={scheduleSettings.generateNiche}
+                          onChange={(e) => setScheduleSettings({
+                            ...scheduleSettings,
+                            generateNiche: e.target.value
+                          })}
+                          placeholder="مثال: برجولات خشبية، مظلات حدائق"
+                          className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
+                          disabled={!scheduleSettings.generateEnabled}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-2">التكرار</label>
+                        <select
+                          value={scheduleSettings.generateFrequency}
+                          onChange={(e) => setScheduleSettings({
+                            ...scheduleSettings,
+                            generateFrequency: e.target.value
+                          })}
+                          className="w-full p-2 border rounded-lg"
+                          disabled={!scheduleSettings.generateEnabled}
+                        >
+                          <option value="daily">يومياً</option>
+                          <option value="weekly">أسبوعياً</option>
+                          <option value="monthly">شهرياً</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          عدد المقالات لكل دفعة: {scheduleSettings.generateCount}
+                        </label>
+                        <input
+                          type="range"
+                          min="1"
+                          max="10"
+                          value={scheduleSettings.generateCount}
+                          onChange={(e) => setScheduleSettings({
+                            ...scheduleSettings,
+                            generateCount: parseInt(e.target.value)
+                          })}
+                          className="w-full"
+                          disabled={!scheduleSettings.generateEnabled}
+                        />
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          id="schedule-auto-publish"
+                          checked={scheduleSettings.generateAutoPublish}
+                          onChange={(e) => setScheduleSettings({
+                            ...scheduleSettings,
+                            generateAutoPublish: e.target.checked
+                          })}
+                          disabled={!scheduleSettings.generateEnabled}
+                          className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                        />
+                        <label htmlFor="schedule-auto-publish" className="text-sm font-medium">
+                          نشر المقالات تلقائياً
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-bold flex items-center gap-2">
+                        <Wrench className="w-5 h-5 text-blue-600" />
+                        إصلاح SEO التلقائي
+                      </h3>
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={scheduleSettings.fixEnabled}
+                          onChange={(e) => setScheduleSettings({
+                            ...scheduleSettings,
+                            fixEnabled: e.target.checked
+                          })}
+                          className="w-4 h-4"
+                        />
+                        <span className="text-sm font-medium">مفعّل</span>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">التكرار</label>
+                      <select
+                        value={scheduleSettings.fixFrequency}
+                        onChange={(e) => setScheduleSettings({
+                          ...scheduleSettings,
+                          fixFrequency: e.target.value
+                        })}
+                        className="w-full p-2 border rounded-lg"
+                        disabled={!scheduleSettings.fixEnabled}
+                      >
+                        <option value="daily">يومياً</option>
+                        <option value="weekly">أسبوعياً</option>
+                        <option value="monthly">شهرياً</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <Button 
+                    onClick={saveScheduleSettings}
+                    disabled={scheduleLoading}
+                    className="w-full bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
                   >
-                    <option value="daily">يومياً</option>
-                    <option value="weekly">أسبوعياً</option>
-                    <option value="monthly">شهرياً</option>
-                  </select>
+                    {scheduleLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                        جاري الحفظ...
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="w-4 h-4 ml-2" />
+                        حفظ الإعدادات
+                      </>
+                    )}
+                  </Button>
                 </div>
-              </div>
-
-              <Button className="w-full bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700">
-                <CheckCircle2 className="w-4 h-4 ml-2" />
-                حفظ الإعدادات
-              </Button>
+              </Card>
             </div>
-          </Card>
+
+            <Card className="p-6">
+              <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <Calendar className="w-6 h-6 text-orange-600" />
+                سجل المهام المنفذة
+              </h3>
+
+              {logsLoading && (
+                <div className="text-center py-12">
+                  <Loader2 className="w-12 h-12 animate-spin text-purple-600 mx-auto mb-4" />
+                  <p className="text-gray-600">جاري تحميل السجل...</p>
+                </div>
+              )}
+
+              {!logsLoading && scheduleLogs.length === 0 && (
+                <div className="text-center py-12 text-gray-500">
+                  <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                  <p>لا توجد مهام منفذة بعد</p>
+                  <p className="text-sm mt-2">سيظهر السجل هنا بعد تنفيذ المهام المجدولة</p>
+                </div>
+              )}
+
+              {!logsLoading && scheduleLogs.length > 0 && (
+                <div className="space-y-3 max-h-[600px] overflow-y-auto">
+                  {scheduleLogs.map((log) => (
+                    <div
+                      key={log.id}
+                      className={`border rounded-lg p-4 ${
+                        log.status === 'SUCCESS'
+                          ? 'bg-green-50 border-green-200'
+                          : 'bg-red-50 border-red-200'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        {log.status === 'SUCCESS' ? (
+                          <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5" />
+                        ) : (
+                          <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                        )}
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-bold text-gray-900">
+                              {log.taskType === 'GENERATE_ARTICLES' ? '📝 توليد مقالات' : '🔧 إصلاح SEO'}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {new Date(log.executedAt).toLocaleString('ar-SA')}
+                            </span>
+                          </div>
+                          
+                          {log.message && (
+                            <p className="text-sm text-gray-700 mb-2">{log.message}</p>
+                          )}
+                          
+                          {(log.successCount !== null || log.failureCount !== null) && (
+                            <div className="flex gap-4 text-sm">
+                              {log.successCount !== null && (
+                                <span className="text-green-700">✅ نجح: {log.successCount}</span>
+                              )}
+                              {log.failureCount !== null && log.failureCount > 0 && (
+                                <span className="text-red-700">❌ فشل: {log.failureCount}</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </div>
         )}
       </div>
     </div>

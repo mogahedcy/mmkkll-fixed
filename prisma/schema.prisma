@@ -256,3 +256,31 @@ model article_comments {
   createdAt DateTime @default(now())
   articles  articles @relation(fields: [articleId], references: [id], onDelete: Cascade)
 }
+
+model automation_schedules {
+  id                   String   @id @default(cuid())
+  generateEnabled      Boolean  @default(false)
+  generateFrequency    String   @default("daily")
+  generateCount        Int      @default(3)
+  generateNiche        String?
+  generateAutoPublish  Boolean  @default(false)
+  fixEnabled           Boolean  @default(false)
+  fixFrequency         String   @default("weekly")
+  lastGenerateRun      DateTime?
+  lastFixRun           DateTime?
+  nextGenerateRun      DateTime?
+  nextFixRun           DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model automation_logs {
+  id           String   @id @default(cuid())
+  taskType     String
+  status       String
+  message      String?
+  successCount Int?
+  failureCount Int?
+  details      String?
+  executedAt   DateTime @default(now())
+}
