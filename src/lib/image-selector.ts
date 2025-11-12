@@ -57,24 +57,16 @@ export class ImageSelector {
     }
   }
 
-  private localImages = [
-    '/uploads/pergola-1.jpg',
-    '/uploads/pergola-2.jpg',
-    '/uploads/mazallat-1.webp',
-    '/uploads/mazallat-2.webp',
-    '/uploads/sawater-1.webp',
-    '/uploads/sawater-2.webp',
-    '/uploads/khayyam-1.webp',
-    '/uploads/byoot-shaar-1.webp',
-    '/uploads/landscaping-1.webp',
-    '/uploads/sandwich-panel-1.jpg',
-    '/uploads/sandwich-panel-2.jpg',
-    '/uploads/renovation-1.jpg',
-    '/uploads/renovation-2.jpg',
-  ];
-
-  private getLocalImage(index: number): string {
-    return this.localImages[index % this.localImages.length];
+  getUnsplashImageUrl(searchQuery: string, width: number = 1200, height: number = 800, seed?: number): string {
+    const baseUrl = 'https://source.unsplash.com';
+    const size = `${width}x${height}`;
+    const query = encodeURIComponent(searchQuery.trim());
+    
+    if (seed !== undefined) {
+      return `${baseUrl}/${size}/?${query}&sig=${seed}`;
+    }
+    
+    return `${baseUrl}/${size}/?${query}`;
   }
 
   async selectImagesForArticle(
@@ -86,7 +78,7 @@ export class ImageSelector {
     const suggestions = await this.suggestImages(title, content, keywords, imageCount);
     
     return suggestions.map((suggestion, index) => ({
-      src: this.getLocalImage(index),
+      src: this.getUnsplashImageUrl(suggestion.query, 1200, 800, index),
       alt: suggestion.alt_text,
       description: suggestion.description,
       type: 'IMAGE' as const
