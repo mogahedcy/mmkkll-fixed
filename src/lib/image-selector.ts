@@ -1,4 +1,5 @@
 import ai, { GEMINI_MODEL } from './gemini-client';
+import { googleImageSearch } from './google-image-search';
 
 export interface ImageSuggestion {
   query: string;
@@ -57,18 +58,6 @@ export class ImageSelector {
     }
   }
 
-  getUnsplashImageUrl(searchQuery: string, width: number = 1200, height: number = 800, seed?: number): string {
-    const baseUrl = 'https://source.unsplash.com';
-    const size = `${width}x${height}`;
-    const query = encodeURIComponent(searchQuery.trim());
-    
-    if (seed !== undefined) {
-      return `${baseUrl}/${size}/?${query}&sig=${seed}`;
-    }
-    
-    return `${baseUrl}/${size}/?${query}`;
-  }
-
   async selectImagesForArticle(
     title: string,
     content: string,
@@ -77,12 +66,54 @@ export class ImageSelector {
   ): Promise<Array<{ src: string; alt: string; description: string; type: 'IMAGE' | 'VIDEO' }>> {
     const suggestions = await this.suggestImages(title, content, keywords, imageCount);
     
-    return suggestions.map((suggestion, index) => ({
-      src: this.getUnsplashImageUrl(suggestion.query, 1200, 800, index),
-      alt: suggestion.alt_text,
-      description: suggestion.description,
-      type: 'IMAGE' as const
-    }));
+    const images: Array<{ src: string; alt: string; description: string; type: 'IMAGE' | 'VIDEO' }> = [];
+    
+    for (const suggestion of suggestions) {
+      try {
+        console.log(`🔍 البحث عن صورة: ${suggestion.query}`);
+        
+        const searchResults = await googleImageSearch.searchImages(suggestion.query, {
+          num: 1,
+          imageSize: 'large',
+          imageType: 'photo',
+          safe: 'active',
+          rights: 'cc_publicdomain',
+        });
+        
+        if (searchResults.length > 0) {
+          const imageUrl = searchResults[0].url;
+          
+          const uploadedUrl = await googleImageSearch.downloadAndUploadImage(
+            imageUrl,
+            suggestion.alt_text
+          );
+          
+          if (uploadedUrl) {
+            images.push({
+              src: uploadedUrl,
+              alt: suggestion.alt_text,
+              description: suggestion.description,
+              type: 'IMAGE' as const
+            });
+            console.log(`✅ تمت إضافة الصورة: ${suggestion.alt_text}`);
+          }
+        }
+      } catch (error) {
+        console.error(`❌ فشل الحصول على صورة لـ: ${suggestion.query}`, error);
+      }
+    }
+    
+    if (images.length === 0) {
+      console.warn('⚠️ لم يتم العثور على صور، استخدام الصور الافتراضية');
+      return suggestions.map(() => ({
+        src: '/uploads/pergola-1.jpg',
+        alt: 'صورة افتراضية',
+        description: 'صورة افتراضية',
+        type: 'IMAGE' as const
+      }));
+    }
+    
+    return images;
   }
 }
 

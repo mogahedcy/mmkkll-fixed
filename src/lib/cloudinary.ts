@@ -340,4 +340,6 @@ export function getImageSrcSet(publicId: string): string {
 // إعادة تصدير دوال المساعدة من cloudinary-helpers
 export { isCloudinaryUrl, extractPublicIdFromUrl } from './cloudinary-helpers';
 
-export default cloudinary;
+// تصدير Cloudinary client
+export { cloudinary as default };
+export { cloudinary };
