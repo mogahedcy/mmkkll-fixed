@@ -39,6 +39,13 @@ Preferred communication style: Simple, everyday language.
     - **Internal Linking**: Smart link suggestions with relevance scoring
     - **Dashboard Integration**: Full-featured SEO management interface in admin panel
     - **Cost**: 100% free with Google AI API (60 requests/minute limit)
+- **SEO Diagnostics & Auto-Fix** (NEW):
+    - **Automated Issue Detection**: Broken links, missing alt text, meta tag issues, duplicate content
+    - **SEO Health Monitor**: Comprehensive dashboard with real-time issue tracking and scoring (0-100)
+    - **Auto-Fix System**: One-click automatic fixing for missing alt text, weak meta tags, and duplicate content
+    - **Smart Recommendations**: AI-powered suggestions for SEO improvements
+    - **IndexNow Auto-Submission**: Automatic URL submission to search engines on content publish/update
+    - **Batch Processing**: Parallel issue detection and fixing for better performance
 - **Performance**:
     - **Image Optimization**: Next.js Image with AVIF/WebP, optimized device sizes (up to 1920px), 75% quality, extended cache TTL, priority loading for critical images.
     - **Font Loading**: Noto Sans Arabic (3 weights), `display: swap`, preloading.
