@@ -39,13 +39,31 @@ Preferred communication style: Simple, everyday language.
     - **Internal Linking**: Smart link suggestions with relevance scoring
     - **Dashboard Integration**: Full-featured SEO management interface in admin panel
     - **Cost**: 100% free with Google AI API (60 requests/minute limit)
-- **SEO Diagnostics & Auto-Fix** (NEW):
+- **SEO Diagnostics & Auto-Fix**:
     - **Automated Issue Detection**: Broken links, missing alt text, meta tag issues, duplicate content
     - **SEO Health Monitor**: Comprehensive dashboard with real-time issue tracking and scoring (0-100)
-    - **Auto-Fix System**: One-click automatic fixing for missing alt text, weak meta tags, and duplicate content
+    - **Auto-Fix System**: AI-powered automatic fixing for:
+      * Missing alt text for images (generates SEO-optimized alt text)
+      * Weak or missing meta tags (generates optimized titles and descriptions)
+      * Duplicate content (creates unique content variations)
+    - **Batch Auto-Fix**: Fix all issues with one click
     - **Smart Recommendations**: AI-powered suggestions for SEO improvements
     - **IndexNow Auto-Submission**: Automatic URL submission to search engines on content publish/update
     - **Batch Processing**: Parallel issue detection and fixing for better performance
+- **AI Article Agent** (NEW):
+    - **Automated Content Creation**: AI-powered article generation with SEO optimization
+    - **Smart Image Selection**: Automatically selects and integrates relevant images from Unsplash
+    - **Image Alt Text Generation**: AI-generated alt text for all images
+    - **Bulk Article Generation**: Create multiple articles simultaneously (up to 10 at once)
+    - **Content Analysis**: Automatic SEO scoring and optimization suggestions
+    - **Draft/Publish Options**: Generate as draft or publish immediately
+    - **API Endpoints**:
+      * `/api/ai-agent/generate-article`: Generate single article
+      * `/api/ai-agent/generate-multiple-articles`: Bulk article generation
+      * `/api/ai-agent/suggest-images`: Get AI-suggested images for content
+      * `/api/ai-agent/auto-fix`: Fix single SEO issue
+      * `/api/ai-agent/auto-fix-all`: Fix all SEO issues automatically
+      * `/api/ai-agent/seo-audit`: Run comprehensive SEO audit
 - **Performance**:
     - **Image Optimization**: Next.js Image with AVIF/WebP, optimized device sizes (up to 1920px), 75% quality, extended cache TTL, priority loading for critical images.
     - **Font Loading**: Noto Sans Arabic (3 weights), `display: swap`, preloading.

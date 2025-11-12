@@ -455,11 +455,248 @@ export class SEODiagnostics {
    * إصلاح تلقائي للمشاكل القابلة للإصلاح
    */
   async autoFix(issueId: string): Promise<{ success: boolean; message: string }> {
-    // سيتم تنفيذ الإصلاحات التلقائية في المرحلة القادمة
-    return {
-      success: false,
-      message: 'الإصلاح التلقائي سيتوفر قريباً'
-    };
+    try {
+      const issue = await this.findIssue(issueId);
+      if (!issue) {
+        return { success: false, message: 'المشكلة غير موجودة' };
+      }
+
+      if (!issue.autoFixable) {
+        return { success: false, message: 'هذه المشكلة لا يمكن إصلاحها تلقائياً' };
+      }
+
+      switch (issue.type) {
+        case 'missing_alt':
+          return await this.fixMissingAltText(issue);
+        case 'meta_issue':
+          return await this.fixMetaIssue(issue);
+        case 'duplicate_content':
+          return await this.fixDuplicateContent(issue);
+        default:
+          return { success: false, message: 'نوع المشكلة غير مدعوم للإصلاح التلقائي' };
+      }
+    } catch (error) {
+      console.error('خطأ في الإصلاح التلقائي:', error);
+      return { success: false, message: 'فشل الإصلاح التلقائي' };
+    }
+  }
+
+  /**
+   * البحث عن مشكلة معينة
+   */
+  private async findIssue(issueId: string): Promise<SEOIssue | null> {
+    const audit = await this.runFullAudit();
+    return audit.issues.find(i => i.id === issueId) || null;
+  }
+
+  /**
+   * إصلاح Alt Text المفقود
+   */
+  private async fixMissingAltText(issue: SEOIssue): Promise<{ success: boolean; message: string }> {
+    try {
+      if (!issue.targetId) {
+        return { success: false, message: 'معرف العنصر مفقود' };
+      }
+
+      const { seoAgent } = await import('./seo-agent');
+      
+      if (issue.targetType === 'project') {
+        const media = await prisma.media_items.findUnique({
+          where: { id: issue.targetId },
+          include: { projects: true }
+        });
+
+        if (!media || !media.projects) {
+          return { success: false, message: 'الصورة غير موجودة' };
+        }
+
+        const altText = await seoAgent.generateImageAltText(
+          media.projects.title,
+          media.projects.description || '',
+          media.src
+        );
+
+        await prisma.media_items.update({
+          where: { id: issue.targetId },
+          data: { alt: altText }
+        });
+
+        return { success: true, message: `تم إضافة النص البديل: "${altText}"` };
+      } else if (issue.targetType === 'article') {
+        const media = await prisma.article_media_items.findUnique({
+          where: { id: issue.targetId },
+          include: { articles: true }
+        });
+
+        if (!media || !media.articles) {
+          return { success: false, message: 'الصورة غير موجودة' };
+        }
+
+        const altText = await seoAgent.generateImageAltText(
+          media.articles.title,
+          media.articles.excerpt || '',
+          media.src
+        );
+
+        await prisma.article_media_items.update({
+          where: { id: issue.targetId },
+          data: { alt: altText }
+        });
+
+        return { success: true, message: `تم إضافة النص البديل: "${altText}"` };
+      }
+
+      return { success: false, message: 'نوع العنصر غير مدعوم' };
+    } catch (error) {
+      console.error('خطأ في إصلاح Alt Text:', error);
+      return { success: false, message: 'فشل إصلاح Alt Text' };
+    }
+  }
+
+  /**
+   * إصلاح مشاكل Meta Tags
+   */
+  private async fixMetaIssue(issue: SEOIssue): Promise<{ success: boolean; message: string }> {
+    try {
+      if (!issue.targetId || !issue.targetType) {
+        return { success: false, message: 'معلومات العنصر مفقودة' };
+      }
+
+      const { seoAgent } = await import('./seo-agent');
+
+      if (issue.targetType === 'project') {
+        const project = await prisma.projects.findUnique({
+          where: { id: issue.targetId },
+          select: { title: true, description: true, keywords: true }
+        });
+
+        if (!project) {
+          return { success: false, message: 'المشروع غير موجود' };
+        }
+
+        const defaultKeywords = ['مظلات', 'سواتر', 'برجولات', 'جدة'];
+        const keywordsArray = project.keywords 
+          ? (typeof project.keywords === 'string' ? project.keywords.split(',').map(k => k.trim()) : project.keywords)
+          : defaultKeywords;
+        const metaTags = await seoAgent.generateMetaTags(
+          project.description || project.title,
+          keywordsArray,
+          'project'
+        );
+
+        await prisma.projects.update({
+          where: { id: issue.targetId },
+          data: {
+            metaTitle: metaTags.title,
+            metaDescription: metaTags.description,
+            keywords: keywordsArray.join(', ')
+          }
+        });
+
+        return { success: true, message: 'تم تحديث Meta Tags بنجاح' };
+      } else if (issue.targetType === 'article') {
+        const article = await prisma.articles.findUnique({
+          where: { id: issue.targetId },
+          select: { title: true, content: true, excerpt: true }
+        });
+
+        if (!article) {
+          return { success: false, message: 'المقال غير موجود' };
+        }
+
+        const content = article.excerpt || article.content.substring(0, 500);
+        const analysis = await seoAgent.analyzeContent(content, [article.title]);
+        
+        await prisma.articles.update({
+          where: { id: issue.targetId },
+          data: {
+            metaTitle: analysis.meta_title_suggestion,
+            metaDescription: analysis.meta_description_suggestion
+          }
+        });
+
+        return { success: true, message: 'تم تحديث Meta Tags بنجاح' };
+      }
+
+      return { success: false, message: 'نوع العنصر غير مدعوم' };
+    } catch (error) {
+      console.error('خطأ في إصلاح Meta Tags:', error);
+      return { success: false, message: 'فشل إصلاح Meta Tags' };
+    }
+  }
+
+  /**
+   * إصلاح المحتوى المكرر
+   */
+  private async fixDuplicateContent(issue: SEOIssue): Promise<{ success: boolean; message: string }> {
+    try {
+      if (!issue.targetId || !issue.targetType) {
+        return { success: false, message: 'معلومات العنصر مفقودة' };
+      }
+
+      const { seoAgent } = await import('./seo-agent');
+
+      if (issue.targetType === 'project') {
+        const project = await prisma.projects.findUnique({
+          where: { id: issue.targetId },
+          select: { title: true, description: true }
+        });
+
+        if (!project) {
+          return { success: false, message: 'المشروع غير موجود' };
+        }
+
+        const uniqueDescription = await seoAgent.generateOptimizedContent(
+          project.title,
+          ['مظلات', 'سواتر', 'برجولات'],
+          'project_description',
+          150
+        );
+
+        await prisma.projects.update({
+          where: { id: issue.targetId },
+          data: {
+            metaDescription: uniqueDescription.content.substring(0, 160)
+          }
+        });
+
+        return { success: true, message: 'تم إنشاء محتوى فريد جديد' };
+      }
+
+      return { success: false, message: 'نوع العنصر غير مدعوم' };
+    } catch (error) {
+      console.error('خطأ في إصلاح المحتوى المكرر:', error);
+      return { success: false, message: 'فشل إصلاح المحتوى المكرر' };
+    }
+  }
+
+  /**
+   * إصلاح جميع المشاكل القابلة للإصلاح تلقائياً
+   */
+  async autoFixAll(): Promise<{ fixed: number; failed: number; results: Array<{ issueId: string; success: boolean; message: string }> }> {
+    const audit = await this.runFullAudit();
+    const fixableIssues = audit.issues.filter(i => i.autoFixable);
+
+    const results = [];
+    let fixed = 0;
+    let failed = 0;
+
+    for (const issue of fixableIssues) {
+      const result = await this.autoFix(issue.id);
+      results.push({
+        issueId: issue.id,
+        success: result.success,
+        message: result.message
+      });
+
+      if (result.success) {
+        fixed++;
+      } else {
+        failed++;
+      }
+    }
+
+    return { fixed, failed, results };
   }
 
   // وظائف مساعدة

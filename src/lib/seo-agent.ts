@@ -311,6 +311,38 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
       throw new Error('فشل تجميع الكلمات المفتاحية');
     }
   }
+
+  async generateImageAltText(title: string, content: string, imageUrl: string): Promise<string> {
+    try {
+      const prompt = `أنت خبير في كتابة نصوص بديلة للصور (Alt Text) محسّنة للـ SEO.
+
+العنوان: ${title}
+المحتوى: ${content.substring(0, 300)}
+رابط الصورة: ${imageUrl}
+
+اكتب نص بديل (Alt Text) محسّن للصورة يكون:
+1. وصفي ودقيق (30-100 حرف)
+2. يحتوي على كلمات مفتاحية ذات صلة
+3. طبيعي وسلس للقراءة
+4. يفيد محركات البحث والمستخدمين ذوي الاحتياجات الخاصة
+
+قدم فقط نص الـ Alt Text بدون أي شرح إضافي.`;
+
+      const response = await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        config: {
+          systemInstruction: "أنت خبير في كتابة نصوص بديلة للصور محسّنة لمحركات البحث وإمكانية الوصول.",
+        },
+        contents: prompt,
+      });
+
+      const altText = response.text?.trim() || `صورة ${title}`;
+      return altText.replace(/^["']|["']$/g, '');
+    } catch (error) {
+      console.error('Error generating image alt text:', error);
+      return `صورة ${title}`;
+    }
+  }
 }
 
 export const seoAgent = new SEOAgent();
