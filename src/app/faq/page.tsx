@@ -14,6 +14,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
 import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
@@ -175,6 +176,10 @@ export default function FAQPage() {
   const whatsappMessage = "السلام عليكم، لدي سؤال لم أجد إجابته في صفحة الأسئلة الشائعة."
   const whatsappURL = `https://wa.me/966553719009?text=${encodeURIComponent(whatsappMessage)}`
 
+  const breadcrumbItems = [
+    { label: 'الأسئلة الشائعة', href: '/faq' }
+  ];
+
   return (
     <>
       {/* Structured Data for SEO */}
@@ -197,6 +202,7 @@ export default function FAQPage() {
           })
         }}
       />
+      <BreadcrumbSchema items={breadcrumbItems} />
 
       <Navbar />
 

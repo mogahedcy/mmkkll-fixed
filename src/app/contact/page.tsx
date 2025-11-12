@@ -16,6 +16,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
 import StructuredDataScript from '@/components/StructuredDataScript'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
 import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
@@ -107,6 +108,10 @@ export default function ContactPage() {
   const whatsappMessage = "السلام عليكم، أريد الاستفسار عن خدماتكم والحصول على عرض سعر."
   const whatsappURL = `https://wa.me/966553719009?text=${encodeURIComponent(whatsappMessage)}`
 
+  const breadcrumbItems = [
+    { label: 'تواصل معنا', href: '/contact' }
+  ];
+
   return (
     <>
       {/* Structured Data for SEO */}
@@ -136,6 +141,7 @@ export default function ContactPage() {
           })
         }}
       />
+      <BreadcrumbSchema items={breadcrumbItems} />
 
       <Navbar />
 

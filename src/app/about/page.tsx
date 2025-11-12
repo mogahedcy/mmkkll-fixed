@@ -18,6 +18,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
 import StructuredDataScript from '@/components/StructuredDataScript'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
 import { generateCanonicalUrl } from '@/lib/seo-utils'
 
 export const metadata: Metadata = {
@@ -149,10 +150,15 @@ export default function AboutPage() {
     "knowsAbout": ["مظلات", "سواتر", "برجولات", "خيام ملكية", "بيوت شعر", "ساندوتش بانل", "تنسيق حدائق", "ترميم ملحقات"]
   };
 
+  const breadcrumbItems = [
+    { label: 'عن محترفين الديار', href: '/about' }
+  ];
+
   return (
     <>
       {/* Structured Data for SEO */}
       <StructuredDataScript data={organizationData} />
+      <BreadcrumbSchema items={breadcrumbItems} />
 
       <Navbar />
 
