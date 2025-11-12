@@ -30,7 +30,7 @@ const STATIC_PATHS = [
 ]
 
 async function checkPath(path: string) {
-  const url = new URL(path, process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000')
+  const url = new URL(path, process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000')
   const start = Date.now()
   try {
     const res = await fetch(url.toString(), { cache: 'no-store' })
@@ -47,7 +47,7 @@ export async function GET() {
   // Try dynamic example for portfolio project if available
   let dynamic: any = null
   try {
-    const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'
     const apiRes = await fetch(`${base}/api/projects?limit=1&sort=newest`, { cache: 'no-store' })
     if (apiRes.ok) {
       const data = await apiRes.json()

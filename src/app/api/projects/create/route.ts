@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
 
     // تحديث خريطة الموقع تلقائياً
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/sitemap/refresh`, {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'}/api/sitemap/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
 
     // إشعار محركات البحث بالتحديث
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/webhook/content-updated`, {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'}/api/webhook/content-updated`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -165,7 +165,7 @@ export async function PUT(
 
     // إشعار محركات البحث بالتحديث
     try {
-      const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
       await fetch(`${origin}/api/sitemap/refresh`, { method: 'POST' });
       const pageUrl = `${origin}/articles/${updatedArticle.slug || updatedArticle.id}`;
       await fetch(`${origin}/api/indexnow`, {
@@ -254,7 +254,7 @@ export async function DELETE(
 
     // إشعار جوجل بالحذف
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/sitemap/refresh`, {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'}/api/sitemap/refresh`, {
         method: 'POST'
       });
     } catch (error) {
