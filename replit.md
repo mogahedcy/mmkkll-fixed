@@ -31,6 +31,13 @@ Preferred communication style: Simple, everyday language.
 
 ## SEO & Performance
 - **SEO**: Automated sitemap generation, robots.txt, structured data (Article, Service, CreativeWork, Review, FAQ, LocalBusiness), canonical URLs, hreflang, Google Business Profile integration, IndexNow API.
+- **AI-Powered SEO Agent**: Advanced SEO optimization system powered by OpenAI GPT-5:
+    - **Content Analysis**: SEO scoring, readability analysis, keyword optimization assessment
+    - **Keyword Intelligence**: Keyword clustering, search intent analysis, difficulty scoring
+    - **Content Generation**: AI-powered article writing, project descriptions, meta tags generation
+    - **Competitor Analysis**: Strategic insights extraction, content gap identification
+    - **Internal Linking**: Smart link suggestions with relevance scoring
+    - **Dashboard Integration**: Full-featured SEO management interface in admin panel
 - **Performance**:
     - **Image Optimization**: Next.js Image with AVIF/WebP, optimized device sizes (up to 1920px), 75% quality, extended cache TTL, priority loading for critical images.
     - **Font Loading**: Noto Sans Arabic (3 weights), `display: swap`, preloading.
@@ -71,8 +78,9 @@ Preferred communication style: Simple, everyday language.
 - **DOMPurify**: HTML sanitization.
 - **Zod**: Runtime type validation.
 
-## Analytics
+## Analytics & AI
 - **Google Analytics 4**: For comprehensive site analytics and Web Vitals tracking.
+- **OpenAI**: GPT-5 model for advanced SEO analysis and content generation.
 
 ## Development & Deployment
 - **Biome**: Code formatting and linting.

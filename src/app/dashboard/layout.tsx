@@ -89,6 +89,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <span className="font-medium">التعليقات</span>
             </Link>
             
+            <Link href="/dashboard/seo-agent" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 hover:text-purple-700 transition-all duration-200">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span className="font-medium">وكيل SEO الذكي</span>
+              <span className="mr-auto text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full">AI</span>
+            </Link>
+            
             <hr className="my-4 border-gray-200" />
             
             <Link href="/portfolio" target="_blank" className="group flex items-center gap-3 rounded-xl px-4 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-700 transition-all duration-200">

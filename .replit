@@ -29,6 +29,10 @@ externalPort = 8080
 localPort = 36271
 externalPort = 3001
 
+[[ports]]
+localPort = 39955
+externalPort = 3003
+
 [workflows]
 runButton = "Project"
 
@@ -184,3 +188,4 @@ waitForPort = 5000
 
 [agent]
 expertMode = true
+integrations = ["javascript_openai:1.0.0"]
