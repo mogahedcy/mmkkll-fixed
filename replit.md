@@ -50,7 +50,7 @@ Preferred communication style: Simple, everyday language.
     - **Smart Recommendations**: AI-powered suggestions for SEO improvements
     - **IndexNow Auto-Submission**: Automatic URL submission to search engines on content publish/update
     - **Batch Processing**: Parallel issue detection and fixing for better performance
-- **AI Article Agent** (NEW):
+- **AI Article Agent**:
     - **Automated Content Creation**: AI-powered article generation with SEO optimization
     - **Smart Image Selection**: Automatically selects and integrates relevant images from Unsplash
     - **Image Alt Text Generation**: AI-generated alt text for all images
@@ -64,6 +64,37 @@ Preferred communication style: Simple, everyday language.
       * `/api/ai-agent/auto-fix`: Fix single SEO issue
       * `/api/ai-agent/auto-fix-all`: Fix all SEO issues automatically
       * `/api/ai-agent/seo-audit`: Run comprehensive SEO audit
+- **Smart Content Generation System** (LATEST):
+    - **Competitor Analysis Foundation**: Infrastructure for web search-based competitor analysis
+      * **Current Status**: Uses mock data for demonstration and testing
+      * **Production Ready**: Framework is in place to integrate real search APIs
+      * **Supported APIs**: Google Custom Search API, Bing Search API, SerpAPI
+      * **Environment Gate**: Set `ENABLE_REAL_WEB_SEARCH=true` to enable real search (requires API integration)
+      * **Mock Mode Features**:
+        - AI-powered competitor analysis based on search query patterns
+        - Keyword extraction and content strategy analysis
+        - Content gap identification
+        - Target audience and writing style analysis
+      * **Real Search Mode** (when integrated):
+        - Searches actual competitor articles and content
+        - Extracts keywords, writing style, content strategy from real sources
+        - Tracks competitor URLs and analysis sources
+        - Provides truthful `webSearchUsed` flag in API responses
+    - **Intelligent Article Generation**: Creates human-like content based on competitor insights
+      * Uses competitor analysis to match successful writing styles
+      * Generates unique content that fills identified gaps
+      * Optimizes for target keywords and audience
+      * Creates SEO-friendly meta tags based on competitor best practices
+    - **Automated Content Pipeline**:
+      * Phase 1: Competitor analysis (currently mock, ready for real search integration)
+      * Phase 2: Smart article idea generation (fills content gaps)
+      * Phase 3: Human-like content writing with SEO optimization
+      * Phase 4: Automatic image selection and alt text generation
+      * Phase 5: Database storage with draft/publish options
+    - **API Endpoint**: `/api/ai-agent/smart-auto-generate`
+      * Input: niche, article count (1-10), auto-publish flag
+      * Output: Generated articles with SEO scores, competitor insights, analysis data
+      * Tracks `webSearchUsed` status (currently false in mock mode)
 - **Performance**:
     - **Image Optimization**: Next.js Image with AVIF/WebP, optimized device sizes (up to 1920px), 75% quality, extended cache TTL, priority loading for critical images.
     - **Font Loading**: Noto Sans Arabic (3 weights), `display: swap`, preloading.

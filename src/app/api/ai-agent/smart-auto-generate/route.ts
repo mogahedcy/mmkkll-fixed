@@ -185,12 +185,18 @@ export async function POST(request: NextRequest) {
     console.log('\n🎉 اكتمل التوليد الذكي!');
     console.log(`✅ نجح: ${successCount}/${count}`);
     console.log(`📊 متوسط نقاط SEO: ${avgSeoScore.toFixed(1)}/100`);
+    
+    if (competitorAnalysis.realContentAnalyzed) {
+      console.log(`🌐 تم تحليل محتوى حقيقي من ${competitorAnalysis.competitorUrls?.length || 0} مصادر`);
+    }
 
     return NextResponse.json({
       success: true,
       message: `تم توليد ${successCount} من أصل ${count} مقالات بنجاح`,
       analysis: {
         niche,
+        webSearchUsed: competitorAnalysis.realContentAnalyzed || false,
+        competitorUrls: competitorAnalysis.competitorUrls || [],
         competitorInsights: {
           topKeywords: competitorAnalysis.topKeywords.slice(0, 10),
           targetAudience: competitorAnalysis.targetAudience,

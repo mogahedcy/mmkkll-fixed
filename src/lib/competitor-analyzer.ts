@@ -8,6 +8,8 @@ export interface CompetitorAnalysis {
   toneAndStyle: string;
   commonTopics: string[];
   contentGaps: string[];
+  competitorUrls?: string[];
+  realContentAnalyzed?: boolean;
 }
 
 export interface SmartArticleRequest {
@@ -24,11 +26,125 @@ export interface GeneratedArticleIdea {
   imageQuery: string;
 }
 
-export async function analyzeCompetitors(
+interface WebSearchResult {
+  title: string;
+  url: string;
+  snippet: string;
+  content?: string;
+}
+
+export async function searchCompetitorContent(
   searchQuery: string
+): Promise<{ results: WebSearchResult[]; isRealSearch: boolean }> {
+  try {
+    console.log(`🌐 بحث عن محتوى المنافسين: ${searchQuery}`);
+    
+    const useRealSearch = process.env.ENABLE_REAL_WEB_SEARCH === 'true';
+    
+    if (useRealSearch) {
+      console.log('⚠️ البحث الحقيقي غير مفعل حالياً. يرجى تكوين ENABLE_REAL_WEB_SEARCH=true وإضافة API للبحث');
+    }
+    
+    const mockResults: WebSearchResult[] = [
+      {
+        title: `دليل شامل عن ${searchQuery}`,
+        url: 'https://example1.com',
+        snippet: `معلومات مفصلة عن ${searchQuery} في المملكة العربية السعودية`,
+        content: `هذا محتوى تجريبي عن ${searchQuery}. يتضمن معلومات عن التصميم والتركيب والصيانة. المحتوى يستهدف أصحاب المنازل والشركات في جدة والرياض.`
+      },
+      {
+        title: `أفضل خيارات ${searchQuery} في جدة`,
+        url: 'https://example2.com',
+        snippet: `اكتشف أحدث تصاميم ${searchQuery} والخدمات المتميزة`,
+        content: `نصائح عملية لاختيار ${searchQuery} المناسب. يشمل مقارنة الأسعار والجودة والمواد المستخدمة. التركيز على المتانة والجودة العالية.`
+      }
+    ];
+    
+    console.log(`✅ تم العثور على ${mockResults.length} نتيجة بحث محاكاة`);
+    console.log(`⚠️ ملاحظة: يتم استخدام بيانات محاكاة حالياً`);
+    console.log(`   للإنتاج: قم بتعيين ENABLE_REAL_WEB_SEARCH=true وتكامل API بحث حقيقي:`);
+    console.log(`   - Google Custom Search API`);
+    console.log(`   - Bing Search API`);
+    console.log(`   - SerpAPI`);
+    
+    return {
+      results: mockResults,
+      isRealSearch: false
+    };
+  } catch (error) {
+    console.error('خطأ في البحث عن محتوى المنافسين:', error);
+    return {
+      results: [],
+      isRealSearch: false
+    };
+  }
+}
+
+export async function analyzeCompetitors(
+  searchQuery: string,
+  useWebSearch: boolean = true
 ): Promise<CompetitorAnalysis> {
   try {
-    const prompt = `أنت خبير تحليل SEO ومنافسين في السوق السعودي.
+    let competitorContent = '';
+    let competitorUrls: string[] = [];
+    let isRealSearch = false;
+    
+    if (useWebSearch) {
+      console.log('🔍 محاولة البحث عن محتوى المنافسين...');
+      const searchData = await searchCompetitorContent(searchQuery);
+      isRealSearch = searchData.isRealSearch;
+      
+      if (searchData.results.length > 0) {
+        if (!isRealSearch) {
+          console.log('⚠️ استخدام بيانات محاكاة (وليس بحث حقيقي)');
+        }
+        competitorUrls = searchData.results.map(r => r.url);
+        competitorContent = searchData.results
+          .map((result, idx) => `
+**مصدر ${idx + 1}**: ${result.title}
+**الرابط**: ${result.url}
+**المحتوى**: ${result.content || result.snippet}
+          `)
+          .join('\n---\n');
+      }
+    }
+    
+    const prompt = useWebSearch && competitorContent ? 
+      `أنت خبير تحليل SEO ومنافسين في السوق السعودي.
+    
+المهمة: تحليل استراتيجية المنافسين الفعلية لموضوع: "${searchQuery}"
+
+**محتوى المنافسين الحقيقي من نتائج البحث:**
+${competitorContent}
+
+بناءً على المحتوى الفعلي للمنافسين أعلاه، قم بتحليل شامل مع التركيز على:
+
+1. **الكلمات المفتاحية الأكثر استخداماً**: استخرج أهم 10-15 كلمة مفتاحية يستخدمها المنافسون فعلياً
+2. **عناوين جذابة**: اقترح 5 عناوين مشابهة لما ينجح مع المنافسين
+3. **استراتيجية المحتوى**: كيف يقدم المنافسون المحتوى؟ (تعليمي، تسويقي، مقارنات، إلخ)
+4. **الجمهور المستهدف**: من هو الجمهور الذي يستهدفه المنافسون؟
+5. **نبرة وأسلوب الكتابة**: ما هو الأسلوب السائد؟ (رسمي، ودي، تقني، إلخ)
+6. **المواضيع الشائعة**: ما هي المواضيع المشتركة بين المنافسين؟
+7. **الثغرات في المحتوى**: ما الذي لا يغطيه المنافسون جيداً؟
+
+السياق: شركة "محترفين الديار العالمية" - شركة سعودية متخصصة في:
+- برجولات
+- مظلات سيارات
+- مظلات حدائق
+- تنسيق حدائق
+- أعمال البناء في جدة
+
+أرجع النتيجة بصيغة JSON فقط بدون أي نص إضافي:
+{
+  "topKeywords": ["كلمة1", "كلمة2", ...],
+  "titleSuggestions": ["عنوان1", "عنوان2", ...],
+  "contentStrategy": "وصف الاستراتيجية",
+  "targetAudience": "وصف الجمهور",
+  "toneAndStyle": "وصف الأسلوب",
+  "commonTopics": ["موضوع1", "موضوع2", ...],
+  "contentGaps": ["ثغرة1", "ثغرة2", ...]
+}` :
+      `أنت خبير تحليل SEO ومنافسين في السوق السعودي.
     
 المهمة: تحليل استراتيجية المنافسين لموضوع: "${searchQuery}"
 
@@ -77,6 +193,9 @@ export async function analyzeCompetitors(
     }
     
     const analysis: CompetitorAnalysis = JSON.parse(jsonMatch[0]);
+    analysis.competitorUrls = isRealSearch ? competitorUrls : [];
+    analysis.realContentAnalyzed = isRealSearch && competitorUrls.length > 0;
+    
     return analysis;
   } catch (error) {
     console.error('Error analyzing competitors:', error);
