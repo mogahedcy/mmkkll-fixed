@@ -3,6 +3,9 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import ServicesSection from '@/components/ServicesSection';
+import WhyChooseUsSection from '@/components/WhyChooseUsSection';
+import HowItWorksSection from '@/components/HowItWorksSection';
+import FAQSection from '@/components/FAQSection';
 import { generateLocalBusinessSchema, generateOrganizationSchema } from '@/lib/seo-utils';
 
 const PortfolioSection = dynamic(() => import('@/components/PortfolioSection'), {
@@ -86,8 +89,11 @@ export default function HomePage() {
       <Navbar />
       <HeroSection />
       <ServicesSection />
+      <WhyChooseUsSection />
+      <HowItWorksSection />
       <PortfolioSection />
       <TestimonialsSection />
+      <FAQSection />
       <StickyWhatsApp />
       <Footer />
     </>
