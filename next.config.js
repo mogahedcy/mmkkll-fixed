@@ -80,6 +80,8 @@ const nextConfig = {
         '127.0.0.1'
       ],
   async headers() {
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    
     return [
       {
         source: '/(.*)',
@@ -100,6 +102,10 @@ const nextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
+          ...(isDevelopment ? [{
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          }] : []),
         ],
       },
       {
