@@ -136,7 +136,7 @@ export default function ServicesSection() {
     "provider": {
       "@type": "Organization",
       "name": "محترفين الديار العالمية",
-      "url": "https://yourdomain.com"
+      "url": "https://www.aldeyarksa.tech"
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
@@ -157,7 +157,7 @@ export default function ServicesSection() {
               "name": service.title,
               "description": service.description,
               "serviceType": service.title,
-              "url": `https://yourdomain.com${service.href}`
+              "url": `https://www.aldeyarksa.tech${service.href}`
             },
             "price": numericPrice,
             "priceCurrency": "SAR",

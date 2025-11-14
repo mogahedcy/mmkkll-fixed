@@ -20,20 +20,24 @@ export default function StructuredDataScript({ data }: { data?: any | any[] }) {
     },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "شارع الأمير محمد بن عبدالعزيز",
+      "streetAddress": "Al Makarunah Rd, تقاطع، التحليه",
       "addressLocality": "جدة",
       "addressRegion": "منطقة مكة المكرمة",
-      "postalCode": "23442",
+      "postalCode": "23461",
       "addressCountry": "SA"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 21.4858,
-      "longitude": 39.1925
+      "latitude": 21.509375,
+      "longitude": 39.192188
     },
     "openingHours": "Mo-Sa 08:00-18:00",
     "priceRange": "$$",
-    "serviceArea": { "@type": "City", "name": "جدة" },
+    "areaServed": [
+      { "@type": "City", "name": "جدة" },
+      { "@type": "City", "name": "الطائف" },
+      { "@type": "State", "name": "منطقة مكة المكرمة" }
+    ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "خدمات محترفين الديار",
@@ -69,13 +73,13 @@ export default function StructuredDataScript({ data }: { data?: any | any[] }) {
     "telephone": "+966553719009",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "شارع الأمير سلطان",
+      "streetAddress": "Al Makarunah Rd, تقاطع، التحليه",
       "addressLocality": "جدة",
       "addressRegion": "منطقة مكة المكرمة",
-      "postalCode": "21423",
+      "postalCode": "23461",
       "addressCountry": "SA"
     },
-    "geo": { "@type": "GeoCoordinates", "latitude": 21.5433, "longitude": 39.1728 },
+    "geo": { "@type": "GeoCoordinates", "latitude": 21.509375, "longitude": 39.192188 },
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"],
