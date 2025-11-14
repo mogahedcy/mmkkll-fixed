@@ -12,7 +12,7 @@ const navItems = [
   },
   {
     label: 'خدماتنا',
-    href: '/services/mazallat',
+    href: '/#services',
     icon: Briefcase,
   },
   {
