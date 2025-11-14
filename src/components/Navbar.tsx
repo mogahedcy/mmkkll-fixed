@@ -287,11 +287,11 @@ export default function Navbar() {
                 onMouseEnter={() => setIsServicesOpen(true)}
                 onMouseLeave={() => setIsServicesOpen(false)}
               >
-                <button className="px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 font-medium flex items-center space-x-2 space-x-reverse group">
+                <Link href="/#services" className="px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 font-medium flex items-center space-x-2 space-x-reverse group">
                   <Wrench className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span>خدماتنا</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
-                </button>
+                </Link>
 
                 {/* Mega Menu */}
                 {isServicesOpen && (
@@ -428,16 +428,23 @@ export default function Navbar() {
 
               {/* Mobile Services */}
               <div className="border-t border-gray-100 pt-3 mb-4">
-                <button
-                  onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-                  className="flex items-center justify-between w-full px-3 sm:px-4 py-3 text-right"
-                >
-                  <div className="flex items-center space-x-3 space-x-reverse">
+                <div className="flex items-center justify-between w-full">
+                  <Link
+                    href="/#services"
+                    className="flex items-center space-x-3 space-x-reverse px-3 sm:px-4 py-3 flex-1"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
                     <Wrench className="w-5 h-5 text-primary" />
                     <span className="font-semibold text-gray-900">خدماتنا</span>
-                  </div>
-                  <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
-                </button>
+                  </Link>
+                  <button
+                    onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                    className="px-3 sm:px-4 py-3"
+                    aria-label="عرض قائمة الخدمات"
+                  >
+                    <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
 
                 {isMobileServicesOpen && (
                   <div className="bg-gray-50 rounded-lg mt-2 overflow-hidden">
