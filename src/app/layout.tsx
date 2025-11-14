@@ -10,6 +10,7 @@ import { WebVitals } from "./web-vitals";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import ReviewSchema from "@/components/ReviewSchema";
+import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -155,6 +156,7 @@ export default function RootLayout({
         <link rel="prefetch" href="/api/projects?limit=50&sort=newest" />
         
         <StructuredDataScript data={faqPageSchema} />
+        <LocalBusinessSchema />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
         <GoogleAnalytics />

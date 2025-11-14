@@ -26,19 +26,22 @@ const slides = [
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
+    if (!isPlaying) return;
+    
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, [slides.length, isPlaying]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black" aria-label="قسم البطل الرئيسي">
       {/* Background Video/Image Slider */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" role="img" aria-label={slides[currentSlide].alt}>
         {slides.map((slide, index) => (
           <div
             key={`slide-${slide.url}-${index}`}
@@ -51,11 +54,12 @@ export default function HeroSection() {
               alt={slide.alt}
               fill
               style={{ objectFit: 'cover' }}
-              quality={index === 0 ? 90 : 75}
+              quality={index === 0 ? 85 : 70}
               priority={index === 0}
               fetchPriority={index === 0 ? 'high' : 'low'}
               loading={index === 0 ? 'eager' : 'lazy'}
               sizes="100vw"
+              aria-hidden="true"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMyMzI3MmEiLz48L3N2Zz4="
             />
@@ -65,6 +69,42 @@ export default function HeroSection() {
 
       {/* Enhanced Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70 z-10" />
+
+      {/* Slider Controls - WCAG Accessibility */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-3">
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 shadow-lg"
+          aria-label={isPlaying ? 'إيقاف السلايدر' : 'تشغيل السلايدر'}
+          aria-pressed={isPlaying}
+        >
+          {isPlaying ? (
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          )}
+        </button>
+        <div className="flex gap-2" role="tablist" aria-label="اختيار الصورة">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? 'bg-white w-8'
+                  : 'bg-white/40 hover:bg-white/60'
+              }`}
+              aria-label={`الصورة ${index + 1}`}
+              aria-selected={index === currentSlide}
+              role="tab"
+            />
+          ))}
+        </div>
+      </div>
 
       {/* Hero Content */}
       <div className="relative z-20 text-center text-white px-4 max-w-7xl mx-auto">

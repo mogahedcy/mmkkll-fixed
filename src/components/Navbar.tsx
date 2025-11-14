@@ -287,15 +287,39 @@ export default function Navbar() {
                 onMouseEnter={() => setIsServicesOpen(true)}
                 onMouseLeave={() => setIsServicesOpen(false)}
               >
-                <Link href="/#services" className="px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 font-medium flex items-center space-x-2 space-x-reverse group">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = '/#services';
+                  }}
+                  onFocus={() => setIsServicesOpen(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setIsServicesOpen(true);
+                    } else if (e.key === 'Escape') {
+                      setIsServicesOpen(false);
+                    }
+                  }}
+                  className="px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 font-medium flex items-center space-x-2 space-x-reverse group"
+                  aria-expanded={isServicesOpen}
+                  aria-haspopup="true"
+                  aria-controls="services-menu"
+                >
                   <Wrench className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   <span>خدماتنا</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
-                </Link>
+                </button>
 
                 {/* Mega Menu */}
                 {isServicesOpen && (
-                  <div className="absolute top-full right-0 w-[900px] bg-white border border-gray-100 rounded-2xl shadow-2xl p-8 transform translate-y-2 z-50">
+                  <div 
+                    id="services-menu"
+                    className="absolute top-full right-0 w-[900px] bg-white border border-gray-100 rounded-2xl shadow-2xl p-8 transform translate-y-2 z-50"
+                    role="menu"
+                    aria-label="قائمة الخدمات"
+                  >
                     <div className="mb-6">
                       <h3 className="text-xl font-bold text-primary mb-2">خدماتنا المتخصصة</h3>
                       <p className="text-gray-600">نقدم أفضل الحلول في مجال المظلات والسواتر والتصميم مع ضمان الجودة</p>
@@ -307,6 +331,7 @@ export default function Navbar() {
                           key={service.href}
                           href={service.href}
                           className="flex items-start space-x-4 space-x-reverse p-4 rounded-xl hover:bg-gray-50 transition-all duration-200 group border border-transparent hover:border-gray-200"
+                          role="menuitem"
                         >
                           <div className={`p-3 rounded-lg ${service.bgColor} group-hover:scale-105 transition-transform`}>
                             <service.icon className={`w-6 h-6 ${service.color}`} />
@@ -441,13 +466,20 @@ export default function Navbar() {
                     onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
                     className="px-3 sm:px-4 py-3 border-r border-gray-100"
                     aria-label="عرض قائمة الخدمات"
+                    aria-expanded={isMobileServicesOpen}
+                    aria-controls="mobile-services-menu"
                   >
                     <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
 
                 {isMobileServicesOpen && (
-                  <div className="bg-gray-50 rounded-lg mt-2 overflow-hidden">
+                  <div 
+                    id="mobile-services-menu"
+                    className="bg-gray-50 rounded-lg mt-2 overflow-hidden"
+                    role="menu"
+                    aria-label="قائمة الخدمات"
+                  >
                     {servicesItems.map((service) => (
                       <Link
                         key={service.href}
