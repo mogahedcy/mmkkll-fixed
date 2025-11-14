@@ -38,9 +38,14 @@ export default function StructuredDataScript({ data }: { data?: any | any[] }) {
       "@type": "OfferCatalog",
       "name": "خدمات محترفين الديار",
       "itemListElement": [
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "مظلات السيارات", "description": "تركيب مظلات السيارات بأعلى معايير الجودة" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "البرجولات", "description": "تصميم وتنفيذ برجولات خشبية وحديدية" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "السواتر", "description": "تركيب سواتر الخصوصية والحماية" } }
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "مظلات السيارات", "description": "تركيب مظلات سيارات لكسان وحديد وقماش PVC بأعلى معايير الجودة في جدة" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "البرجولات", "description": "تصميم وتنفيذ برجولات خشبية وحديدية وألومنيوم للحدائق والمساحات الخارجية" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "السواتر", "description": "تركيب سواتر حديد وقماش وخشبية للخصوصية والحماية من الشمس" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "ساندوتش بانل", "description": "تركيب ساندوتش بانل عازل حراري وصوتي لغرف ومستودعات وملاحق" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "تنسيق الحدائق", "description": "تصميم وتنسيق حدائق منزلية احترافية بأحدث الأساليب والتقنيات" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "بيوت الشعر", "description": "تفصيل وتركيب بيوت شعر تراثية فاخرة للمجالس والجلسات العربية" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "الخيام الملكية", "description": "تصنيع وتركيب خيام ملكية فخمة للمناسبات والجلسات الخارجية" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "ترميم وصيانة", "description": "ترميم وصيانة شاملة للمظلات والبرجولات والملحقات والمباني" } }
       ]
     },
     "sameAs": [

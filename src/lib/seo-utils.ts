@@ -488,7 +488,7 @@ export function generateLocalBusinessSchema(data?: {
           "itemOffered": {
             "@type": "Service",
             "name": "مظلات السيارات",
-            "description": "تصميم وتركيب مظلات سيارات عالية الجودة"
+            "description": "تصميم وتركيب مظلات سيارات عالية الجودة - مظلات لكسان، حديد، قماش PVC"
           }
         },
         {
@@ -496,7 +496,7 @@ export function generateLocalBusinessSchema(data?: {
           "itemOffered": {
             "@type": "Service",
             "name": "البرجولات",
-            "description": "برجولات خشبية وحديدية للحدائق والمساحات الخارجية"
+            "description": "برجولات خشبية وحديدية وألومنيوم للحدائق والمساحات الخارجية"
           }
         },
         {
@@ -504,7 +504,15 @@ export function generateLocalBusinessSchema(data?: {
           "itemOffered": {
             "@type": "Service",
             "name": "السواتر",
-            "description": "سواتر حديد وقماش للخصوصية والحماية"
+            "description": "سواتر حديد، قماش، خشبية للخصوصية والحماية من الشمس"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "ساندوتش بانل",
+            "description": "تركيب ساندوتش بانل عازل للحرارة والصوت - غرف، ملاحق، مستودعات"
           }
         },
         {
@@ -512,7 +520,31 @@ export function generateLocalBusinessSchema(data?: {
           "itemOffered": {
             "@type": "Service",
             "name": "تنسيق الحدائق",
-            "description": "تصميم وتنسيق حدائق احترافية"
+            "description": "تصميم وتنسيق حدائق منزلية احترافية بأحدث الأساليب"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "بيوت الشعر",
+            "description": "تفصيل وتركيب بيوت شعر تراثية فاخرة للمجالس والجلسات"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "الخيام الملكية",
+            "description": "تصنيع وتركيب خيام ملكية فخمة للمناسبات والجلسات الخارجية"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "ترميم وصيانة",
+            "description": "ترميم وصيانة المظلات، البرجولات، الملحقات والمباني"
           }
         }
       ]

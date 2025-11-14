@@ -6,7 +6,6 @@ import ServicesSection from '@/components/ServicesSection';
 import WhyChooseUsSection from '@/components/WhyChooseUsSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import FAQSection from '@/components/FAQSection';
-import { generateLocalBusinessSchema, generateOrganizationSchema } from '@/lib/seo-utils';
 
 const PortfolioSection = dynamic(() => import('@/components/PortfolioSection'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-gray-100" />,
@@ -25,9 +24,9 @@ const Footer = dynamic(() => import('@/components/Footer'), {
 });
 
 export const metadata: Metadata = {
-  title: 'محترفين الديار | مظلات وبرجولات - ضمان 10 سنوات',
-  description: 'تركيب مظلات، برجولات، سواتر في جدة بخبرة +15 سنة. ضمان 10 سنوات، خدمة 24/7. اتصل الآن: 0553719009',
-  keywords: 'مظلات سيارات جدة، برجولات خشبية، سواتر خصوصية، تركيب مظلات، برجولات حدائق، مظلات حديد، سواتر معدنية، ساندوتش بانل، تنسيق حدائق، بيوت شعر، خيام ملكية',
+  title: 'مظلات وسواتر جدة | برجولات | ساندوتش بانل | بيوت شعر',
+  description: 'شركة محترفين الديار ✅ تركيب مظلات سيارات، برجولات، سواتر، ساندوتش بانل، تنسيق حدائق، بيوت شعر بجدة. خبرة 15 عام، ضمان 10 سنوات. اتصل: 0553719009',
+  keywords: 'مظلات سيارات جدة، برجولات خشبية جدة، سواتر جدة، ساندوتش بانل جدة، تنسيق حدائق جدة، بيوت شعر جدة، خيام ملكية، ترميم ملحقات جدة، مظلات لكسان، سواتر حديد، سواتر قماش، برجولات حدائق، هناجر جدة، مستودعات جدة، تركيب مظلات، مقاول مظلات جدة',
   authors: [{ name: 'محترفين الديار العالمية' }],
   robots: 'index, follow',
   alternates: {
@@ -38,8 +37,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'محترفين الديار | مظلات وبرجولات جدة',
-    description: 'الشركة الرائدة لتركيب المظلات والبرجولات في جدة. خبرة 15 عاماً، ضمان 10 سنوات، تركيب احترافي، أسعار منافسة',
+    title: 'مظلات وسواتر جدة | برجولات | ساندوتش بانل | بيوت شعر',
+    description: 'محترفين الديار - تركيب مظلات سيارات، برجولات حدائق، سواتر، ساندوتش بانل، تنسيق حدائق، بيوت شعر بجدة. خبرة 15 عام، ضمان 10 سنوات، أسعار منافسة',
     url: 'https://www.aldeyarksa.tech',
     siteName: 'محترفين الديار العالمية',
     locale: 'ar_SA',
@@ -49,43 +48,21 @@ export const metadata: Metadata = {
         url: 'https://www.aldeyarksa.tech/images/hero-bg.webp',
         width: 1200,
         height: 630,
-        alt: 'محترفين الديار العالمية - مظلات وبرجولات جدة',
+        alt: 'محترفين الديار - مظلات سيارات وبرجولات وسواتر جدة',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'محترفين الديار | مظلات وبرجولات جدة',
-    description: 'الشركة الرائدة لتركيب المظلات والبرجولات في جدة. خبرة 15 عاماً، ضمان 10 سنوات',
+    title: 'مظلات وسواتر جدة | برجولات | ساندوتش بانل',
+    description: 'محترفين الديار - تركيب مظلات سيارات، برجولات، سواتر، ساندوتش بانل، تنسيق حدائق بجدة. خبرة 15 عام ⭐',
     images: ['https://www.aldeyarksa.tech/images/hero-bg.webp'],
   },
 };
 
 export default function HomePage() {
-  const localBusinessSchema = generateLocalBusinessSchema({
-    name: 'محترفين الديار العالمية',
-    description: 'شركة رائدة في جدة متخصصة في تصميم وتركيب المظلات، البرجولات، السواتر، تنسيق الحدائق وبيوت الشعر. خبرة 15 عاماً، ضمان شامل 10 سنوات، أسعار منافسة.',
-    image: 'https://www.aldeyarksa.tech/images/hero-bg.webp',
-    priceRange: '$$'
-  });
-
-  const organizationSchema = generateOrganizationSchema({
-    name: 'محترفين الديار العالمية',
-    description: 'محترفين الديار العالمية - شركة رائدة في مجال تركيب المظلات والبرجولات والسواتر في جدة. نقدم خدمات متميزة بأعلى معايير الجودة.',
-    logo: 'https://www.aldeyarksa.tech/favicon.svg'
-  });
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
-      
       <Navbar />
       <HeroSection />
       <ServicesSection />

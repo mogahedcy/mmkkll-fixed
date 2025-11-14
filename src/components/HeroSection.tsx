@@ -12,15 +12,15 @@ import Image from 'next/image';
 const slides = [
   {
     url: '/images/slider1.webp',
-    alt: 'مظلات وبرجولات حدائق فاخرة في جدة',
+    alt: 'مظلات وبرجولات حدائق فاخرة - تركيب برجولات خشبية ومظلات سيارات جدة',
   },
   {
     url: '/images/slider2.webp',
-    alt: 'تركيب مظلات سيارات عصرية بجودة عالية',
+    alt: 'تركيب مظلات سيارات لكسان وحديد - محترفين الديار جدة',
   },
   {
     url: '/images/slider3.webp',
-    alt: 'سواتر خصوصية وتنسيق حدائق احترافي',
+    alt: 'سواتر حديد وقماش - تنسيق حدائق وساندوتش بانل جدة',
   },
 ];
 
@@ -90,13 +90,13 @@ export default function HeroSection() {
             محترفين الديار
           </span>
           <span className="block text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl mt-2 sm:mt-3 bg-gradient-to-r from-accent via-amber-400 to-accent bg-clip-text text-transparent font-extrabold">
-            رواد المظلات والبرجولات في جدة
+            مظلات وسواتر وبرجولات وساندوتش بانل جدة
           </span>
         </h1>
 
         {/* Subheading - مبسط للجوال */}
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 text-gray-200 leading-relaxed max-w-3xl mx-auto font-medium px-4">
-          حماية فاخرة • تصاميم عصرية • جودة مضمونة
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 text-gray-200 leading-relaxed max-w-4xl mx-auto font-medium px-4">
+          تركيب مظلات سيارات • برجولات حدائق • سواتر • ساندوتش بانل • تنسيق حدائق • بيوت شعر • خيام ملكية • ترميم
         </p>
 
         {/* أزرار CTA محسّنة للجوال */}
