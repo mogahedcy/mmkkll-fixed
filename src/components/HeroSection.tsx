@@ -51,9 +51,9 @@ export default function HeroSection() {
               alt={slide.alt}
               fill
               style={{ objectFit: 'cover' }}
-              quality={index === 0 ? 85 : 65}
+              quality={index === 0 ? 90 : 75}
               priority={index === 0}
-              fetchPriority={index === 0 ? 'high' : 'auto'}
+              fetchPriority={index === 0 ? 'high' : 'low'}
               loading={index === 0 ? 'eager' : 'lazy'}
               sizes="100vw"
               placeholder="blur"

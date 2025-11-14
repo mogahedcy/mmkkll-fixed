@@ -6,21 +6,17 @@ import ServicesSection from '@/components/ServicesSection';
 import WhyChooseUsSection from '@/components/WhyChooseUsSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import FAQSection from '@/components/FAQSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
+import Footer from '@/components/Footer';
+import HomePageBreadcrumb from '@/components/HomePageBreadcrumb';
 
 const PortfolioSection = dynamic(() => import('@/components/PortfolioSection'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-gray-100" />,
   ssr: true
 });
 
-const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSection'), {
-  loading: () => <div className="min-h-[300px] animate-pulse bg-gray-50" />,
-  ssr: true
-});
-
-const StickyWhatsApp = dynamic(() => import('@/components/StickyWhatsApp'));
-
-const Footer = dynamic(() => import('@/components/Footer'), {
-  ssr: true
+const StickyWhatsApp = dynamic(() => import('@/components/StickyWhatsApp'), {
+  ssr: false
 });
 
 export const metadata: Metadata = {
@@ -63,6 +59,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+      <HomePageBreadcrumb />
       <Navbar />
       <HeroSection />
       <ServicesSection />

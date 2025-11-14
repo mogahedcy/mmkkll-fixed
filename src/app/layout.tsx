@@ -9,6 +9,7 @@ import FloatingCallButton from "@/components/FloatingCallButton";
 import { WebVitals } from "./web-vitals";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import ReviewSchema from "@/components/ReviewSchema";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -45,10 +46,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://www.aldeyarksa.tech/favicon.svg",
+        url: "https://www.aldeyarksa.tech/images/slider1.webp",
         width: 1200,
         height: 630,
-        alt: "محترفين الديار العالمية",
+        alt: "محترفين الديار العالمية - مظلات وبرجولات جدة",
       },
     ],
   },
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "محترفين الديار العالمية",
     description: "خدمات شاملة في المظلات والبرجولات والسواتر في جدة",
-    images: ["https://www.aldeyarksa.tech/favicon.svg"],
+    images: ["https://www.aldeyarksa.tech/images/slider1.webp"],
   },
   icons: {
     icon: [
@@ -146,11 +147,20 @@ export default function RootLayout({
           type="image/webp"
           fetchPriority="high"
         />
+        <link rel="preconnect" href={process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'} />
+        <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'} />
         
         <link rel="prefetch" href="/portfolio" />
         <link rel="prefetch" href="/contact" />
+        <link rel="prefetch" href="/api/projects?limit=50&sort=newest" />
         
         <StructuredDataScript data={faqPageSchema} />
+        <ReviewSchema 
+          serviceName="مظلات وبرجولات وسواتر جدة - محترفين الديار العالمية"
+          itemType="LocalBusiness"
+          serviceUrl="https://www.aldeyarksa.tech"
+          aggregateRating={{ ratingValue: 4.9, reviewCount: 287 }}
+        />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
         <GoogleAnalytics />
