@@ -1,10 +1,10 @@
-const CACHE_NAME = 'aldeyar-v1';
-const STATIC_CACHE = 'aldeyar-static-v1';
-const DYNAMIC_CACHE = 'aldeyar-dynamic-v1';
-const IMAGE_CACHE = 'aldeyar-images-v1';
+const VERSION = '2024-11-14-v2';
+const CACHE_NAME = `aldeyar-${VERSION}`;
+const STATIC_CACHE = `aldeyar-static-${VERSION}`;
+const DYNAMIC_CACHE = `aldeyar-dynamic-${VERSION}`;
+const IMAGE_CACHE = `aldeyar-images-${VERSION}`;
 
 const STATIC_ASSETS = [
-  '/',
   '/offline.html',
   '/favicon.svg',
   '/manifest.json',
@@ -24,7 +24,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('✅ Service Worker activated');
+  console.log('✅ Service Worker activated - Version:', VERSION);
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -36,9 +36,10 @@ self.addEventListener('activate', (event) => {
             return caches.delete(name);
           })
       );
+    }).then(() => {
+      return self.clients.claim();
     })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
@@ -64,17 +65,41 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (url.origin === location.origin) {
-    event.respondWith(
-      caches.match(request).then((response) => {
-        return response || fetch(request).then((networkResponse) => {
-          return caches.open(DYNAMIC_CACHE).then((cache) => {
-            cache.put(request, networkResponse.clone());
+    const isHTMLRequest = request.headers.get('accept')?.includes('text/html') || 
+                          request.mode === 'navigate' ||
+                          url.pathname === '/';
+    
+    if (isHTMLRequest) {
+      event.respondWith(
+        fetch(request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.status === 200) {
+              const responseToCache = networkResponse.clone();
+              caches.open(DYNAMIC_CACHE).then((cache) => {
+                cache.put(request, responseToCache);
+              });
+            }
             return networkResponse;
+          })
+          .catch(() => {
+            return caches.match(request).then((cachedResponse) => {
+              return cachedResponse || caches.match('/offline.html');
+            });
+          })
+      );
+    } else {
+      event.respondWith(
+        caches.match(request).then((response) => {
+          return response || fetch(request).then((networkResponse) => {
+            return caches.open(DYNAMIC_CACHE).then((cache) => {
+              cache.put(request, networkResponse.clone());
+              return networkResponse;
+            });
+          }).catch(() => {
+            return caches.match('/offline.html');
           });
-        }).catch(() => {
-          return caches.match('/offline.html');
-        });
-      })
-    );
+        })
+      );
+    }
   }
 });
