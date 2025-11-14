@@ -9,15 +9,14 @@ import FAQSection from '@/components/FAQSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import Footer from '@/components/Footer';
 import HomePageBreadcrumb from '@/components/HomePageBreadcrumb';
+import ReviewSchema from '@/components/ReviewSchema';
 
 const PortfolioSection = dynamic(() => import('@/components/PortfolioSection'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-gray-100" />,
   ssr: true
 });
 
-const StickyWhatsApp = dynamic(() => import('@/components/StickyWhatsApp'), {
-  ssr: false
-});
+const StickyWhatsApp = dynamic(() => import('@/components/StickyWhatsApp'));
 
 export const metadata: Metadata = {
   title: 'مظلات وسواتر جدة | برجولات | ساندوتش بانل | بيوت شعر',
@@ -60,6 +59,12 @@ export default function HomePage() {
   return (
     <>
       <HomePageBreadcrumb />
+      <ReviewSchema 
+        serviceName="مظلات وبرجولات وسواتر جدة - محترفين الديار العالمية"
+        itemType="LocalBusiness"
+        serviceUrl="https://www.aldeyarksa.tech"
+        aggregateRating={{ ratingValue: 4.9, reviewCount: 287 }}
+      />
       <Navbar />
       <HeroSection />
       <ServicesSection />

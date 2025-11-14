@@ -155,12 +155,6 @@ export default function RootLayout({
         <link rel="prefetch" href="/api/projects?limit=50&sort=newest" />
         
         <StructuredDataScript data={faqPageSchema} />
-        <ReviewSchema 
-          serviceName="مظلات وبرجولات وسواتر جدة - محترفين الديار العالمية"
-          itemType="LocalBusiness"
-          serviceUrl="https://www.aldeyarksa.tech"
-          aggregateRating={{ ratingValue: 4.9, reviewCount: 287 }}
-        />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
         <GoogleAnalytics />
