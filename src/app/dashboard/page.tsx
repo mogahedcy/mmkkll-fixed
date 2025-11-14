@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/jwt';
 import { prisma } from '@/lib/prisma';
 import OverviewClient from './OverviewClient';
+import SEONotificationSection from './SEONotificationSection';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -334,6 +335,9 @@ export default async function DashboardPage() {
             </div>
           </div>
         </div>
+
+        {/* قسم إبلاغ محركات البحث */}
+        <SEONotificationSection />
 
         {/* مساعد سريع */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl text-white overflow-hidden">
