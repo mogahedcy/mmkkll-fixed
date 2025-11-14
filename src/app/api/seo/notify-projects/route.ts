@@ -18,7 +18,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
+    let baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    
+    if (!baseUrl) {
+      const replitDomain = process.env.REPLIT_DEV_DOMAIN;
+      if (replitDomain) {
+        baseUrl = `https://${replitDomain}`;
+      } else {
+        baseUrl = 'https://www.aldeyarksa.tech';
+      }
+    }
+    
+    if (!baseUrl.startsWith('http')) {
+      baseUrl = `https://${baseUrl}`;
+    }
     
     const projects = await prisma.projects.findMany({
       where: { 
