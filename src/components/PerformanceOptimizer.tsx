@@ -148,21 +148,31 @@ export const preloadCriticalResources = (resources: string[]) => {
   resources.forEach(resource => {
     const link = document.createElement('link');
     link.rel = 'preload';
+    link.href = resource;
+    
+    let hasValidAsValue = false;
 
-    if (resource.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
+    if (resource.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i)) {
       link.as = 'image';
-      imageCache.preloadImage(resource);
+      hasValidAsValue = true;
+      if (!resource.match(/\.svg$/i)) {
+        imageCache.preloadImage(resource);
+      }
     } else if (resource.match(/\.(woff|woff2|ttf|otf)$/i)) {
       link.as = 'font';
       link.crossOrigin = 'anonymous';
+      hasValidAsValue = true;
     } else if (resource.match(/\.css$/i)) {
       link.as = 'style';
+      hasValidAsValue = true;
     } else if (resource.match(/\.js$/i)) {
       link.as = 'script';
+      hasValidAsValue = true;
     }
 
-    link.href = resource;
-    document.head.appendChild(link);
+    if (hasValidAsValue) {
+      document.head.appendChild(link);
+    }
   });
 };
 
