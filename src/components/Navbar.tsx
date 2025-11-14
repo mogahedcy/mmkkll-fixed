@@ -428,7 +428,7 @@ export default function Navbar() {
 
               {/* Mobile Services */}
               <div className="border-t border-gray-100 pt-3 mb-4">
-                <div className="flex items-center justify-between w-full">
+                <div className="flex items-center justify-between w-full rounded-lg hover:bg-primary/5 transition-colors">
                   <Link
                     href="/#services"
                     className="flex items-center space-x-3 space-x-reverse px-3 sm:px-4 py-3 flex-1"
@@ -439,7 +439,7 @@ export default function Navbar() {
                   </Link>
                   <button
                     onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
-                    className="px-3 sm:px-4 py-3"
+                    className="px-3 sm:px-4 py-3 border-r border-gray-100"
                     aria-label="عرض قائمة الخدمات"
                   >
                     <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
