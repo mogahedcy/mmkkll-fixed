@@ -59,7 +59,7 @@ const steps = [
     details: [
       { icon: Clock, text: '1-3 أيام حسب المشروع' },
       { icon: Hammer, text: 'فريق محترف متخصص' },
-      { icon: Shield, text: 'ضمان شامل 10 سنوات' }
+      { icon: Shield, text: 'جودة عالية مضمونة' }
     ],
     color: 'from-red-500 to-red-600',
     iconBg: 'bg-red-500/10',
