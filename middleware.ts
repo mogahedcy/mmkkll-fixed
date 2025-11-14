@@ -5,29 +5,23 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   if (
-    pathname.startsWith('/_next/static') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
     pathname.startsWith('/images') ||
     pathname.startsWith('/uploads') ||
-    pathname === '/favicon.svg' ||
-    pathname === '/favicon.ico'
+    pathname.includes('.')
   ) {
     return NextResponse.next();
   }
 
-  const requestHeaders = new Headers(request.headers);
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-
-  response.headers.set('Cache-Control', 'no-store, max-age=0');
+  const response = NextResponse.next();
+  
+  response.headers.set('Cache-Control', 'no-store, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
 
   return response;
 }
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: '/((?!_next/static|_next/image).*)',
 };
