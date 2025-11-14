@@ -40,11 +40,11 @@ const steps = [
     number: '3',
     icon: FileText,
     title: 'عرض سعر شفاف',
-    description: 'تستلم عرض سعر تفصيلي شامل كل شيء - المواد، التركيب، الضمان. بدون تكاليف خفية. إمكانية الدفع بالتقسيط عبر تمارا وتابي لجميع خدماتنا.',
+    description: 'تستلم عرض سعر تفصيلي شامل كل شيء - المواد، التركيب، الضمان. بدون تكاليف خفية.',
     details: [
       { icon: Star, text: 'أسعار تنافسية' },
       { icon: FileText, text: 'عقد موثق' },
-      { icon: CheckCircle, text: 'دفع بالتقسيط متاح' }
+      { icon: CheckCircle, text: 'شفافية كاملة' }
     ],
     color: 'from-amber-500 to-amber-600',
     iconBg: 'bg-amber-500/10',
