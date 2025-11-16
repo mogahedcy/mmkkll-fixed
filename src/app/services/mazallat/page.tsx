@@ -43,6 +43,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { prisma } from '@/lib/prisma';
+import { buildCategoryWhereClause, getServiceNameAr } from '@/lib/services-categories-mapping';
 
 const pageTitle = 'مظلات سيارات جدة - ضمان 10 سنوات | محترفين الديار';
 const pageDescription = 'تركيب مظلات سيارات وحدائق بجدة بضمان 10 سنوات. مظلات PVC مقاومة للأشعة والأمطار. أسعار تبدأ من 2,500 ريال. استشارة مجانية';
@@ -241,15 +242,12 @@ async function getRelatedContent() {
     });
 
     // جلب جميع المشاريع المتعلقة بالمظلات (بدون حد للأرشفة الكاملة)
+    // استخدام النظام الجديد للربط بين الخدمات والفئات
+    const categoryWhere = buildCategoryWhereClause('mazallat');
     const projects = await prisma.projects.findMany({
       where: {
         status: 'PUBLISHED',
-        OR: [
-          { title: { contains: 'مظلات' } },
-          { title: { contains: 'مظلة' } },
-          { description: { contains: 'مظلات' } },
-          { category: { contains: 'مظلات' } },
-        ]
+        ...categoryWhere
       },
       select: {
         id: true,
@@ -285,15 +283,11 @@ async function getRelatedContent() {
     });
 
     // جلب جميع المقالات المتعلقة بالمظلات (بدون حد للأرشفة الكاملة)
+    const articleCategoryWhere = buildCategoryWhereClause('mazallat');
     const articles = await prisma.articles.findMany({
       where: {
         status: 'PUBLISHED',
-        OR: [
-          { title: { contains: 'مظلات' } },
-          { title: { contains: 'مظلة' } },
-          { content: { contains: 'مظلات' } },
-          { category: { contains: 'مظلات' } },
-        ]
+        ...articleCategoryWhere
       },
       select: {
         id: true,
