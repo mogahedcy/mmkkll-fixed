@@ -35,8 +35,11 @@ import {
   MapPin,
   Zap,
   ThumbsUp,
-  Target
+  Target,
+  ExternalLink,
+  Calendar
 } from 'lucide-react';
+import { prisma } from '@/lib/prisma';
 
 const pageTitle = 'مظلات سيارات جدة - ضمان 10 سنوات | محترفين الديار';
 const pageDescription = 'تركيب مظلات سيارات وحدائق بجدة بضمان 10 سنوات. مظلات PVC مقاومة للأشعة والأمطار. أسعار تبدأ من 2,500 ريال. استشارة مجانية';
@@ -123,100 +126,41 @@ const shadeTypes = [
     id: 'cars',
     title: 'مظلات سيارات',
     description: 'مظلات مواقف السيارات بمختلف المقاسات والأشكال، توفر حماية كاملة للسيارات من أشعة الشمس والأمطار.',
-    image: 'https://ext.same-assets.com/2470837690/3897470258.jpeg',
     features: ['حماية من الأشعة فوق البنفسجية', 'مقاومة للأمطار', 'تصاميم متنوعة'],
     price: 'تبدأ من 2,500 ريال',
     bgColor: 'bg-blue-50',
-    iconColor: 'text-blue-600'
+    iconColor: 'text-blue-600',
+    icon: Car
   },
   {
     id: 'gardens',
     title: 'مظلات حدائق',
     description: 'مظلات للحدائق المنزلية والعامة بتصميمات عصرية وخامات عالية الجودة تضيف لمسة جمالية للمكان.',
-    image: 'https://ext.same-assets.com/2470837690/3049632715.jpeg',
     features: ['تصاميم جمالية', 'مقاومة للعوامل الجوية', 'ألوان متنوعة'],
     price: 'تبدأ من 3,000 ريال',
     bgColor: 'bg-green-50',
-    iconColor: 'text-green-600'
+    iconColor: 'text-green-600',
+    icon: Sun
   },
   {
     id: 'schools',
     title: 'مظلات مدارس',
     description: 'مظلات للمدارس والمؤسسات التعليمية، توفر بيئة آمنة للطلاب والمعلمين وتحميهم من العوامل الجوية.',
-    image: 'https://ext.same-assets.com/2470837690/3504524629.jpeg',
     features: ['مساحات واسعة', 'أمان عالي', 'متانة ممتازة'],
     price: 'تبدأ من 5,000 ريال',
     bgColor: 'bg-purple-50',
-    iconColor: 'text-purple-600'
+    iconColor: 'text-purple-600',
+    icon: Shield
   },
   {
     id: 'pools',
     title: 'مظلات مسابح',
     description: 'مظلات للمسابح تحمي من أشعة الشمس وتحافظ على نظافة المسبح، مع توفير تهوية مناسبة.',
-    image: 'https://ext.same-assets.com/2470837690/1807765189.jpeg',
     features: ['حماية المسبح', 'تهوية ممتازة', 'مقاومة للكلور'],
     price: 'تبدأ من 4,000 ريال',
     bgColor: 'bg-cyan-50',
-    iconColor: 'text-cyan-600'
-  }
-];
-
-const galleryImages = [
-  {
-    id: 1,
-    src: 'https://ext.same-assets.com/2470837690/1414337162.jpeg',
-    title: 'مظلات سيارات في مجمع سكني',
-    category: 'مظلات سيارات',
-    description: 'مشروع مظلات سيارات متعدد في مجمع سكني راقي بجدة'
-  },
-  {
-    id: 2,
-    src: 'https://ext.same-assets.com/2470837690/2164257014.jpeg',
-    title: 'مظلات حدائق فاخرة',
-    category: 'مظلات حدائق',
-    description: 'تصميم مظلات حدائق عصرية وأنيقة لفيلا في شمال جدة'
-  },
-  {
-    id: 3,
-    src: 'https://ext.same-assets.com/2470837690/3651157645.jpeg',
-    title: 'مظلات مدارس واسعة',
-    category: 'مظلات مدارس',
-    description: 'مظلات مدرسة ابتدائية تستوعب 500 طالب في جنوب جدة'
-  },
-  {
-    id: 4,
-    src: 'https://ext.same-assets.com/2470837690/1278764839.jpeg',
-    title: 'مظلات مسابح فاخرة',
-    category: 'مظلات مسابح',
-    description: 'مظلات مسبح أولمبي في نادي رياضي راقي'
-  },
-  {
-    id: 5,
-    src: 'https://ext.same-assets.com/2470837690/2377535824.jpeg',
-    title: 'مظلات PVC عالية الجودة',
-    category: 'مظلات PVC',
-    description: 'مظلات PVC مقاومة للحرارة في موقف تجاري'
-  },
-  {
-    id: 6,
-    src: 'https://ext.same-assets.com/2470837690/2202899246.jpeg',
-    title: 'مظلات حديد مشغول',
-    category: 'مظلات حديدية',
-    description: 'مظلات حديد مشغول بتصميمات فنية رائعة'
-  },
-  {
-    id: 7,
-    src: 'https://ext.same-assets.com/2470837690/3367547583.jpeg',
-    title: 'مظلات مداخل فلل',
-    category: 'مظلات مداخل',
-    description: 'مظلات أنيقة لمداخل الفلل الفاخرة'
-  },
-  {
-    id: 8,
-    src: 'https://ext.same-assets.com/2470837690/1754448353.jpeg',
-    title: 'مظلات لكسان',
-    category: 'مظلات لكسان',
-    description: 'مظلات لكسان شفافة للإضاءة الطبيعية'
+    iconColor: 'text-cyan-600',
+    icon: Droplets
   }
 ];
 
@@ -234,7 +178,6 @@ const testimonials = [
     role: 'صاحب فيلا - حي الزهراء',
     content: 'خدمة ممتازة وجودة عالية في التنفيذ. فريق محترف والتزام في المواعيد. أنصح بشدة بالتعامل مع محترفين الديار.',
     rating: 5,
-    image: '/images/testimonials/client1.jpg'
   },
   {
     id: 2,
@@ -242,7 +185,6 @@ const testimonials = [
     role: 'مديرة مدرسة - حي النعيم',
     content: 'ركبوا لنا مظلات للمدرسة بجودة عالية وسعر مناسب. الطلاب محميين من الشمس والأمطار. شكراً لفريق محترفين الديار.',
     rating: 5,
-    image: '/images/testimonials/client2.jpg'
   },
   {
     id: 3,
@@ -250,7 +192,6 @@ const testimonials = [
     role: 'مالك مجمع تجاري - وسط جدة',
     content: 'تم تركيب مظلات مواقف السيارات للمجمع التجاري. العمل احترافي والخامات ممتازة. العملاء راضين جداً.',
     rating: 5,
-    image: '/images/testimonials/client3.jpg'
   }
 ];
 
@@ -292,7 +233,6 @@ const relatedServices = [
     id: 'sawater',
     title: 'السواتر',
     description: 'تركيب سواتر بمختلف الأنواع والخامات لتوفير الخصوصية والحماية.',
-    image: 'https://ext.same-assets.com/2470837690/531069762.jpeg',
     href: '/services/sawater',
     features: ['سواتر قماش', 'سواتر حديد', 'سواتر خشبية']
   },
@@ -300,7 +240,6 @@ const relatedServices = [
     id: 'pergolas',
     title: 'البرجولات',
     description: 'تصميم وتنفيذ برجولات خشبية وحديدية بأشكال عصرية.',
-    image: 'https://ext.same-assets.com/2470837690/3318001237.jpeg',
     href: '/services/pergolas',
     features: ['برجولات خشبية', 'برجولات حديدية', 'برجولات مختلطة']
   },
@@ -308,48 +247,94 @@ const relatedServices = [
     id: 'khayyam',
     title: 'خيام ملكية',
     description: 'تصميم وتنفيذ خيام ملكية فاخرة للمناسبات والاحتفالات.',
-    image: 'https://ext.same-assets.com/2470837690/1914607147.jpeg',
     href: '/services/khayyam',
     features: ['خيام أفراح', 'خيام استراحات', 'خيام مناسبات']
   }
 ];
 
-// قسم المقالات الجديد
-const articlesData = [
-  {
-    id: 1,
-    title: 'أهمية مظلات السيارات في المناخ السعودي',
-    excerpt: 'تعرف على الفوائد الأساسية لمظلات السيارات في حماية سيارتك من الحرارة العالية والعوامل الجوية في المملكة العربية السعودية.',
-    image: '/uploads/mazallat-1.jpg',
-    author: 'فريق محترفين الديار',
-    publishDate: '2024-01-15',
-    readTime: '5 دقائق'
-  },
-  {
-    id: 2,
-    title: 'أنواع مظلات السيارات وأفضل الخيارات لمنزلك',
-    excerpt: 'دليل شامل لأنواع مظلات السيارات المختلفة ومميزات كل نوع لمساعدتك في اختيار الأنسب لاحتياجاتك.',
-    image: '/uploads/mazallat-2.jpg',
-    author: 'فريق محترفين الديار',
-    publishDate: '2024-01-10',
-    readTime: '7 دقائق'
-  },
-  {
-    id: 3,
-    title: 'كيفية اختيار المقاول المناسب لتركيب مظلات السيارات',
-    excerpt: 'نصائح مهمة لاختيار أفضل مقاول لتركيب مظلات السيارات في جدة وضمان الحصول على خدمة عالية الجودة.',
-    image: '/uploads/mazallat-1.jpg',
-    author: 'فريق محترفين الديار',
-    publishDate: '2024-01-05',
-    readTime: '6 دقائق'
-  }
-];
+// جلب المشاريع والمقالات المتعلقة بالمظلات من قاعدة البيانات
+async function getRelatedContent() {
+  try {
+    if (!process.env.DATABASE_URL) {
+      return { projects: [], articles: [] };
+    }
 
-export default function MazallatPage() {
+    // جلب المشاريع المتعلقة بالمظلات
+    const projects = await prisma.projects.findMany({
+      where: {
+        status: 'PUBLISHED',
+        OR: [
+          { title: { contains: 'مظلات' } },
+          { title: { contains: 'مظلة' } },
+          { description: { contains: 'مظلات' } },
+          { category: { contains: 'مظلات' } },
+        ]
+      },
+      include: {
+        media_items: {
+          orderBy: { order: 'asc' },
+          take: 1
+        },
+        _count: {
+          select: {
+            project_views: true,
+            project_likes: true
+          }
+        }
+      },
+      orderBy: [
+        { featured: 'desc' },
+        { publishedAt: 'desc' }
+      ],
+      take: 6
+    });
+
+    // جلب المقالات المتعلقة بالمظلات
+    const articles = await prisma.articles.findMany({
+      where: {
+        status: 'PUBLISHED',
+        OR: [
+          { title: { contains: 'مظلات' } },
+          { title: { contains: 'مظلة' } },
+          { content: { contains: 'مظلات' } },
+          { category: { contains: 'مظلات' } },
+        ]
+      },
+      include: {
+        article_media_items: {
+          orderBy: { order: 'asc' },
+          take: 1
+        },
+        _count: {
+          select: {
+            article_views: true,
+            article_likes: true
+          }
+        }
+      },
+      orderBy: [
+        { featured: 'desc' },
+        { publishedAt: 'desc' }
+      ],
+      take: 6
+    });
+
+    return { projects, articles };
+  } catch (error) {
+    console.error('خطأ في جلب المحتوى المتعلق بالمظلات:', error);
+    // في حالة الخطأ، نعيد مصفوفات فارغة لتجنب كسر الصفحة
+    return { projects: [], articles: [] };
+  }
+}
+
+export default async function MazallatPage() {
   const breadcrumbItems = [
     { label: 'خدماتنا', href: '/#services' },
     { label: 'مظلات السيارات', href: '/services/mazallat', current: true }
   ];
+
+  // جلب المحتوى المتعلق
+  const { projects, articles } = await getRelatedContent();
 
   const serviceSchema = generateServiceSchema({
     name: 'مظلات سيارات جدة',
@@ -408,19 +393,16 @@ export default function MazallatPage() {
 
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10 py-20 lg:py-32 overflow-hidden">
-          {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              {/* Breadcrumb */}
               <div className="inline-flex mb-8">
                 <Breadcrumb items={breadcrumbItems} className="bg-accent/10 text-accent px-4 py-2 rounded-full font-medium" />
               </div>
 
-              {/* Main Heading */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
                 أفضل مظلات سيارات في{' '}
                 <span className="text-accent">جدة</span>
@@ -428,13 +410,11 @@ export default function MazallatPage() {
                 جودة عالية وأسعار منافسة
               </h1>
 
-              {/* Subheading */}
               <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
                 محترفين الديار - خبرة 15 عاماً في تركيب أفضل مظلات السيارات والحدائق والمدارس في جدة.
                 مظلات PVC عالية الجودة، تصاميم عصرية، وضمان شامل 10 سنوات
               </p>
 
-              {/* Key Features */}
               <div className="flex flex-wrap justify-center items-center gap-6 mb-10 text-sm text-muted-foreground">
                 {heroFeatures.map((feature, index) => (
                   <div key={`mazallat-hero-${feature.text.replace(/\s+/g, '-')}`} className="flex items-center space-x-2 space-x-reverse">
@@ -444,7 +424,6 @@ export default function MazallatPage() {
                 ))}
               </div>
 
-              {/* CTA Buttons */}
               <div className="flex flex-wrap justify-center gap-4 mb-12">
                 <Link href="tel:+966553719009">
                   <Button size="lg" className="text-lg px-8 py-4">
@@ -462,12 +441,11 @@ export default function MazallatPage() {
             </div>
           </div>
 
-          {/* Decorative Elements */}
           <div className="absolute top-1/4 left-8 w-16 h-16 bg-accent/10 rounded-full blur-xl" />
           <div className="absolute bottom-1/4 right-8 w-20 h-20 bg-primary/10 rounded-full blur-xl" />
         </section>
 
-        {/* Services Types Section */}
+        {/* Services Types Section - نصية بدون صور */}
         <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -485,32 +463,18 @@ export default function MazallatPage() {
                   key={service.id}
                   className="group hover:shadow-xl transition-all duration-300 bg-white rounded-2xl border border-gray-100 overflow-hidden"
                 >
-                  {/* Service Header */}
                   <div className={`${service.bgColor} p-6 text-center relative`}>
                     <div className={`inline-flex items-center justify-center w-16 h-16 ${service.iconColor} rounded-full bg-white/80 mb-4`}>
-                      <Car className="w-8 h-8" />
+                      <service.icon className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-bold text-primary">{service.title}</h3>
                   </div>
 
-                  {/* Service Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-
-                  {/* Service Content */}
                   <div className="p-6">
                     <p className="text-muted-foreground mb-4 line-clamp-3">
                       {service.description}
                     </p>
 
-                    {/* Features */}
                     <ul className="space-y-2 mb-4">
                       {service.features.map((feature, index) => (
                         <li key={`mazallat-service-feature-${feature.substring(0, 10).replace(/\s+/g, '-')}-${index}`} className="flex items-center text-sm text-muted-foreground">
@@ -520,12 +484,10 @@ export default function MazallatPage() {
                       ))}
                     </ul>
 
-                    {/* Price */}
                     <div className="text-lg font-bold text-accent mb-4">
                       {service.price}
                     </div>
 
-                    {/* CTA Button */}
                     <Link href={`https://wa.me/+966553719009?text=أرغب في الحصول على معلومات عن ${service.title}`} target="_blank">
                       <Button className="w-full group-hover:bg-accent transition-colors">
                         مزيد من المعلومات
@@ -539,204 +501,246 @@ export default function MazallatPage() {
           </div>
         </section>
 
+        {/* معرض أعمالنا في المظلات - ديناميكي */}
+        {projects.length > 0 && (
+          <section className="py-20 bg-gray-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+                  معرض أعمالنا في المظلات
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  اطلع على مشاريعنا المنجزة في مجال المظلات بمختلف أنواعها
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project: any) => (
+                  <Link 
+                    key={project.id} 
+                    href={`/portfolio/${project.slug || project.id}`}
+                    className="group"
+                  >
+                    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
+                      {project.media_items && project.media_items[0] && (
+                        <div className="relative h-64 overflow-hidden">
+                          <Image
+                            src={project.media_items[0].src}
+                            alt={project.media_items[0].alt || project.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          {project.featured && (
+                            <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-bold">
+                              مميز
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
+                          {project.title}
+                        </h3>
+                        <p className="text-muted-foreground mb-4 line-clamp-2">
+                          {project.description}
+                        </p>
+                        
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
+                          <div className="flex items-center gap-4">
+                            <span className="flex items-center gap-1">
+                              <Eye className="w-4 h-4" />
+                              {project._count?.project_views || 0}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <ThumbsUp className="w-4 h-4" />
+                              {project._count?.project_likes || 0}
+                            </span>
+                          </div>
+                          <span className="text-accent font-medium flex items-center gap-1">
+                            عرض المشروع
+                            <ExternalLink className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="text-center mt-12">
+                <Link href="/portfolio?category=مظلات">
+                  <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-2">
+                    عرض جميع مشاريع المظلات
+                    <ArrowLeft className="w-5 h-5 mr-2" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* مقالات متعلقة بالمظلات - ديناميكي */}
+        {articles.length > 0 && (
+          <section className="py-20 bg-background">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+                  مقالات متعلقة بالمظلات
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  اقرأ مقالاتنا المتخصصة في مجال المظلات والنصائح المفيدة
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {articles.map((article: any) => (
+                  <Link 
+                    key={article.id} 
+                    href={`/articles/${article.slug || article.id}`}
+                    className="group"
+                  >
+                    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
+                      {article.article_media_items && article.article_media_items[0] && (
+                        <div className="relative h-56 overflow-hidden">
+                          <Image
+                            src={article.article_media_items[0].src}
+                            alt={article.article_media_items[0].alt || article.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          {article.featured && (
+                            <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-bold">
+                              مميز
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                          <Calendar className="w-4 h-4" />
+                          <span>{new Date(article.publishedAt || article.createdAt).toLocaleDateString('ar-SA')}</span>
+                        </div>
+                        
+                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
+                          {article.title}
+                        </h3>
+                        
+                        {article.excerpt && (
+                          <p className="text-muted-foreground mb-4 line-clamp-2">
+                            {article.excerpt}
+                          </p>
+                        )}
+                        
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-4 text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Eye className="w-4 h-4" />
+                              {article._count?.article_views || 0}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <ThumbsUp className="w-4 h-4" />
+                              {article._count?.article_likes || 0}
+                            </span>
+                          </div>
+                          <span className="text-accent font-medium flex items-center gap-1">
+                            قراءة المقال
+                            <ExternalLink className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="text-center mt-12">
+                <Link href="/articles?category=مظلات">
+                  <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-2">
+                    عرض جميع مقالات المظلات
+                    <ArrowLeft className="w-5 h-5 mr-2" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Why Choose Us Section */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                لماذا نحن الخيار الأفضل لمظلات جدة؟
+                لماذا تختار محترفين الديار؟
               </h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                نحن نقدم أفضل خدمات المظلات في جدة بجودة عالية وخبرة متميزة
-              </p>
-            </div>
-
-            {/* Stats Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-              {stats.map((stat, index) => (
-                <div key={`mazallat-stat-${stat.label.replace(/\s+/g, '-')}`} className="text-center bg-gradient-to-br from-accent/5 to-primary/5 rounded-2xl p-6">
-                  <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-muted-foreground font-medium">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-              {whyChooseUsFeatures.map((feature, index) => {
-                const IconComponent = feature.icon;
-                return (
-                  <div key={`mazallat-why-feature-${feature.title.replace(/\s+/g, '-')}`} className="group hover:shadow-xl transition-all duration-300 bg-white rounded-2xl border border-gray-100 overflow-hidden">
-                    {/* Feature Header */}
-                    <div className={`${feature.bgColor} p-6 text-center relative`}>
-                      <div className={`inline-flex items-center justify-center w-16 h-16 ${feature.iconColor} rounded-full bg-white/80 mb-4`}>
-                        <IconComponent className="w-8 h-8" />
-                      </div>
-                      <h3 className="text-xl font-bold text-primary">{feature.title}</h3>
-                    </div>
-
-                    {/* Feature Content */}
-                    <div className="p-6">
-                      <p className="text-muted-foreground leading-relaxed">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* Portfolio Gallery Section */}
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                معرض أعمالنا المتميزة
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                اطلع على مجموعة من أفضل مشاريعنا المكتملة في مختلف أنحاء جدة
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              {galleryImages.map((image) => (
-                <div key={image.id} className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square hover:shadow-xl transition-all duration-300">
-                  <Image
-                    src={image.src}
-                    alt={image.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute bottom-4 left-4 right-4 text-white transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="font-bold text-sm mb-1">{image.title}</h3>
-                    <p className="text-xs opacity-90 mb-2">{image.category}</p>
-                    <p className="text-xs opacity-80 line-clamp-2">{image.description}</p>
-                  </div>
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
-                      <Eye className="w-4 h-4 text-white" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center">
-              <Link href="/portfolio">
-                <Button variant="outline" size="lg" className="min-w-[200px]">
-                  عرض المزيد من المشاريع
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Articles Section - القسم الجديد */}
-        <section className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                مقالات ونصائح حول مظلات السيارات
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                اكتشف كل ما تحتاج لمعرفته حول مظلات السيارات من خلال مقالاتنا التعليمية المفيدة
+                نجمع بين الخبرة الطويلة والجودة العالية لنقدم لك أفضل خدمات المظلات في جدة
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {articlesData.map((article) => (
-                <article key={article.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      fill
-                      className="object-cover transition-transform duration-700 hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              {whyChooseUsFeatures.map((feature, index) => (
+                <div
+                  key={`mazallat-why-choose-${feature.title.substring(0, 10).replace(/\s+/g, '-')}`}
+                  className={`${feature.bgColor} p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300`}
+                >
+                  <div className={`inline-flex items-center justify-center w-16 h-16 ${feature.iconColor} rounded-full bg-white/80 mb-6`}>
+                    <feature.icon className="w-8 h-8" />
                   </div>
-
-                  <div className="p-6">
-                    <div className="flex items-center text-sm text-muted-foreground mb-3">
-                      <span>{article.author}</span>
-                      <span className="mx-2">•</span>
-                      <span>{article.publishDate}</span>
-                      <span className="mx-2">•</span>
-                      <span>{article.readTime}</span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-primary mb-3 leading-tight">
-                      {article.title}
-                    </h3>
-
-                    <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                      {article.excerpt}
-                    </p>
-
-                    <Button variant="outline" className="w-full group hover:bg-accent hover:text-accent-foreground transition-all duration-300">
-                      <span>قراءة المقال كاملاً</span>
-                      <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
-                    </Button>
-                  </div>
-                </article>
+                  <h3 className="text-xl font-bold text-primary mb-4">{feature.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                </div>
               ))}
             </div>
+          </div>
+        </section>
 
-            <div className="text-center mt-12">
-              <Button size="lg" className="px-8 py-4">
-                <span>عرض جميع المقالات</span>
-                <ArrowLeft className="w-5 h-5 mr-2" />
-              </Button>
+        {/* Statistics Section */}
+        <section className="py-20 bg-primary text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <div key={`mazallat-stat-${index}`} className="text-center">
+                  <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-lg text-white/90">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-20 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/10">
+        <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                ماذا يقول عملاؤنا
+                آراء عملائنا
               </h2>
-              <p className="text-lg text-muted-foreground">
-                تقييمات حقيقية من عملائنا الكرام
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                اقرأ تجارب عملائنا مع خدماتنا في تركيب المظلات
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {testimonials.map((testimonial) => (
-                <div key={testimonial.id} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  {/* Rating */}
-                  <div className="flex items-center mb-4">
+                <div
+                  key={testimonial.id}
+                  className="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="flex items-center gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={`mazallat-testimonial-${testimonial.id || testimonial.name}-${i}`} className="w-5 h-5 text-yellow-400 fill-current" />
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                     ))}
                   </div>
-
-                  {/* Content */}
                   <p className="text-muted-foreground mb-6 leading-relaxed">
                     "{testimonial.content}"
                   </p>
-
-                  {/* Client Info */}
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full flex items-center justify-center mr-4">
-                      <span className="text-primary font-bold text-lg">
-                        {testimonial.name.charAt(0)}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-primary">{testimonial.name}</h4>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
+                  <div>
+                    <div className="font-bold text-primary">{testimonial.name}</div>
+                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
                   </div>
                 </div>
               ))}
@@ -745,114 +749,106 @@ export default function MazallatPage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20 bg-background">
+        <section className="py-20 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                الأسئلة الشائعة حول مظلات السيارات
+                الأسئلة الشائعة
               </h2>
               <p className="text-lg text-muted-foreground">
-                إجابات شاملة على أهم استفساراتكم
+                إجابات على أكثر الأسئلة شيوعاً حول مظلات السيارات
               </p>
             </div>
 
             <div className="space-y-6">
               {faqs.map((faq) => (
-                <div key={faq.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                  <div className="p-6">
-                    <h3 className="text-lg font-bold text-primary mb-3 flex items-start">
-                      <div className="bg-accent/10 text-accent rounded-full p-1 mr-3 mt-1 flex-shrink-0">
-                        <Plus className="w-4 h-4" />
-                      </div>
+                <details
+                  key={faq.id}
+                  className="group bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all duration-300"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer list-none">
+                    <h3 className="text-lg font-bold text-primary pr-4">
                       {faq.question}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed pr-10">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </div>
+                    <div className="flex-shrink-0">
+                      <Plus className="w-6 h-6 text-accent group-open:hidden" />
+                      <Minus className="w-6 h-6 text-accent hidden group-open:block" />
+                    </div>
+                  </summary>
+                  <p className="mt-4 text-muted-foreground leading-relaxed pr-4">
+                    {faq.answer}
+                  </p>
+                </details>
               ))}
             </div>
           </div>
         </section>
 
         {/* Related Services Section */}
-        <section className="py-20 bg-gray-50">
+        <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                خدمات أخرى قد تهمك
+                خدمات ذات صلة
               </h2>
-              <p className="text-lg text-muted-foreground">
-                استكشف المزيد من خدماتنا المتخصصة
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                تعرف على المزيد من خدماتنا المتخصصة
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedServices.map((service) => (
-                <div key={service.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group">
-                  <div className="relative h-48">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-primary mb-3">{service.title}</h3>
-                    <p className="text-muted-foreground mb-4">{service.description}</p>
-
-                    {/* Features */}
-                    <ul className="space-y-1 mb-6">
+                <Link
+                  key={service.id}
+                  href={service.href}
+                  className="group"
+                >
+                  <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 p-8">
+                    <h3 className="text-2xl font-bold text-primary mb-4 group-hover:text-accent transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-6">
+                      {service.description}
+                    </p>
+                    <ul className="space-y-2 mb-6">
                       {service.features.map((feature, index) => (
-                        <li key={`mazallat-related-service-${feature.substring(0, 10).replace(/\s+/g, '-')}-${index}`} className="flex items-center text-sm text-muted-foreground">
-                          <CheckCircle className="w-3 h-3 text-green-600 mr-2 flex-shrink-0" />
+                        <li key={index} className="flex items-center text-sm text-muted-foreground">
+                          <CheckCircle className="w-4 h-4 text-green-600 mr-2 flex-shrink-0" />
                           {feature}
                         </li>
                       ))}
                     </ul>
-
-                    <Link href={service.href}>
-                      <Button className="w-full group-hover:bg-accent transition-colors">
-                        عرض التفاصيل
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                      </Button>
-                    </Link>
+                    <div className="text-accent font-bold flex items-center gap-2">
+                      اكتشف المزيد
+                      <ArrowLeft className="w-5 h-5 group-hover:translate-x-[-4px] transition-transform" />
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
         </section>
 
         {/* Final CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary to-accent text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <section className="py-20 bg-gradient-to-br from-primary to-primary/80 text-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              جاهز لتركيب مظلات عالية الجودة؟
+              جاهزون لخدمتك على مدار الساعة
             </h2>
-            <p className="text-xl mb-8 max-w-3xl mx-auto">
-              احصل على استشارة مجانية وعرض سعر تنافسي من خبراء محترفين الديار
+            <p className="text-xl mb-8 text-white/90">
+              احصل على استشارة مجانية وعرض سعر فوري لمشروع المظلات الخاص بك
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="tel:+966553719009">
-                <Button size="lg" className="bg-white text-primary hover:bg-gray-100 text-lg px-8 py-4">
+                <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
                   <Phone className="w-5 h-5 mr-2" />
-                  اتصل الآن - مجاني
+                  اتصل الآن: 0553719009
                 </Button>
               </Link>
               <Link href="https://wa.me/+966553719009" target="_blank">
-                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-lg px-8 py-4">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-4 bg-white/10 border-white hover:bg-white hover:text-primary">
                   <MessageCircle className="w-5 h-5 mr-2" />
-                  واتساب فوري
-                </Button>
-              </Link>
-              <Link href="https://wa.me/+966553719009?text=أرغب في الحصول على عرض سعر لمظلات السيارات" target="_blank">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4">
-                  طلب عرض سعر
-                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  واتساب
                 </Button>
               </Link>
             </div>
