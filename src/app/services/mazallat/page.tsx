@@ -228,7 +228,7 @@ const relatedServices = [
 // جلب المشاريع والمقالات والأسئلة الشائعة المتعلقة بالمظلات من قاعدة البيانات
 async function getRelatedContent() {
   try {
-    // جلب الأسئلة الشائعة المتعلقة بالمظلات
+    // جلب جميع الأسئلة الشائعة المتعلقة بالمظلات (بدون حد للأرشفة الكاملة)
     const faqs = await prisma.faqs.findMany({
       where: {
         status: 'PUBLISHED',
@@ -237,11 +237,10 @@ async function getRelatedContent() {
       orderBy: [
         { order: 'asc' },
         { createdAt: 'desc' }
-      ],
-      take: 10
+      ]
     });
 
-    // جلب المشاريع المتعلقة بالمظلات
+    // جلب جميع المشاريع المتعلقة بالمظلات (بدون حد للأرشفة الكاملة)
     const projects = await prisma.projects.findMany({
       where: {
         status: 'PUBLISHED',
@@ -258,12 +257,15 @@ async function getRelatedContent() {
         description: true,
         slug: true,
         featured: true,
+        category: true,
+        location: true,
         media_items: {
           orderBy: { order: 'asc' },
-          take: 1,
           select: {
             src: true,
-            alt: true
+            alt: true,
+            title: true,
+            type: true
           }
         },
         _count: {
@@ -276,11 +278,10 @@ async function getRelatedContent() {
       orderBy: [
         { featured: 'desc' },
         { publishedAt: 'desc' }
-      ],
-      take: 6
+      ]
     });
 
-    // جلب المقالات المتعلقة بالمظلات
+    // جلب جميع المقالات المتعلقة بالمظلات (بدون حد للأرشفة الكاملة)
     const articles = await prisma.articles.findMany({
       where: {
         status: 'PUBLISHED',
@@ -299,12 +300,14 @@ async function getRelatedContent() {
         featured: true,
         publishedAt: true,
         createdAt: true,
+        category: true,
         article_media_items: {
           orderBy: { order: 'asc' },
-          take: 1,
           select: {
             src: true,
-            alt: true
+            alt: true,
+            title: true,
+            type: true
           }
         },
         _count: {
@@ -317,8 +320,7 @@ async function getRelatedContent() {
       orderBy: [
         { featured: 'desc' },
         { publishedAt: 'desc' }
-      ],
-      take: 6
+      ]
     });
 
     console.log('✅ تم جلب المحتوى من قاعدة البيانات:', {
@@ -377,6 +379,83 @@ export default async function MazallatPage() {
     }
   };
 
+  // إنشاء ItemList Schema للمشاريع مع جميع الصور لمحركات البحث
+  const projectsListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "مشاريع مظلات السيارات في جدة - محترفين الديار",
+    "description": "معرض أعمالنا في تركيب مظلات السيارات والحدائق في جدة",
+    "numberOfItems": projects.length,
+    "itemListElement": projects.map((project, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "ImageObject",
+        "name": project.title,
+        "description": project.description,
+        "url": `https://www.aldeyarksa.tech/portfolio/${project.slug || project.id}`,
+        "contentUrl": project.media_items?.[0]?.src || '',
+        "thumbnailUrl": project.media_items?.[0]?.src || '',
+        "caption": project.media_items?.[0]?.alt || project.title,
+        "width": "1200",
+        "height": "800",
+        "uploadDate": new Date().toISOString(),
+        "author": {
+          "@type": "Organization",
+          "name": "محترفين الديار العالمية"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "محترفين الديار العالمية",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.aldeyarksa.tech/favicon.svg"
+          }
+        },
+        "copyrightHolder": {
+          "@type": "Organization",
+          "name": "محترفين الديار العالمية"
+        },
+        "license": "https://www.aldeyarksa.tech/terms",
+        "acquireLicensePage": "https://www.aldeyarksa.tech/contact"
+      }
+    }))
+  };
+
+  // إنشاء ItemList Schema للمقالات مع جميع الصور
+  const articlesListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "مقالات عن مظلات السيارات في جدة",
+    "description": "دليل شامل ومقالات تعليمية عن مظلات السيارات والحدائق",
+    "numberOfItems": articles.length,
+    "itemListElement": articles.map((article, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Article",
+        "headline": article.title,
+        "description": article.excerpt,
+        "url": `https://www.aldeyarksa.tech/articles/${article.slug || article.id}`,
+        "image": article.article_media_items?.[0]?.src || '',
+        "author": {
+          "@type": "Organization",
+          "name": "محترفين الديار العالمية"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "محترفين الديار العالمية",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.aldeyarksa.tech/favicon.svg"
+          }
+        },
+        "datePublished": article.publishedAt || article.createdAt,
+        "dateModified": article.publishedAt || article.createdAt
+      }
+    }))
+  };
+
   return (
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
@@ -391,6 +470,14 @@ export default async function MazallatPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articlesListSchema) }}
       />
       <ReviewSchema {...reviewSchemaData} />
 
