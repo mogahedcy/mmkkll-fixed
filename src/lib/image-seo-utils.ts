@@ -1,0 +1,252 @@
+/**
+ * نظام تحسين الصور لمحركات البحث (Image SEO System)
+ * يقوم بتوليد alt text تلقائي، structured data، ومعلومات SEO للصور
+ */
+
+export interface ImageContext {
+  projectTitle?: string;
+  projectCategory?: string;
+  projectLocation?: string;
+  articleTitle?: string;
+  serviceType?: string;
+  keywords?: string[];
+}
+
+export interface ImageMetadata {
+  alt: string;
+  title: string;
+  description: string;
+  keywords: string[];
+  context: string;
+}
+
+/**
+ * توليد alt text محسّن تلقائياً بناءً على السياق
+ */
+export function generateOptimizedAltText(
+  imageSrc: string,
+  context: ImageContext
+): ImageMetadata {
+  const { 
+    projectTitle, 
+    projectCategory, 
+    projectLocation,
+    articleTitle,
+    serviceType,
+    keywords = []
+  } = context;
+
+  let alt = '';
+  let title = '';
+  let description = '';
+  let contextType = '';
+
+  // تحديد نوع السياق
+  if (projectTitle && projectCategory) {
+    contextType = 'project';
+    
+    // alt text للمشاريع
+    alt = `${projectTitle} - ${projectCategory}`;
+    if (projectLocation) {
+      alt += ` في ${projectLocation}`;
+    }
+    alt += ' | محترفين الديار العالمية';
+
+    // العنوان
+    title = `صورة ${projectCategory} - ${projectTitle}`;
+
+    // الوصف
+    description = `مشروع ${projectCategory} تم تنفيذه بواسطة محترفين الديار العالمية`;
+    if (projectLocation) {
+      description += ` في ${projectLocation}`;
+    }
+    description += '. صورة توضيحية للجودة والاحترافية في التنفيذ.';
+
+  } else if (articleTitle) {
+    contextType = 'article';
+    
+    // alt text للمقالات
+    alt = `صورة توضيحية لمقال: ${articleTitle} | محترفين الديار`;
+    title = `${articleTitle} - صورة توضيحية`;
+    description = `صورة توضيحية تدعم محتوى مقال ${articleTitle} على موقع محترفين الديار العالمية`;
+
+  } else if (serviceType) {
+    contextType = 'service';
+    
+    // alt text للخدمات
+    alt = `خدمة ${serviceType} - محترفين الديار العالمية في جدة`;
+    title = `${serviceType} - محترفين الديار`;
+    description = `صورة توضيحية لخدمة ${serviceType} التي نقدمها في محترفين الديار العالمية`;
+  }
+
+  // إضافة الكلمات المفتاحية
+  const allKeywords = [
+    ...keywords,
+    'محترفين الديار',
+    'جدة',
+    projectCategory || serviceType || 'خدمات',
+    projectLocation || 'السعودية'
+  ].filter(Boolean);
+
+  return {
+    alt,
+    title,
+    description,
+    keywords: allKeywords,
+    context: contextType
+  };
+}
+
+/**
+ * توليد Structured Data للصور (ImageObject Schema)
+ */
+export function generateImageObjectSchema(
+  imageUrl: string,
+  metadata: ImageMetadata,
+  pageUrl: string,
+  uploadDate?: Date
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "contentUrl": imageUrl,
+    "url": imageUrl,
+    "name": metadata.title,
+    "description": metadata.description,
+    "caption": metadata.alt,
+    "keywords": metadata.keywords.join(', '),
+    "uploadDate": uploadDate ? uploadDate.toISOString() : new Date().toISOString(),
+    "author": {
+      "@type": "Organization",
+      "name": "محترفين الديار العالمية",
+      "url": "https://www.aldeyarksa.tech"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "محترفين الديار العالمية",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.aldeyarksa.tech/favicon.svg"
+      }
+    },
+    "copyrightHolder": {
+      "@type": "Organization",
+      "name": "محترفين الديار العالمية"
+    },
+    "license": "https://www.aldeyarksa.tech/terms",
+    "acquireLicensePage": "https://www.aldeyarksa.tech/contact",
+    "creditText": "محترفين الديار العالمية - جدة، السعودية",
+    "creator": {
+      "@type": "Organization",
+      "name": "محترفين الديار العالمية"
+    },
+    "copyrightNotice": "© محترفين الديار العالمية - جميع الحقوق محفوظة",
+    "isPartOf": {
+      "@type": "WebPage",
+      "url": pageUrl
+    }
+  };
+}
+
+/**
+ * توليد معلومات Image Sitemap للصورة
+ */
+export function generateImageSitemapEntry(
+  imageUrl: string,
+  metadata: ImageMetadata,
+  pageUrl: string,
+  location: string = 'جدة، السعودية'
+) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
+  const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`;
+  const fullPageUrl = pageUrl.startsWith('http') ? pageUrl : `${baseUrl}${pageUrl}`;
+
+  return {
+    imageUrl: fullImageUrl,
+    pageUrl: fullPageUrl,
+    caption: metadata.alt,
+    title: metadata.title,
+    description: metadata.description,
+    location,
+    license: `${baseUrl}/terms`,
+    keywords: metadata.keywords
+  };
+}
+
+/**
+ * معالجة دفعة من الصور وتوليد metadata لها
+ */
+export function processImagesBatch(
+  images: Array<{ src: string; alt?: string | null }>,
+  context: ImageContext
+): Array<{ src: string; metadata: ImageMetadata }> {
+  return images.map((image, index) => {
+    // إذا كان alt موجود، نستخدمه، وإلا نولد واحد جديد
+    let metadata: ImageMetadata;
+    
+    if (image.alt && image.alt.trim().length > 10) {
+      // استخدام alt الموجود مع تحسينه
+      metadata = {
+        alt: image.alt,
+        title: image.alt,
+        description: image.alt,
+        keywords: [
+          context.projectCategory || context.serviceType || '',
+          context.projectLocation || 'جدة',
+          'محترفين الديار'
+        ].filter(Boolean),
+        context: context.projectTitle ? 'project' : 'service'
+      };
+    } else {
+      // توليد metadata جديد
+      const enhancedContext = {
+        ...context,
+        projectTitle: context.projectTitle ? `${context.projectTitle} - صورة ${index + 1}` : undefined
+      };
+      metadata = generateOptimizedAltText(image.src, enhancedContext);
+    }
+
+    return {
+      src: image.src,
+      metadata
+    };
+  });
+}
+
+/**
+ * توليد نص بديل ديناميكي بناءً على الفئة
+ */
+export function generateCategoryBasedAlt(
+  category: string,
+  projectTitle: string,
+  location?: string,
+  imageIndex: number = 0
+): string {
+  const templates: { [key: string]: string } = {
+    'مظلات': `مظلات ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'سواتر': `سواتر ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'برجولات': `برجولات ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'تنسيق حدائق': `تنسيق حدائق ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'بيوت شعر': `بيوت شعر ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'خيام ملكية': `خيام ملكية ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'ترميم': `ترميم ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'ساندوتش بانل': `ساندوتش بانل ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+  };
+
+  return templates[category] || `${category} - ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`;
+}
+
+/**
+ * استخراج الكلمات المفتاحية من النص
+ */
+export function extractKeywordsFromText(text: string): string[] {
+  const commonKeywords = [
+    'مظلات', 'سواتر', 'برجولات', 'تنسيق حدائق', 'بيوت شعر',
+    'خيام ملكية', 'ترميم', 'ساندوتش بانل', 'جدة', 'السعودية',
+    'تركيب', 'تصميم', 'تنفيذ', 'PVC', 'حديد', 'خشب', 'قماش'
+  ];
+
+  return commonKeywords.filter(keyword => 
+    text.toLowerCase().includes(keyword.toLowerCase())
+  );
+}

@@ -71,6 +71,9 @@ export async function GET() {
   try {
     // جلب صور المشاريع من قاعدة البيانات
     const projects = await prisma.projects.findMany({
+      where: {
+        status: 'PUBLISHED'
+      },
       select: {
         id: true,
         slug: true,
@@ -78,9 +81,14 @@ export async function GET() {
         description: true,
         category: true,
         location: true,
+        createdAt: true,
+        publishedAt: true,
         media_items: {
           where: {
             type: 'IMAGE'
+          },
+          orderBy: {
+            order: 'asc'
           },
           select: {
             src: true,
@@ -93,13 +101,30 @@ export async function GET() {
     });
 
     projectImages = projects.flatMap(project => 
-      project.media_items.map(media => ({
-        url: media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`,
-        caption: `${media.alt || media.title || project.title} - ${project.category} في ${project.location}`,
-        title: `${project.title} - محترفين الديار العالمية`,
-        location: `${project.location}, السعودية`,
-        project_url: `${baseUrl}/portfolio/${project.slug || project.id}`
-      }))
+      project.media_items.map((media, index) => {
+        // توليد alt text محسّن إذا لم يكن موجود
+        const optimizedAlt = media.alt || 
+          `${project.title} - ${project.category} في ${project.location} - صورة ${index + 1} | محترفين الديار العالمية`;
+        
+        // توليد caption مفصل
+        const caption = media.description || 
+          `صورة توضيحية لمشروع ${project.title} من نوع ${project.category} في ${project.location}. تنفيذ محترفين الديار العالمية بجودة عالية وضمان 10 سنوات`;
+        
+        // توليد title للصورة
+        const imageTitle = media.title || 
+          `${project.category} - ${project.title} | محترفين الديار`;
+
+        return {
+          url: media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`,
+          caption,
+          title: imageTitle,
+          alt: optimizedAlt,
+          location: `${project.location}, السعودية`,
+          project_url: `${baseUrl}/portfolio/${project.slug || project.id}`,
+          category: project.category,
+          uploadDate: project.publishedAt || project.createdAt
+        };
+      })
     );
   } catch (error) {
     console.error('خطأ في جلب صور المشاريع:', error);
@@ -112,8 +137,36 @@ export async function GET() {
     .map(image => {
       const imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
       const pageUrl = image.project_url || `${baseUrl}/portfolio`;
+      const uploadDate = image.uploadDate ? new Date(image.uploadDate).toISOString() : new Date().toISOString();
       
-      return `<url><loc>${pageUrl}</loc><image:image><image:loc>${imageUrl}</image:loc><image:caption><![CDATA[${image.caption}]]></image:caption><image:title><![CDATA[${image.title}]]></image:title><image:geo_location><![CDATA[${image.location}]]></image:geo_location><image:license><![CDATA[${baseUrl}/terms]]></image:license></image:image><lastmod>${new Date().toISOString()}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="canonical" href="${pageUrl}" /><xhtml:link rel="alternate" hreflang="ar" href="${pageUrl}" /></url>`;
+      // إضافة معلومات محسّنة للصور
+      let imageXml = `<url>
+    <loc>${pageUrl}</loc>
+    <image:image>
+      <image:loc>${imageUrl}</image:loc>
+      <image:caption><![CDATA[${image.caption}]]></image:caption>
+      <image:title><![CDATA[${image.title}]]></image:title>`;
+      
+      // إضافة alt text إذا كان متوفر
+      if (image.alt) {
+        imageXml += `
+      <image:description><![CDATA[${image.alt}]]></image:description>`;
+      }
+      
+      imageXml += `
+      <image:geo_location><![CDATA[${image.location}]]></image:geo_location>
+      <image:license><![CDATA[${baseUrl}/terms]]></image:license>`;
+      
+      imageXml += `
+    </image:image>
+    <lastmod>${uploadDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="canonical" href="${pageUrl}" />
+    <xhtml:link rel="alternate" hreflang="ar" href="${pageUrl}" />
+  </url>`;
+      
+      return imageXml;
     })
     .join('\n  ');
 

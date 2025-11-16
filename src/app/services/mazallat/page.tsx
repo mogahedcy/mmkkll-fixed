@@ -259,12 +259,15 @@ async function getRelatedContent() {
         featured: true,
         category: true,
         location: true,
+        createdAt: true,
+        publishedAt: true,
         media_items: {
           orderBy: { order: 'asc' },
           select: {
             src: true,
             alt: true,
             title: true,
+            description: true,
             type: true
           }
         },

@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Eye, ThumbsUp, ExternalLink, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { generateCategoryBasedAlt, generateImageObjectSchema } from '@/lib/image-seo-utils';
+import WatermarkOverlay from '@/components/WatermarkOverlay';
 
 interface Project {
   id: string | number;
@@ -12,6 +14,8 @@ interface Project {
   description: string | null;
   slug: string | null;
   featured: boolean;
+  category?: string;
+  location?: string;
   media_items: Array<{
     src: string;
     alt: string | null;
@@ -81,42 +85,84 @@ export default function ProjectsGallery({ projects, categoryName }: ProjectsGall
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
-            >
-              <Link 
-                href={`/portfolio/${project.slug || project.id}`}
-                className="group block"
+          {projects.map((project, index) => {
+            // توليد alt text محسّن تلقائياً
+            const optimizedAlt = project.media_items?.[0]?.alt || 
+              generateCategoryBasedAlt(
+                project.category || categoryName,
+                project.title,
+                project.location,
+                0
+              );
+
+            // إنشاء structured data للصورة
+            const imageSchema = project.media_items?.[0] ? generateImageObjectSchema(
+              project.media_items[0].src,
+              {
+                alt: optimizedAlt,
+                title: project.title,
+                description: project.description || project.title,
+                keywords: [project.category || categoryName, project.location || 'جدة', 'محترفين الديار'],
+                context: 'project'
+              },
+              `/portfolio/${project.slug || project.id}`
+            ) : null;
+
+            return (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8 }}
               >
-                <div className="bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-accent hover:shadow-2xl transition-all duration-500">
-                  {project.media_items && project.media_items[0] && (
-                    <div className="relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-                      <Image
-                        src={project.media_items[0].src}
-                        alt={project.media_items[0].alt || project.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      {project.featured && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: 0.3 + index * 0.1 }}
-                          className="absolute top-4 right-4 bg-gradient-to-r from-accent to-amber-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2"
-                        >
-                          <Sparkles className="w-4 h-4" />
-                          مميز
-                        </motion.div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    </div>
-                  )}
+                <Link 
+                  href={`/portfolio/${project.slug || project.id}`}
+                  className="group block"
+                >
+                  <div className="bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-accent hover:shadow-2xl transition-all duration-500">
+                    {project.media_items && project.media_items[0] && (
+                      <div className="relative h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                        <Image
+                          src={project.media_items[0].src}
+                          alt={optimizedAlt}
+                          title={project.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        
+                        {/* علامة مائية */}
+                        <WatermarkOverlay 
+                          position="bottom-right"
+                          size="small"
+                          opacity={0.25}
+                        />
+
+                        {project.featured && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.3 + index * 0.1 }}
+                            className="absolute top-4 right-4 bg-gradient-to-r from-accent to-amber-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center gap-2"
+                          >
+                            <Sparkles className="w-4 h-4" />
+                            مميز
+                          </motion.div>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                        {/* Structured Data للصورة */}
+                        {imageSchema && (
+                          <script
+                            type="application/ld+json"
+                            dangerouslySetInnerHTML={{
+                              __html: JSON.stringify(imageSchema)
+                            }}
+                          />
+                        )}
+                      </div>
+                    )}
                   
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors line-clamp-2">
@@ -152,7 +198,8 @@ export default function ProjectsGallery({ projects, categoryName }: ProjectsGall
                 </div>
               </Link>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         <motion.div
