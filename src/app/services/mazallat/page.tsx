@@ -226,10 +226,6 @@ const relatedServices = [
 // جلب المشاريع والمقالات والأسئلة الشائعة المتعلقة بالمظلات من قاعدة البيانات
 async function getRelatedContent() {
   try {
-    if (!process.env.DATABASE_URL) {
-      return { projects: [], articles: [], faqs: [] };
-    }
-
     // جلب الأسئلة الشائعة المتعلقة بالمظلات
     const faqs = await prisma.faqs.findMany({
       where: {
@@ -323,9 +319,14 @@ async function getRelatedContent() {
       take: 6
     });
 
+    console.log('✅ تم جلب المحتوى من قاعدة البيانات:', {
+      projectsCount: projects.length,
+      articlesCount: articles.length,
+      faqsCount: faqs.length
+    });
     return { projects, articles, faqs };
   } catch (error) {
-    console.error('خطأ في جلب المحتوى المتعلق بالمظلات:', error);
+    console.error('❌ خطأ في جلب المحتوى المتعلق بالمظلات:', error);
     // في حالة الخطأ، نعيد مصفوفات فارغة لتجنب كسر الصفحة
     return { projects: [], articles: [], faqs: [] };
   }
