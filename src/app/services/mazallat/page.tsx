@@ -4,6 +4,9 @@ import Footer from '@/components/Footer';
 import Breadcrumb from '@/components/Breadcrumb';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import ReviewSchema from '@/components/ReviewSchema';
+import ProjectsGallery from '@/components/services/ProjectsGallery';
+import ArticlesSection from '@/components/services/ArticlesSection';
+import FAQSection from '@/components/services/FAQSection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -251,10 +254,19 @@ async function getRelatedContent() {
           { category: { contains: 'مظلات' } },
         ]
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        slug: true,
+        featured: true,
         media_items: {
           orderBy: { order: 'asc' },
-          take: 1
+          take: 1,
+          select: {
+            src: true,
+            alt: true
+          }
         },
         _count: {
           select: {
@@ -281,10 +293,21 @@ async function getRelatedContent() {
           { category: { contains: 'مظلات' } },
         ]
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        excerpt: true,
+        slug: true,
+        featured: true,
+        publishedAt: true,
+        createdAt: true,
         article_media_items: {
           orderBy: { order: 'asc' },
-          take: 1
+          take: 1,
+          select: {
+            src: true,
+            alt: true
+          }
         },
         _count: {
           select: {
@@ -483,172 +506,10 @@ export default async function MazallatPage() {
         </section>
 
         {/* معرض أعمالنا في المظلات - ديناميكي */}
-        {projects.length > 0 && (
-          <section className="py-20 bg-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                  معرض أعمالنا في المظلات
-                </h2>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  اطلع على مشاريعنا المنجزة في مجال المظلات بمختلف أنواعها
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((project: any) => (
-                  <Link 
-                    key={project.id} 
-                    href={`/portfolio/${project.slug || project.id}`}
-                    className="group"
-                  >
-                    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
-                      {project.media_items && project.media_items[0] && (
-                        <div className="relative h-64 overflow-hidden">
-                          <Image
-                            src={project.media_items[0].src}
-                            alt={project.media_items[0].alt || project.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          {project.featured && (
-                            <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-bold">
-                              مميز
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
-                          {project.title}
-                        </h3>
-                        <p className="text-muted-foreground mb-4 line-clamp-2">
-                          {project.description}
-                        </p>
-                        
-                        <div className="flex items-center justify-between text-sm text-muted-foreground">
-                          <div className="flex items-center gap-4">
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-4 h-4" />
-                              {project._count?.project_views || 0}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <ThumbsUp className="w-4 h-4" />
-                              {project._count?.project_likes || 0}
-                            </span>
-                          </div>
-                          <span className="text-accent font-medium flex items-center gap-1">
-                            عرض المشروع
-                            <ExternalLink className="w-4 h-4" />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-
-              <div className="text-center mt-12">
-                <Link href="/portfolio?category=مظلات">
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-2">
-                    عرض جميع مشاريع المظلات
-                    <ArrowLeft className="w-5 h-5 mr-2" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </section>
-        )}
+        <ProjectsGallery projects={projects} categoryName="المظلات" />
 
         {/* مقالات متعلقة بالمظلات - ديناميكي */}
-        {articles.length > 0 && (
-          <section className="py-20 bg-background">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                  مقالات متعلقة بالمظلات
-                </h2>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  اقرأ مقالاتنا المتخصصة في مجال المظلات والنصائح المفيدة
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {articles.map((article: any) => (
-                  <Link 
-                    key={article.id} 
-                    href={`/articles/${article.slug || article.id}`}
-                    className="group"
-                  >
-                    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
-                      {article.article_media_items && article.article_media_items[0] && (
-                        <div className="relative h-56 overflow-hidden">
-                          <Image
-                            src={article.article_media_items[0].src}
-                            alt={article.article_media_items[0].alt || article.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          {article.featured && (
-                            <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-bold">
-                              مميز
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                          <Calendar className="w-4 h-4" />
-                          <span>{new Date(article.publishedAt || article.createdAt).toLocaleDateString('ar-SA')}</span>
-                        </div>
-                        
-                        <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
-                          {article.title}
-                        </h3>
-                        
-                        {article.excerpt && (
-                          <p className="text-muted-foreground mb-4 line-clamp-2">
-                            {article.excerpt}
-                          </p>
-                        )}
-                        
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center gap-4 text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-4 h-4" />
-                              {article._count?.article_views || 0}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <ThumbsUp className="w-4 h-4" />
-                              {article._count?.article_likes || 0}
-                            </span>
-                          </div>
-                          <span className="text-accent font-medium flex items-center gap-1">
-                            قراءة المقال
-                            <ExternalLink className="w-4 h-4" />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-
-              <div className="text-center mt-12">
-                <Link href="/articles?category=مظلات">
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-2">
-                    عرض جميع مقالات المظلات
-                    <ArrowLeft className="w-5 h-5 mr-2" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </section>
-        )}
+        <ArticlesSection articles={articles} categoryName="المظلات" />
 
         {/* Why Choose Us Section */}
         <section className="py-20 bg-gray-50">
@@ -680,40 +541,7 @@ export default async function MazallatPage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
-                الأسئلة الشائعة
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                إجابات على أكثر الأسئلة شيوعاً حول مظلات السيارات
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              {faqs.map((faq) => (
-                <details
-                  key={faq.id}
-                  className="group bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all duration-300"
-                >
-                  <summary className="flex items-center justify-between cursor-pointer list-none">
-                    <h3 className="text-lg font-bold text-primary pr-4">
-                      {faq.question}
-                    </h3>
-                    <div className="flex-shrink-0">
-                      <Plus className="w-6 h-6 text-accent group-open:hidden" />
-                      <Minus className="w-6 h-6 text-accent hidden group-open:block" />
-                    </div>
-                  </summary>
-                  <p className="mt-4 text-muted-foreground leading-relaxed pr-4">
-                    {faq.answer}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
+        <FAQSection faqs={faqs} categoryName="المظلات" />
 
         {/* Related Services Section */}
         <section className="py-20 bg-background">
