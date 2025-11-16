@@ -139,31 +139,23 @@ export async function GET() {
       const pageUrl = image.project_url || `${baseUrl}/portfolio`;
       const uploadDate = image.uploadDate ? new Date(image.uploadDate).toISOString() : new Date().toISOString();
       
-      // إضافة معلومات محسّنة للصور
-      let imageXml = `<url>
-    <loc>${pageUrl}</loc>
+      // تنظيف URL من المسافات
+      const cleanImageUrl = imageUrl.replace(/\s+/g, '');
+      const cleanPageUrl = pageUrl.replace(/\s+/g, '');
+      
+      // إضافة معلومات محسّنة للصور (بدون image:description لأنه غير مدعوم)
+      const imageXml = `<url>
+    <loc>${cleanPageUrl}</loc>
     <image:image>
-      <image:loc>${imageUrl}</image:loc>
+      <image:loc>${cleanImageUrl}</image:loc>
       <image:caption><![CDATA[${image.caption}]]></image:caption>
-      <image:title><![CDATA[${image.title}]]></image:title>`;
-      
-      // إضافة alt text إذا كان متوفر
-      if (image.alt) {
-        imageXml += `
-      <image:description><![CDATA[${image.alt}]]></image:description>`;
-      }
-      
-      imageXml += `
+      <image:title><![CDATA[${image.title}]]></image:title>
       <image:geo_location><![CDATA[${image.location}]]></image:geo_location>
-      <image:license><![CDATA[${baseUrl}/terms]]></image:license>`;
-      
-      imageXml += `
+      <image:license><![CDATA[${baseUrl}/terms]]></image:license>
     </image:image>
     <lastmod>${uploadDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="canonical" href="${pageUrl}" />
-    <xhtml:link rel="alternate" hreflang="ar" href="${pageUrl}" />
   </url>`;
       
       return imageXml;

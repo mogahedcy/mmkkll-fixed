@@ -265,7 +265,6 @@ async function getRelatedContent() {
             src: true,
             alt: true,
             title: true,
-            description: true,
             type: true
           }
         },
@@ -283,7 +282,8 @@ async function getRelatedContent() {
     });
 
     // جلب جميع المقالات المتعلقة بالمظلات (بدون حد للأرشفة الكاملة)
-    const articleCategoryWhere = buildCategoryWhereClause('mazallat');
+    const { buildArticleCategoryWhereClause } = await import('@/lib/services-categories-mapping');
+    const articleCategoryWhere = buildArticleCategoryWhereClause('mazallat');
     const articles = await prisma.articles.findMany({
       where: {
         status: 'PUBLISHED',

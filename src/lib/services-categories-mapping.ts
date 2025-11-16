@@ -101,12 +101,14 @@ export function getAllRelatedCategories(serviceSlug: string): string[] {
 
 /**
  * بناء شرط WHERE لاستعلام قاعدة البيانات
+ * @param serviceSlug - slug الخدمة
+ * @param searchInDescription - البحث في حقل description (للمشاريع فقط، المقالات تستخدم excerpt)
  */
-export function buildCategoryWhereClause(serviceSlug: string) {
+export function buildCategoryWhereClause(serviceSlug: string, searchInDescription: boolean = true) {
   const mapping = getServiceMapping(serviceSlug);
   if (!mapping) return {};
 
-  // البحث في الفئة والعنوان والوصف
+  // البحث في الفئة والعنوان
   const orConditions = [];
 
   // البحث في الفئات الرئيسية
@@ -118,7 +120,36 @@ export function buildCategoryWhereClause(serviceSlug: string) {
   // البحث في الكلمات المفتاحية
   for (const keyword of mapping.searchKeywords) {
     orConditions.push({ title: { contains: keyword } });
-    orConditions.push({ description: { contains: keyword } });
+    // فقط للمشاريع التي تحتوي على حقل description
+    if (searchInDescription) {
+      orConditions.push({ description: { contains: keyword } });
+    }
+  }
+
+  return {
+    OR: orConditions
+  };
+}
+
+/**
+ * بناء شرط WHERE للمقالات (لا تستخدم description)
+ */
+export function buildArticleCategoryWhereClause(serviceSlug: string) {
+  const mapping = getServiceMapping(serviceSlug);
+  if (!mapping) return {};
+
+  const orConditions = [];
+
+  // البحث في الفئات الرئيسية
+  for (const category of mapping.categories) {
+    orConditions.push({ category: { contains: category } });
+    orConditions.push({ title: { contains: category } });
+  }
+
+  // البحث في الكلمات المفتاحية (في العنوان والمحتوى فقط)
+  for (const keyword of mapping.searchKeywords) {
+    orConditions.push({ title: { contains: keyword } });
+    orConditions.push({ content: { contains: keyword } });
   }
 
   return {
