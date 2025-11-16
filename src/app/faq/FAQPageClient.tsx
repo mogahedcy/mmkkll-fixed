@@ -1,0 +1,299 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Search, 
+  Filter,
+  HelpCircle,
+  ChevronDown,
+  MessageCircle,
+  Phone,
+  Loader2,
+  BookOpen,
+  Sparkles
+} from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+  order: number;
+  featured: boolean;
+  views: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface Stats {
+  total: number;
+  featured: number;
+  categories: Array<{ category: string; _count: { category: number } }>;
+}
+
+const categories = [
+  { value: 'all', label: 'جميع الأسئلة', icon: '❓' },
+  { value: 'مظلات', label: 'المظلات', icon: '🏠' },
+  { value: 'برجولات', label: 'البرجولات', icon: '🌿' },
+  { value: 'سواتر', label: 'السواتر', icon: '🛡️' },
+  { value: 'تنسيق حدائق', label: 'تنسيق الحدائق', icon: '🌺' },
+  { value: 'ساندوتش بانل', label: 'ساندوتش بانل', icon: '🏗️' },
+  { value: 'عامة', label: 'أسئلة عامة', icon: '💬' }
+];
+
+export default function FAQPageClient() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<Stats>({ total: 0, featured: 0, categories: [] });
+  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+
+  useEffect(() => {
+    const search = searchParams?.get('search') || '';
+    const category = searchParams?.get('category') || 'all';
+    setSearchTerm(search);
+    setSelectedCategory(category);
+  }, [searchParams]);
+
+  const updateURL = useCallback((search: string, category: string) => {
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (category && category !== 'all') params.set('category', category);
+    const newURL = params.toString() ? `${pathname}?${params}` : pathname;
+    router.replace(newURL, { scroll: false });
+  }, [pathname, router]);
+
+  const fetchFAQs = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({
+        limit: '100',
+        ...(selectedCategory !== 'all' && { category: selectedCategory }),
+        ...(searchTerm && { search: searchTerm })
+      });
+      
+      const response = await fetch(`/api/faqs?${params}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setFaqs(data.faqs || []);
+        setStats({
+          total: data.total || data.faqs?.length || 0,
+          featured: 0,
+          categories: []
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching FAQs:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [searchTerm, selectedCategory]);
+
+  useEffect(() => {
+    fetchFAQs();
+  }, [fetchFAQs]);
+
+  const toggleFAQ = (id: string) => {
+    setExpandedFAQ(expandedFAQ === id ? null : id);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
+            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full mb-4">
+              <HelpCircle className="w-4 h-4" />
+              <span className="text-sm font-bold">مركز المساعدة</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+              الأسئلة الشائعة
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              إجابات شاملة على أكثر الأسئلة شيوعاً حول خدماتنا
+            </p>
+            <div className="inline-flex items-center gap-2 mt-4 text-sm text-accent">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span className="font-medium">{stats.total} سؤال وجواب</span>
+            </div>
+          </motion.div>
+
+          {/* Search and Filters */}
+          <div className="max-w-4xl mx-auto space-y-4">
+            <div className="relative">
+              <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="ابحث في الأسئلة..."
+                value={searchTerm}
+                onChange={(e) => {
+                  const newSearch = e.target.value;
+                  setSearchTerm(newSearch);
+                  updateURL(newSearch, selectedCategory);
+                }}
+                className="pr-12 h-14 text-lg rounded-xl border-2"
+              />
+            </div>
+
+            {/* Categories */}
+            <div className="flex flex-wrap gap-2 justify-center">
+              {categories.map((cat) => (
+                <button
+                  key={cat.value}
+                  onClick={() => {
+                    setSelectedCategory(cat.value);
+                    updateURL(searchTerm, cat.value);
+                  }}
+                  className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${
+                    selectedCategory === cat.value
+                      ? 'bg-accent text-white shadow-lg scale-105'
+                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <span className="mr-2">{cat.icon}</span>
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQs List */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-12 h-12 text-accent animate-spin" />
+            </div>
+          ) : faqs.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-20"
+            >
+              <BookOpen className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-gray-600 mb-2">
+                لا توجد أسئلة
+              </h3>
+              <p className="text-gray-500 mb-6">
+                جرّب البحث بكلمات أخرى أو تصفح فئة مختلفة
+              </p>
+              <Button onClick={() => { 
+                setSearchTerm(''); 
+                setSelectedCategory('all');
+                updateURL('', 'all');
+              }}>
+                إعادة تعيين البحث
+              </Button>
+            </motion.div>
+          ) : (
+            <div className="space-y-4">
+              <AnimatePresence>
+                {faqs.map((faq, index) => (
+                  <motion.div
+                    key={faq.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300"
+                  >
+                    <button
+                      onClick={() => toggleFAQ(faq.id)}
+                      className="w-full p-6 text-right flex items-start justify-between gap-4 hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          {faq.featured && (
+                            <span className="inline-flex items-center gap-1 bg-accent/10 text-accent px-2 py-1 rounded-full text-xs font-bold">
+                              <Sparkles className="w-3 h-3" />
+                              شائع
+                            </span>
+                          )}
+                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                            {faq.category}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-bold text-primary text-right">
+                          {faq.question}
+                        </h3>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: expandedFAQ === faq.id ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ChevronDown className="w-6 h-6 text-accent flex-shrink-0" />
+                      </motion.div>
+                    </button>
+
+                    <AnimatePresence>
+                      {expandedFAQ === faq.id && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div className="px-6 pb-6 pt-2 border-t border-gray-100">
+                            <p className="text-gray-700 leading-relaxed text-right">
+                              {faq.answer}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="py-16 px-4 bg-gradient-to-br from-primary/5 to-accent/5">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-primary mb-4">
+            لم تجد إجابة لسؤالك؟
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            فريقنا جاهز للإجابة على جميع استفساراتكم
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="https://wa.me/+966553719009" target="_blank">
+              <Button size="lg" className="text-lg px-8">
+                <MessageCircle className="w-5 h-5 mr-2" />
+                تواصل معنا عبر واتساب
+              </Button>
+            </Link>
+            <Link href="tel:+966553719009">
+              <Button size="lg" variant="outline" className="text-lg px-8">
+                <Phone className="w-5 h-5 mr-2" />
+                اتصل بنا
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

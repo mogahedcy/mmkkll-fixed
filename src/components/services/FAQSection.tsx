@@ -131,6 +131,21 @@ export default function FAQSection({ faqs, categoryName }: FAQSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          className="text-center mt-12"
+        >
+          <a
+            href={`/faq?search=${categoryName}`}
+            className="inline-flex items-center gap-3 bg-accent text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-accent/90 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+          >
+            <HelpCircle className="w-5 h-5" />
+            عرض جميع الأسئلة عن {categoryName}
+          </a>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
           className="mt-12 text-center bg-gradient-to-r from-accent/10 to-primary/10 rounded-2xl p-8"
         >
           <HelpCircle className="w-12 h-12 text-accent mx-auto mb-4" />

@@ -161,7 +161,7 @@ export default function ProjectsGallery({ projects, categoryName }: ProjectsGall
           transition={{ delay: 0.5 }}
           className="text-center mt-12"
         >
-          <Link href={`/portfolio?category=${categoryName}`}>
+          <Link href={`/portfolio?search=${categoryName}`}>
             <Button 
               size="lg" 
               className="text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all duration-300"
