@@ -528,6 +528,7 @@ export default async function MazallatPage() {
                             src={project.media_items[0].src}
                             alt={project.media_items[0].alt || project.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           {project.featured && (
@@ -607,6 +608,7 @@ export default async function MazallatPage() {
                             src={article.article_media_items[0].src}
                             alt={article.article_media_items[0].alt || article.title}
                             fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           {article.featured && (
