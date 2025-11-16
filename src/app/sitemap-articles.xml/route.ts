@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { safeEncodeUrl, createImageTags, createVideoTags } from '@/lib/sitemap-utils';
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
@@ -59,18 +60,29 @@ export async function GET() {
   const articlesSitemap = articles
     .map((article) => {
       const encodedSlug = encodeURIComponent(article.slug || article.id);
+      const articleUrl = `${baseUrl}/articles/${encodedSlug}`;
       
       const mediaContent = article.article_media_items?.map((media: any) => {
         if (media.type === 'IMAGE') {
           const imageUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
-          const encodedImageUrl = imageUrl.includes(' ') ? imageUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : imageUrl;
-          return `<image:image><image:loc>${encodedImageUrl}</image:loc><image:caption><![CDATA[${media.alt || media.title || article.title} - ${article.category} من محترفين الديار العالمية]]></image:caption><image:title><![CDATA[${article.title} - محترفين الديار العالمية جدة]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location><image:license><![CDATA[${baseUrl}/terms]]></image:license></image:image>`;
+          return createImageTags({
+            imageUrl,
+            caption: `${media.alt || media.title || article.title} - ${article.category} من محترفين الديار العالمية`,
+            title: `${article.title} - محترفين الديار العالمية جدة`,
+            geoLocation: 'جدة، المملكة العربية السعودية',
+            license: `${baseUrl}/terms`
+          });
         } else if (media.type === 'VIDEO') {
           const videoUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
           const thumbnailUrl = media.thumbnail ? (media.thumbnail.startsWith('http') ? media.thumbnail : `${baseUrl}${media.thumbnail}`) : `${baseUrl}/images/video-placeholder.jpg`;
-          const encodedVideoUrl = videoUrl.includes(' ') ? videoUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : videoUrl;
-          const encodedThumbnailUrl = thumbnailUrl.includes(' ') ? thumbnailUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : thumbnailUrl;
-          return `<video:video><video:thumbnail_loc>${encodedThumbnailUrl}</video:thumbnail_loc><video:title><![CDATA[${article.title} - فيديو ${article.category}]]></video:title><video:description><![CDATA[${media.description || article.excerpt || article.content.substring(0, 200)} - محترفين الديار العالمية جدة]]></video:description><video:content_loc>${encodedVideoUrl}</video:content_loc><video:player_loc allow_embed="yes">${baseUrl}/articles/${encodedSlug}</video:player_loc><video:family_friendly>yes</video:family_friendly><video:uploader info="${baseUrl}">محترفين الديار العالمية</video:uploader></video:video>`;
+          return createVideoTags({
+            thumbnailUrl,
+            title: `${article.title} - فيديو ${article.category}`,
+            description: `${media.description || article.excerpt || article.content.substring(0, 200)} - محترفين الديار العالمية جدة`,
+            contentUrl: videoUrl,
+            playerUrl: articleUrl,
+            baseUrl
+          });
         }
         return '';
       }).join('') || '';
@@ -88,12 +100,17 @@ export async function GET() {
 
       const newsMarkup = `<news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.publishedAt?.toISOString() || article.createdAt.toISOString()}</news:publication_date><news:title><![CDATA[${seoTitle}]]></news:title><news:keywords><![CDATA[${keywords}]]></news:keywords></news:news>`;
 
-      return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><xhtml:link rel="canonical" href="${baseUrl}/articles/${encodedSlug}" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/articles/${encodedSlug}" />${mediaContent}${newsMarkup}</url>`;
+      return `<url><loc>${safeEncodeUrl(articleUrl)}</loc><lastmod>${article.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><xhtml:link rel="canonical" href="${safeEncodeUrl(articleUrl)}" /><xhtml:link rel="alternate" hreflang="ar" href="${safeEncodeUrl(articleUrl)}" />${mediaContent}${newsMarkup}</url>`;
     })
     .join('');
 
   // إضافة صفحة المقالات الرئيسية
-  const articlesIndexPage = `<url><loc>${baseUrl}/articles</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="canonical" href="${baseUrl}/articles" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/articles" /><image:image><image:loc>${baseUrl}/uploads/mazallat-1.webp</image:loc><image:caption><![CDATA[أرشيف مقالات محترفين الديار العالمية - مقالات متخصصة في المظلات والبرجولات]]></image:caption><image:title><![CDATA[أرشيف مقالات محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image></url>`;
+  const articlesIndexPage = `<url><loc>${safeEncodeUrl(`${baseUrl}/articles`)}</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="canonical" href="${safeEncodeUrl(`${baseUrl}/articles`)}" /><xhtml:link rel="alternate" hreflang="ar" href="${safeEncodeUrl(`${baseUrl}/articles`)}" />${createImageTags({
+    imageUrl: `${baseUrl}/uploads/mazallat-1.webp`,
+    caption: 'أرشيف مقالات محترفين الديار العالمية - مقالات متخصصة في المظلات والبرجولات',
+    title: 'أرشيف مقالات محترفين الديار العالمية',
+    geoLocation: 'جدة، المملكة العربية السعودية'
+  })}</url>`;
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

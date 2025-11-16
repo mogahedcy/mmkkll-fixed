@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { safeEncodeUrl, createImageTags, createVideoTags } from '@/lib/sitemap-utils';
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
@@ -58,22 +59,30 @@ export async function GET() {
   // إنشاء sitemap للمشاريع مع الوسائط المحسنة
   const projectsSitemap = projects
     .map((project) => {
-      // تشفير slug لتجنب الفراغات والأحرف الخاصة
       const encodedSlug = encodeURIComponent(project.slug || project.id);
+      const projectUrl = `${baseUrl}/portfolio/${encodedSlug}`;
       
       const mediaContent = project.media_items?.map((media: any) => {
         if (media.type === 'IMAGE') {
           const imageUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
-          // تشفير الروابط للتأكد من عدم وجود فراغات
-          const encodedImageUrl = imageUrl.includes(' ') ? imageUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : imageUrl;
-          return `<image:image><image:loc>${encodedImageUrl}</image:loc><image:caption><![CDATA[${media.alt || media.title || project.title} - ${project.category} في ${project.location} من محترفين الديار العالمية]]></image:caption><image:title><![CDATA[${project.title} - محترفين الديار العالمية جدة]]></image:title><image:geo_location><![CDATA[${project.location}, المملكة العربية السعودية]]></image:geo_location><image:license><![CDATA[${baseUrl}/terms]]></image:license></image:image>`;
+          return createImageTags({
+            imageUrl,
+            caption: `${media.alt || media.title || project.title} - ${project.category} في ${project.location} من محترفين الديار العالمية`,
+            title: `${project.title} - محترفين الديار العالمية جدة`,
+            geoLocation: `${project.location}, المملكة العربية السعودية`,
+            license: `${baseUrl}/terms`
+          });
         } else if (media.type === 'VIDEO') {
           const videoUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
           const thumbnailUrl = media.thumbnail ? (media.thumbnail.startsWith('http') ? media.thumbnail : `${baseUrl}${media.thumbnail}`) : `${baseUrl}/images/video-placeholder.jpg`;
-          // تشفير الروابط للتأكد من عدم وجود فراغات
-          const encodedVideoUrl = videoUrl.includes(' ') ? videoUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : videoUrl;
-          const encodedThumbnailUrl = thumbnailUrl.includes(' ') ? thumbnailUrl.split('/').map((part: string) => part.includes(' ') ? encodeURIComponent(part) : part).join('/') : thumbnailUrl;
-          return `<video:video><video:thumbnail_loc>${encodedThumbnailUrl}</video:thumbnail_loc><video:title><![CDATA[${project.title} - فيديو ${project.category} في ${project.location}]]></video:title><video:description><![CDATA[${media.description || project.description} - محترفين الديار العالمية جدة]]></video:description><video:content_loc>${encodedVideoUrl}</video:content_loc><video:player_loc allow_embed="yes">${baseUrl}/portfolio/${encodedSlug}</video:player_loc><video:family_friendly>yes</video:family_friendly><video:uploader info="${baseUrl}">محترفين الديار العالمية</video:uploader></video:video>`;
+          return createVideoTags({
+            thumbnailUrl,
+            title: `${project.title} - فيديو ${project.category} في ${project.location}`,
+            description: `${media.description || project.description} - محترفين الديار العالمية جدة`,
+            contentUrl: videoUrl,
+            playerUrl: projectUrl,
+            baseUrl
+          });
         }
         return '';
       }).join('') || '';
@@ -90,12 +99,17 @@ export async function GET() {
       const seoDescription = project.metaDescription || 
         `${project.description.substring(0, 150)}... مشروع ${project.category} في ${project.location} من محترفين الديار العالمية - أفضل شركة مظلات وسواتر في جدة`;
 
-      return `<url><loc>${baseUrl}/portfolio/${encodedSlug}</loc><lastmod>${project.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><xhtml:link rel="canonical" href="${baseUrl}/portfolio/${encodedSlug}" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/portfolio/${encodedSlug}" />${mediaContent}</url>`;
+      return `<url><loc>${safeEncodeUrl(projectUrl)}</loc><lastmod>${project.updatedAt.toISOString()}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority><xhtml:link rel="canonical" href="${safeEncodeUrl(projectUrl)}" /><xhtml:link rel="alternate" hreflang="ar" href="${safeEncodeUrl(projectUrl)}" />${mediaContent}</url>`;
     })
     .join('');
 
   // إضافة صفحة المعرض الرئيسية
-  const portfolioIndexPage = `<url><loc>${baseUrl}/portfolio</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="canonical" href="${baseUrl}/portfolio" /><xhtml:link rel="alternate" hreflang="ar" href="${baseUrl}/portfolio" /><image:image><image:loc>${baseUrl}/images/portfolio-hero.webp</image:loc><image:caption><![CDATA[معرض أعمال محترفين الديار العالمية - مشاريع مظلات وسواتر متميزة في جدة]]></image:caption><image:title><![CDATA[معرض أعمال محترفين الديار العالمية]]></image:title><image:geo_location><![CDATA[جدة، المملكة العربية السعودية]]></image:geo_location></image:image></url>`;
+  const portfolioIndexPage = `<url><loc>${safeEncodeUrl(`${baseUrl}/portfolio`)}</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>daily</changefreq><priority>0.9</priority><xhtml:link rel="canonical" href="${safeEncodeUrl(`${baseUrl}/portfolio`)}" /><xhtml:link rel="alternate" hreflang="ar" href="${safeEncodeUrl(`${baseUrl}/portfolio`)}" />${createImageTags({
+    imageUrl: `${baseUrl}/images/portfolio-hero.webp`,
+    caption: 'معرض أعمال محترفين الديار العالمية - مشاريع مظلات وسواتر متميزة في جدة',
+    title: 'معرض أعمال محترفين الديار العالمية',
+    geoLocation: 'جدة، المملكة العربية السعودية'
+  })}</url>`;
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
