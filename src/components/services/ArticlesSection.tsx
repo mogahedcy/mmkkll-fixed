@@ -150,6 +150,20 @@ export default function ArticlesSection({ articles, categoryName }: ArticlesSect
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="text-center mt-12"
+        >
+          <Link href={`/articles?category=${categoryName}`}>
+            <button className="bg-primary hover:bg-primary/90 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center gap-3">
+              عرض جميع مقالات {categoryName}
+              <BookOpen className="w-5 h-5" />
+            </button>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
