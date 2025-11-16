@@ -73,6 +73,8 @@ export const metadata: Metadata = {
   robots: generateRobotsMetadata(),
 };
 
+export const revalidate = 3600;
+
 const heroFeatures = [
   { icon: MapPin, text: 'نخدم جميع أحياء جدة' },
   { icon: Clock, text: 'ضمان 10 سنوات شامل' },
