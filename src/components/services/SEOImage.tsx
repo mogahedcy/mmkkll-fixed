@@ -97,32 +97,11 @@ export default function SEOImage({
         />
       )}
 
-      {/* Structured Data للصورة - يتم إضافته فقط إذا كانت البيانات صالحة */}
-      {metadata.title && metadata.description && (
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "ImageObject",
-              "contentUrl": src,
-              "name": metadata.title,
-              "description": metadata.description,
-              "caption": metadata.alt,
-              "keywords": metadata.keywords.join(', '),
-              "author": {
-                "@type": "Organization",
-                "name": "محترفين الديار العالمية"
-              },
-              "copyrightHolder": {
-                "@type": "Organization",
-                "name": "محترفين الديار العالمية"
-              }
-            })
-          }}
-        />
-      )}
+      {/* 
+        ملاحظة: Structured Data تم نقله إلى server-side في صفحات الخدمات
+        لتجنب hydration warnings وضمان SEO موثوق
+        راجع: src/app/services/[service]/page.tsx
+      */}
     </div>
   );
 }

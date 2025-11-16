@@ -2,6 +2,17 @@
 
 This Next.js web application is for "محترفين الديار العالمية" (Aldeyar Global Professionals), a Saudi Arabian construction company specializing in pergolas, car shades, awnings, and garden landscaping in Jeddah. Its purpose is to serve as a comprehensive business website, featuring portfolio management, project showcasing, and robust content management capabilities. The project aims to enhance the company's online presence, streamline content updates, and improve search engine visibility and user engagement.
 
+## Recent Additions (2024-11-16)
+
+### Image SEO Optimization System
+A comprehensive, **fully automatic** system for optimizing all website images for search engines:
+- **Auto-generated Alt Text**: Context-aware alt text generation based on project title, category, and location
+- **Structured Data**: Server-side JSON-LD schema for all images in project galleries
+- **Enhanced Image Sitemap**: Dynamic sitemap with complete metadata (caption, title, description, geo_location, license)
+- **Smart Upload Flow**: Automatic metadata generation during project upload in admin dashboard
+- **SEOImage Component**: Reusable component with optional watermarks and lazy loading
+- **Documentation**: Complete technical docs and user guide in Arabic
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
