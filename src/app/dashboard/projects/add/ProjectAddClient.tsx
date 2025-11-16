@@ -154,11 +154,20 @@ export default function ProjectAddClient() {
         setUploadProgress((index + 1) / files.length * 100);
         successCount++;
 
+        // توليد alt text محسّن تلقائياً
+        const fileBaseName = file.name.split('.')[0];
+        const optimizedAlt = formData.title && formData.category && formData.location
+          ? `${formData.title} - ${formData.category} في ${formData.location} - صورة ${index + 1} | محترفين الديار العالمية`
+          : formData.title && formData.category
+          ? `${formData.title} - ${formData.category} - صورة ${index + 1} | محترفين الديار`
+          : `${formData.title || fileBaseName} - صورة ${index + 1}`;
+
         return {
           type: isVideo ? 'VIDEO' as const : 'IMAGE' as const,
           src: result.url || result.files?.[0]?.url || result.files?.[0]?.src,
-          title: file.name.split('.')[0],
-          alt: `${formData.title || 'مشروع'} - ملف ${index + 1}`
+          title: formData.title ? `${formData.title} - ${fileBaseName}` : fileBaseName,
+          description: formData.description ? formData.description.substring(0, 200) : undefined,
+          alt: optimizedAlt
         };
       } catch (error) {
         console.error('خطأ في رفع الملف:', error);

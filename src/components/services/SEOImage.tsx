@@ -49,24 +49,25 @@ export default function SEOImage({
   const [metadata, setMetadata] = useState<ImageMetadata | null>(null);
 
   useEffect(() => {
-    // توليد metadata محسّن
-    if (!alt || alt.trim().length < 10) {
-      const generatedMetadata = generateOptimizedAltText(src, {
-        projectTitle,
-        projectCategory,
-        projectLocation
-      });
-      setMetadata(generatedMetadata);
-    } else {
-      // استخدام alt الموجود
-      setMetadata({
-        alt,
-        title: title || alt,
-        description: alt,
-        keywords: [projectCategory || '', projectLocation || 'جدة', 'محترفين الديار'].filter(Boolean),
-        context: 'project'
-      });
-    }
+    // توليد metadata محسّن دائماً
+    const generatedMetadata = generateOptimizedAltText(src, {
+      projectTitle,
+      projectCategory,
+      projectLocation
+    });
+    
+    // استخدام alt المخصص إذا كان موجود وصالح، وإلا استخدم المولّد
+    const finalMetadata: ImageMetadata = {
+      alt: (alt && alt.trim().length >= 10) ? alt : generatedMetadata.alt,
+      title: title || generatedMetadata.title,
+      description: generatedMetadata.description,
+      keywords: generatedMetadata.keywords.length > 0 
+        ? generatedMetadata.keywords 
+        : [projectCategory || '', projectLocation || 'جدة', 'محترفين الديار'].filter(Boolean),
+      context: generatedMetadata.context || 'project'
+    };
+    
+    setMetadata(finalMetadata);
   }, [src, alt, title, projectTitle, projectCategory, projectLocation]);
 
   if (!metadata) {
@@ -96,29 +97,32 @@ export default function SEOImage({
         />
       )}
 
-      {/* Structured Data للصورة */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ImageObject",
-            "contentUrl": src,
-            "name": metadata.title,
-            "description": metadata.description,
-            "caption": metadata.alt,
-            "keywords": metadata.keywords.join(', '),
-            "author": {
-              "@type": "Organization",
-              "name": "محترفين الديار العالمية"
-            },
-            "copyrightHolder": {
-              "@type": "Organization",
-              "name": "محترفين الديار العالمية"
-            }
-          })
-        }}
-      />
+      {/* Structured Data للصورة - يتم إضافته فقط إذا كانت البيانات صالحة */}
+      {metadata.title && metadata.description && (
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ImageObject",
+              "contentUrl": src,
+              "name": metadata.title,
+              "description": metadata.description,
+              "caption": metadata.alt,
+              "keywords": metadata.keywords.join(', '),
+              "author": {
+                "@type": "Organization",
+                "name": "محترفين الديار العالمية"
+              },
+              "copyrightHolder": {
+                "@type": "Organization",
+                "name": "محترفين الديار العالمية"
+              }
+            })
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -77,6 +77,14 @@ export function generateOptimizedAltText(
     alt = `خدمة ${serviceType} - محترفين الديار العالمية في جدة`;
     title = `${serviceType} - محترفين الديار`;
     description = `صورة توضيحية لخدمة ${serviceType} التي نقدمها في محترفين الديار العالمية`;
+  } else {
+    // Fallback: إذا لم يتوفر أي سياق، نستخدم قيم افتراضية
+    contextType = 'general';
+    const imageName = imageSrc.split('/').pop()?.split('.')[0] || 'صورة';
+    
+    alt = `${projectTitle || imageName} - محترفين الديار العالمية`;
+    title = projectTitle || imageName;
+    description = `صورة من محترفين الديار العالمية - ${projectTitle || 'معرض أعمالنا'}`;
   }
 
   // إضافة الكلمات المفتاحية
@@ -219,21 +227,26 @@ export function processImagesBatch(
 export function generateCategoryBasedAlt(
   category: string,
   projectTitle: string,
-  location?: string,
+  location: string = 'جدة',
   imageIndex: number = 0
 ): string {
+  // التأكد من وجود قيم صالحة
+  const safeCategory = category || 'مشروع';
+  const safeTitle = projectTitle || 'محترفين الديار';
+  const safeLocation = location || 'جدة';
+  
   const templates: { [key: string]: string } = {
-    'مظلات': `مظلات ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'سواتر': `سواتر ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'برجولات': `برجولات ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'تنسيق حدائق': `تنسيق حدائق ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'بيوت شعر': `بيوت شعر ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'خيام ملكية': `خيام ملكية ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'ترميم': `ترميم ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'ساندوتش بانل': `ساندوتش بانل ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'مظلات': `مظلات ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'سواتر': `سواتر ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'برجولات': `برجولات ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'تنسيق حدائق': `تنسيق حدائق ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'بيوت شعر': `بيوت شعر ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'خيام ملكية': `خيام ملكية ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'ترميم': `ترميم ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'ساندوتش بانل': `ساندوتش بانل ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
   };
 
-  return templates[category] || `${category} - ${projectTitle} في ${location || 'جدة'} - صورة ${imageIndex + 1} | محترفين الديار`;
+  return templates[safeCategory] || `${safeCategory} - ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`;
 }
 
 /**
