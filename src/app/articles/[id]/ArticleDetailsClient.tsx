@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import WatermarkOverlay from '@/components/WatermarkOverlay';
 import ProtectedMedia from '@/components/ProtectedMedia';
+import { generateCategoryBasedAlt, generateImageObjectSchema } from '@/lib/image-seo-utils';
 import {
   Calendar,
   Clock,
@@ -192,14 +193,51 @@ export default function ArticleDetailsClient({ article }: Props) {
               <div className="relative h-[400px] md:h-[600px]">
                 {currentMedia.type === 'IMAGE' ? (
                   <>
-                    <Image
-                      src={currentMedia.src}
-                      alt={currentMedia.alt || article.title}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                    <WatermarkOverlay position="bottom-right" size="medium" opacity={0.7} />
+                    {(() => {
+                      // توليد alt text محسّن تلقائياً
+                      const optimizedAlt = currentMedia.alt || 
+                        generateCategoryBasedAlt(
+                          article.category,
+                          article.title,
+                          undefined,
+                          selectedMediaIndex
+                        );
+
+                      // إنشاء structured data للصورة
+                      const imageSchema = generateImageObjectSchema(
+                        currentMedia.src,
+                        {
+                          alt: optimizedAlt,
+                          title: currentMedia.title || article.title,
+                          description: currentMedia.caption || article.excerpt,
+                          keywords: [article.category, 'محترفين الديار', 'جدة', ...(article.tags?.map(t => t.name) || [])],
+                          context: 'article'
+                        },
+                        `/articles/${article.slug || article.id}`
+                      );
+
+                      return (
+                        <>
+                          <Image
+                            src={currentMedia.src}
+                            alt={optimizedAlt}
+                            title={currentMedia.title || article.title}
+                            fill
+                            className="object-cover"
+                            priority
+                          />
+                          <WatermarkOverlay position="bottom-right" size="medium" opacity={0.7} />
+                          
+                          {/* Structured Data للصورة */}
+                          <script
+                            type="application/ld+json"
+                            dangerouslySetInnerHTML={{
+                              __html: JSON.stringify(imageSchema)
+                            }}
+                          />
+                        </>
+                      );
+                    })()}
                   </>
                 ) : (
                   <video
