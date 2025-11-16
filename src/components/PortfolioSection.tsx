@@ -1,12 +1,11 @@
 'use client';
 
-'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Car, TreePine, Shield, Home, Wrench, Flower, MapPin, Calendar, Eye, Loader2 } from 'lucide-react';
+import SEOImage from '@/components/services/SEOImage';
 
 // تعريف أنواع الخدمات مع الأيقونات المناسبة - متوافق مع صفحة البورتفوليو
 const serviceCategories = [
@@ -24,6 +23,7 @@ interface MediaItem {
   id: string;
   type: 'IMAGE' | 'VIDEO';
   src: string;
+  alt?: string;
   thumbnail?: string;
   title?: string;
   description?: string;
@@ -36,6 +36,8 @@ interface Project {
   category: string;
   location: string;
   completionDate: string;
+  createdAt: string;
+  publishedAt?: string;
   mediaItems: MediaItem[];
   tags?: { name: string }[];
   featured: boolean;
@@ -206,22 +208,23 @@ export default function PortfolioSection() {
                     {mainMedia ? (
                       <>
                         {mainMedia.type === 'IMAGE' ? (
-                          <Image
+                          <SEOImage
                             src={mainMedia.src}
-                            alt={`${project.title} - محترفين الديار العالمية جدة`}
-                            title={`${project.title} - ${project.category} في ${project.location}`}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            alt={mainMedia.alt}
+                            projectTitle={project.title}
+                            projectCategory={project.category}
+                            projectLocation={project.location}
+                            width={800}
+                            height={640}
                             className="object-cover group-hover:scale-110 transition-transform duration-700"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?w=600&h=400&fit=crop';
-                            }}
+                            showWatermark={true}
+                            watermarkPosition="bottom-right"
                           />
                         ) : mainMedia.type === 'VIDEO' ? (
                           <div className="relative w-full h-full bg-gray-900">
                             {/* صورة مصغرة كخلفية */}
                             {mainMedia.thumbnail && (
-                              <Image
+                              <NextImage
                                 src={mainMedia.thumbnail}                                alt={`معاينة ${project.title}`}
                                 fill
                                 className="object-cover"
