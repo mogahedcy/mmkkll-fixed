@@ -285,11 +285,23 @@ export async function POST(request: NextRequest) {
       data: { views: 1 }
     });
 
-    // إشعار Google بالمحتوى الجديد
-    try {
-      await notifyGoogleNewContent(project.slug);
-    } catch (error) {
-      console.warn('فشل في إشعار Google:', error);
+    // إشعار محركات البحث بالمحتوى الجديد
+    if (project.status === 'PUBLISHED') {
+      try {
+        const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
+        const projectUrl = `/portfolio/${project.slug || project.id}`;
+        
+        // استخدام API الأرشفة الموحدة الجديدة
+        await fetch(`${origin}/api/indexing/auto`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: projectUrl })
+        });
+        
+        console.log('🔔 تم إشعار محركات البحث بالمشروع الجديد');
+      } catch (error) {
+        console.warn('⚠️ فشل في إشعار محركات البحث:', error);
+      }
     }
 
     const formatted = {
@@ -324,27 +336,4 @@ function generateSlug(title: string, id?: string): string {
   return id ? `${slug}-${id}` : slug;
 }
 
-async function notifyGoogleNewContent(slug: string): Promise<void> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
-  const url = `${baseUrl}/portfolio/${slug}`;
-
-  try {
-    // إشعار Google بتحديث ال sitemap
-    await fetch('https://www.google.com/ping?sitemap=' + encodeURIComponent(`${baseUrl}/sitemap.xml`));
-
-    // إرسال IndexNow بعنوان الصفحة مباشرة
-    try {
-      await fetch(`${baseUrl}/api/indexnow`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ urls: [url] })
-      });
-    } catch (e) {
-      console.warn('IndexNow submit failed:', e);
-    }
-
-    console.log('✅ تمت إشعارات الفهرسة:', url);
-  } catch (error) {
-    console.warn('⚠️ فشل في إشعار محركات البحث:', error);
-  }
-}
+// ملاحظة: تم استبدال هذه الدالة بنظام الأرشفة الموحد في `/api/indexing/auto`

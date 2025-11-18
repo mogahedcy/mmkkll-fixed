@@ -98,6 +98,15 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
       badge: 'تلقائي',
       badgeColor: 'bg-gradient-to-r from-red-500 to-rose-500'
     },
+    {
+      href: '/dashboard/indexing-status',
+      icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
+      label: 'حالة الأرشفة',
+      hoverColor: 'hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 hover:text-cyan-700',
+      activeColor: 'bg-gradient-to-r from-cyan-50 to-blue-50 text-cyan-700',
+      badge: 'NEW',
+      badgeColor: 'bg-gradient-to-r from-cyan-500 to-blue-500'
+    },
   ];
 
   const bottomLinks = [

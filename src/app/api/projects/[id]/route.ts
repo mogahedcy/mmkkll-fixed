@@ -173,18 +173,23 @@ export async function PUT(
 
     console.log('✅ تم تحديث المشروع بنجاح:', updatedProject.title);
 
-    // إشعار محركات البحث بالتحديث
-    try {
-      const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
-      await fetch(`${origin}/api/sitemap/refresh`, { method: 'POST' });
-      const pageUrl = `${origin}/portfolio/${updatedProject.slug || updatedProject.id}`;
-      await fetch(`${origin}/api/indexnow`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ urls: [pageUrl] })
-      });
-    } catch (error) {
-      console.warn('تعذر إشعار محركات البحث بالتحديث:', error);
+    // إشعار محركات البحث تلقائياً بالتحديث (إذا كان منشوراً)
+    if (updatedProject.status === 'PUBLISHED') {
+      try {
+        const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
+        const projectUrl = `/portfolio/${updatedProject.slug || updatedProject.id}`;
+        
+        // استخدام API الأرشفة الموحدة الجديدة
+        await fetch(`${origin}/api/indexing/auto`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: projectUrl })
+        });
+        
+        console.log('🔔 تم إشعار محركات البحث بتحديث المشروع');
+      } catch (error) {
+        console.warn('⚠️ تعذر إشعار محركات البحث بالتحديث:', error);
+      }
     }
 
     return NextResponse.json({
