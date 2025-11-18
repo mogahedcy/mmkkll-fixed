@@ -27,7 +27,7 @@ export default function StickyWhatsApp() {
   return (
     <>
       {/* WhatsApp Button */}
-      <div className="fixed bottom-6 left-6 z-50 flex items-end gap-3">
+      <div className="fixed bottom-20 right-4 z-[60] flex items-end gap-3">
         {/* Expanded Message */}
         {isExpanded && (
           <div className="bg-white rounded-2xl shadow-2xl p-4 max-w-xs animate-slide-in-left border-2 border-green-500">
