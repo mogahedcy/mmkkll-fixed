@@ -122,6 +122,30 @@ Preferred communication style: Simple, everyday language.
       * Output: Generated articles with SEO scores, competitor insights, analysis data
       * Tracks `webSearchUsed` status (currently false in mock mode)
     - **Documentation**: See `docs/SMART-GENERATION-GUIDE.md` for detailed usage guide and testing instructions
+- **Automated Indexing System** (LATEST - 2024-11-18):
+    - **Unified Indexing Service**: Centralized service for notifying search engines about content changes
+      * **IndexNow API**: Instant indexing for Bing, Yandex, Seznam, Naver, Yep (no daily quota)
+      * **Bing Webmaster API**: Optional direct Bing submission (10,000 URLs/day quota)
+      * **Sitemap Ping**: Traditional sitemap notification for Google, Bing, Yandex
+      * **Future**: Google Indexing API support (requires service account)
+    - **Automatic Webhooks**: Auto-notify search engines on content lifecycle events
+      * **CREATE**: Notifies when new projects/articles are published (status=PUBLISHED only)
+      * **UPDATE**: Notifies when published projects/articles are modified
+      * **DELETE**: Notifies when published projects/articles are removed (404 signal)
+    - **Monitoring Dashboard**: `/dashboard/indexing-status` for testing and monitoring
+      * Real-time engine status tracking (success/failure per engine)
+      * Manual URL testing interface
+      * Sitemap refresh controls
+      * Historical submission tracking
+    - **Draft Protection**: Only published content (status=PUBLISHED) triggers indexing
+    - **Error Handling**: Non-blocking async notifications with fallback logging
+    - **API Endpoints**:
+      * `/api/indexing/auto`: Unified indexing endpoint (POST with url/urls and optional action)
+      * `/api/sitemap/refresh`: Manual sitemap refresh trigger
+    - **Documentation**: See `docs/AUTO-INDEXING-GUIDE.md` for complete setup and usage guide
+    - **Environment Variables**:
+      * `INDEXNOW_KEY`: IndexNow API key (stored in `public/indexnow-key.txt`)
+      * `BING_WEBMASTER_API_KEY`: Optional Bing API key for higher quota
 - **Performance**:
     - **Image Optimization**: Next.js Image with AVIF/WebP, optimized device sizes (up to 1920px), 75% quality, extended cache TTL, priority loading for critical images.
     - **Font Loading**: Noto Sans Arabic (3 weights), `display: swap`, preloading.
@@ -144,6 +168,8 @@ Preferred communication style: Simple, everyday language.
 - **GOOGLE_SEARCH_ENGINE_ID**: Google Custom Search Engine ID for image search configuration.
 - **CLOUDINARY_CLOUD_NAME**, **CLOUDINARY_API_KEY**, **CLOUDINARY_API_SECRET**: Cloudinary credentials for media management.
 - **DATABASE_URL**: PostgreSQL database connection string (Neon).
+- **INDEXNOW_KEY**: IndexNow API key for instant search engine indexing (stored in public/indexnow-key.txt).
+- **BING_WEBMASTER_API_KEY** (Optional): Bing Webmaster API key for higher indexing quota (10,000 URLs/day).
 
 # External Dependencies
 
