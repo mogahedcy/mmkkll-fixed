@@ -257,13 +257,23 @@ export async function DELETE(
 
     console.log('✅ تم حذف المقالة بنجاح');
 
-    // إشعار جوجل بالحذف
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'}/api/sitemap/refresh`, {
-        method: 'POST'
-      });
-    } catch (error) {
-      console.warn('تعذر إشعار جوجل بالحذف:', error);
+    // إشعار محركات البحث بحذف الصفحة
+    if (existingArticle.status === 'PUBLISHED') {
+      try {
+        const origin = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
+        const articleUrl = `/articles/${existingArticle.slug || existingArticle.id}`;
+        
+        // استخدام API الأرشفة الموحدة للحذف
+        await fetch(`${origin}/api/indexing/auto`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: articleUrl, action: 'delete' })
+        });
+        
+        console.log('🔔 تم إشعار محركات البحث بحذف المقالة');
+      } catch (error) {
+        console.warn('⚠️ تعذر إشعار محركات البحث بالحذف:', error);
+      }
     }
 
     return NextResponse.json({
