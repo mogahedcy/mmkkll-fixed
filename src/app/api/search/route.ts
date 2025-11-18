@@ -16,46 +16,47 @@ export async function GET(request: NextRequest) {
 
     let projects: any[] = [];
     let projectsTotal = 0;
-    try {
-      if (type === 'all' || type === 'projects') {
-        projectsTotal = await prisma.projects.count({
-          where: {
-            status: 'PUBLISHED',
-            AND: [
-              q
-                ? {
-                    OR: [
-                      { title: { contains: q } },
-                      { description: { contains: q } },
-                      { category: { contains: q } },
-                      { location: { contains: q } }
-                    ]
-                  }
-                : {},
-              category ? { category: { contains: category } } : {},
-              location ? { location: { contains: location } } : {}
-            ]
-          }
-        });
 
+    // Search projects only if needed
+    if (type === 'all' || type === 'projects') {
+      try {
+        // Build simpler where clause
+        const whereClause: any = { status: 'PUBLISHED' };
+        
+        // Add search conditions
+        if (q || category || location) {
+          whereClause.AND = [];
+          
+          if (q) {
+            whereClause.AND.push({
+              OR: [
+                { title: { contains: q, mode: 'insensitive' } },
+                { description: { contains: q, mode: 'insensitive' } },
+                { category: { contains: q, mode: 'insensitive' } },
+                { location: { contains: q, mode: 'insensitive' } }
+              ]
+            });
+          }
+          
+          if (category) {
+            whereClause.AND.push({ category: { contains: category, mode: 'insensitive' } });
+          }
+          
+          if (location) {
+            whereClause.AND.push({ location: { contains: location, mode: 'insensitive' } });
+          }
+        }
+
+        // Get total count for pagination
+        projectsTotal = await prisma.projects.count({ where: whereClause });
+
+        // Fetch projects - when type='all', get enough results for current page and beyond
+        // We fetch from start to ensure proper sorting/mixing with articles
+        const fetchLimit = type === 'all' ? (skip + limit + 100) : limit;
+        const fetchSkip = type === 'all' ? 0 : skip;
+        
         projects = await prisma.projects.findMany({
-          where: {
-            status: 'PUBLISHED',
-            AND: [
-              q
-                ? {
-                    OR: [
-                      { title: { contains: q } },
-                      { description: { contains: q } },
-                      { category: { contains: q } },
-                      { location: { contains: q } }
-                    ]
-                  }
-                : {},
-              category ? { category: { contains: category } } : {},
-              location ? { location: { contains: location } } : {}
-            ]
-          },
+          where: whereClause,
           select: {
             id: true,
             slug: true,
@@ -78,14 +79,14 @@ export async function GET(request: NextRequest) {
               : sortBy === 'date'
               ? [{ createdAt: 'desc' }]
               : [{ featured: 'desc' }, { createdAt: 'desc' }],
-          skip,
-          take: limit
+          skip: fetchSkip,
+          take: fetchLimit
         });
+      } catch (e) {
+        console.warn('DB search failed:', e);
+        projects = [];
+        projectsTotal = 0;
       }
-    } catch (e) {
-      console.warn('DB unavailable, skipping project search');
-      projects = [];
-      projectsTotal = 0;
     }
 
     const projectResults = projects.map((p) => ({
@@ -121,11 +122,12 @@ export async function GET(request: NextRequest) {
     });
 
     const sortedArticles = scoredArticles.sort((a, b) => b._score - a._score);
-
-    const start = skip;
-    const end = skip + limit;
-    const pagedArticles = sortedArticles.slice(start, end);
     const articlesTotal = sortedArticles.length;
+
+    // For type='articles', apply pagination here; for type='all', get all for later combined pagination
+    const articleSliceStart = type === 'articles' ? skip : 0;
+    const articleSliceEnd = type === 'articles' ? skip + limit : sortedArticles.length;
+    const pagedArticles = sortedArticles.slice(articleSliceStart, articleSliceEnd);
 
     const articleResults = pagedArticles.map((a) => ({
       id: String(a.id),
@@ -141,10 +143,17 @@ export async function GET(request: NextRequest) {
       featured: false
     }));
 
-    // Merge and sort by relevance/date depending on sortBy
+    // Merge results
     let combined = [...projectResults, ...articleResults];
+    
+    // Sort combined results
     if (sortBy === 'date') combined = combined.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     if (sortBy === 'name') combined = combined.sort((a, b) => a.title.localeCompare(b.title));
+    
+    // For type='all', apply pagination on the combined sorted results
+    if (type === 'all') {
+      combined = combined.slice(skip, skip + limit);
+    }
 
     const total = (type === 'projects' ? projectsTotal : type === 'articles' ? articlesTotal : projectsTotal + articlesTotal);
     const hasMore = page * limit < total;
