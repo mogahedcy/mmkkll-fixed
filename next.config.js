@@ -72,6 +72,7 @@ const nextConfig = {
         'www.aldeyarksa.tech',
         '*.vercel.app',
         '*.replit.dev',
+        '*.spock.replit.dev',
         '*.pike.replit.dev',
         '*.projects.builder.codes',
         '*.builder.codes',
