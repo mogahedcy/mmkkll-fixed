@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -60,12 +60,70 @@ export default function FAQPageClient() {
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
+  const pendingScrollIdRef = useRef<string | null>(null);
+  const hasHandledDeepLinkRef = useRef(false);
+  const scrollTimeoutRef = useRef<number | null>(null);
+
+  const clearDeepLink = useCallback(() => {
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = null;
+    }
+    pendingScrollIdRef.current = null;
+    hasHandledDeepLinkRef.current = true;
+  }, []);
+
   useEffect(() => {
     const search = searchParams?.get('search') || '';
     const category = searchParams?.get('category') || 'all';
     setSearchTerm(search);
     setSelectedCategory(category);
   }, [searchParams]);
+
+  useEffect(() => {
+    const idParam = searchParams?.get('id');
+    pendingScrollIdRef.current = idParam;
+    hasHandledDeepLinkRef.current = !idParam;
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (
+      !pendingScrollIdRef.current ||
+      hasHandledDeepLinkRef.current ||
+      faqs.length === 0
+    ) {
+      return;
+    }
+
+    const targetId = pendingScrollIdRef.current;
+    const element = document.getElementById(`question-${targetId}`);
+    if (!element) {
+      return;
+    }
+
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    scrollTimeoutRef.current = window.setTimeout(() => {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setExpandedFAQ(targetId);
+      hasHandledDeepLinkRef.current = true;
+      scrollTimeoutRef.current = null;
+    }, 300);
+
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = null;
+      }
+    };
+  }, [faqs]);
 
   const updateURL = useCallback((search: string, category: string) => {
     const params = new URLSearchParams();
@@ -145,6 +203,7 @@ export default function FAQPageClient() {
                 placeholder="ابحث في الأسئلة..."
                 value={searchTerm}
                 onChange={(e) => {
+                  clearDeepLink();
                   const newSearch = e.target.value;
                   setSearchTerm(newSearch);
                   updateURL(newSearch, selectedCategory);
@@ -159,6 +218,7 @@ export default function FAQPageClient() {
                 <button
                   key={cat.value}
                   onClick={() => {
+                    clearDeepLink();
                     setSelectedCategory(cat.value);
                     updateURL(searchTerm, cat.value);
                   }}
@@ -197,7 +257,8 @@ export default function FAQPageClient() {
               <p className="text-gray-500 mb-6">
                 جرّب البحث بكلمات أخرى أو تصفح فئة مختلفة
               </p>
-              <Button onClick={() => { 
+              <Button onClick={() => {
+                clearDeepLink();
                 setSearchTerm(''); 
                 setSelectedCategory('all');
                 updateURL('', 'all');
@@ -211,11 +272,14 @@ export default function FAQPageClient() {
                 {faqs.map((faq, index) => (
                   <motion.div
                     key={faq.id}
+                    id={`question-${faq.id}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300"
+                    className={`bg-white rounded-2xl border-2 overflow-hidden hover:shadow-xl transition-all duration-300 ${
+                      expandedFAQ === faq.id ? 'border-accent shadow-lg' : 'border-gray-100'
+                    }`}
                   >
                     <button
                       onClick={() => toggleFAQ(faq.id)}

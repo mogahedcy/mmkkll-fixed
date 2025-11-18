@@ -13,9 +13,66 @@ export async function GET(request: NextRequest) {
     const page = Math.max(1, Number.parseInt(searchParams.get('page') || '1'));
     const limit = Math.min(50, Math.max(1, Number.parseInt(searchParams.get('limit') || '12')));
     const skip = (page - 1) * limit;
+    const author = (searchParams.get('author') || '').trim();
+    const dateFrom = (searchParams.get('dateFrom') || '').trim();
+    const dateTo = (searchParams.get('dateTo') || '').trim();
+    const minRating = searchParams.get('minRating') ? Number.parseFloat(searchParams.get('minRating')!) : 0;
+    const featured = searchParams.get('featured') === 'true';
 
     let projects: any[] = [];
     let projectsTotal = 0;
+    let faqs: any[] = [];
+    let faqsTotal = 0;
+
+    // Search FAQs
+    if (type === 'all' || type === 'faqs') {
+      try {
+        const faqWhereClause: any = { status: 'PUBLISHED' };
+        
+        if (q || category) {
+          faqWhereClause.AND = [];
+          
+          if (q) {
+            faqWhereClause.AND.push({
+              OR: [
+                { question: { contains: q, mode: 'insensitive' } },
+                { answer: { contains: q, mode: 'insensitive' } },
+                { category: { contains: q, mode: 'insensitive' } }
+              ]
+            });
+          }
+          
+          if (category) {
+            faqWhereClause.AND.push({ category: { contains: category, mode: 'insensitive' } });
+          }
+        }
+
+        faqsTotal = await prisma.faqs.count({ where: faqWhereClause });
+
+        const fetchLimit = type === 'all' ? (skip + limit + 100) : limit;
+        const fetchSkip = type === 'all' ? 0 : skip;
+
+        faqs = await prisma.faqs.findMany({
+          where: faqWhereClause,
+          select: {
+            id: true,
+            question: true,
+            answer: true,
+            category: true,
+            views: true,
+            order: true,
+            createdAt: true
+          },
+          orderBy: [{ order: 'asc' }, { createdAt: 'desc' }],
+          skip: fetchSkip,
+          take: fetchLimit
+        });
+      } catch (e) {
+        console.warn('FAQ search failed:', e);
+        faqs = [];
+        faqsTotal = 0;
+      }
+    }
 
     // Search projects only if needed
     if (type === 'all' || type === 'projects') {
@@ -24,7 +81,7 @@ export async function GET(request: NextRequest) {
         const whereClause: any = { status: 'PUBLISHED' };
         
         // Add search conditions
-        if (q || category || location) {
+        if (q || category || location || minRating > 0 || dateFrom || dateTo || featured) {
           whereClause.AND = [];
           
           if (q) {
@@ -44,6 +101,22 @@ export async function GET(request: NextRequest) {
           
           if (location) {
             whereClause.AND.push({ location: { contains: location, mode: 'insensitive' } });
+          }
+
+          if (minRating > 0) {
+            whereClause.AND.push({ rating: { gte: minRating } });
+          }
+
+          if (dateFrom) {
+            whereClause.AND.push({ createdAt: { gte: new Date(dateFrom) } });
+          }
+
+          if (dateTo) {
+            whereClause.AND.push({ createdAt: { lte: new Date(dateTo) } });
+          }
+
+          if (featured) {
+            whereClause.AND.push({ featured: true });
           }
         }
 
@@ -66,6 +139,8 @@ export async function GET(request: NextRequest) {
             location: true,
             createdAt: true,
             featured: true,
+            rating: true,
+            views: true,
             media_items: {
               where: { type: 'IMAGE' },
               orderBy: { order: 'asc' },
@@ -78,6 +153,10 @@ export async function GET(request: NextRequest) {
               ? [{ title: 'asc' }]
               : sortBy === 'date'
               ? [{ createdAt: 'desc' }]
+              : sortBy === 'views'
+              ? [{ views: 'desc' }]
+              : sortBy === 'rating'
+              ? [{ rating: 'desc' }]
               : [{ featured: 'desc' }, { createdAt: 'desc' }],
           skip: fetchSkip,
           take: fetchLimit
@@ -100,7 +179,27 @@ export async function GET(request: NextRequest) {
       slug: p.slug || String(p.id),
       url: `/portfolio/${p.slug || p.id}`,
       createdAt: p.createdAt ? new Date(p.createdAt).getTime() : 0,
-      featured: Boolean(p.featured)
+      featured: Boolean(p.featured),
+      rating: p.rating || 0,
+      views: p.views || 0
+    }));
+
+    const faqResults = faqs.map((f) => ({
+      id: String(f.id),
+      type: 'faq' as const,
+      title: f.question,
+      description: f.answer.substring(0, 200) + (f.answer.length > 200 ? '...' : ''),
+      category: f.category || 'عام',
+      location: '',
+      image: '/favicon.svg',
+      slug: String(f.id),
+      url: `/faq?id=${f.id}#question-${f.id}`,
+      createdAt: f.createdAt ? new Date(f.createdAt).getTime() : 0,
+      featured: false,
+      views: f.views || 0,
+      rating: 0,
+      question: f.question,
+      answer: f.answer
     }));
 
     const filteredArticles = (type === 'all' || type === 'articles')
@@ -140,25 +239,67 @@ export async function GET(request: NextRequest) {
       slug: a.slug,
       url: `/articles/${a.slug}`,
       createdAt: 0,
-      featured: false
+      featured: false,
+      rating: a.rating || 0,
+      views: a.views || 0
     }));
 
     // Merge results
-    let combined = [...projectResults, ...articleResults];
+    let combined = [...projectResults, ...articleResults, ...faqResults];
     
     // Sort combined results
-    if (sortBy === 'date') combined = combined.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    if (sortBy === 'name') combined = combined.sort((a, b) => a.title.localeCompare(b.title));
+    switch(sortBy) {
+      case 'date':
+        combined = combined.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        break;
+      case 'name':
+        combined = combined.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'views':
+        combined = combined.sort((a, b) => (b.views || 0) - (a.views || 0));
+        break;
+      case 'rating':
+        combined = combined.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        break;
+      case 'relevance':
+      default:
+        combined = combined.sort((a, b) => {
+          if (a.featured && !b.featured) return -1;
+          if (!a.featured && b.featured) return 1;
+          return (b.createdAt || 0) - (a.createdAt || 0);
+        });
+    }
     
     // For type='all', apply pagination on the combined sorted results
     if (type === 'all') {
       combined = combined.slice(skip, skip + limit);
     }
 
-    const total = (type === 'projects' ? projectsTotal : type === 'articles' ? articlesTotal : projectsTotal + articlesTotal);
+    const total = type === 'projects' ? projectsTotal : 
+                  type === 'articles' ? articlesTotal : 
+                  type === 'faqs' ? faqsTotal :
+                  projectsTotal + articlesTotal + faqsTotal;
     const hasMore = page * limit < total;
 
-    return NextResponse.json({ success: true, results: combined, total, query: q, page, limit, hasMore });
+    // Calculate facets for filtering
+    const facets = {
+      types: {
+        articles: articlesTotal,
+        projects: projectsTotal,
+        faqs: faqsTotal
+      }
+    };
+
+    return NextResponse.json({ 
+      success: true, 
+      results: combined, 
+      total, 
+      query: q, 
+      page, 
+      limit, 
+      hasMore,
+      facets 
+    });
   } catch (error) {
     console.error('خطأ في البحث:', error);
     return NextResponse.json({ success: false, error: 'حدث خطأ في البحث', results: [], total: 0, page: 1, limit: 12, hasMore: false }, { status: 500 });

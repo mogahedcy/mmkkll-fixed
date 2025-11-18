@@ -66,11 +66,12 @@ function SearchContent() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
-  const [sortBy, setSortBy] = useState<'relevance' | 'date' | 'name'>('relevance');
-  const [type, setType] = useState<'all' | 'projects' | 'articles'>(
+  const [sortBy, setSortBy] = useState<'relevance' | 'date' | 'name' | 'views' | 'rating'>('relevance');
+  const [type, setType] = useState<'all' | 'projects' | 'articles' | 'faqs'>(
     (searchParams?.get('type') as any) || 'all'
   );
   const [searchText, setSearchText] = useState(searchParams?.get('q') || '');
+  const [facets, setFacets] = useState({ types: { articles: 0, projects: 0, faqs: 0 } });
   const [filters, setFilters] = useState<FiltersState>({
     category: searchParams?.get('category') || '',
     location: searchParams?.get('location') || '',
@@ -97,7 +98,7 @@ function SearchContent() {
       setResults([]);
       setHasMore(false);
     }
-  }, [query, type, sortBy, filters.category, filters.location]);
+  }, [query, type, sortBy, filters.category, filters.location, filters.minRating, filters.featured, filters.dateRange, filters.hasVideo, filters.priceRange]);
 
   const updateUrl = (params: Record<string, string | undefined>) => {
     const sp = new URLSearchParams(searchParams?.toString() || '');
@@ -119,30 +120,52 @@ function SearchContent() {
       const queryParams = new URLSearchParams({ q: searchQuery, page: String(pageNum), limit: String(limit), sortBy, type });
       if (currentFilters.category) queryParams.set('category', currentFilters.category);
       if (currentFilters.location) queryParams.set('location', currentFilters.location);
+      if (currentFilters.minRating > 0) queryParams.set('minRating', String(currentFilters.minRating));
+      if (currentFilters.dateRange) {
+        const now = new Date();
+        let dateFrom = '';
+        switch(currentFilters.dateRange) {
+          case 'week':
+            dateFrom = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+            break;
+          case 'month':
+            dateFrom = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
+            break;
+          case 'year':
+            dateFrom = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString();
+            break;
+        }
+        if (dateFrom) queryParams.set('dateFrom', dateFrom);
+      }
+      if (currentFilters.featured !== null) queryParams.set('featured', String(currentFilters.featured));
 
       const response = await fetch(`/api/search?${queryParams.toString()}`, { cache: 'no-store' });
       const data = await response.json();
 
-      const mapped: ArticleShape[] = (data.results as ApiResult[] | undefined)?.map((r, idx) => ({
+      if (data.facets) {
+        setFacets(data.facets);
+      }
+
+      const mapped: ArticleShape[] = (data.results as any[] | undefined)?.map((r, idx) => ({
         id: Number.parseInt(r.id) || idx + 1 + (pageNum - 1) * limit,
         slug: r.slug,
         title: r.title,
         excerpt: r.description,
         category: r.category || 'عام',
-        author: r.type === 'project' ? 'مشروع من معرض الأعمال' : 'محترفين الديار العالمية',
+        author: r.type === 'project' ? 'مشروع من معرض الأعمال' : r.type === 'faq' ? 'سؤال شائع' : 'محترفين الديار العالمية',
         authorAvatar: 'https://ui-avatars.com/api/?name=محترفين+الديار&background=0f172a&color=fff',
         date: new Date().toLocaleDateString('ar-SA'),
         readTime: '3 دقائق',
         image: r.image,
         tags: [],
-        featured: false,
-        views: 0,
+        featured: r.featured || false,
+        views: r.views || 0,
         likes: 0,
-        rating: 0,
+        rating: r.rating || 0,
         commentsCount: 0,
         keywords: [],
         href: r.url,
-        source: r.type
+        source: r.type === 'faq' ? 'article' : r.type
       })) || [];
 
       setResults(replaceResults ? mapped : [...results, ...mapped]);
@@ -191,9 +214,24 @@ function SearchContent() {
             <div className="flex items-center gap-2">
               <Button type="submit">بحث</Button>
               <div className="hidden md:flex items-center gap-2">
-                <Button variant={type === 'all' ? 'default' : 'outline'} type="button" onClick={() => { setType('all'); updateUrl({ type: 'all' }); }}>الكل</Button>
-                <Button variant={type === 'projects' ? 'default' : 'outline'} type="button" onClick={() => { setType('projects'); updateUrl({ type: 'projects' }); }}>معرض الأعمال</Button>
-                <Button variant={type === 'articles' ? 'default' : 'outline'} type="button" onClick={() => { setType('articles'); updateUrl({ type: 'articles' }); }}>المقالات</Button>
+                <Button variant={type === 'all' ? 'default' : 'outline'} type="button" onClick={() => { setType('all'); updateUrl({ type: 'all' }); }}>
+                  الكل
+                  {facets.types.articles + facets.types.projects + facets.types.faqs > 0 && (
+                    <Badge variant="secondary" className="mr-1 bg-white/20">{facets.types.articles + facets.types.projects + facets.types.faqs}</Badge>
+                  )}
+                </Button>
+                <Button variant={type === 'projects' ? 'default' : 'outline'} type="button" onClick={() => { setType('projects'); updateUrl({ type: 'projects' }); }}>
+                  معرض الأعمال
+                  {facets.types.projects > 0 && <Badge variant="secondary" className="mr-1 bg-white/20">{facets.types.projects}</Badge>}
+                </Button>
+                <Button variant={type === 'articles' ? 'default' : 'outline'} type="button" onClick={() => { setType('articles'); updateUrl({ type: 'articles' }); }}>
+                  المقالات
+                  {facets.types.articles > 0 && <Badge variant="secondary" className="mr-1 bg-white/20">{facets.types.articles}</Badge>}
+                </Button>
+                <Button variant={type === 'faqs' ? 'default' : 'outline'} type="button" onClick={() => { setType('faqs'); updateUrl({ type: 'faqs' }); }}>
+                  الأسئلة الشائعة
+                  {facets.types.faqs > 0 && <Badge variant="secondary" className="mr-1 bg-white/20">{facets.types.faqs}</Badge>}
+                </Button>
               </div>
               <div className="relative">
                 <Button variant="outline" type="button" className="flex items-center gap-2"><Filter className="w-4 h-4" />فرز <ChevronDown className="w-4 h-4" /></Button>

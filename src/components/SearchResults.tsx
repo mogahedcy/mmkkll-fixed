@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Calendar, User, ArrowLeft, Eye, Heart, Clock, Tag, Star, Grid, List, Loader2, Layers } from 'lucide-react';
+import { Calendar, User, ArrowLeft, Eye, Heart, Clock, Tag, Star, Grid, List, Loader2, Layers, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -93,30 +93,44 @@ export default function SearchResults({ articles, isLoading, searchQuery, viewTy
             className="group"
           >
             <article className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
-              {/* Article Image */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-4 right-4">
-                  <Badge variant="secondary" className="bg-primary text-white">
-                    {article.category}
-                  </Badge>
+              {/* Article/Project Image or FAQ Badge */}
+              {article.author === 'سؤال شائع' ? (
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 border-b border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-green-500 rounded-xl">
+                      <HelpCircle className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <Badge className="bg-green-500 text-white mb-1">سؤال شائع</Badge>
+                      <p className="text-xs text-gray-600">{article.category}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute top-4 left-4 flex gap-2">
-                  {article.source && (
-                    <Badge className="bg-black/70 text-white flex items-center gap-1">
-                      <Layers className="w-3 h-3" />
-                      {article.source === 'project' ? 'مشروع' : 'مقال'}
+              ) : (
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <Badge variant="secondary" className="bg-primary text-white">
+                      {article.category}
                     </Badge>
-                  )}
-                  {article.featured && (
-                    <Badge className="bg-accent text-white">مميز</Badge>
-                  )}
+                  </div>
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    {article.source && (
+                      <Badge className="bg-black/70 text-white flex items-center gap-1">
+                        <Layers className="w-3 h-3" />
+                        {article.source === 'project' ? 'مشروع' : 'مقال'}
+                      </Badge>
+                    )}
+                    {article.featured && (
+                      <Badge className="bg-accent text-white">مميز</Badge>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Content */}
               <div className="p-6 flex-grow">
