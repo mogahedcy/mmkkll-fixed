@@ -149,33 +149,7 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100" dir="rtl">
-      {/* Mobile Header with Hamburger */}
-      <div className="lg:hidden sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
-        <div className="flex items-center justify-between p-4">
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            aria-label="قائمة التنقل"
-          >
-            {isSidebarOpen ? (
-              <X className="w-6 h-6 text-gray-700" />
-            ) : (
-              <Menu className="w-6 h-6 text-gray-700" />
-            )}
-          </button>
-          
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <img src="/favicon.svg" alt="logo" className="w-4 h-4" />
-            </div>
-            <div className="font-bold text-lg text-gray-900">لوحة التحكم</div>
-          </div>
-
-          <div className="w-10" />
-        </div>
-      </div>
-
-      {/* Sidebar Overlay for Mobile */}
+      {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -183,65 +157,79 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
         />
       )}
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] lg:w-auto lg:static bg-white/95 backdrop-blur-sm shadow-lg z-50 transform transition-transform duration-300 lg:transform-none ${
-          isSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'
-        } lg:col-span-3 xl:col-span-2 lg:border-l overflow-y-auto`}
-      >
-        <div className="p-4 md:p-6 space-y-4 md:space-y-6 h-full flex flex-col">
-          {/* Logo Section - Hidden on mobile since it's in the header */}
-          <div className="hidden lg:flex items-center gap-3 md:gap-4">
-            <div className="relative">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <img src="/favicon.svg" alt="logo" className="w-5 h-5 md:w-6 md:h-6" />
+      <div className="flex min-h-screen">
+        {/* Sidebar */}
+        <aside
+          className={`fixed lg:static top-0 right-0 h-full w-[280px] sm:w-[320px] lg:w-64 xl:w-72 bg-white/95 backdrop-blur-sm shadow-lg z-50 transform transition-transform duration-300 overflow-y-auto ${
+            isSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'
+          }`}
+        >
+          <div className="p-4 md:p-6 space-y-4 md:space-y-6 h-full flex flex-col">
+            {/* Logo Section */}
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="relative">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <img src="/favicon.svg" alt="logo" className="w-5 h-5 md:w-6 md:h-6" />
+                </div>
+              </div>
+              <div>
+                <div className="font-bold text-lg md:text-xl text-gray-900">الديار العالمية</div>
+                <div className="text-xs md:text-sm text-gray-500">مرحباً، {admin.username}</div>
+              </div>
+              {/* Close button for mobile */}
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="mr-auto p-2 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
+                aria-label="إغلاق القائمة"
+              >
+                <X className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+
+            {/* Navigation */}
+            <nav className="space-y-1 flex-1 overflow-y-auto">
+              {navLinks.map((link) => (
+                <NavLink key={link.href} link={link} onClick={() => setIsSidebarOpen(false)} />
+              ))}
+
+              <hr className="my-3 md:my-4 border-gray-200" />
+
+              {bottomLinks.map((link) => (
+                <NavLink key={link.href} link={link} onClick={() => setIsSidebarOpen(false)} />
+              ))}
+            </nav>
+
+            {/* Footer */}
+            <div className="pt-3 md:pt-4 border-t border-gray-200">
+              <div className="text-[10px] md:text-xs text-gray-500 text-center">
+                <div className="mb-1">© {new Date().getFullYear()} جميع الحقوق محفوظة</div>
+                <div className="text-blue-600 font-medium">محترفين الديار العالمية</div>
               </div>
             </div>
-            <div>
-              <div className="font-bold text-lg md:text-xl text-gray-900">الديار العالمية</div>
-              <div className="text-xs md:text-sm text-gray-500">مرحباً، {admin.username}</div>
-            </div>
           </div>
+        </aside>
 
-          {/* Mobile Admin Info */}
-          <div className="lg:hidden bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-3 border border-blue-100">
-            <div className="text-sm text-gray-600">مرحباً بعودتك</div>
-            <div className="font-bold text-gray-900">{admin.username}</div>
-          </div>
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Top Header with Hamburger - Always visible on mobile */}
+          <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+            <div className="px-3 md:px-4 lg:px-6 py-3 md:py-4">
+              <div className="flex items-center justify-between gap-3">
+                {/* Hamburger Button - Mobile only */}
+                <button
+                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                  className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  aria-label="قائمة التنقل"
+                >
+                  <Menu className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
+                </button>
 
-          {/* Navigation */}
-          <nav className="space-y-1 flex-1 overflow-y-auto">
-            {navLinks.map((link) => (
-              <NavLink key={link.href} link={link} onClick={() => setIsSidebarOpen(false)} />
-            ))}
+                {/* Title */}
+                <h1 className="text-base md:text-lg lg:text-xl font-bold text-gray-900 truncate flex-1 lg:flex-none">
+                  لوحة التحكم المتقدمة
+                </h1>
 
-            <hr className="my-3 md:my-4 border-gray-200" />
-
-            {bottomLinks.map((link) => (
-              <NavLink key={link.href} link={link} onClick={() => setIsSidebarOpen(false)} />
-            ))}
-          </nav>
-
-          {/* Footer */}
-          <div className="pt-3 md:pt-4 border-t border-gray-200">
-            <div className="text-[10px] md:text-xs text-gray-500 text-center">
-              <div className="mb-1">© {new Date().getFullYear()} جميع الحقوق محفوظة</div>
-              <div className="text-blue-600 font-medium">محترفين الديار العالمية</div>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      {/* Main Content Area */}
-      <div className="lg:grid lg:grid-cols-12 min-h-screen">
-        <div className="hidden lg:block lg:col-span-3 xl:col-span-2" />
-        
-        <div className="lg:col-span-9 xl:col-span-10">
-          {/* Desktop Header */}
-          <header className="hidden lg:block sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-gray-200/80 shadow-sm">
-            <div className="max-w-6xl mx-auto p-4">
-              <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-gray-900">لوحة التحكم المتقدمة</div>
+                {/* Logout Button */}
                 <div suppressHydrationWarning>
                   <HeaderClient />
                 </div>
@@ -249,19 +237,12 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
             </div>
           </header>
 
-          {/* Mobile Header Info + Logout */}
-          <div className="lg:hidden bg-white border-b border-gray-200 p-3">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-600">
-                {pathname.split('/').pop() || 'نظرة عامة'}
-              </div>
-              <div suppressHydrationWarning>
-                <HeaderClient />
-              </div>
+          {/* Main Content */}
+          <main className="flex-1 p-3 md:p-4 lg:p-6 overflow-auto">
+            <div className="max-w-6xl mx-auto">
+              {children}
             </div>
-          </div>
-
-          <main className="max-w-6xl mx-auto p-3 md:p-4 lg:p-6">{children}</main>
+          </main>
         </div>
       </div>
     </div>
