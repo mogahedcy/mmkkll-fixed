@@ -67,11 +67,6 @@ const nextConfig = {
     loader: 'default',
     loaderFile: undefined,
   },
-  modularizeImports: {
-    'lucide-react': {
-      transform: 'lucide-react/dist/esm/icons/{{member}}',
-    },
-  },
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
