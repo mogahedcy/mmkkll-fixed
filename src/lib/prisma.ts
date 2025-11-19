@@ -11,7 +11,8 @@ const getDatabaseUrl = () => {
               process.env.POSTGRES_URL;
   
   if (!url) {
-    console.error('❌ DATABASE_URL is not defined');
+    console.warn('⚠️ DATABASE_URL is not defined - using mock/fallback mode');
+    return 'postgresql://localhost:5432/aldeyarksa';
   }
   
   return url;
