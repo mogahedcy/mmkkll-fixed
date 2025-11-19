@@ -312,11 +312,11 @@ export default function Navbar() {
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Mega Menu */}
+                {/* Mega Menu - محسّن لعدم الخروج من الشاشة */}
                 {isServicesOpen && (
                   <div 
                     id="services-menu"
-                    className="absolute top-full right-0 w-[900px] bg-white border border-gray-100 rounded-2xl shadow-2xl p-8 transform translate-y-2 z-50"
+                    className="mega-menu absolute top-full right-0 w-[min(900px,calc(100vw-2rem))] bg-white border border-gray-100 rounded-2xl shadow-2xl p-6 md:p-8 transform translate-y-2 z-50 max-h-[calc(100vh-200px)] overflow-y-auto"
                     role="menu"
                     aria-label="قائمة الخدمات"
                   >

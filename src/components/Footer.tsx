@@ -240,17 +240,26 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 mt-8">
-                <Button asChild className="flex-1 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300">
+              {/* CTA Buttons - محسّنة للجوال */}
+              <div className="footer-buttons flex flex-col sm:flex-row gap-4 mt-8">
+                <Button 
+                  asChild 
+                  className="flex-1 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 py-6 text-base font-bold rounded-xl focus-visible-ring"
+                  aria-label="طلب عرض سعر مجاني"
+                >
                   <Link href="/quote" className="flex items-center justify-center space-x-2 space-x-reverse">
-                    <Send className="w-4 h-4" />
+                    <Send className="w-5 h-5" />
                     <span>طلب عرض سعر</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="flex-1 border-white/30 text-white hover:bg-white/10">
+                <Button 
+                  asChild 
+                  variant="outline" 
+                  className="flex-1 border-white/30 text-white hover:bg-white/10 py-6 text-base font-bold rounded-xl focus-visible-ring"
+                  aria-label="تواصل معنا عبر واتساب"
+                >
                   <Link href="https://wa.me/966553719009" className="flex items-center justify-center space-x-2 space-x-reverse">
-                    <MessageCircle className="w-4 h-4" />
+                    <MessageCircle className="w-5 h-5" />
                     <span>واتساب</span>
                   </Link>
                 </Button>
@@ -260,7 +269,7 @@ export default function Footer() {
         </div>
 
         {/* Links Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="footer-links grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
 
           {/* Services */}
           <div>

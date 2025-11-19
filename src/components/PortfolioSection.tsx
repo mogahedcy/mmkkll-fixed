@@ -113,12 +113,12 @@ export default function PortfolioSection() {
 
   if (loading) {
     return (
-      <section className="py-20 bg-gradient-to-br from-background to-secondary/20">
+      <section className="py-20 bg-gradient-to-br from-background to-secondary/20" aria-busy="true" aria-label="جاري تحميل المشاريع">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center">
-              <Loader2 className="w-12 h-12 animate-spin text-accent mx-auto mb-4" />
-              <p className="text-lg text-muted-foreground">جاري تحميل أحدث المشاريع...</p>
+              <Loader2 className="w-12 h-12 animate-spin text-accent mx-auto mb-4" aria-hidden="true" />
+              <p className="text-lg text-muted-foreground font-medium" role="status">جاري تحميل أحدث المشاريع...</p>
             </div>
           </div>
         </div>
@@ -192,9 +192,9 @@ export default function PortfolioSection() {
           ))}
         </div>
 
-        {/* Enhanced Projects Grid */}
+        {/* Enhanced Projects Grid - محسّن للجوال */}
         {filteredProjects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="gallery-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-16">
             {filteredProjects.map((project) => {
               const IconComponent = getProjectIcon(project.category);
               const mainImage = project.mediaItems?.find(item => item.type === 'IMAGE');
@@ -210,7 +210,7 @@ export default function PortfolioSection() {
                         {mainMedia.type === 'IMAGE' ? (
                           <SEOImage
                             src={mainMedia.src}
-                            alt={mainMedia.alt}
+                            alt={mainMedia.alt || `${project.title} - ${project.category} في ${project.location}`}
                             projectTitle={project.title}
                             projectCategory={project.category}
                             projectLocation={project.location}
@@ -219,6 +219,8 @@ export default function PortfolioSection() {
                             className="object-cover group-hover:scale-110 transition-transform duration-700"
                             showWatermark={true}
                             watermarkPosition="bottom-right"
+                            priority={false}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                         ) : mainMedia.type === 'VIDEO' ? (
                           <div className="relative w-full h-full bg-gray-900">
@@ -410,9 +412,12 @@ export default function PortfolioSection() {
             })}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <p className="text-lg text-muted-foreground mb-4">لا توجد مشاريع متاحة حالياً</p>
-            <Button asChild variant="outline">
+          <div className="text-center py-16" role="status" aria-live="polite">
+            <div className="info-message max-w-md mx-auto">
+              <p className="text-lg font-semibold mb-2">لا توجد مشاريع متاحة حالياً</p>
+              <p className="text-sm opacity-80">نحن نعمل على إضافة المزيد من المشاريع قريباً</p>
+            </div>
+            <Button asChild variant="outline" className="mt-6 focus-visible-ring" size="lg">
               <Link href="/contact">تواصل معنا لبدء مشروعك</Link>
             </Button>
           </div>

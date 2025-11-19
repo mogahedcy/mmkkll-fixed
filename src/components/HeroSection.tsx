@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Phone, MessageCircle, ArrowLeft, Star, MapPin, Clock, Shield, Award } from 'lucide-react';
@@ -27,16 +25,17 @@ const slides = [
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const slideCount = slides.length;
 
   useEffect(() => {
     if (!isPlaying) return;
     
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide((prev) => (prev + 1) % slideCount);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [slides.length, isPlaying]);
+  }, [isPlaying, slideCount]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black" aria-label="قسم البطل الرئيسي">
@@ -75,9 +74,10 @@ export default function HeroSection() {
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-3">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 shadow-lg"
+          className="bg-white/20 backdrop-blur-md hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 shadow-lg focus-visible-ring"
           aria-label={isPlaying ? 'إيقاف السلايدر' : 'تشغيل السلايدر'}
           aria-pressed={isPlaying}
+          type="button"
         >
           {isPlaying ? (
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -94,14 +94,17 @@ export default function HeroSection() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+              type="button"
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 focus-visible-ring ${
                 index === currentSlide
                   ? 'bg-white w-8'
                   : 'bg-white/40 hover:bg-white/60'
               }`}
               aria-label={`الصورة ${index + 1}`}
               aria-selected={index === currentSlide}
+              aria-current={index === currentSlide ? 'true' : 'false'}
               role="tab"
+              tabIndex={index === currentSlide ? 0 : -1}
             />
           ))}
         </div>
@@ -126,33 +129,44 @@ export default function HeroSection() {
         </div>
 
         {/* Main Heading - محسن للقراءة على الجوال */}
-        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 sm:mb-6 leading-tight animate-slide-up px-4">
-          <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent block">
+        <h1 className="hero-title text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 leading-tight animate-slide-up px-4">
+          <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent block drop-shadow-lg">
             محترفين الديار
           </span>
-          <span className="block text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl mt-2 sm:mt-3 bg-gradient-to-r from-accent via-amber-400 to-accent bg-clip-text text-transparent font-extrabold">
+          <span className="hero-subtitle block text-base sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl mt-2 sm:mt-3 bg-gradient-to-r from-accent via-amber-400 to-accent bg-clip-text text-transparent font-extrabold drop-shadow-lg">
             مظلات وسواتر وبرجولات وساندوتش بانل جدة
           </span>
         </h1>
 
         {/* Subheading - مبسط للجوال */}
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 text-gray-200 leading-relaxed max-w-4xl mx-auto font-medium px-4">
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-8 sm:mb-10 text-gray-100 leading-relaxed max-w-4xl mx-auto font-medium px-4 drop-shadow-md">
           تركيب مظلات سيارات • برجولات حدائق • سواتر • ساندوتش بانل • تنسيق حدائق • بيوت شعر • خيام ملكية • ترميم
         </p>
 
-        {/* أزرار CTA محسّنة للجوال */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 justify-center items-stretch sm:items-center mb-8 sm:mb-12 md:mb-16 px-4 max-w-2xl mx-auto">
-          <Button asChild size="lg" className="w-full sm:w-auto text-base sm:text-lg font-bold shadow-2xl bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 transform hover:scale-105 transition-all duration-300 active:scale-95">
-            <Link href="https://wa.me/+966553719009" className="flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse">
-              <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+        {/* أزرار CTA محسّنة للجوال - أكبر وأوضح */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 md:gap-6 justify-center items-stretch sm:items-center mb-8 sm:mb-12 md:mb-16 px-4 max-w-2xl mx-auto">
+          <Button 
+            asChild 
+            size="lg" 
+            className="w-full sm:w-auto text-lg sm:text-xl font-bold shadow-2xl bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 transform hover:scale-105 transition-all duration-300 active:scale-95 py-6 sm:py-7 px-8 sm:px-10 rounded-xl focus-visible-ring"
+            aria-label="تواصل معنا عبر واتساب للحصول على استشارة مجانية"
+          >
+            <Link href="https://wa.me/+966553719009" className="flex items-center justify-center space-x-3 sm:space-x-4 space-x-reverse">
+              <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 flex-shrink-0" />
               <span>استشارة مجانية الآن</span>
             </Link>
           </Button>
 
-          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto text-base sm:text-lg shadow-xl bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-bold transform hover:scale-105 transition-all duration-300 active:scale-95">
-            <Link href="tel:+966553719009" className="flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse">
-              <Phone className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-              <span className="text-sm sm:text-base">966553719009+</span>
+          <Button 
+            asChild 
+            variant="outline" 
+            size="lg" 
+            className="w-full sm:w-auto text-lg sm:text-xl shadow-xl bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-bold transform hover:scale-105 transition-all duration-300 active:scale-95 py-6 sm:py-7 px-8 sm:px-10 rounded-xl focus-visible-ring"
+            aria-label="اتصل بنا على رقم الهاتف"
+          >
+            <Link href="tel:+966553719009" className="flex items-center justify-center space-x-3 sm:space-x-4 space-x-reverse">
+              <Phone className="w-6 h-6 sm:w-7 sm:h-7 flex-shrink-0" />
+              <span className="text-base sm:text-lg">966553719009+</span>
             </Link>
           </Button>
         </div>
