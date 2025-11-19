@@ -1,0 +1,550 @@
+Report from Nov 19, 2025, 7:18:15 PM
+https://www.aldeyarksa.tech/
+Enter a valid URL
+
+
+smartphone
+Mobile
+
+computer
+Desktop
+
+Discover what your real users are experiencing
+No Data
+
+Diagnose performance issues
+68
+Performance
+88
+Accessibility
+96
+Best Practices
+92
+SEO
+68
+FCP
++8
+LCP
++0
+TBT
++30
+CLS
++25
+SI
++5
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Expand view
+First Contentful Paint
+2.0 s
+Largest Contentful Paint
+14.3 s
+Total Blocking Time
+60 ms
+Cumulative Layout Shift
+0
+Speed Index
+5.8 s
+Captured at Nov 19, 2025, 7:17 PM GMT+3
+Emulated Moto G Power with Lighthouse 13.0.1
+Single page session
+Initial page load
+Slow 4G throttling
+Using HeadlessChromium 137.0.7151.119 with lr
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+
+CLS
+Insights
+Render blocking requests Est savings of 750 ms
+Requests are blocking the page's initial render, which may delay LCP. Deferring or inlining can move these network requests out of the critical path.LCPFCPUnscored
+URL
+Transfer Size
+Duration
+aldeyarksa.tech 1st party
+20.3 KiB	750 ms
+…css/72ddf614c3900bbc.css(www.aldeyarksa.tech)
+2.3 KiB
+150 ms
+…css/fcdfe581b3867a12.css(www.aldeyarksa.tech)
+17.9 KiB
+600 ms
+Improve image delivery Est savings of 16 KiB
+Reducing the download time of images can improve the perceived load time of the page and LCP. Learn more about optimizing image sizeLCPFCPUnscored
+URL
+Resource Size
+Est Savings
+aldeyarksa.tech 1st party
+42.2 KiB	16.5 KiB
+مظلات وبرجولات حدائق فاخرة - تركيب برجولات خشبية ومظلات سيارات جدة
+<img alt="مظلات وبرجولات حدائق فاخرة - تركيب برجولات خشبية ومظلات سيارات جدة" aria-hidden="true" fetchpriority="high" loading="eager" decoding="async" data-nimg="fill" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fimages%2Fslider1.webp&amp;w=400&amp;q=85 400w, /_next/image?ur…" src="https://www.aldeyarksa.tech/_next/image?url=%2Fimages%2Fslider1.webp&amp;w=750…">
+/_next/image?url=%2Fimages%2Fslider1.webp&w=750&q=85(www.aldeyarksa.tech)
+42.2 KiB
+16.5 KiB
+Increasing the image compression factor could improve this image's download size.
+16.5 KiB
+Forced reflow
+A forced reflow occurs when JavaScript queries geometric properties (such as offsetWidth) after styles have been invalidated by a change to the DOM state. This can result in poor performance. Learn more about forced reflows and possible mitigations.Unscored
+Source
+Total reflow time
+[unattributed]
+78 ms
+Network dependency tree
+Avoid chaining critical requests by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load.LCPUnscored
+Maximum critical path latency: 2,569 ms
+Initial Navigation
+https://www.aldeyarksa.tech - 205 ms, 37.08 KiB
+…css/72ddf614c3900bbc.css(www.aldeyarksa.tech) - 253 ms, 2.34 KiB
+…media/8a6e4d7cd15e805a-s.woff2(www.aldeyarksa.tech) - 2,569 ms, 14.92 KiB
+…media/b8c807255d58fc43-s.woff2(www.aldeyarksa.tech) - 496 ms, 31.38 KiB
+…css/fcdfe581b3867a12.css(www.aldeyarksa.tech) - 233 ms, 17.91 KiB
+Preconnected origins
+preconnect hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.
+no origins were preconnected
+Preconnect candidates
+Add preconnect hints to your most important origins, but try to use no more than 4.
+No additional origins are good candidates for preconnecting
+Use efficient cache lifetimes Est savings of 0 KiB
+A long cache lifetime can speed up repeat visits to your page. Learn more about caching.LCPFCPUnscored
+Request
+Cache TTL
+Transfer Size
+aldeyarksa.tech 1st party
+4 KiB
+/favicon.svg(www.aldeyarksa.tech)
+7d
+2 KiB
+/favicon.svg(www.aldeyarksa.tech)
+7d
+2 KiB
+Legacy JavaScript Est savings of 12 KiB
+Polyfills and transforms enable older browsers to use new JavaScript features. However, many aren't necessary for modern browsers. Consider modifying your JavaScript build process to not transpile Baseline features, unless you know you must support older browsers. Learn why most sites can deploy ES6+ code without transpilingLCPFCPUnscored
+URL
+Wasted bytes
+aldeyarksa.tech 1st party
+11.5 KiB
+…chunks/1255-15f04a30ae2c7791.js(www.aldeyarksa.tech)
+11.5 KiB
+…chunks/1255-15f04a30ae2c7791.js:1:143042(www.aldeyarksa.tech)
+Array.prototype.at
+…chunks/1255-15f04a30ae2c7791.js:1:142430(www.aldeyarksa.tech)
+Array.prototype.flat
+…chunks/1255-15f04a30ae2c7791.js:1:142543(www.aldeyarksa.tech)
+Array.prototype.flatMap
+…chunks/1255-15f04a30ae2c7791.js:1:142919(www.aldeyarksa.tech)
+Object.fromEntries
+…chunks/1255-15f04a30ae2c7791.js:1:143177(www.aldeyarksa.tech)
+Object.hasOwn
+…chunks/1255-15f04a30ae2c7791.js:1:142172(www.aldeyarksa.tech)
+String.prototype.trimEnd
+…chunks/1255-15f04a30ae2c7791.js:1:142087(www.aldeyarksa.tech)
+String.prototype.trimStart
+Optimize DOM size
+A large DOM can increase the duration of style calculations and layout reflows, impacting page responsiveness. A large DOM will also increase memory usage. Learn how to avoid an excessive DOM size.Unscored
+Statistic
+Element
+Value
+Total elements
+1,698
+DOM depth
+div.flex > span.inline-flex > svg.lucide > circle
+<circle cx="12" cy="12" r="10">
+13
+Most children
+body.antialiased
+<body class="antialiased font-arabic pb-16 lg:pb-0">
+83
+LCP breakdown
+Each subpart has specific improvement strategies. Ideally, most of the LCP time should be spent on loading the resources, not within delays.LCPUnscored
+Subpart
+Duration
+Time to first byte
+160 ms
+Resource load delay
+10 ms
+Resource load duration
+190 ms
+Element render delay
+1,910 ms
+مظلات وبرجولات حدائق فاخرة - تركيب برجولات خشبية ومظلات سيارات جدة
+<img alt="مظلات وبرجولات حدائق فاخرة - تركيب برجولات خشبية ومظلات سيارات جدة" aria-hidden="true" fetchpriority="high" loading="eager" decoding="async" data-nimg="fill" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fimages%2Fslider1.webp&amp;w=400&amp;q=85 400w, /_next/image?ur…" src="https://www.aldeyarksa.tech/_next/image?url=%2Fimages%2Fslider1.webp&amp;w=750…">
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Minimize main-thread work 3.1 s
+Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this. Learn how to minimize main-thread workTBTUnscored
+Category
+Time Spent
+Style & Layout
+857 ms
+Script Evaluation
+818 ms
+Other
+717 ms
+Rendering
+506 ms
+Script Parsing & Compilation
+178 ms
+Parse HTML & CSS
+61 ms
+Garbage Collection
+11 ms
+Avoid enormous network payloads Total size was 3,837 KiB
+Large network payloads cost users real money and are highly correlated with long load times. Learn how to reduce payload sizes.Unscored
+URL
+Transfer Size
+aldeyarksa.tech 1st party
+3,057.3 KiB
+/favicon-16x16.png(www.aldeyarksa.tech)
+1,202.7 KiB
+/favicon-16x16.png(www.aldeyarksa.tech)
+1,202.7 KiB
+…media/b261c59b2d76913d-s.p.woff2(www.aldeyarksa.tech)
+163.0 KiB
+…media/b261c59b2d76913d-s.p.woff2(www.aldeyarksa.tech)
+163.0 KiB
+/images/slider1.webp(www.aldeyarksa.tech)
+62.5 KiB
+/images/slider1.webp(www.aldeyarksa.tech)
+62.5 KiB
+…chunks/4bd1b696-100b9d70ed4e49c1.js(www.aldeyarksa.tech)
+55.1 KiB
+…chunks/4bd1b696-100b9d70ed4e49c1.js(www.aldeyarksa.tech)
+55.1 KiB
+…chunks/1255-15f04a30ae2c7791.js(www.aldeyarksa.tech)
+45.4 KiB
+…chunks/1255-15f04a30ae2c7791.js(www.aldeyarksa.tech)
+45.4 KiB
+Avoid long main-thread tasks 7 long tasks found
+Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. Learn how to avoid long main-thread tasksTBTUnscored
+URL
+Start Time
+Duration
+aldeyarksa.tech 1st party
+563 ms
+…chunks/4bd1b696-100b9d70ed4e49c1.js(www.aldeyarksa.tech)
+12,619 ms
+117 ms
+…chunks/4bd1b696-100b9d70ed4e49c1.js(www.aldeyarksa.tech)
+1,130 ms
+92 ms
+…chunks/4bd1b696-100b9d70ed4e49c1.js(www.aldeyarksa.tech)
+12,301 ms
+90 ms
+…chunks/main-app-b7ac91ae224968d9.js(www.aldeyarksa.tech)
+1,053 ms
+77 ms
+…chunks/1255-15f04a30ae2c7791.js(www.aldeyarksa.tech)
+12,922 ms
+68 ms
+https://www.aldeyarksa.tech
+1,337 ms
+65 ms
+…chunks/1255-15f04a30ae2c7791.js(www.aldeyarksa.tech)
+12,736 ms
+54 ms
+Avoid non-composited animations 1 animated element found
+Animations which are not composited can be janky and increase CLS. Learn how to avoid non-composited animationsCLSUnscored
+Element
+Name
+div.jsx-3076f094764a658f > div.jsx-3076f094764a658f > div.jsx-3076f094764a658f > div.jsx-3076f094764a658f
+<div class="jsx-3076f094764a658f absolute inset-0 bg-[linear-gradient(45deg,transparen…">
+Unsupported CSS Property: background-position-x
+shimmer
+More information about the performance of your application. These numbers don't directly affect the Performance score.
+Passed audits (15)
+Show
+88
+Accessibility
+These checks highlight opportunities to improve the accessibility of your web app. Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so manual testing is also encouraged.
+Names and labels
+Buttons do not have an accessible name
+When a button doesn't have an accessible name, screen readers announce it as "button", making it unusable for users who rely on screen readers. Learn how to make buttons more accessible.
+Failing Elements
+div.max-w-5xl > div.bg-gradient-to-br > div.absolute > button.inline-flex
+<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-mediu…">
+div.max-w-5xl > div.bg-gradient-to-br > div.absolute > button.inline-flex
+<button class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-mediu…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-accent w-8">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+These are opportunities to improve the semantics of the controls in your application. This may enhance the experience for users of assistive technology, like a screen reader.
+Contrast
+Background and foreground colors do not have a sufficient contrast ratio.
+Low-contrast text is difficult or impossible for many users to read. Learn how to provide sufficient color contrast.
+Failing Elements
+حماية كاملة من الشمس
+<span class="font-medium">
+الأكثر طلباً مظلات السيارات حماية فاخرة بتصاميم عصرية حماية كاملة من الشمس تصا…
+<div class="group relative hover:shadow-2xl transition-all duration-500 bg-white round…">
+تجديد شامل بأحدث التقنيات
+<p class="text-muted-foreground mb-4 md:mb-6 leading-relaxed text-sm md:text-base fo…">
+ترميم الملحقات تجديد شامل بأحدث التقنيات ترميم فلل واستراحات صيانة شاملة مزيد…
+<div class="group relative hover:shadow-2xl transition-all duration-500 bg-white round…">
+ترميم فلل واستراحات
+<span class="font-medium">
+ترميم الملحقات تجديد شامل بأحدث التقنيات ترميم فلل واستراحات صيانة شاملة مزيد…
+<div class="group relative hover:shadow-2xl transition-all duration-500 bg-white round…">
+PVC وحديد وقماش
+<span class="font-medium">
+السواتر خصوصية تامة وحماية مضمونة PVC وحديد وقماش خصوصية 100% من 1,800 ر.س …
+<div class="group relative hover:shadow-2xl transition-all duration-500 bg-white round…">
+خصوصية 100%
+<span class="font-medium">
+السواتر خصوصية تامة وحماية مضمونة PVC وحديد وقماش خصوصية 100% من 1,800 ر.س …
+<div class="group relative hover:shadow-2xl transition-all duration-500 bg-white round…">
+نفخر بكوننا الشركة الرائدة في مجال المظلات والبرجولات والساندوتش بانل في جدة. خ…
+<p class="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+لماذا محترفين الديار الخيار الأول في جدة؟ نفخر بكوننا الشركة الرائدة في مجال ا…
+<section class="py-20 bg-white">
+أكثر من 5000 عميل راضي عن خدماتنا في جدة والمناطق المحيطة يشهدون على جودة عملنا
+<p class="text-muted-foreground leading-relaxed">
++5000 عميل +5000 عميل راضي أكثر من 5000 عميل راضي عن خدماتنا في جدة والمناطق ا…
+<div class="group hover:shadow-xl transition-all duration-300 bg-white rounded-2xl bor…">
+نلتزم بالمواعيد المحددة لتسليم المشاريع دون تأخير مع متابعة دقيقة لجدولة الأعمال
+<p class="text-muted-foreground leading-relaxed">
+التزام تام التزام بالمواعيد نلتزم بالمواعيد المحددة لتسليم المشاريع دون تأخير …
+<div class="group hover:shadow-xl transition-all duration-300 bg-white rounded-2xl bor…">
+8 خدمات متخصصة تحت سقف واحد من التصميم والتنفيذ حتى الصيانة والمتابعة
+<p class="text-muted-foreground leading-relaxed">
+8 خدمات خدمة شاملة متكاملة 8 خدمات متخصصة تحت سقف واحد من التصميم والتنفيذ حتى…
+<div class="group hover:shadow-xl transition-all duration-300 bg-white rounded-2xl bor…">
+نغطي جميع أحياء ومناطق جدة والمناطق المحيطة مع فريق عمل متنقل ومتخصص
+<p class="text-muted-foreground leading-relaxed">
+تغطية شاملة تغطية شاملة لجدة نغطي جميع أحياء ومناطق جدة والمناطق المحيطة مع فر…
+<div class="group hover:shadow-xl transition-all duration-300 bg-white rounded-2xl bor…">
+مشروع ناجح
+<div class="text-sm text-muted-foreground font-medium">
++5000 مشروع ناجح
+<div class="bg-white rounded-xl p-6 shadow-lg text-center">
+خدمات متخصصة
+<div class="text-sm text-muted-foreground font-medium">
+8 خدمات متخصصة
+<div class="bg-white rounded-xl p-6 shadow-lg text-center">
+مظلات
+<div class="absolute top-4 left-4 bg-accent text-white px-4 py-2 rounded-full text-sm …">
+جدة
+<span class="font-medium">
+مظلات عرض التفاصيل مظلة في جدة جدة 2025 مظلات من أعمال محترفين الديار العالمية…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+2025
+<span class="font-medium">
+مظلات عرض التفاصيل مظلة في جدة جدة 2025 مظلات من أعمال محترفين الديار العالمية…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+👁️ 1
+<span>
+مظلات عرض التفاصيل مظلة في جدة جدة 2025 مظلات من أعمال محترفين الديار العالمية…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+❤️ 0
+<span>
+مظلات عرض التفاصيل مظلة في جدة جدة 2025 مظلات من أعمال محترفين الديار العالمية…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+⭐ 0
+<span>
+مظلات عرض التفاصيل مظلة في جدة جدة 2025 مظلات من أعمال محترفين الديار العالمية…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+جدة السعودية حي المحاميد
+<span class="font-medium">
+بيوت شعر عرض التفاصيل بيت شعر ملكي في جدة جدة السعودية حي المحاميد 2024 بيت شع…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+2024
+<span class="font-medium">
+بيوت شعر عرض التفاصيل بيت شعر ملكي في جدة جدة السعودية حي المحاميد 2024 بيت شع…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+👁️ 1
+<span>
+بيوت شعر عرض التفاصيل بيت شعر ملكي في جدة جدة السعودية حي المحاميد 2024 بيت شع…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+❤️ 1
+<span>
+بيوت شعر عرض التفاصيل بيت شعر ملكي في جدة جدة السعودية حي المحاميد 2024 بيت شع…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+⭐ 0
+<span>
+بيوت شعر عرض التفاصيل بيت شعر ملكي في جدة جدة السعودية حي المحاميد 2024 بيت شع…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+جدة حي الزهراء
+<span class="font-medium">
+سواتر عرض التفاصيل سواتر لمكب النفايات من الحديد الصاج الشرايح جدة حي الزهراء 2…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+2023
+<span class="font-medium">
+سواتر عرض التفاصيل سواتر لمكب النفايات من الحديد الصاج الشرايح جدة حي الزهراء 2…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+👁️ 1
+<span>
+سواتر عرض التفاصيل سواتر لمكب النفايات من الحديد الصاج الشرايح جدة حي الزهراء 2…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+❤️ 0
+<span>
+سواتر عرض التفاصيل سواتر لمكب النفايات من الحديد الصاج الشرايح جدة حي الزهراء 2…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+⭐ 0
+<span>
+سواتر عرض التفاصيل سواتر لمكب النفايات من الحديد الصاج الشرايح جدة حي الزهراء 2…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+2024
+<span class="font-medium">
+خيام ملكية عرض التفاصيل خيام جدة بيت شعر في جدة جدة السعودية 2024 تم انجاز عمل…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+👁️ 1
+<span>
+خيام ملكية عرض التفاصيل خيام جدة بيت شعر في جدة جدة السعودية 2024 تم انجاز عمل…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+❤️ 0
+<span>
+خيام ملكية عرض التفاصيل خيام جدة بيت شعر في جدة جدة السعودية 2024 تم انجاز عمل…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+⭐ 0
+<span>
+خيام ملكية عرض التفاصيل خيام جدة بيت شعر في جدة جدة السعودية 2024 تم انجاز عمل…
+<div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl tran…">
+حي الروضة، جدة
+<div class="text-sm text-muted-foreground">
+"خدمة ممتازة من محترفين الديار. تم تركيب مظلات السيارات بجودة عالية وفي الوقت ا…
+<div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-poin…">
+حي الأندلس، جدة
+<div class="text-sm text-muted-foreground">
+"تركيب ساندوتش بانل لمستودعي تم بمهنية عالية. العزل ممتاز والتنفيذ سريع. أفضل ش…
+<div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-poin…">
+ساندوتش بانل
+<div class="mt-4 bg-accent/10 text-accent px-4 py-2 rounded-lg text-sm font-bold text-…">
+"تركيب ساندوتش بانل لمستودعي تم بمهنية عالية. العزل ممتاز والتنفيذ سريع. أفضل ش…
+<div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-poin…">
+حي الشاطئ، جدة
+<div class="text-sm text-muted-foreground">
+"السواتر حققت الخصوصية المطلوبة بتصميم جميل. فريق العمل محترف والخدمة متميزة." …
+<div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-poin…">
+شمال جدة
+<div class="text-sm text-muted-foreground">
+"ترميم الملحق تم بشكل رائع. اهتمام بالتفاصيل ومواد عالية الجودة. النتيجة فاقت ا…
+<div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-poin…">
+ترميم ملحقات
+<div class="mt-4 bg-accent/10 text-accent px-4 py-2 rounded-lg text-sm font-bold text-…">
+"ترميم الملحق تم بشكل رائع. اهتمام بالتفاصيل ومواد عالية الجودة. النتيجة فاقت ا…
+<div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-poin…">
+حي الزهراء، جدة
+<div class="text-sm text-muted-foreground">
+"تنسيق الحديقة أصبح أجمل من المتوقع. النباتات مناسبة للمناخ ونظام الري ممتاز." …
+<div class="bg-white rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-poin…">
+These are opportunities to improve the legibility of your content.
+Best practices
+Touch targets do not have sufficient size or spacing.
+Touch targets with sufficient size and spacing help users who may have difficulty targeting small controls to activate the targets. Learn more about touch targets.
+Failing Elements
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+section.py-24 > div.max-w-7xl > div.flex > button.w-3
+<button class="w-3 h-3 rounded-full transition-all duration-300 bg-gray-300 hover:bg-gray…">
+Identical links have the same purpose.
+Links with the same destination should have the same description, to help users understand the link's purpose and decide whether to follow it. Learn more about identical links.Unscored
+Failing Elements
+واتساب
+<a class="p-2 sm:p-2.5 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 tran…" target="_blank" rel="noopener noreferrer" aria-label="واتساب" href="https://wa.me/966553719009">
+واتساب
+<a class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md…" href="https://wa.me/966553719009">
+واتساب
+<a href="https://wa.me/+966553719009" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center justify-center w-full h-full space-y-1 touch-ta…">
+These items highlight common accessibility best practices.
+Additional items to manually check (10)
+Show
+These items address areas which an automated testing tool cannot cover. Learn more in our guide on conducting an accessibility review.
+Passed audits (23)
+Show
+Not applicable (33)
+Show
+96
+Best Practices
+General
+Browser errors were logged to the console
+Errors logged to the console indicate unresolved problems. They can come from network request failures and other browser concerns. Learn more about this errors in console diagnostic audit
+Source
+Description
+aldeyarksa.tech 1st party
+https://www.aldeyarksa.tech:1:0
+TypeError: Failed to update a ServiceWorker for scope ('https://www.aldeyarksa.tech/') with script ('https://www.aldeyarksa.tech/sw.js?v=2024-11-14-v2'): An unknown error occurred when fetching the script.
+https://www.aldeyarksa.tech:1:0
+TypeError: Failed to update a ServiceWorker for scope ('https://www.aldeyarksa.tech/') with script ('https://www.aldeyarksa.tech/sw.js?v=2024-11-14-v2'): An unknown error occurred when fetching the script.
+Trust and Safety
+Ensure CSP is effective against XSS attacks
+A strong Content Security Policy (CSP) significantly reduces the risk of cross-site scripting (XSS) attacks. Learn how to use a CSP to prevent XSSUnscored
+Description
+Directive
+Severity
+`script-src` directive is missing. This can allow the execution of unsafe scripts.
+script-src
+High
+Missing `object-src` allows the injection of plugins that execute unsafe scripts. Consider setting `object-src` to `'none'` if you can.
+object-src
+High
+Use a strong HSTS policy
+Deployment of the HSTS header significantly reduces the risk of downgrading HTTP connections and eavesdropping attacks. A rollout in stages, starting with a low max-age is recommended. Learn more about using a strong HSTS policy.Unscored
+Description
+Directive
+Severity
+No `includeSubDomains` directive found
+includeSubDomains
+Medium
+No `preload` directive found
+preload
+Medium
+Ensure proper origin isolation with COOP
+The Cross-Origin-Opener-Policy (COOP) can be used to isolate the top-level window from other documents such as pop-ups. Learn more about deploying the COOP header.Unscored
+Description
+Directive
+Severity
+No COOP header found
+High
+Mitigate DOM-based XSS with Trusted Types
+The require-trusted-types-for directive in the Content-Security-Policy (CSP) header instructs user agents to control the data passed to DOM XSS sink functions. Learn more about mitigating DOM-based XSS with Trusted Types.Unscored
+Description
+Severity
+No `Content-Security-Policy` header with Trusted Types directive found
+High
+Passed audits (12)
