@@ -54,7 +54,7 @@ export default function HeroSection() {
               alt={slide.alt}
               fill
               style={{ objectFit: 'cover' }}
-              quality={index === 0 ? 85 : 70}
+              quality={index === 0 ? 75 : 65}
               priority={index === 0}
               fetchPriority={index === 0 ? 'high' : 'low'}
               loading={index === 0 ? 'eager' : 'lazy'}
@@ -62,6 +62,7 @@ export default function HeroSection() {
               aria-hidden="true"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMyMzI3MmEiLz48L3N2Zz4="
+              decoding="async"
             />
           </div>
         ))}

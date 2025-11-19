@@ -62,12 +62,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.png", type: "image/png", sizes: "512x512" }
+      { url: "/favicon.svg", type: "image/svg+xml" }
     ],
-    apple: [
-      { url: "/apple-touch-icon.png", type: "image/png", sizes: "512x512" }
-    ],
-    shortcut: "/favicon.png",
+    shortcut: "/favicon.svg",
   },
   manifest: "/manifest.json",
 };
@@ -136,10 +133,11 @@ export default function RootLayout({
         <meta name="theme-color" content="#059669" />
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
         
-        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         
         <link
           rel="preload"

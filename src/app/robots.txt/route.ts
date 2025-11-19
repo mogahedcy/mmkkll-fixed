@@ -32,8 +32,6 @@ User-agent: Googlebot
 Allow: /
 Allow: /_next/static/
 Crawl-delay: 0.5
-Request-rate: 1/1s
-Visit-time: 0600-2300
 Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /login/
@@ -54,7 +52,6 @@ User-agent: bingbot
 Allow: /
 Allow: /_next/static/
 Crawl-delay: 0.5
-Request-rate: 1/1s
 Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /login/
@@ -64,7 +61,6 @@ User-agent: YandexBot
 Allow: /
 Allow: /_next/static/
 Crawl-delay: 1
-Request-rate: 1/2s
 Disallow: /dashboard/
 Disallow: /api/auth/
 Disallow: /login/
@@ -83,11 +79,6 @@ User-agent: DuckDuckBot
 Allow: /
 Allow: /_next/static/
 Crawl-delay: 1
-
-# محركات البحث العربية المحلية
-User-agent: *
-Allow: /ar/
-Allow: /arabic/
 
 # حظر البوتات الضارة وغير المرغوب فيها
 User-agent: AhrefsBot
@@ -129,9 +120,6 @@ Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/si
 Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap-projects.xml
 Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap-articles.xml
 Sitemap: ${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}/sitemap-images.xml
-
-# توجيه canonical المضيف
-Host: https://www.aldeyarksa.tech
 
 # معلومات إضافية للمطورين ومحركات البحث
 # Contact: ksaaldeyar@gmail.com

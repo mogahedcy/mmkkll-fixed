@@ -176,6 +176,7 @@ export default function TestimonialsSection() {
                 size="icon"
                 onClick={prevTestimonial}
                 className="rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 bg-white hover:bg-accent hover:text-white border-2 w-12 h-12"
+                aria-label="التقييم السابق"
               >
                 <ArrowRight className="w-6 h-6" />
               </Button>
@@ -186,6 +187,7 @@ export default function TestimonialsSection() {
                 size="icon"
                 onClick={nextTestimonial}
                 className="rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 bg-white hover:bg-accent hover:text-white border-2 w-12 h-12"
+                aria-label="التقييم التالي"
               >
                 <ArrowLeft className="w-6 h-6" />
               </Button>
@@ -194,7 +196,7 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Testimonial Dots */}
-        <div className="flex justify-center space-x-2 space-x-reverse mb-12">
+        <div className="flex justify-center space-x-2 space-x-reverse mb-12" role="tablist" aria-label="اختيار التقييم">
           {testimonials.map((testimonial, index) => (
             <button
               key={testimonial.id}
@@ -202,6 +204,9 @@ export default function TestimonialsSection() {
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentIndex ? 'bg-accent w-8' : 'bg-gray-300 hover:bg-gray-400'
               }`}
+              aria-label={`عرض تقييم ${index + 1} من ${testimonials.length}`}
+              aria-selected={index === currentIndex}
+              role="tab"
             />
           ))}
         </div>

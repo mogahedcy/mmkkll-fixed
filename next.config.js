@@ -20,6 +20,14 @@ const nextConfig = {
     },
   },
   serverExternalPackages: ['@prisma/client'],
+  // تحسين الأداء - استهداف المتصفحات الحديثة
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
+  },
+  swcMinify: true,
+  experimental: {
+    optimizeCss: true,
+  },
   images: {
     remotePatterns: [
       {
