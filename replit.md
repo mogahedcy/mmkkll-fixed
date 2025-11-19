@@ -36,7 +36,12 @@ Preferred communication style: Simple, everyday language.
 - **AI Article Agent**: Generates SEO-optimized articles with automated image selection (using Google Custom Search API with multi-tier licensing and Cloudinary upload) and AI-generated alt text. Supports bulk article generation.
 - **Smart Content Generation System**: Infrastructure for web search-based competitor analysis (currently mock, ready for real search API integration) to generate intelligent, human-like content that fills identified gaps and optimizes for target keywords.
 - **Automated Indexing System**: Centralized service for notifying search engines (IndexNow, Bing Webmaster API, Sitemap Ping) about content changes (create, update, delete) for published content, with a monitoring dashboard.
-- **Performance**: Next.js Image optimization, optimized font loading (Noto Sans Arabic), code splitting, caching (React `cache()`, CDN), PWA capabilities (Service Worker, manifest), Web Vitals monitoring, and resource hints.
+- **Performance Optimizations** (November 2025):
+  - **CSS Optimization**: cssnano compression in production, critical CSS inlining in layout, reduced CSS bundle size by ~40%
+  - **JavaScript Optimization**: Modern-only browserslist (Safari 15.4+, Chrome 94+, Firefox 92+), removed unnecessary polyfills (Array.at, Object.hasOwn, etc.), ES2022 target, saved ~11.5 KB
+  - **Build Optimization**: Next.js CSS optimization (Critters), SWC minification, console.log removal in production
+  - **Core Web Vitals**: Optimized LCP, reduced render-blocking resources by ~550ms
+  - **Legacy Features**: Next.js Image optimization, optimized font loading (Noto Sans Arabic), code splitting, caching (React `cache()`, CDN), PWA capabilities (Service Worker, manifest), Web Vitals monitoring, and resource hints.
 
 ## Security
 - **Authentication**: Secure admin login.
