@@ -147,25 +147,25 @@ export async function GET() {
     },
     { 
       url: '/services/mazallat', 
-      priority: '0.98', 
+      priority: '0.9', 
       changefreq: 'daily',
       keywords: 'مظلات سيارات جدة، تركيب مظلات، مظلات حديد، مظلات قماش، أسعار مظلات السيارات، شركة مظلات جدة'
     },
     { 
       url: '/services/pergolas', 
-      priority: '0.98', 
+      priority: '0.9', 
       changefreq: 'daily',
       keywords: 'برجولات جدة، تصميم برجولات، برجولات خشبية، برجولات حديد، برجولات حدائق، تركيب برجولات جدة'
     },
     { 
       url: '/services/sawater', 
-      priority: '0.98', 
+      priority: '0.9', 
       changefreq: 'daily',
       keywords: 'سواتر جدة، سواتر خصوصية، سواتر حديد، سواتر قماش، تركيب سواتر جدة، أسعار السواتر'
     },
     { 
       url: '/services/sandwich-panel', 
-      priority: '0.95', 
+      priority: '0.9', 
       changefreq: 'weekly',
       keywords: 'ساندوتش بانل جدة، عزل حراري، ألواح ساندوتش بانل'
     },
@@ -195,7 +195,7 @@ export async function GET() {
     },
     { 
       url: '/portfolio', 
-      priority: '0.85', 
+      priority: '0.8', 
       changefreq: 'daily',
       keywords: 'أعمال مظلات جدة، مشاريع سواتر، معرض أعمال الديار'
     },
@@ -213,7 +213,7 @@ export async function GET() {
     },
     { 
       url: '/articles', 
-      priority: '0.85', 
+      priority: '0.7', 
       changefreq: 'daily',
       keywords: 'مقالات مظلات، نصائح تركيب، دليل شامل'
     },

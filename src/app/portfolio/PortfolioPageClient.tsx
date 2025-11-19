@@ -250,12 +250,12 @@ export default function PortfolioPageClient() {
               </motion.div>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6">
               <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent leading-tight">
-                إبداع وجودة
+                معرض أعمال محترفين الديار العالمية
               </span>
               <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-800 mt-2">
-                في كل مشروع نقوم به
+                إبداع وجودة في كل مشروع
               </span>
             </h1>
             
