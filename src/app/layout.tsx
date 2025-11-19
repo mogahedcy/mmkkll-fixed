@@ -134,12 +134,17 @@ export default function RootLayout({
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
         
         <style dangerouslySetInnerHTML={{__html: `
-          :root{--background:40 25% 98%;--foreground:39 39% 21%;--primary:39 39% 21%;--accent:134 61% 41%;--border:40 35% 85%;}
-          *{box-sizing:border-box;margin:0;padding:0;border-color:hsl(var(--border));}
-          html{height:100%;}
-          body{height:100%;font-family:system-ui,arial,sans-serif;background:hsl(var(--background));color:hsl(var(--foreground));line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-          img,video{max-width:100%;height:auto;display:block;-webkit-user-select:none;user-select:none;}
+          :root{--background:40 25% 98%;--foreground:39 39% 21%;--primary:39 39% 21%;--accent:134 61% 41%;--border:40 35% 85%;--card:40 25% 98%;--card-foreground:39 39% 21%;--radius:0.5rem;}
+          *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border:0 solid hsl(var(--border));}
+          html{height:100%;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+          body{height:100%;font-family:system-ui,arial,sans-serif;background:hsl(var(--background));color:hsl(var(--foreground));line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;}
+          img,video,svg{max-width:100%;height:auto;display:block;-webkit-user-select:none;user-select:none;}
+          button,input,textarea,select{font:inherit;color:inherit;}
+          a{color:inherit;text-decoration:none;}
           .hero-section{min-height:600px;}
+          .container{width:100%;max-width:1536px;margin:0 auto;padding-left:1rem;padding-right:1rem;}
+          @media(min-width:640px){.container{padding-left:2rem;padding-right:2rem;}}
+          @media(min-width:1024px){.container{padding-left:4rem;padding-right:4rem;}}
         `}} />
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
