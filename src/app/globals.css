@@ -24,11 +24,6 @@
     --input: 40 35% 85%;
     --ring: 39 39% 21%;
     --radius: 0.5rem;
-    --chart-1: 39 39% 21%;
-    --chart-2: 134 61% 41%;
-    --chart-3: 40 35% 85%;
-    --chart-4: 39 20% 65%;
-    --chart-5: 40 25% 75%;
   }
 
   .dark {
@@ -51,11 +46,6 @@
     --border: 39 20% 15%;
     --input: 39 20% 15%;
     --ring: 40 25% 83%;
-    --chart-1: 40 25% 98%;
-    --chart-2: 134 61% 41%;
-    --chart-3: 39 20% 15%;
-    --chart-4: 39 20% 45%;
-    --chart-5: 40 25% 35%;
   }
 
   * {
@@ -64,17 +54,13 @@
   
   html {
     height: 100%;
-    scroll-behavior: smooth;
   }
   
   body {
     @apply bg-background text-foreground;
     height: 100%;
     font-family: var(--font-arabic), sans-serif;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     line-height: 1.7;
   }
   
@@ -84,17 +70,6 @@
     display: block;
     -webkit-user-select: none;
     user-select: none;
-    -webkit-user-drag: none;
-    user-drag: none;
-  }
-  
-  p {
-    line-height: 1.8;
-    margin-bottom: 1rem;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    line-height: 1.3;
   }
 }
 
