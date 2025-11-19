@@ -133,6 +133,14 @@ export default function RootLayout({
         <meta name="theme-color" content="#059669" />
         <meta name="google-site-verification" content="Ne3Na-oIDWC4Bg9C4hlb9fNtyvJED1iLI5A9fHnVTnc" />
         
+        <style dangerouslySetInnerHTML={{__html: `
+          :root{--background:40 25% 98%;--foreground:39 39% 21%;--primary:39 39% 21%;--accent:134 61% 41%;}
+          *{box-sizing:border-box;margin:0;padding:0;}
+          html{height:100%;scroll-behavior:smooth;}
+          body{height:100%;font-family:var(--font-arabic),sans-serif;background:hsl(var(--background));color:hsl(var(--foreground));line-height:1.7;-webkit-font-smoothing:antialiased;}
+          img,video{max-width:100%;height:auto;display:block;}
+        `}} />
+        
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />

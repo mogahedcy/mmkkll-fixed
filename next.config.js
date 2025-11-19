@@ -20,6 +20,9 @@ const nextConfig = {
     },
   },
   serverExternalPackages: ['@prisma/client'],
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip', '@radix-ui/react-separator', '@radix-ui/react-progress', 'framer-motion'],
+  },
   images: {
     remotePatterns: [
       {

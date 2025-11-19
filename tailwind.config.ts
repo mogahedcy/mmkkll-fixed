@@ -14,6 +14,9 @@ export default {
       hoverOnlyWhenSupported: true,
       respectDefaultRingColorOpacity: true,
     },
+    experimental: {
+      optimizeUniversalDefaults: true,
+    },
   theme: {
     extend: {
       colors: {
