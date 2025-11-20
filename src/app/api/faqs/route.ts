@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyToken } from '@/lib/jwt';
 import { cookies } from 'next/headers';
+import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
 async function checkAuth() {
   try {
@@ -91,11 +92,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const categoryValidation = normalizeCategoryName(category);
+    if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: `الفئة "${category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` 
+        },
+        { status: 400 }
+      );
+    }
+
+    const normalizedCategory = categoryValidation.normalizedCategory;
+    
+    if (categoryValidation.wasTransformed) {
+      console.log(`✅ تم تحويل الفئة: "${category}" → "${normalizedCategory}"`);
+    }
+
     const faq = await prisma.faqs.create({
       data: {
         question,
         answer,
-        category,
+        category: normalizedCategory,
         order: order || 0,
         featured: featured || false,
         status: status || 'PUBLISHED',

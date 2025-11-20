@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyToken } from '@/lib/jwt';
 import { cookies } from 'next/headers';
+import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
 async function checkAuth() {
   try {
@@ -65,6 +66,27 @@ export async function PATCH(
 
     const { id } = await params;
     const body = await request.json();
+
+    if (body.category) {
+      const categoryValidation = normalizeCategoryName(body.category);
+      if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: `الفئة "${body.category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` 
+          },
+          { status: 400 }
+        );
+      }
+
+      const normalizedCategory = categoryValidation.normalizedCategory;
+      
+      if (categoryValidation.wasTransformed) {
+        console.log(`✅ تم تحويل الفئة: "${body.category}" → "${normalizedCategory}"`);
+      }
+
+      body.category = normalizedCategory;
+    }
 
     const faq = await prisma.faqs.update({
       where: { id },
