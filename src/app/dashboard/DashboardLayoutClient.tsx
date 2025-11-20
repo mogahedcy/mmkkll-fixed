@@ -42,6 +42,15 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
       activeColor: 'bg-purple-50 text-purple-700'
     },
     {
+      href: '/dashboard/projects/analyze',
+      icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+      label: 'تحليل المنافسين',
+      hoverColor: 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-700',
+      activeColor: 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700',
+      badge: 'AI',
+      badgeColor: 'bg-gradient-to-r from-blue-500 to-cyan-500'
+    },
+    {
       href: '/dashboard/articles',
       icon: 'M6 2h9a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z M9 7h6M9 11h6M9 15h4',
       label: 'المقالات',

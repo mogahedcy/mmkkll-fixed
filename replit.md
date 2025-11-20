@@ -33,8 +33,9 @@ Image storage: Cloudinary preferred over local storage for better performance, a
 - **Features**: Advanced project showcase, blog/articles archive, dynamic sitemap generation, comprehensive media management, and a full-featured admin dashboard.
 - **Advanced Portfolio Exhibition System** (November 2025):
   - **10 Main Categories**: مظلات سيارات, سواتر, خيم ملكية, بيوت شعر ملكي, برجولات, تنسيق حدائق, هناجر, شبوك, قراميد, ساندوتش بانل
-  - **Automatic Watermarking**: All images and videos automatically watermarked with +966553719009 using Cloudinary transformations
+  - **Automatic Watermarking**: All images and videos automatically watermarked with +966553719009 using Cloudinary transformations - FULLY INTEGRATED & ACTIVE
   - **Media Processing**: Automatic image compression (max 1920px, quality 85%), video optimization (max 1280px, bitrate 2000k)
+  - **AI Competitor Analysis**: Complete AI-powered competitor analysis system available at `/dashboard/projects/analyze` using Gemini 2.0 Flash
   - **AI Competitor Analysis**: Gemini 2.0 Flash-powered competitive intelligence with SEO recommendations, keyword suggestions, and market insights
   - **Processing Metrics**: Tracks original size, processed size, compression ratio, and processing time for all media
   - **Watermark Options**: Configurable position (center, bottom-right, bottom-left, top-right, top-left), opacity, color, and font
@@ -86,13 +87,23 @@ Image storage: Cloudinary preferred over local storage for better performance, a
 
 ## Database & Storage
 - **PostgreSQL**: Primary database (Neon-backed, external production database).
-  - **New Fields for Projects**: `aiAnalysis`, `competitorInsights`, `suggestedKeywords`, `lastAnalyzedAt`, `mediaProcessingInfo`, `watermarkApplied`
-  - **New Fields for Media**: `originalSize`, `processedSize`, `compressionRatio`, `watermarkApplied`, `processingTime`, `cloudinaryPublicId`
+  - **New Fields for Projects**: `aiAnalysis` (JSON), `competitorInsights` (text), `suggestedKeywords` (text), `lastAnalyzedAt` (datetime), `mediaProcessingInfo` (text), `watermarkApplied` (boolean)
+  - **New Fields for Media**: `originalSize` (int), `processedSize` (int), `compressionRatio` (float), `watermarkApplied` (boolean), `processingTime` (int), `cloudinaryPublicId` (string)
 - **Cloudinary**: Unified cloud storage for all images and videos with:
   - Automatic optimization (WebP/AVIF), CDN delivery
-  - **Automatic Watermarking**: Text overlay system with +966553719009
+  - **Automatic Watermarking**: Text overlay system with +966553719009 - FULLY INTEGRATED
+    - Applied automatically on upload via `uploadToCloudinary()` in `src/lib/cloudinary.ts`
+    - Tracks processing info: original size, processed size, compression ratio, processing time
+    - Stores metadata in database via updated upload API
   - **Image Processing**: Automatic compression, resizing, and format conversion
   - **Video Processing**: Compression, thumbnails generation, and watermark overlay
+- **AI Features**: 
+  - **Gemini 2.0 Flash Integration**: Advanced AI analysis using Google's Gemini API
+  - **Competitor Analysis System**: Full-featured analysis dashboard at `/dashboard/projects/analyze`
+    - Analyze existing projects or manual input
+    - Provides: SEO ranking factors, keyword suggestions, content structure, title improvements
+    - Image recommendations, competitive advantages, market insights
+    - Saves analysis results to project database for future reference
   - All legacy local uploads migrated to Cloudinary (52/53 images successfully migrated on Nov 20, 2025)
 
 ## Authentication & Security
