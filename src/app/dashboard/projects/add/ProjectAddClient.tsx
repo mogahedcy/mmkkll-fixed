@@ -283,6 +283,8 @@ export default function ProjectAddClient() {
     }
 
     setLoadingAI(true);
+    setShowAISuggestions(true);
+    
     try {
       const response = await fetch('/api/ai-suggestions', {
         method: 'POST',
@@ -299,16 +301,26 @@ export default function ProjectAddClient() {
       });
 
       if (!response.ok) {
-        throw new Error('فشل في الحصول على الاقتراحات');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'فشل في الحصول على الاقتراحات من الخادم');
       }
 
       const data = await response.json();
-      setAiSuggestions(data.suggestions);
-      setShowAISuggestions(true);
-      console.log('🤖 اقتراحات AI:', data.suggestions);
+      
+      if (data.suggestions) {
+        setAiSuggestions(data.suggestions);
+        console.log('🤖 اقتراحات AI:', data.suggestions);
+      } else {
+        throw new Error('لم يتم إرجاع اقتراحات من الخادم');
+      }
     } catch (error) {
       console.error('خطأ في الحصول على اقتراحات AI:', error);
-      alert('حدث خطأ في الحصول على اقتراحات AI. يرجى المحاولة مرة أخرى.');
+      const errorMessage = error instanceof Error ? error.message : 'خطأ غير معروف';
+      alert(`⚠️ حدث خطأ في الحصول على اقتراحات AI:\n${errorMessage}\n\nيرجى المحاولة مرة أخرى أو التحقق من اتصال الإنترنت.`);
+      
+      if (!aiSuggestions) {
+        setShowAISuggestions(false);
+      }
     } finally {
       setLoadingAI(false);
     }
