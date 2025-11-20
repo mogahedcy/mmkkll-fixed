@@ -124,7 +124,7 @@ async function migrateImages(): Promise<MigrationResult> {
         if (media.src.startsWith('/uploads/')) {
           const newUrl = urlMapping.get(media.src);
           if (newUrl) {
-            await prisma.project_media.update({
+            await prisma.media_items.update({
               where: { id: media.id },
               data: { src: newUrl },
             });
@@ -136,7 +136,7 @@ async function migrateImages(): Promise<MigrationResult> {
         if (media.thumbnail?.startsWith('/uploads/')) {
           const newUrl = urlMapping.get(media.thumbnail);
           if (newUrl) {
-            await prisma.project_media.update({
+            await prisma.media_items.update({
               where: { id: media.id },
               data: { thumbnail: newUrl },
             });
@@ -170,7 +170,7 @@ async function migrateImages(): Promise<MigrationResult> {
         if (media.src.startsWith('/uploads/')) {
           const newUrl = urlMapping.get(media.src);
           if (newUrl) {
-            await prisma.article_media.update({
+            await prisma.article_media_items.update({
               where: { id: media.id },
               data: { src: newUrl },
             });
@@ -182,7 +182,7 @@ async function migrateImages(): Promise<MigrationResult> {
         if (media.thumbnail?.startsWith('/uploads/')) {
           const newUrl = urlMapping.get(media.thumbnail);
           if (newUrl) {
-            await prisma.article_media.update({
+            await prisma.article_media_items.update({
               where: { id: media.id },
               data: { thumbnail: newUrl },
             });
