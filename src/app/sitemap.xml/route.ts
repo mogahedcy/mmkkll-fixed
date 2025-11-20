@@ -247,29 +247,23 @@ export async function GET() {
 
   // إنشاء sitemap للصفحات الثابتة
   const staticSitemap = staticPages
-    .map(
-      (page) => `<url><loc>${baseUrl}${page.url}</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>${page.changefreq}</changefreq><priority>${page.priority}</priority><image:image><image:loc>${baseUrl}/images/logo.png</image:loc><image:caption><![CDATA[${page.keywords}]]></image:caption><image:title><![CDATA[محترفين الديار العالمية - ${page.keywords}]]></image:title></image:image></url>`
-    )
+    .map((page) => `<url><loc>${baseUrl}${page.url}</loc><lastmod>${new Date().toISOString()}</lastmod><changefreq>${page.changefreq}</changefreq><priority>${page.priority}</priority><image:image><image:loc>${baseUrl}/images/logo.png</image:loc><image:caption><![CDATA[${page.keywords}]]></image:caption><image:title><![CDATA[محترفين الديار العالمية - ${page.keywords}]]></image:title></image:image></url>`)
     .join('\n  ');
 
   // إنشاء sitemap للمقالات العامة
   const generalArticlesSitemap = articlesData
-    .map(
-      (article) => {
-        const encodedSlug = encodeURIComponent(article.slug);
-        return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.lastModified}</lastmod><changefreq>${article.changefreq}</changefreq><priority>${article.priority}</priority><news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.lastModified}</news:publication_date><news:title><![CDATA[${article.title}]]></news:title><news:keywords><![CDATA[${article.keywords}]]></news:keywords></news:news><image:image><image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc><image:caption><![CDATA[${article.title}]]></image:caption><image:title><![CDATA[${article.title}]]></image:title></image:image></url>`;
-      }
-    )
+    .map((article) => {
+      const encodedSlug = encodeURIComponent(article.slug);
+      return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.lastModified}</lastmod><changefreq>${article.changefreq}</changefreq><priority>${article.priority}</priority><news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.lastModified}</news:publication_date><news:title><![CDATA[${article.title}]]></news:title><news:keywords><![CDATA[${article.keywords}]]></news:keywords></news:news><image:image><image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc><image:caption><![CDATA[${article.title}]]></image:caption><image:title><![CDATA[${article.title}]]></image:title></image:image></url>`;
+    })
     .join('\n  ');
 
   // إنشاء sitemap لمقالات الخدمات
   const serviceArticlesSitemap = serviceArticlesData
-    .map(
-      (article) => {
-        const encodedSlug = encodeURIComponent(article.slug);
-        return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.lastModified}</lastmod><changefreq>${article.changefreq}</changefreq><priority>${article.priority}</priority><news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.lastModified}</news:publication_date><news:title><![CDATA[${article.title}]]></news:title><news:keywords><![CDATA[${article.keywords}]]></news:keywords></news:news><image:image><image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc><image:caption><![CDATA[${article.title}]]></image:caption><image:title><![CDATA[${article.title}]]></image:title></image:image></url>`;
-      }
-    )
+    .map((article) => {
+      const encodedSlug = encodeURIComponent(article.slug);
+      return `<url><loc>${baseUrl}/articles/${encodedSlug}</loc><lastmod>${article.lastModified}</lastmod><changefreq>${article.changefreq}</changefreq><priority>${article.priority}</priority><news:news><news:publication><news:name>محترفين الديار العالمية</news:name><news:language>ar</news:language></news:publication><news:publication_date>${article.lastModified}</news:publication_date><news:title><![CDATA[${article.title}]]></news:title><news:keywords><![CDATA[${article.keywords}]]></news:keywords></news:news><image:image><image:loc>${baseUrl}/images/articles/${encodedSlug}-main.webp</image:loc><image:caption><![CDATA[${article.title}]]></image:caption><image:title><![CDATA[${article.title}]]></image:title></image:image></url>`;
+    })
     .join('\n  ');
 
   // تم نقل sitemap المشاريع إلى ملف منفصل /sitemap-projects.xml

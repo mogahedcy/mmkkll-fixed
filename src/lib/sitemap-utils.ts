@@ -44,23 +44,17 @@ export function createImageTags(params: {
   const cleanImageUrl = safeEncodeUrl(params.imageUrl);
   const { caption, title, geoLocation, license } = params;
   
-  let tags = `<image:image>
-      <image:loc>${cleanImageUrl}</image:loc>
-      <image:caption><![CDATA[${caption}]]></image:caption>
-      <image:title><![CDATA[${title}]]></image:title>`;
+  let tags = `<image:image><image:loc>${cleanImageUrl}</image:loc><image:caption><![CDATA[${caption}]]></image:caption><image:title><![CDATA[${title}]]></image:title>`;
   
   if (geoLocation) {
-    tags += `
-      <image:geo_location><![CDATA[${geoLocation}]]></image:geo_location>`;
+    tags += `<image:geo_location><![CDATA[${geoLocation}]]></image:geo_location>`;
   }
   
   if (license) {
-    tags += `
-      <image:license><![CDATA[${license}]]></image:license>`;
+    tags += `<image:license><![CDATA[${license}]]></image:license>`;
   }
   
-  tags += `
-    </image:image>`;
+  tags += `</image:image>`;
   
   return tags;
 }
@@ -80,15 +74,7 @@ export function createVideoTags(params: {
   const cleanContentUrl = safeEncodeUrl(params.contentUrl);
   const cleanPlayerUrl = safeEncodeUrl(params.playerUrl);
   
-  return `<video:video>
-      <video:thumbnail_loc>${cleanThumbnailUrl}</video:thumbnail_loc>
-      <video:title><![CDATA[${params.title}]]></video:title>
-      <video:description><![CDATA[${params.description}]]></video:description>
-      <video:content_loc>${cleanContentUrl}</video:content_loc>
-      <video:player_loc allow_embed="yes">${cleanPlayerUrl}</video:player_loc>
-      <video:family_friendly>yes</video:family_friendly>
-      <video:uploader info="${params.baseUrl}">محترفين الديار العالمية</video:uploader>
-    </video:video>`;
+  return `<video:video><video:thumbnail_loc>${cleanThumbnailUrl}</video:thumbnail_loc><video:title><![CDATA[${params.title}]]></video:title><video:description><![CDATA[${params.description}]]></video:description><video:content_loc>${cleanContentUrl}</video:content_loc><video:player_loc allow_embed="yes">${cleanPlayerUrl}</video:player_loc><video:family_friendly>yes</video:family_friendly><video:uploader info="${params.baseUrl}">محترفين الديار العالمية</video:uploader></video:video>`;
 }
 
 /**
