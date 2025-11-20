@@ -7,16 +7,18 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Car, TreePine, Shield, Home, Wrench, Flower, MapPin, Calendar, Eye, Heart, Star, Loader2 } from 'lucide-react';
 import SEOImage from '@/components/services/SEOImage';
 
-// تعريف أنواع الخدمات مع الأيقونات المناسبة - متوافق مع صفحة البورتفوليو
+// تعريف أنواع الخدمات مع الأيقونات المناسبة - 10 فئات رئيسية
 const serviceCategories = [
-  { id: 'مظلات', name: 'مظلات', icon: Car },
-  { id: 'برجولات', name: 'برجولات', icon: TreePine },
+  { id: 'مظلات سيارات', name: 'مظلات سيارات', icon: Car },
   { id: 'سواتر', name: 'سواتر', icon: Shield },
-  { id: 'ساندوتش بانل', name: 'ساندوتش بانل', icon: Home },
+  { id: 'خيم ملكية', name: 'خيم ملكية', icon: Home },
+  { id: 'بيوت شعر ملكي', name: 'بيوت شعر ملكي', icon: Home },
+  { id: 'برجولات', name: 'برجولات', icon: TreePine },
   { id: 'تنسيق حدائق', name: 'تنسيق حدائق', icon: Flower },
-  { id: 'خيام ملكية', name: 'خيام ملكية', icon: Home },
-  { id: 'بيوت شعر', name: 'بيوت شعر', icon: Home },
-  { id: 'ترميم', name: 'ترميم', icon: Wrench }
+  { id: 'هناجر', name: 'هناجر', icon: Home },
+  { id: 'شبوك', name: 'شبوك', icon: Shield },
+  { id: 'قراميد', name: 'قراميد', icon: Home },
+  { id: 'ساندوتش بانل', name: 'ساندوتش بانل', icon: Home }
 ];
 
 interface MediaItem {

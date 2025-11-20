@@ -1,6 +1,6 @@
 # Overview
 
-This Next.js web application serves "محترفين الديار العالمية" (Aldeyar Global Professionals), a Saudi Arabian construction company. It specializes in pergolas, car shades, awnings, and garden landscaping in Jeddah. The application functions as a comprehensive business website, offering portfolio management, project showcasing, and robust content management. Its primary goals are to enhance the company's online presence, streamline content updates, improve search engine visibility, and boost user engagement. The project aims to be a leading online platform in the Saudi Arabian construction sector, leveraging advanced AI for content and SEO.
+This Next.js web application serves "محترفين الديار العالمية" (Aldeyar Global Professionals), a Saudi Arabian construction company. It specializes in 10 main categories: car shades (مظلات سيارات), fences (سواتر), royal tents (خيم ملكية), traditional tents (بيوت شعر ملكي), pergolas (برجولات), landscaping (تنسيق حدائق), hangars (هناجر), fences (شبوك), tiles (قراميد), and sandwich panels (ساندوتش بانل) in Jeddah. The application functions as a comprehensive business website with advanced portfolio management, automatic watermarking, AI-powered competitor analysis, and robust content management. Its primary goals are to enhance the company's online presence, streamline content updates, improve search engine visibility, and boost user engagement. The project aims to be a leading online platform in the Saudi Arabian construction sector, leveraging advanced AI for content, SEO, and competitive intelligence.
 
 # User Preferences
 
@@ -31,6 +31,13 @@ Image storage: Cloudinary preferred over local storage for better performance, a
 
 ## Content Management System (CMS)
 - **Features**: Advanced project showcase, blog/articles archive, dynamic sitemap generation, comprehensive media management, and a full-featured admin dashboard.
+- **Advanced Portfolio Exhibition System** (November 2025):
+  - **10 Main Categories**: مظلات سيارات, سواتر, خيم ملكية, بيوت شعر ملكي, برجولات, تنسيق حدائق, هناجر, شبوك, قراميد, ساندوتش بانل
+  - **Automatic Watermarking**: All images and videos automatically watermarked with +966553719009 using Cloudinary transformations
+  - **Media Processing**: Automatic image compression (max 1920px, quality 85%), video optimization (max 1280px, bitrate 2000k)
+  - **AI Competitor Analysis**: Gemini 2.0 Flash-powered competitive intelligence with SEO recommendations, keyword suggestions, and market insights
+  - **Processing Metrics**: Tracks original size, processed size, compression ratio, and processing time for all media
+  - **Watermark Options**: Configurable position (center, bottom-right, bottom-left, top-right, top-left), opacity, color, and font
 - **FAQ Management System** (November 2025):
   - **Admin Dashboard**: Complete CRUD interface at `/dashboard/faqs` for managing frequently asked questions
   - **Enhanced SEO Fields**: Support for custom slugs, meta titles, meta descriptions, keywords, and related questions
@@ -79,7 +86,14 @@ Image storage: Cloudinary preferred over local storage for better performance, a
 
 ## Database & Storage
 - **PostgreSQL**: Primary database (Neon-backed, external production database).
-- **Cloudinary**: Unified cloud storage for all images and videos with automatic optimization (WebP/AVIF), CDN delivery, and automatic transformations. All legacy local uploads migrated to Cloudinary (52/53 images successfully migrated on Nov 20, 2025).
+  - **New Fields for Projects**: `aiAnalysis`, `competitorInsights`, `suggestedKeywords`, `lastAnalyzedAt`, `mediaProcessingInfo`, `watermarkApplied`
+  - **New Fields for Media**: `originalSize`, `processedSize`, `compressionRatio`, `watermarkApplied`, `processingTime`, `cloudinaryPublicId`
+- **Cloudinary**: Unified cloud storage for all images and videos with:
+  - Automatic optimization (WebP/AVIF), CDN delivery
+  - **Automatic Watermarking**: Text overlay system with +966553719009
+  - **Image Processing**: Automatic compression, resizing, and format conversion
+  - **Video Processing**: Compression, thumbnails generation, and watermark overlay
+  - All legacy local uploads migrated to Cloudinary (52/53 images successfully migrated on Nov 20, 2025)
 
 ## Authentication & Security
 - **bcryptjs**: Password hashing.
@@ -89,5 +103,8 @@ Image storage: Cloudinary preferred over local storage for better performance, a
 
 ## Analytics & AI
 - **Google Analytics 4**: Site analytics and Web Vitals tracking.
-- **Google Gemini AI**: Gemini 2.5 Flash model for SEO analysis and content generation.
+- **Google Gemini AI**: Gemini 2.0 Flash Exp model for:
+  - SEO analysis and content generation
+  - **AI Competitor Analysis** (New): Comprehensive competitive intelligence with top ranking factors, suggested keywords, content structure recommendations, title suggestions, image suggestions, competitive advantages, and market insights
+  - Project descriptions and meta tag generation
 - **Google Custom Search API**: Image search for automated article image selection.

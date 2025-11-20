@@ -89,6 +89,15 @@ model media_items {
   alt         String?
   caption     String?
   createdAt   DateTime  @default(now())
+  
+  // حقول جديدة لمعالجة الوسائط
+  originalSize      Int?
+  processedSize     Int?
+  compressionRatio  Float?
+  watermarkApplied  Boolean   @default(false)
+  processingTime    Int?
+  cloudinaryPublicId String?
+  
   projects    projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
@@ -154,6 +163,17 @@ model projects {
   createdAt         DateTime            @default(now())
   updatedAt         DateTime
   publishedAt       DateTime?           @default(now())
+  
+  // حقول جديدة لتحليل المنافسين
+  aiAnalysis        String?             @db.Text
+  competitorInsights String?            @db.Text
+  suggestedKeywords String?             @db.Text
+  lastAnalyzedAt    DateTime?
+  
+  // حقول معالجة الوسائط
+  mediaProcessingInfo String?           @db.Text
+  watermarkApplied  Boolean             @default(false)
+  
   comments          comments[]
   media_items       media_items[]
   project_likes     project_likes[]

@@ -236,14 +236,19 @@ export function generateCategoryBasedAlt(
   const safeLocation = location || 'جدة';
   
   const templates: { [key: string]: string } = {
-    'مظلات': `مظلات ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'مظلات سيارات': `مظلات سيارات ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'مظلات': `مظلات سيارات ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
     'سواتر': `سواتر ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'خيم ملكية': `خيم ملكية ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'بيوت شعر ملكي': `بيوت شعر ملكي ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'بيوت شعر': `بيوت شعر ملكي ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
     'برجولات': `برجولات ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
     'تنسيق حدائق': `تنسيق حدائق ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'بيوت شعر': `بيوت شعر ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'خيام ملكية': `خيام ملكية ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
-    'ترميم': `ترميم ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'هناجر': `هناجر ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'شبوك': `شبوك ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'قراميد': `قراميد ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
     'ساندوتش بانل': `ساندوتش بانل ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
+    'ترميم': `ساندوتش بانل ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`,
   };
 
   return templates[safeCategory] || `${safeCategory} - ${safeTitle} في ${safeLocation} - صورة ${imageIndex + 1} | محترفين الديار`;
@@ -254,9 +259,9 @@ export function generateCategoryBasedAlt(
  */
 export function extractKeywordsFromText(text: string): string[] {
   const commonKeywords = [
-    'مظلات', 'سواتر', 'برجولات', 'تنسيق حدائق', 'بيوت شعر',
-    'خيام ملكية', 'ترميم', 'ساندوتش بانل', 'جدة', 'السعودية',
-    'تركيب', 'تصميم', 'تنفيذ', 'PVC', 'حديد', 'خشب', 'قماش'
+    'مظلات سيارات', 'سواتر', 'خيم ملكية', 'بيوت شعر ملكي', 'برجولات',
+    'تنسيق حدائق', 'هناجر', 'شبوك', 'قراميد', 'ساندوتش بانل',
+    'جدة', 'السعودية', 'تركيب', 'تصميم', 'تنفيذ', 'PVC', 'حديد', 'خشب', 'قماش'
   ];
 
   return commonKeywords.filter(keyword => 
