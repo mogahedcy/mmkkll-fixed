@@ -14,7 +14,7 @@ interface FAQ {
   featured: boolean;
 }
 
-const categories = ['الكل', 'عام', 'مظلات', 'ساندوتش بانل', 'ترميم', 'تنسيق حدائق', 'أسعار', 'خدمة عملاء'];
+const categories = ['الكل', 'مظلات سيارات', 'سواتر', 'خيم ملكية', 'بيوت شعر ملكي', 'برجولات', 'تنسيق حدائق', 'هناجر', 'شبوك', 'قراميد', 'ساندوتش بانل'];
 
 export default function FAQSection() {
   const [faqs, setFaqs] = useState<FAQ[]>([]);

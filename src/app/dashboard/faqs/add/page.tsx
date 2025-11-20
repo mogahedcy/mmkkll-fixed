@@ -26,7 +26,7 @@ export default function AddFAQPage() {
   const [formData, setFormData] = useState({
     question: '',
     answer: '',
-    category: 'عامة',
+    category: 'مظلات سيارات',
     order: 0,
     featured: false,
     status: 'PUBLISHED',
@@ -38,14 +38,16 @@ export default function AddFAQPage() {
   });
 
   const categories = [
-    'عامة',
-    'مظلات',
-    'برجولات',
+    'مظلات سيارات',
     'سواتر',
+    'خيم ملكية',
+    'بيوت شعر ملكي',
+    'برجولات',
     'تنسيق حدائق',
-    'ساندوتش بانل',
-    'أسعار',
-    'خدمة عملاء'
+    'هناجر',
+    'شبوك',
+    'قراميد',
+    'ساندوتش بانل'
   ];
 
   const generateSlug = (text: string) => {

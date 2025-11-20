@@ -90,14 +90,16 @@ export default function EditProjectPage() {
   const [newMaterial, setNewMaterial] = useState('');
 
   const categories = [
-    'مظلات',
-    'برجولات', 
+    'مظلات سيارات',
     'سواتر',
-    'ساندوتش بانل',
+    'خيم ملكية',
+    'بيوت شعر ملكي',
+    'برجولات',
     'تنسيق حدائق',
-    'خيام ملكية',
-    'بيوت شعر',
-    'ترميم'
+    'هناجر',
+    'شبوك',
+    'قراميد',
+    'ساندوتش بانل'
   ];
 
   useEffect(() => {

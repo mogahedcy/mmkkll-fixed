@@ -23,6 +23,7 @@ import {
   Tag,
   Package
 } from 'lucide-react';
+import { PROJECT_CATEGORIES } from '@/constants/projectCategories';
 
 interface MediaItem {
   type: 'IMAGE' | 'VIDEO';
@@ -32,16 +33,7 @@ interface MediaItem {
   alt?: string;
 }
 
-const categories = [
-  'مظلات',
-  'سواتر', 
-  'برجولات',
-  'تنسيق حدائق',
-  'بيوت شعر',
-  'خيام ملكية',
-  'ترميم',
-  'ساندوتش بانل'
-];
+const categories = PROJECT_CATEGORIES;
 
 export default function ProjectAddClient() {
   const router = useRouter();

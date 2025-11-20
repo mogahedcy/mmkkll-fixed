@@ -165,18 +165,24 @@ export default function AdvancedFilters({ filters, onFiltersChange, categories =
         <Card>
           <FilterSection id="category" title="الفئة" icon={Filter}>
             <div className="grid grid-cols-2 gap-2">
-              {(categories || []).map((category) => (
-                <Button
-                  key={category.id}
-                  variant={filters.category === category.id ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => onFiltersChange({ category: category.id })}
-                  className="justify-start text-sm"
-                >
-                  <category.icon className="w-4 h-4 mr-2" />
-                  {category.name}
-                </Button>
-              ))}
+              {(categories && categories.length > 0 ? categories : []).map((category) => {
+                const categoryId = typeof category === 'string' ? category : category.id;
+                const categoryName = typeof category === 'string' ? category : category.name;
+                const categoryIcon = typeof category === 'string' ? null : category.icon;
+                
+                return (
+                  <Button
+                    key={categoryId}
+                    variant={filters.category === categoryId ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => onFiltersChange({ category: categoryId })}
+                    className="justify-start text-sm"
+                  >
+                    {categoryIcon && <span className="mr-2">{categoryIcon}</span>}
+                    {categoryName}
+                  </Button>
+                );
+              })}
             </div>
           </FilterSection>
         </Card>

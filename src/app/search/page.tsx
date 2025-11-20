@@ -248,7 +248,22 @@ function SearchContent() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <AdvancedFilters filters={filters} onFiltersChange={handleFiltersChange} />
+            <AdvancedFilters 
+              filters={filters} 
+              onFiltersChange={handleFiltersChange}
+              categories={[
+                { id: 'مظلات سيارات', name: 'مظلات سيارات', icon: '🚗' },
+                { id: 'سواتر', name: 'سواتر', icon: '🧱' },
+                { id: 'خيم ملكية', name: 'خيم ملكية', icon: '🏕️' },
+                { id: 'بيوت شعر ملكي', name: 'بيوت شعر ملكي', icon: '⛺' },
+                { id: 'برجولات', name: 'برجولات', icon: '🏛️' },
+                { id: 'تنسيق حدائق', name: 'تنسيق حدائق', icon: '🌿' },
+                { id: 'هناجر', name: 'هناجر', icon: '🏢' },
+                { id: 'شبوك', name: 'شبوك', icon: '🔲' },
+                { id: 'قراميد', name: 'قراميد', icon: '🏛️' },
+                { id: 'ساندوتش بانل', name: 'ساندوتش بانل', icon: '📦' }
+              ]}
+            />
             <SavedSearches />
           </div>
 

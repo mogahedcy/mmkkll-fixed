@@ -48,22 +48,23 @@ export default function FAQsPage() {
   const [formData, setFormData] = useState({
     question: '',
     answer: '',
-    category: 'مظلات',
+    category: 'مظلات سيارات',
     order: 0,
     featured: false,
     status: 'PUBLISHED'
   });
 
   const categories = [
-    'مظلات',
+    'مظلات سيارات',
     'سواتر',
+    'خيم ملكية',
+    'بيوت شعر ملكي',
     'برجولات',
     'تنسيق حدائق',
-    'ساندوتش بانل',
-    'ترميم',
-    'بيوت شعر',
-    'خيام ملكية',
-    'عام'
+    'هناجر',
+    'شبوك',
+    'قراميد',
+    'ساندوتش بانل'
   ];
 
   useEffect(() => {

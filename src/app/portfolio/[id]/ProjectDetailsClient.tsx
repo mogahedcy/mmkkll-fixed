@@ -75,14 +75,16 @@ interface Project {
 }
 
 const categories = [
-  { id: 'landscaping', name: 'تنسيق الحدائق', icon: '🌿', color: 'bg-green-500' },
-  { id: 'mazallat', name: 'المظلات', icon: '☂️', color: 'bg-blue-500' },
-  { id: 'pergolas', name: 'البرجولات', icon: '🏛️', color: 'bg-amber-500' },
-  { id: 'renovation', name: 'الترميم', icon: '🔨', color: 'bg-orange-500' },
-  { id: 'sandwich-panel', name: 'الساندوتش بانل', icon: '🏢', color: 'bg-slate-500' },
-  { id: 'sawater', name: 'السواتر', icon: '🧱', color: 'bg-red-500' },
-  { id: 'byoot-shaar', name: 'بيوت الشعر', icon: '⛺', color: 'bg-purple-500' },
-  { id: 'khayyam', name: 'الخيام', icon: '🏕️', color: 'bg-emerald-500' }
+  { id: 'مظلات سيارات', name: 'مظلات سيارات', icon: '🚗', color: 'bg-blue-500' },
+  { id: 'سواتر', name: 'سواتر', icon: '🧱', color: 'bg-red-500' },
+  { id: 'خيم ملكية', name: 'خيم ملكية', icon: '🏕️', color: 'bg-emerald-500' },
+  { id: 'بيوت شعر ملكي', name: 'بيوت شعر ملكي', icon: '⛺', color: 'bg-purple-500' },
+  { id: 'برجولات', name: 'برجولات', icon: '🏛️', color: 'bg-amber-500' },
+  { id: 'تنسيق حدائق', name: 'تنسيق حدائق', icon: '🌿', color: 'bg-green-500' },
+  { id: 'هناجر', name: 'هناجر', icon: '🏢', color: 'bg-slate-500' },
+  { id: 'شبوك', name: 'شبوك', icon: '🔲', color: 'bg-gray-500' },
+  { id: 'قراميد', name: 'قراميد', icon: '🏛️', color: 'bg-orange-500' },
+  { id: 'ساندوتش بانل', name: 'ساندوتش بانل', icon: '📦', color: 'bg-cyan-500' }
 ];
 
 interface Props {
