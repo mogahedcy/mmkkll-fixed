@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { randomUUID } from 'crypto';
+import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
 // GET - جلب مقالة واحدة
 export async function GET(
@@ -94,6 +95,21 @@ export async function PUT(
       );
     }
 
+    // التحقق من صحة الفئة وتحويلها تلقائياً
+    const categoryValidation = normalizeCategoryName(category);
+    if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
+      return NextResponse.json(
+        { error: `الفئة "${category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` },
+        { status: 400 }
+      );
+    }
+
+    const normalizedCategory = categoryValidation.normalizedCategory;
+    
+    if (categoryValidation.wasTransformed) {
+      console.log(`✅ تم تحويل الفئة: "${category}" → "${normalizedCategory}"`);
+    }
+
     // التحقق من وجود المقالة
     const existingArticle = await prisma.articles.findUnique({
       where: { id: articleId },
@@ -127,7 +143,7 @@ export async function PUT(
         content,
         excerpt: excerpt || content.substring(0, 200),
         author: author || 'محترفين الديار العالمية',
-        category,
+        category: normalizedCategory,
         featured: featured || false,
         updatedAt: new Date(),
         article_media_items: {

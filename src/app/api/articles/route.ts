@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { randomUUID } from 'crypto';
+import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
 // GET - جلب المقالات مع إحصائيات التفاعل
 export async function GET(request: NextRequest) {
@@ -187,6 +188,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // التحقق من صحة الفئة وتحويلها تلقائياً
+    const categoryValidation = normalizeCategoryName(category);
+    if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
+      return NextResponse.json(
+        { error: `الفئة "${category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` },
+        { status: 400 }
+      );
+    }
+
+    const normalizedCategory = categoryValidation.normalizedCategory;
+    
+    if (categoryValidation.wasTransformed) {
+      console.log(`✅ تم تحويل الفئة: "${category}" → "${normalizedCategory}"`);
+    }
+
     // إنشاء slug فريد
     const slug = generateSlug(title);
     const existingSlug = await prisma.articles.findUnique({
@@ -202,7 +218,7 @@ export async function POST(request: NextRequest) {
         content,
         excerpt: excerpt || content.substring(0, 200),
         author: author || 'محترفين الديار العالمية',
-        category,
+        category: normalizedCategory,
         featured: featured || false,
         slug: finalSlug,
         metaTitle: metaTitle || title,
