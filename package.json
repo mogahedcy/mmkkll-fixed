@@ -14,7 +14,8 @@
     "db:prepare": "node scripts/prepare-database.js",
     "db:seed": "node scripts/add-more-projects.js",
     "production-setup": "node scripts/production-setup.js",
-    "vercel:setup": "node scripts/setup-vercel-db.js"
+    "vercel:setup": "node scripts/setup-vercel-db.js",
+    "migrate:categories": "bun --bun scripts/migrate-categories.ts"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
