@@ -5,6 +5,7 @@ This Next.js web application serves "محترفين الديار العالمي�
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Image storage: Cloudinary preferred over local storage for better performance, automatic optimization, and SEO benefits.
 
 # System Architecture
 
@@ -68,8 +69,8 @@ Preferred communication style: Simple, everyday language.
 - **Swiper**: Touch-enabled carousel.
 
 ## Database & Storage
-- **PostgreSQL**: Primary database.
-- **Cloudinary**: Image and video management and CDN.
+- **PostgreSQL**: Primary database (Neon-backed, external production database).
+- **Cloudinary**: Unified cloud storage for all images and videos with automatic optimization (WebP/AVIF), CDN delivery, and automatic transformations. All legacy local uploads migrated to Cloudinary (52/53 images successfully migrated on Nov 20, 2025).
 
 ## Authentication & Security
 - **bcryptjs**: Password hashing.

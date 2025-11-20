@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { readdir, readFile } from 'fs/promises';
+import { readdir, readFile, stat } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
 import { prisma } from '../src/lib/prisma';
@@ -21,16 +21,44 @@ interface MigrationResult {
   errors: Array<{ file: string; error: string }>;
 }
 
+// دالة مساعدة للحصول على جميع الملفات بشكل recursive
+async function getAllFiles(dirPath: string, baseDir: string = dirPath): Promise<Array<{ path: string; relativePath: string }>> {
+  const entries = await readdir(dirPath, { withFileTypes: true });
+  const files: Array<{ path: string; relativePath: string }> = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name);
+    
+    if (entry.isDirectory()) {
+      // البحث في المجلدات الفرعية
+      const subFiles = await getAllFiles(fullPath, baseDir);
+      files.push(...subFiles);
+    } else if (entry.isFile()) {
+      // إضافة الملف مع المسار النسبي
+      const relativePath = path.relative(baseDir, fullPath);
+      files.push({ path: fullPath, relativePath });
+    }
+  }
+
+  return files;
+}
+
 async function uploadLocalFileToCloudinary(
   filePath: string,
   fileName: string
 ): Promise<{ secure_url: string; public_id: string } | null> {
   try {
-    const fileBuffer = await readFile(filePath);
-    
-    // تحديد نوع الملف
+    // تحديد نوع الملف قبل قراءته (لتوفير الذاكرة)
     const isVideo = /\.(mp4|mov|avi|webm|mkv)$/i.test(fileName);
-    const folder = isVideo ? 'migrated-videos' : 'migrated-images';
+    
+    // تخطي الفيديوهات إذا لم يتم تفعيل دعم الفيديو في Cloudinary
+    if (isVideo) {
+      console.log(`⏭️ تخطي: ${fileName} (ملف فيديو - يحتاج إعدادات خاصة في Cloudinary)`);
+      return null;
+    }
+    
+    const fileBuffer = await readFile(filePath);
+    const folder = 'migrated-images';
     
     console.log(`📤 رفع: ${fileName} إلى Cloudinary...`);
     
@@ -38,7 +66,7 @@ async function uploadLocalFileToCloudinary(
       cloudinary.uploader.upload_stream(
         {
           folder,
-          resource_type: isVideo ? 'video' : 'image',
+          resource_type: 'image',
           public_id: fileName.replace(/\.[^/.]+$/, ''), // إزالة الامتداد
           overwrite: false,
           invalidate: true,
@@ -80,28 +108,34 @@ async function migrateImages(): Promise<MigrationResult> {
     return result;
   }
 
-  console.log('📁 قراءة الملفات المحلية...');
-  const files = await readdir(uploadsDir);
-  result.totalFiles = files.length;
+  console.log('📁 قراءة الملفات المحلية (بما في ذلك المجلدات الفرعية)...');
+  const allFiles = await getAllFiles(uploadsDir);
+  result.totalFiles = allFiles.length;
 
-  console.log(`📊 تم العثور على ${files.length} ملف محلي`);
+  console.log(`📊 تم العثور على ${allFiles.length} ملف محلي`);
 
   // خريطة لتتبع الروابط القديمة والجديدة
   const urlMapping = new Map<string, string>();
 
   // رفع كل ملف إلى Cloudinary
-  for (const file of files) {
-    const filePath = path.join(uploadsDir, file);
-    const oldUrl = `/uploads/${file}`;
+  for (const { path: filePath, relativePath } of allFiles) {
+    const oldUrl = `/uploads/${relativePath}`;
 
-    const uploadResult = await uploadLocalFileToCloudinary(filePath, file);
+    const uploadResult = await uploadLocalFileToCloudinary(filePath, relativePath);
 
     if (uploadResult) {
       urlMapping.set(oldUrl, uploadResult.secure_url);
       result.uploaded++;
     } else {
-      result.failed++;
-      result.errors.push({ file, error: 'فشل الرفع إلى Cloudinary' });
+      // تحديد نوع الفشل
+      const isVideo = /\.(mp4|mov|avi|webm|mkv)$/i.test(relativePath);
+      if (isVideo) {
+        result.skipped++;
+        result.errors.push({ file: relativePath, error: 'تم تخطي ملف الفيديو' });
+      } else {
+        result.failed++;
+        result.errors.push({ file: relativePath, error: 'فشل الرفع إلى Cloudinary' });
+      }
     }
 
     // تأخير صغير لتجنب تجاوز حدود API
