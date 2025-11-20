@@ -36,7 +36,7 @@ export async function GET() {
   const faqsSitemap = faqs
     .map((faq) => {
       const faqSlug = faq.slug || faq.id;
-      const faqUrl = safeEncodeUrl(`${baseUrl}/faq#${faqSlug}`);
+      const faqUrl = safeEncodeUrl(`${baseUrl}/faq/${faqSlug}`);
       
       const lastMod = faq.updatedAt 
         ? new Date(faq.updatedAt).toISOString().split('T')[0]
