@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
 // GET - جلب مشروع واحد
 export async function GET(
@@ -91,6 +92,21 @@ export async function PUT(
       );
     }
 
+    // التحقق من صحة الفئة وتحويلها تلقائياً
+    const categoryValidation = normalizeCategoryName(category);
+    if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
+      return NextResponse.json(
+        { error: `الفئة "${category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` },
+        { status: 400 }
+      );
+    }
+
+    const normalizedCategory = categoryValidation.normalizedCategory;
+    
+    if (categoryValidation.wasTransformed) {
+      console.log(`✅ تم تحويل الفئة: "${category}" → "${normalizedCategory}"`);
+    }
+
     // التحقق من وجود المشروع
     const existingProject = await prisma.projects.findUnique({
       where: { id: projectId },
@@ -127,7 +143,7 @@ export async function PUT(
       data: {
         title,
         description,
-        category,
+        category: normalizedCategory,
         location,
         completionDate: new Date(completionDate),
         client: client || null,

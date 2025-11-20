@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { generateSlug } from '@/lib/utils';
 import { randomUUID } from 'crypto';
+import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,6 +17,24 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
+    }
+
+    // التحقق من صحة الفئة وتحويلها تلقائياً
+    const categoryValidation = normalizeCategoryName(data.category);
+    if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: `الفئة "${data.category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` 
+        },
+        { status: 400 }
+      );
+    }
+
+    const normalizedCategory = categoryValidation.normalizedCategory;
+    
+    if (categoryValidation.wasTransformed) {
+      console.log(`✅ تم تحويل الفئة: "${data.category}" → "${normalizedCategory}"`);
     }
 
     // إنشاء slug فريد للمشروع
@@ -34,7 +53,7 @@ export async function POST(request: NextRequest) {
         id: randomUUID(),
         title: data.title,
         description: data.description,
-        category: data.category,
+        category: normalizedCategory,
         location: data.location,
         completionDate: data.completionDate ? new Date(data.completionDate) : new Date(),
         client: data.client || null,
