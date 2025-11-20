@@ -286,16 +286,25 @@ model automation_logs {
 }
 
 model faqs {
-  id          String   @id @default(cuid())
-  question    String
-  answer      String
-  category    String
-  order       Int      @default(0)
-  status      String   @default("PUBLISHED")
-  featured    Boolean  @default(false)
-  views       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                String   @id @default(cuid())
+  question          String
+  answer            String
+  category          String
+  order             Int      @default(0)
+  status            String   @default("PUBLISHED")
+  featured          Boolean  @default(false)
+  views             Int      @default(0)
+  slug              String?  @unique
+  metaTitle         String?
+  metaDescription   String?
+  keywords          String?
+  relatedQuestions  String?
+  helpfulness       Int      @default(0)
+  clickCount        Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@index([category, status, order])
+  @@index([featured, status])
+  @@index([views])
 }
