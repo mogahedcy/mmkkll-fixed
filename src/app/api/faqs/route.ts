@@ -23,10 +23,14 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
-    const status = searchParams.get('status') || 'PUBLISHED';
+    const status = searchParams.get('status');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    const where: any = { status };
+    const where: any = {};
+    
+    if (status && status !== 'all') {
+      where.status = status;
+    }
     
     if (category && category !== 'all') {
       where.category = category;
@@ -66,7 +70,19 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { question, answer, category, order, featured, status } = body;
+    const { 
+      question, 
+      answer, 
+      category, 
+      order, 
+      featured, 
+      status,
+      slug,
+      metaTitle,
+      metaDescription,
+      keywords,
+      relatedQuestions
+    } = body;
 
     if (!question || !answer || !category) {
       return NextResponse.json(
@@ -82,7 +98,12 @@ export async function POST(request: NextRequest) {
         category,
         order: order || 0,
         featured: featured || false,
-        status: status || 'PUBLISHED'
+        status: status || 'PUBLISHED',
+        slug: slug || null,
+        metaTitle: metaTitle || null,
+        metaDescription: metaDescription || null,
+        keywords: keywords || null,
+        relatedQuestions: relatedQuestions || null
       }
     });
 

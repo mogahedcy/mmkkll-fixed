@@ -31,6 +31,15 @@ Image storage: Cloudinary preferred over local storage for better performance, a
 
 ## Content Management System (CMS)
 - **Features**: Advanced project showcase, blog/articles archive, dynamic sitemap generation, comprehensive media management, and a full-featured admin dashboard.
+- **FAQ Management System** (November 2025):
+  - **Admin Dashboard**: Complete CRUD interface at `/dashboard/faqs` for managing frequently asked questions
+  - **Enhanced SEO Fields**: Support for custom slugs, meta titles, meta descriptions, keywords, and related questions
+  - **AI-Powered Duplicate Detection**: Automatic analysis of similar questions using text similarity algorithms with recommendations for merging
+  - **Analytics & Tracking**: Views counter, helpfulness ratings, click tracking for user engagement insights
+  - **Dynamic Sitemap**: Auto-generated `/sitemap-faqs.xml` with enhanced structured data and news markup
+  - **Structured Data**: Rich FAQ schema (FAQPage, Question, Answer) with breadcrumbs and WebPage schemas for improved search visibility
+  - **Categorization**: Organized by service categories (مظلات, برجولات, سواتر, تنسيق حدائق, etc.) with filtering
+  - **User Experience**: Expandable answers, category filtering, search functionality, deep linking support, and related questions
 
 ## SEO & Performance
 - **SEO**: Automated sitemap and robots.txt generation, structured data (e.g., Article, Service, LocalBusiness), canonical URLs, hreflang, Google Business Profile integration, and IndexNow API.
