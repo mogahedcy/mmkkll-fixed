@@ -173,6 +173,13 @@ export async function POST(request: NextRequest) {
             const result = await uploadToCloudinary(file, cloudinaryOptions);
 
             console.log('✅ تم رفع الملف إلى Cloudinary:', result.secure_url);
+            console.log('📊 معلومات المعالجة:', {
+              watermark: result.watermarkApplied,
+              originalSize: `${(result.originalSize || 0) / 1024 / 1024}MB`,
+              processedSize: `${(result.processedSize || 0) / 1024 / 1024}MB`,
+              compression: `${result.compressionRatio?.toFixed(1)}%`,
+              processingTime: `${result.processingTime}ms`
+            });
 
             uploadedFile = {
               originalName: file.name,
@@ -188,7 +195,12 @@ export async function POST(request: NextRequest) {
               cloudinary_public_id: result.public_id,
               cloudinary_url: result.secure_url,
               resource_type: result.resource_type,
-              storage_type: 'cloudinary'
+              storage_type: 'cloudinary',
+              watermarkApplied: result.watermarkApplied,
+              originalSize: result.originalSize,
+              processedSize: result.processedSize,
+              compressionRatio: result.compressionRatio,
+              processingTime: result.processingTime
             };
 
             // التحقق من صحة النتيجة

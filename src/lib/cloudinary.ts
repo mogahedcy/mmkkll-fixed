@@ -1,4 +1,10 @@
 import { v2 as cloudinary } from 'cloudinary';
+import { 
+  getImageTransformation, 
+  getVideoTransformation, 
+  getProcessingInfo,
+  estimateProcessedSize 
+} from './cloudinary-transformations';
 
 // هذا الملف للاستخدام في Server Components فقط
 // لاستخدام دوال Cloudinary في Client Components، استخدم cloudinary-helpers.ts
@@ -38,6 +44,11 @@ export interface CloudinaryUploadResult {
   height?: number;
   duration?: number;
   created_at: string;
+  watermarkApplied?: boolean;
+  originalSize?: number;
+  processedSize?: number;
+  compressionRatio?: number;
+  processingTime?: number;
 }
 
 /**
@@ -91,7 +102,7 @@ export async function uploadWatermarkToCloudinary(): Promise<void> {
 }
 
 /**
- * رفع ملف إلى Cloudinary
+ * رفع ملف إلى Cloudinary مع علامة مائية تلقائية
  */
 export async function uploadToCloudinary(
   file: File,
@@ -101,6 +112,7 @@ export async function uploadToCloudinary(
     resource_type?: 'auto' | 'image' | 'video' | 'raw';
     transformation?: any;
     timeout?: number;
+    applyWatermark?: boolean;
   } = {}
 ): Promise<CloudinaryUploadResult> {
   // التحقق من إعداد Cloudinary
@@ -138,11 +150,37 @@ export async function uploadToCloudinary(
     // تحديد timeout حسب نوع الملف (أطول للفيديو)
     const uploadTimeout = options.timeout || (isVideo ? 300000 : 120000); // 5 دقائق للفيديو، 2 دقيقة للصور
 
+    // تطبيق العلامة المائية افتراضياً
+    const applyWatermark = options.applyWatermark !== false;
+    let transformation = options.transformation;
+
+    // إضافة العلامة المائية للصور والفيديوهات
+    if (applyWatermark) {
+      if (isImage) {
+        transformation = getImageTransformation({
+          maxWidth: 1920,
+          maxHeight: 1080,
+          quality: 'auto',
+          format: 'auto'
+        });
+      } else if (isVideo) {
+        transformation = getVideoTransformation({
+          maxWidth: 1280,
+          maxHeight: 720,
+          quality: 'auto',
+          bitrate: '2000k'
+        });
+      }
+    }
+
+    const startTime = Date.now();
+    const originalSize = file.size;
+
     const defaultOptions = {
       folder: options.folder || 'portfolio',
       resource_type: options.resource_type || (isVideo ? 'video' : isImage ? 'image' : 'auto'),
       public_id: options.public_id,
-      transformation: options.transformation,
+      transformation: transformation,
       timeout: uploadTimeout,
       chunk_size: isVideo ? 6000000 : undefined, // 6MB chunks للفيديو لتحسين الرفع
       ...options
@@ -155,7 +193,8 @@ export async function uploadToCloudinary(
       folder: defaultOptions.folder,
       resource_type: defaultOptions.resource_type,
       sizeInMB: (file.size / 1024 / 1024).toFixed(2) + 'MB',
-      timeout: `${uploadTimeout / 1000}s`
+      timeout: `${uploadTimeout / 1000}s`,
+      watermark: applyWatermark
     });
 
     // رفع الملف مع timeout مدمج من Cloudinary
@@ -180,7 +219,26 @@ export async function uploadToCloudinary(
               return;
             }
 
-            resolve(result as CloudinaryUploadResult);
+            // إضافة معلومات المعالجة
+            const processingTime = Date.now() - startTime;
+            const processedSize = result.bytes;
+            const processingInfo = getProcessingInfo(
+              originalSize,
+              processedSize,
+              applyWatermark,
+              processingTime
+            );
+
+            const enrichedResult = {
+              ...result,
+              watermarkApplied: applyWatermark,
+              originalSize,
+              processedSize,
+              compressionRatio: processingInfo.compressionRatio,
+              processingTime
+            } as CloudinaryUploadResult;
+
+            resolve(enrichedResult);
           } else {
             reject(new Error('لم يتم إرجاع نتيجة من Cloudinary'));
           }

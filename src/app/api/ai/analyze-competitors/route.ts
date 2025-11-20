@@ -119,30 +119,37 @@ export async function POST(request: NextRequest) {
       contents: prompt
     });
     
-    let analysisText = result.text;
+    const analysisText = result.text;
+
+    if (!analysisText) {
+      return NextResponse.json(
+        { success: false, error: 'لم يتم الحصول على استجابة من AI' },
+        { status: 500 }
+      );
+    }
 
     console.log('✅ تم الحصول على التحليل من Gemini AI');
 
     // تنظيف النص وإزالة markdown code blocks إذا وجدت
-    analysisText = analysisText.trim();
-    if (analysisText.startsWith('```json')) {
-      analysisText = analysisText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-    } else if (analysisText.startsWith('```')) {
-      analysisText = analysisText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    let cleanedText = analysisText.trim();
+    if (cleanedText.startsWith('```json')) {
+      cleanedText = cleanedText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanedText.startsWith('```')) {
+      cleanedText = cleanedText.replace(/^```\s*/, '').replace(/\s*```$/, '');
     }
 
     // تحويل النص إلى JSON
     let analysis;
     try {
-      analysis = JSON.parse(analysisText);
+      analysis = JSON.parse(cleanedText);
     } catch (parseError) {
       console.error('❌ فشل في تحليل JSON:', parseError);
-      console.error('النص المستلم:', analysisText);
+      console.error('النص المستلم:', cleanedText);
       
       // محاولة إصلاح JSON التالف
       try {
         // إزالة الأحرف غير المرغوب فيها
-        const cleaned = analysisText.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
+        const cleaned = cleanedText.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
         analysis = JSON.parse(cleaned);
       } catch {
         return NextResponse.json(
