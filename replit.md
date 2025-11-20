@@ -119,3 +119,55 @@ Image storage: Cloudinary preferred over local storage for better performance, a
   - **AI Competitor Analysis** (New): Comprehensive competitive intelligence with top ranking factors, suggested keywords, content structure recommendations, title suggestions, image suggestions, competitive advantages, and market insights
   - Project descriptions and meta tag generation
 - **Google Custom Search API**: Image search for automated article image selection.
+
+# Recent Changes
+
+## Category Unification System (November 20, 2025)
+Complete standardization of category taxonomy across all content types (Projects, Articles, FAQs).
+
+### Implementation Details
+- **Unified 10 Main Categories**: 
+  - مظلات سيارات, سواتر, خيم ملكية, بيوت شعر ملكي, برجولات, تنسيق حدائق, هناجر, شبوك, قراميد, ساندوتش بانل
+  - Replaced legacy categories: "عام", "نصائح وإرشادات", "أخرى", "مقالات تقنية"
+
+- **Category Normalization Library** (`src/lib/categoryNormalizer.ts`):
+  - `normalizeCategoryName()`: Validates and automatically converts legacy category names
+  - Supports 30+ legacy category variations (e.g., مظلات → مظلات سيارات, خيام → خيم ملكية)
+  - Returns validation results with transformation status and detailed error messages
+  - Used across all API endpoints for consistent validation
+
+- **Legacy Category Mapping** (`src/constants/projectCategories.ts`):
+  - Comprehensive `LEGACY_CATEGORIES_MAP` handles all historical category variations
+  - Automatic conversion ensures backward compatibility
+
+- **API Integration**:
+  - All create/update endpoints for projects, articles, and FAQs include:
+    - Automatic category validation before saving
+    - Real-time conversion of legacy categories to unified categories
+    - Console logging for transparency and debugging
+    - Arabic error messages for invalid categories
+  - Updated files:
+    - `src/app/api/projects/create/route.ts` and `[id]/route.ts`
+    - `src/app/api/articles/route.ts` and `[id]/route.ts`
+    - `src/app/api/faqs/route.ts` and `[id]/route.ts`
+
+- **Database Migration Script** (`scripts/migrate-categories.ts`):
+  - Automated script to update existing database records
+  - Processes all projects, articles, and FAQs in bulk
+  - Detailed reporting with success/error counts and transformation details
+  - Run via: `bun run migrate:categories`
+  - Safe to run multiple times (idempotent)
+
+- **UI Consistency**: All user interfaces updated to use unified categories
+  - Portfolio gallery and filtering
+  - Advanced search with category filters
+  - FAQs categorization and navigation
+  - Article categorization and browsing
+
+### Benefits
+- **Consistency**: Unified category naming across entire platform
+- **Search Accuracy**: Improved filtering and search results
+- **SEO Optimization**: Standardized taxonomy for better search engine indexing
+- **Backward Compatibility**: Seamless handling of legacy data
+- **Data Quality**: Automatic validation prevents invalid categories
+- **User Experience**: Clear, consistent navigation and filtering
