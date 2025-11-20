@@ -51,6 +51,15 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
       badgeColor: 'bg-gradient-to-r from-blue-500 to-cyan-500'
     },
     {
+      href: '/dashboard/projects/analysis',
+      icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+      label: 'عرض التحليلات',
+      hoverColor: 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-700',
+      activeColor: 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700',
+      badge: '📊',
+      badgeColor: 'bg-gradient-to-r from-indigo-500 to-purple-500'
+    },
+    {
       href: '/dashboard/articles',
       icon: 'M6 2h9a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z M9 7h6M9 11h6M9 15h4',
       label: 'المقالات',
