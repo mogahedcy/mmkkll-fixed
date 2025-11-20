@@ -223,62 +223,82 @@ export default function QuotePage() {
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">معلومات التواصل</h3>
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
                             الاسم الكامل *
                           </label>
                           <div className="relative">
-                            <User className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                            <User className="absolute right-3 top-3 w-5 h-5 text-gray-400" aria-hidden="true" />
                             <input
+                              id="fullName"
+                              name="fullName"
                               type="text"
                               required
+                              aria-required="true"
+                              aria-describedby="fullName-help"
                               className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                               placeholder="أدخل اسمك الكامل"
                             />
                           </div>
+                          <p id="fullName-help" className="mt-1 text-xs text-gray-500">الاسم الكامل مطلوب للتواصل معك</p>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                             رقم الهاتف *
                           </label>
                           <div className="relative">
-                            <Phone className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                            <Phone className="absolute right-3 top-3 w-5 h-5 text-gray-400" aria-hidden="true" />
                             <input
+                              id="phone"
+                              name="phone"
                               type="tel"
                               required
+                              aria-required="true"
+                              aria-describedby="phone-help"
+                              pattern="^(05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$"
                               className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                               placeholder="05xxxxxxxx"
                             />
                           </div>
+                          <p id="phone-help" className="mt-1 text-xs text-gray-500">رقم جوال سعودي بصيغة 05xxxxxxxx</p>
                         </div>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-4 mt-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                             البريد الإلكتروني
                           </label>
                           <div className="relative">
-                            <Mail className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                            <Mail className="absolute right-3 top-3 w-5 h-5 text-gray-400" aria-hidden="true" />
                             <input
+                              id="email"
+                              name="email"
                               type="email"
+                              aria-describedby="email-help"
                               className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                               placeholder="example@email.com"
                             />
                           </div>
+                          <p id="email-help" className="mt-1 text-xs text-gray-500">اختياري - لإرسال عرض السعر عبر البريد</p>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <label htmlFor="area" className="block text-sm font-medium text-gray-700 mb-2">
                             المنطقة/الحي *
                           </label>
                           <div className="relative">
-                            <Home className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                            <Home className="absolute right-3 top-3 w-5 h-5 text-gray-400" aria-hidden="true" />
                             <input
+                              id="area"
+                              name="area"
                               type="text"
                               required
+                              aria-required="true"
+                              aria-describedby="area-help"
                               className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                               placeholder="حي السلامة، جدة"
                             />
                           </div>
+                          <p id="area-help" className="mt-1 text-xs text-gray-500">اسم المنطقة أو الحي لتحديد موقع المشروع</p>
                         </div>
                       </div>
                     </div>
@@ -287,11 +307,15 @@ export default function QuotePage() {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">تفاصيل الخدمة</h3>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label htmlFor="serviceType" className="block text-sm font-medium text-gray-700 mb-2">
                           نوع الخدمة المطلوبة *
                         </label>
                         <select
+                          id="serviceType"
+                          name="serviceType"
                           required
+                          aria-required="true"
+                          aria-describedby="serviceType-help"
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         >
                           <option value="">اختر نوع الخدمة</option>
@@ -301,6 +325,7 @@ export default function QuotePage() {
                             </option>
                           ))}
                         </select>
+                        <p id="serviceType-help" className="mt-1 text-xs text-gray-500">اختر الخدمة الأساسية المطلوبة</p>
                       </div>
                     </div>
 
@@ -356,18 +381,23 @@ export default function QuotePage() {
 
                     {/* Additional Details */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="projectDetails" className="block text-sm font-medium text-gray-700 mb-2">
                         تفاصيل إضافية عن المشروع *
                       </label>
                       <div className="relative">
-                        <MessageSquare className="absolute right-3 top-3 w-5 h-5 text-gray-400" />
+                        <MessageSquare className="absolute right-3 top-3 w-5 h-5 text-gray-400" aria-hidden="true" />
                         <textarea
+                          id="projectDetails"
+                          name="projectDetails"
                           rows={4}
                           required
+                          aria-required="true"
+                          aria-describedby="projectDetails-help"
                           className="w-full pr-10 pl-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
                           placeholder="اكتب تفاصيل المشروع: نوع التصميم المطلوب، الألوان المفضلة، أي متطلبات خاصة، إلخ..."
                         />
                       </div>
+                      <p id="projectDetails-help" className="mt-1 text-xs text-gray-500">اذكر كل التفاصيل المهمة لفهم احتياجاتك بدقة</p>
                     </div>
 
                     <div className="flex items-center">
@@ -383,8 +413,8 @@ export default function QuotePage() {
                       </label>
                     </div>
 
-                    <Button type="submit" className="w-full bg-primary hover:bg-primary/90 py-4 text-lg">
-                      <Send className="w-5 h-5 mr-2" />
+                    <Button type="submit" aria-label="إرسال طلب عرض السعر" className="w-full bg-primary hover:bg-primary/90 py-4 text-lg focus-visible-ring">
+                      <Send className="w-5 h-5 mr-2" aria-hidden="true" />
                       إرسال طلب عرض السعر
                     </Button>
                   </form>
@@ -460,10 +490,10 @@ export default function QuotePage() {
                     زمن الاستجابة
                   </h3>
                   <div className="space-y-2 text-sm opacity-90">
-                    <p>⚡ رد فوري عبر الهاتف/واتساب</p>
-                    <p>📧 عرض سعر مفصل خلال 24 ساعة</p>
-                    <p>📋 معاينة الموقع خلال 48 ساعة</p>
-                    <p>🚀 بداية التنفيذ حسب الاتفاق</p>
+                    <p>• رد فوري عبر الهاتف/واتساب</p>
+                    <p>• عرض سعر مفصل خلال 24 ساعة</p>
+                    <p>• معاينة الموقع خلال 48 ساعة</p>
+                    <p>• بداية التنفيذ حسب الاتفاق</p>
                   </div>
                 </div>
 

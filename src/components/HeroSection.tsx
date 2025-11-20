@@ -67,8 +67,8 @@ export default function HeroSection() {
         ))}
       </div>
 
-      {/* Enhanced Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70 z-10" />
+      {/* Enhanced Overlay - Improved contrast for accessibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/65 to-black/75 z-10" />
 
       {/* Slider Controls - WCAG Accessibility */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-3">
@@ -161,7 +161,7 @@ export default function HeroSection() {
             asChild 
             variant="outline" 
             size="lg" 
-            className="w-full sm:w-auto text-lg sm:text-xl shadow-xl bg-white/10 backdrop-blur-md border-2 border-white/30 hover:bg-white/20 text-white font-bold transform hover:scale-105 transition-all duration-300 active:scale-95 py-6 sm:py-7 px-8 sm:px-10 rounded-xl focus-visible-ring"
+            className="w-full sm:w-auto text-lg sm:text-xl shadow-xl bg-white/20 backdrop-blur-md border-2 border-white/50 hover:bg-white/30 text-white font-bold transform hover:scale-105 transition-all duration-300 active:scale-95 py-6 sm:py-7 px-8 sm:px-10 rounded-xl focus-visible-ring"
             aria-label="اتصل بنا على رقم الهاتف"
           >
             <Link href="tel:+966553719009" className="flex items-center justify-center space-x-3 sm:space-x-4 space-x-reverse">
@@ -171,24 +171,24 @@ export default function HeroSection() {
           </Button>
         </div>
 
-        {/* روابط سريعة للخدمات - محسن للجوال */}
+        {/* روابط سريعة للخدمات - محسن للجوال مع تباين أفضل */}
         <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5 md:gap-3 text-xs sm:text-sm max-w-4xl mx-auto px-4">
-          <Link href="/services/mazallat" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
+          <Link href="/services/mazallat" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 active:bg-white/35 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             مظلات سيارات جدة
           </Link>
-          <Link href="/services/pergolas" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
+          <Link href="/services/pergolas" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 active:bg-white/35 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             برجولات حدائق جدة
           </Link>
-          <Link href="/services/sawater" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
+          <Link href="/services/sawater" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 active:bg-white/35 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             سواتر خصوصية جدة
           </Link>
-          <Link href="/services/sandwich-panel" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
+          <Link href="/services/sandwich-panel" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 active:bg-white/35 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target">
             ساندوتش بانل جدة
           </Link>
-          <Link href="/services/landscaping" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
+          <Link href="/services/landscaping" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 active:bg-white/35 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
             تنسيق حدائق جدة
           </Link>
-          <Link href="/services/byoot-shaar" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 active:bg-white/25 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
+          <Link href="/services/byoot-shaar" className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 active:bg-white/35 transition-all duration-300 text-white font-medium whitespace-nowrap touch-target hidden sm:flex">
             بيوت شعر تراثية
           </Link>
         </div>

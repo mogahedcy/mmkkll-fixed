@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import NextImage from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Car, TreePine, Shield, Home, Wrench, Flower, MapPin, Calendar, Eye, Loader2 } from 'lucide-react';
+import { ArrowLeft, Car, TreePine, Shield, Home, Wrench, Flower, MapPin, Calendar, Eye, Heart, Star, Loader2 } from 'lucide-react';
 import SEOImage from '@/components/services/SEOImage';
 
 // تعريف أنواع الخدمات مع الأيقونات المناسبة - متوافق مع صفحة البورتفوليو
@@ -333,7 +333,7 @@ export default function PortfolioSection() {
                     {/* Featured Badge */}
                     {project.featured && (
                       <div className="absolute bottom-4 left-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg z-10">
-                        ⭐ مميز
+                        مميز
                       </div>
                     )}
 
@@ -393,9 +393,18 @@ export default function PortfolioSection() {
                     {/* Project Stats */}
                     <div className="flex items-center justify-between text-sm text-muted-foreground mb-6">
                       <div className="flex items-center space-x-4 space-x-reverse">
-                        <span>👁️ {project.views || 0}</span>
-                        <span>❤️ {project.likes || 0}</span>
-                        <span>⭐ {project.rating || 0}</span>
+                        <div className="flex items-center space-x-1 space-x-reverse">
+                          <Eye className="w-4 h-4" />
+                          <span>{project.views || 0}</span>
+                        </div>
+                        <div className="flex items-center space-x-1 space-x-reverse">
+                          <Heart className="w-4 h-4" />
+                          <span>{project.likes || 0}</span>
+                        </div>
+                        <div className="flex items-center space-x-1 space-x-reverse">
+                          <Star className="w-4 h-4" />
+                          <span>{project.rating || 0}</span>
+                        </div>
                       </div>
                     </div>
 
