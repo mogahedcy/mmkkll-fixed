@@ -46,7 +46,6 @@ export async function GET() {
       const changefreq = 'weekly';
 
       const keywords = faq.keywords || '';
-      const description = faq.answer.substring(0, 160).replace(/\n/g, ' ').trim();
 
       return `  <url>
     <loc>${faqUrl}</loc>
@@ -64,7 +63,6 @@ export async function GET() {
       <news:title><![CDATA[${faq.question}]]></news:title>
       <news:keywords><![CDATA[${keywords || faq.category}]]></news:keywords>
     </news:news>
-    ${description ? `<description><![CDATA[${description}]]></description>` : ''}
   </url>`;
     })
     .join('\n');
