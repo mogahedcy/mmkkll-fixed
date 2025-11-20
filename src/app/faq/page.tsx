@@ -5,6 +5,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Loader2 } from 'lucide-react';
 import { generateCanonicalUrl } from '@/lib/seo-utils';
+import { prisma } from '@/lib/prisma';
+import EnhancedFAQSchema from '@/components/EnhancedFAQSchema';
 
 export const metadata: Metadata = {
   title: 'الأسئلة الشائعة | محترفين الديار العالمية - إجابات شاملة',
@@ -41,21 +43,37 @@ export const metadata: Metadata = {
   }
 };
 
-const faqStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  name: 'الأسئلة الشائعة - محترفين الديار العالمية',
-  description: 'إجابات شاملة على الأسئلة الشائعة حول خدمات المظلات والبرجولات والسواتر',
-  url: 'https://www.aldeyarksa.tech/faq',
-  publisher: {
-    '@type': 'Organization',
-    name: 'محترفين الديار العالمية',
-    logo: {
-      '@type': 'ImageObject',
-      url: 'https://www.aldeyarksa.tech/favicon.svg'
-    }
+async function getFAQs() {
+  try {
+    const faqs = await prisma.faqs.findMany({
+      where: { status: 'PUBLISHED' },
+      orderBy: [
+        { featured: 'desc' },
+        { order: 'asc' },
+        { views: 'desc' }
+      ],
+      select: {
+        id: true,
+        question: true,
+        answer: true,
+        category: true,
+        slug: true,
+        metaTitle: true,
+        keywords: true,
+        featured: true,
+        order: true,
+        views: true,
+        helpfulness: true,
+        createdAt: true
+      }
+    });
+    
+    return faqs;
+  } catch (error) {
+    console.error('Error fetching FAQs:', error);
+    return [];
   }
-};
+}
 
 function LoadingFallback() {
   return (
@@ -68,16 +86,15 @@ function LoadingFallback() {
   );
 }
 
-export default function FAQPage() {
+export default async function FAQPage() {
+  const faqs = await getFAQs();
+  
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
-      />
+      <EnhancedFAQSchema faqs={faqs} />
       <Navbar />
       <Suspense fallback={<LoadingFallback />}>
-        <FAQPageClient />
+        <FAQPageClient initialFAQs={faqs} />
       </Suspense>
       <Footer />
     </>

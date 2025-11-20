@@ -3,9 +3,9 @@ interface FAQ {
   question: string;
   answer: string;
   category: string;
-  slug?: string;
-  metaTitle?: string;
-  keywords?: string;
+  slug?: string | null;
+  metaTitle?: string | null;
+  keywords?: string | null;
 }
 
 interface EnhancedFAQSchemaProps {
@@ -55,7 +55,7 @@ export default function EnhancedFAQSchema({ faqs, baseUrl = 'https://www.aldeyar
         keywords: faq.keywords
       }),
       ...(faq.slug && {
-        url: `${baseUrl}/faq#${faq.slug}`
+        url: `${baseUrl}/faq/${faq.slug}`
       })
     }))
   };

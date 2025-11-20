@@ -12,7 +12,12 @@ import {
   Phone,
   Loader2,
   BookOpen,
-  Sparkles
+  Sparkles,
+  Share2,
+  ThumbsUp,
+  ThumbsDown,
+  Check,
+  Copy
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -26,14 +31,13 @@ interface FAQ {
   order: number;
   featured: boolean;
   views: number;
+  slug?: string | null;
+  helpfulness: number;
   createdAt: Date;
-  updatedAt: Date;
 }
 
-interface Stats {
-  total: number;
-  featured: number;
-  categories: Array<{ category: string; _count: { category: number } }>;
+interface FAQPageClientProps {
+  initialFAQs: FAQ[];
 }
 
 const categories = [
@@ -46,19 +50,20 @@ const categories = [
   { value: 'عامة', label: 'أسئلة عامة', icon: '💬' }
 ];
 
-export default function FAQPageClient() {
+export default function FAQPageClient({ initialFAQs }: FAQPageClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   
-  const [faqs, setFaqs] = useState<FAQ[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<Stats>({ total: 0, featured: 0, categories: [] });
+  const [faqs, setFaqs] = useState<FAQ[]>(initialFAQs);
+  const [baseFaqs, setBaseFaqs] = useState<FAQ[]>(initialFAQs);
+  const [loading, setLoading] = useState(false);
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
-  const [showFilters, setShowFilters] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [helpfulVotes, setHelpfulVotes] = useState<Record<string, 'yes' | 'no' | null>>({});
 
   const pendingScrollIdRef = useRef<string | null>(null);
   const hasHandledDeepLinkRef = useRef(false);
@@ -138,6 +143,7 @@ export default function FAQPageClient() {
     try {
       const params = new URLSearchParams({
         limit: '100',
+        status: 'PUBLISHED',
         ...(selectedCategory !== 'all' && { category: selectedCategory }),
         ...(searchTerm && { search: searchTerm })
       });
@@ -147,11 +153,6 @@ export default function FAQPageClient() {
       
       if (data.success) {
         setFaqs(data.faqs || []);
-        setStats({
-          total: data.total || data.faqs?.length || 0,
-          featured: 0,
-          categories: []
-        });
       }
     } catch (error) {
       console.error('Error fetching FAQs:', error);
@@ -161,11 +162,71 @@ export default function FAQPageClient() {
   }, [searchTerm, selectedCategory]);
 
   useEffect(() => {
-    fetchFAQs();
-  }, [fetchFAQs]);
+    if (searchTerm || selectedCategory !== 'all') {
+      fetchFAQs();
+    }
+  }, [searchTerm, selectedCategory, fetchFAQs]);
+
+  const displayFAQs = searchTerm || selectedCategory !== 'all' ? faqs : baseFaqs;
+  
+  const filteredFAQs = displayFAQs.filter(faq => {
+    const matchesCategory = selectedCategory === 'all' || faq.category === selectedCategory;
+    const matchesSearch = !searchTerm || 
+      faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const toggleFAQ = (id: string) => {
     setExpandedFAQ(expandedFAQ === id ? null : id);
+  };
+
+  const copyLink = async (faq: FAQ) => {
+    const link = faq.slug 
+      ? `${window.location.origin}/faq/${faq.slug}`
+      : `${window.location.origin}/faq?id=${faq.id}`;
+    
+    try {
+      await navigator.clipboard.writeText(link);
+      setCopiedId(faq.id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (error) {
+      console.error('Failed to copy link:', error);
+    }
+  };
+
+  const handleHelpful = async (faqId: string, helpful: boolean) => {
+    const voteKey = `faq_vote_${faqId}`;
+    const existingVote = localStorage.getItem(voteKey);
+    
+    if (existingVote) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/faqs/track-helpfulness', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ faqId, helpful })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setHelpfulVotes(prev => ({ ...prev, [faqId]: helpful ? 'yes' : 'no' }));
+        localStorage.setItem(voteKey, helpful ? 'yes' : 'no');
+        
+        const updateFn = (prevFaqs: FAQ[]) => prevFaqs.map(faq => 
+          faq.id === faqId 
+            ? { ...faq, helpfulness: data.helpfulness }
+            : faq
+        );
+        
+        setFaqs(updateFn);
+        setBaseFaqs(updateFn);
+      }
+    } catch (error) {
+      console.error('Error tracking helpfulness:', error);
+    }
   };
 
   return (
@@ -190,7 +251,7 @@ export default function FAQPageClient() {
             </p>
             <div className="inline-flex items-center gap-2 mt-4 text-sm text-accent">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="font-medium">{stats.total} سؤال وجواب</span>
+              <span className="font-medium">{faqs.length} سؤال وجواب</span>
             </div>
           </motion.div>
 
@@ -244,7 +305,7 @@ export default function FAQPageClient() {
             <div className="flex items-center justify-center py-20">
               <Loader2 className="w-12 h-12 text-accent animate-spin" />
             </div>
-          ) : faqs.length === 0 ? (
+          ) : filteredFAQs.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -269,7 +330,7 @@ export default function FAQPageClient() {
           ) : (
             <div className="space-y-4">
               <AnimatePresence>
-                {faqs.map((faq, index) => (
+                {filteredFAQs.map((faq, index) => (
                   <motion.div
                     key={faq.id}
                     id={`question-${faq.id}`}
@@ -317,10 +378,72 @@ export default function FAQPageClient() {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.3 }}
                         >
-                          <div className="px-6 pb-6 pt-2 border-t border-gray-100">
-                            <p className="text-gray-700 leading-relaxed text-right">
-                              {faq.answer}
-                            </p>
+                          <div className="px-6 pb-6 pt-2 border-t border-gray-100 space-y-4">
+                            <div className="bg-gradient-to-br from-accent/5 to-primary/5 rounded-xl p-5">
+                              <p className="text-gray-700 leading-relaxed text-right whitespace-pre-line">
+                                {faq.answer}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center justify-between flex-wrap gap-4 pt-3">
+                              <div className="flex items-center gap-3">
+                                <button
+                                  onClick={() => copyLink(faq)}
+                                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium text-gray-700"
+                                >
+                                  {copiedId === faq.id ? (
+                                    <>
+                                      <Check className="w-4 h-4 text-green-600" />
+                                      <span className="text-green-600">تم النسخ!</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="w-4 h-4" />
+                                      <span>نسخ الرابط</span>
+                                    </>
+                                  )}
+                                </button>
+
+                                <div className="flex items-center gap-2">
+                                  {faq.views > 0 && (
+                                    <span className="text-xs text-gray-500 bg-gray-100 px-3 py-2 rounded-lg">
+                                      {faq.views} مشاهدة
+                                    </span>
+                                  )}
+                                  {faq.helpfulness > 0 && (
+                                    <span className="text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg font-medium">
+                                      {faq.helpfulness}% مفيدة
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm text-gray-600 mr-2">هل كانت الإجابة مفيدة؟</span>
+                                <button
+                                  onClick={() => handleHelpful(faq.id, true)}
+                                  disabled={!!helpfulVotes[faq.id]}
+                                  className={`p-2 rounded-lg transition-all ${
+                                    helpfulVotes[faq.id] === 'yes'
+                                      ? 'bg-green-100 text-green-600'
+                                      : 'bg-gray-100 hover:bg-green-50 text-gray-600 hover:text-green-600'
+                                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                                >
+                                  <ThumbsUp className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleHelpful(faq.id, false)}
+                                  disabled={!!helpfulVotes[faq.id]}
+                                  className={`p-2 rounded-lg transition-all ${
+                                    helpfulVotes[faq.id] === 'no'
+                                      ? 'bg-red-100 text-red-600'
+                                      : 'bg-gray-100 hover:bg-red-50 text-gray-600 hover:text-red-600'
+                                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                                >
+                                  <ThumbsDown className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </motion.div>
                       )}
