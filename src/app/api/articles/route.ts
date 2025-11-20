@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { randomUUID } from 'crypto';
-import { normalizeCategoryName } from '@/lib/categoryNormalizer';
+import { normalizeArticleCategoryName } from '@/lib/categoryNormalizer';
 
 // GET - جلب المقالات مع إحصائيات التفاعل
 export async function GET(request: NextRequest) {
@@ -24,9 +24,19 @@ export async function GET(request: NextRequest) {
     };
 
     if (category && category !== 'all') {
-      where.category = {
-        contains: category
-      };
+      const categoryValidation = normalizeArticleCategoryName(category);
+      if (categoryValidation.isValid && categoryValidation.normalizedCategory) {
+        where.category = {
+          contains: categoryValidation.normalizedCategory
+        };
+        if (categoryValidation.wasTransformed) {
+          console.log(`✅ Articles GET - تم تحويل الفئة: "${category}" → "${categoryValidation.normalizedCategory}"`);
+        }
+      } else {
+        where.category = {
+          contains: category
+        };
+      }
     }
 
     if (featured === 'true') {
@@ -189,7 +199,7 @@ export async function POST(request: NextRequest) {
     }
 
     // التحقق من صحة الفئة وتحويلها تلقائياً
-    const categoryValidation = normalizeCategoryName(category);
+    const categoryValidation = normalizeArticleCategoryName(category);
     if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
       return NextResponse.json(
         { error: `الفئة "${category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` },

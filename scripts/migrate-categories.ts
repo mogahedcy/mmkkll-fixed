@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { normalizeCategoryName } from '../src/lib/categoryNormalizer';
+import { normalizeCategoryName, normalizeArticleCategoryName } from '../src/lib/categoryNormalizer';
 
 const prisma = new PrismaClient();
 
@@ -55,16 +55,7 @@ async function migrateCategories() {
     console.log(`✅ تم تحديث ${projectsResult.updated} مشروع\n`);
 
     console.log('🔄 جاري تحديث المقالات...');
-    const articlesResult = await migrateTable(
-      'articles',
-      articles,
-      async (id: string, newCategory: string) => {
-        await prisma.articles.update({
-          where: { id },
-          data: { category: newCategory }
-        });
-      }
-    );
+    const articlesResult = await migrateArticlesTable(articles);
     results.push(articlesResult);
     console.log(`✅ تم تحديث ${articlesResult.updated} مقالة\n`);
 
@@ -118,6 +109,52 @@ async function migrateTable(
 
       if (validation.wasTransformed && validation.normalizedCategory) {
         await updateFn(record.id, validation.normalizedCategory);
+        result.updated++;
+        result.details.push({
+          id: record.id,
+          oldCategory: record.category,
+          newCategory: validation.normalizedCategory
+        });
+        console.log(`  ✓ ${record.category} → ${validation.normalizedCategory} (${record.id})`);
+      } else {
+        result.unchanged++;
+      }
+    } catch (error) {
+      console.error(`  ❌ خطأ في تحديث ${record.id}:`, error);
+      result.errors++;
+    }
+  }
+
+  return result;
+}
+
+async function migrateArticlesTable(
+  records: Array<{ id: string; category: string; [key: string]: any }>
+): Promise<MigrationResult> {
+  const result: MigrationResult = {
+    table: 'articles',
+    totalRecords: records.length,
+    updated: 0,
+    unchanged: 0,
+    errors: 0,
+    details: []
+  };
+
+  for (const record of records) {
+    try {
+      const validation = normalizeArticleCategoryName(record.category);
+      
+      if (!validation.isValid) {
+        console.warn(`⚠️ فئة غير صالحة في articles: "${record.category}" (ID: ${record.id})`);
+        result.errors++;
+        continue;
+      }
+
+      if (validation.wasTransformed && validation.normalizedCategory) {
+        await prisma.articles.update({
+          where: { id: record.id },
+          data: { category: validation.normalizedCategory }
+        });
         result.updated++;
         result.details.push({
           id: record.id,

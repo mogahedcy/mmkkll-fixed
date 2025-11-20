@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { randomUUID } from 'crypto';
+import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
 // GET - جلب المشاريع مع إحصائيات التفاعل
 export async function GET(request: NextRequest) {
@@ -23,9 +24,19 @@ export async function GET(request: NextRequest) {
     };
 
     if (category && category !== 'all') {
-      where.category = {
-        contains: category
-      };
+      const categoryValidation = normalizeCategoryName(category);
+      if (categoryValidation.isValid && categoryValidation.normalizedCategory) {
+        where.category = {
+          contains: categoryValidation.normalizedCategory
+        };
+        if (categoryValidation.wasTransformed) {
+          console.log(`✅ Projects GET - تم تحويل الفئة: "${category}" → "${categoryValidation.normalizedCategory}"`);
+        }
+      } else {
+        where.category = {
+          contains: category
+        };
+      }
     }
 
     if (featured === 'true') {

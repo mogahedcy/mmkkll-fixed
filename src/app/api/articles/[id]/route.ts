@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { randomUUID } from 'crypto';
-import { normalizeCategoryName } from '@/lib/categoryNormalizer';
+import { normalizeArticleCategoryName } from '@/lib/categoryNormalizer';
 
 // GET - جلب مقالة واحدة
 export async function GET(
@@ -96,7 +96,7 @@ export async function PUT(
     }
 
     // التحقق من صحة الفئة وتحويلها تلقائياً
-    const categoryValidation = normalizeCategoryName(category);
+    const categoryValidation = normalizeArticleCategoryName(category);
     if (!categoryValidation.isValid || !categoryValidation.normalizedCategory) {
       return NextResponse.json(
         { error: `الفئة "${category}" غير صالحة. الرجاء اختيار فئة من القائمة المتاحة.` },

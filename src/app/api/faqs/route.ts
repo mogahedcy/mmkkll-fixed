@@ -34,7 +34,15 @@ export async function GET(request: NextRequest) {
     }
     
     if (category && category !== 'all') {
-      where.category = category;
+      const categoryValidation = normalizeCategoryName(category);
+      if (categoryValidation.isValid && categoryValidation.normalizedCategory) {
+        where.category = categoryValidation.normalizedCategory;
+        if (categoryValidation.wasTransformed) {
+          console.log(`✅ FAQs GET - تم تحويل الفئة: "${category}" → "${categoryValidation.normalizedCategory}"`);
+        }
+      } else {
+        where.category = category;
+      }
     }
 
     const faqs = await prisma.faqs.findMany({
