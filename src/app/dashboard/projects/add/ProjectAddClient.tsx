@@ -21,7 +21,11 @@ import {
   Clock,
   DollarSign,
   Tag,
-  Package
+  Package,
+  Sparkles,
+  Loader2,
+  CheckCircle2,
+  Lightbulb
 } from 'lucide-react';
 import { PROJECT_CATEGORIES } from '@/constants/projectCategories';
 
@@ -60,6 +64,9 @@ export default function ProjectAddClient() {
   const [newMaterial, setNewMaterial] = useState('');
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [aiSuggestions, setAiSuggestions] = useState<any>(null);
+  const [loadingAI, setLoadingAI] = useState(false);
+  const [showAISuggestions, setShowAISuggestions] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({
@@ -269,6 +276,64 @@ export default function ProjectAddClient() {
     }
   };
 
+  const getAISuggestions = async () => {
+    if (!formData.title) {
+      alert('يرجى إدخال عنوان المشروع أولاً');
+      return;
+    }
+
+    setLoadingAI(true);
+    try {
+      const response = await fetch('/api/ai-suggestions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          location: formData.location,
+          type: 'project'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('فشل في الحصول على الاقتراحات');
+      }
+
+      const data = await response.json();
+      setAiSuggestions(data.suggestions);
+      setShowAISuggestions(true);
+      console.log('🤖 اقتراحات AI:', data.suggestions);
+    } catch (error) {
+      console.error('خطأ في الحصول على اقتراحات AI:', error);
+      alert('حدث خطأ في الحصول على اقتراحات AI. يرجى المحاولة مرة أخرى.');
+    } finally {
+      setLoadingAI(false);
+    }
+  };
+
+  const applyAISuggestion = (type: 'title' | 'description' | 'keywords' | 'metaTitle' | 'metaDescription', value: string) => {
+    if (type === 'title') {
+      handleInputChange('title', value);
+    } else if (type === 'description') {
+      handleInputChange('description', value);
+    } else if (type === 'keywords') {
+      handleInputChange('keywords', value);
+    } else if (type === 'metaTitle') {
+      handleInputChange('metaTitle', value);
+    } else if (type === 'metaDescription') {
+      handleInputChange('metaDescription', value);
+    }
+  };
+
+  const addKeywordFromAI = (keyword: string) => {
+    if (!tags.includes(keyword)) {
+      setTags(prev => [...prev, keyword]);
+    }
+  };
+
   const previewProject = () => {
     const preview = {
       ...formData,
@@ -431,7 +496,187 @@ export default function ProjectAddClient() {
                 required
               />
             </div>
+
+            {/* زر AI */}
+            <div className="mt-6 flex justify-center">
+              <Button
+                type="button"
+                onClick={getAISuggestions}
+                disabled={loadingAI || !formData.title}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3"
+              >
+                {loadingAI ? (
+                  <>
+                    <Loader2 className="h-5 w-5 ml-2 animate-spin" />
+                    جاري التحليل...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-5 w-5 ml-2" />
+                    احصل على اقتراحات ذكية بالـ AI
+                  </>
+                )}
+              </Button>
+            </div>
           </Card>
+
+          {/* اقتراحات AI */}
+          {showAISuggestions && aiSuggestions && (
+            <Card className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-2 border-purple-200">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold flex items-center gap-2 text-purple-900">
+                  <Sparkles className="h-6 w-6" />
+                  اقتراحات الذكاء الاصطناعي
+                </h2>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowAISuggestions(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <div className="space-y-6">
+                {/* الكلمات المفتاحية */}
+                {aiSuggestions.keywords && aiSuggestions.keywords.length > 0 && (
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Tag className="h-5 w-5 text-purple-600" />
+                      <h3 className="font-semibold text-gray-900">الكلمات المفتاحية المقترحة</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {aiSuggestions.keywords.map((keyword: string, index: number) => (
+                        <Badge
+                          key={index}
+                          className="bg-purple-100 text-purple-700 hover:bg-purple-200 cursor-pointer transition-colors"
+                          onClick={() => addKeywordFromAI(keyword)}
+                        >
+                          <Plus className="h-3 w-3 ml-1" />
+                          {keyword}
+                        </Badge>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-600 mt-2">💡 اضغط على أي كلمة لإضافتها للوسوم</p>
+                  </div>
+                )}
+
+                {/* اقتراحات العناوين */}
+                {aiSuggestions.titleSuggestions && aiSuggestions.titleSuggestions.length > 0 && (
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Lightbulb className="h-5 w-5 text-blue-600" />
+                      <h3 className="font-semibold text-gray-900">اقتراحات للعناوين</h3>
+                    </div>
+                    <div className="space-y-2">
+                      {aiSuggestions.titleSuggestions.map((title: string, index: number) => (
+                        <div key={index} className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-800">{title}</p>
+                          </div>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => applyAISuggestion('title', title)}
+                            className="text-blue-600 hover:text-blue-700"
+                          >
+                            <CheckCircle2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* اقتراح الوصف */}
+                {aiSuggestions.contentSuggestions && (
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Package className="h-5 w-5 text-green-600" />
+                      <h3 className="font-semibold text-gray-900">اقتراح للوصف</h3>
+                    </div>
+                    <div className="p-3 bg-green-50 rounded-lg">
+                      <div 
+                        className="text-sm text-gray-700 mb-3"
+                        dangerouslySetInnerHTML={{ __html: aiSuggestions.contentSuggestions }}
+                      />
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={() => {
+                          const plainText = aiSuggestions.contentSuggestions.replace(/<[^>]*>/g, '');
+                          applyAISuggestion('description', plainText);
+                        }}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        <CheckCircle2 className="h-4 w-4 ml-2" />
+                        استخدام هذا الوصف
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Meta Tags */}
+                {aiSuggestions.metaTags && (
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Tag className="h-5 w-5 text-orange-600" />
+                      <h3 className="font-semibold text-gray-900">Meta Tags المقترحة</h3>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="p-3 bg-orange-50 rounded-lg">
+                        <p className="text-xs text-gray-600 mb-1">Meta Title:</p>
+                        <p className="text-sm text-gray-800 mb-2">{aiSuggestions.metaTags.title}</p>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => applyAISuggestion('metaTitle', aiSuggestions.metaTags.title)}
+                        >
+                          <CheckCircle2 className="h-3 w-3 ml-1" />
+                          تطبيق
+                        </Button>
+                      </div>
+                      <div className="p-3 bg-orange-50 rounded-lg">
+                        <p className="text-xs text-gray-600 mb-1">Meta Description:</p>
+                        <p className="text-sm text-gray-800 mb-2">{aiSuggestions.metaTags.description}</p>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={() => applyAISuggestion('metaDescription', aiSuggestions.metaTags.description)}
+                        >
+                          <CheckCircle2 className="h-3 w-3 ml-1" />
+                          تطبيق
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* اقتراحات التحسين */}
+                {aiSuggestions.descriptionSuggestions && aiSuggestions.descriptionSuggestions.length > 0 && (
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Lightbulb className="h-5 w-5 text-yellow-600" />
+                      <h3 className="font-semibold text-gray-900">اقتراحات لتحسين الوصف</h3>
+                    </div>
+                    <ul className="space-y-2">
+                      {aiSuggestions.descriptionSuggestions.map((suggestion: string, index: number) => (
+                        <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
+                          <CheckCircle2 className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                          <span>{suggestion}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </Card>
+          )}
 
           {/* الوسائط */}
           <Card className="p-6">
