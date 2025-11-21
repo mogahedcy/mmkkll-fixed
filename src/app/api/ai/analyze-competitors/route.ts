@@ -191,13 +191,14 @@ export async function POST(request: NextRequest) {
       analysis: validatedAnalysis
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء تحليل المنافسين';
     console.error('❌ خطأ في تحليل المنافسين:', error);
     
     return NextResponse.json(
       { 
         success: false, 
-        error: error.message || 'حدث خطأ أثناء تحليل المنافسين' 
+        error: errorMessage
       },
       { status: 500 }
     );

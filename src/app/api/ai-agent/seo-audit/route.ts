@@ -25,10 +25,11 @@ export async function GET(request: NextRequest) {
         lastAudit: audit.lastAudit
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء فحص SEO';
     console.error('Error in SEO audit API:', error);
     return NextResponse.json(
-      { error: error.message || 'حدث خطأ أثناء فحص SEO' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

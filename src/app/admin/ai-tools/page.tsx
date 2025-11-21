@@ -11,7 +11,7 @@ export default function AIToolsPage() {
     topic: '',
     keywords: '',
   });
-  const [generatedArticle, setGeneratedArticle] = useState<any>(null);
+  const [generatedArticle, setGeneratedArticle] = useState<{ title: string; metaDescription: string; content?: string } | null>(null);
 
   const handleGenerateArticle = async () => {
     if (!articleForm.topic) return;

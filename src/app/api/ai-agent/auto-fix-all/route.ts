@@ -19,10 +19,11 @@ export async function POST(request: NextRequest) {
       failed: result.failed,
       results: result.results
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء الإصلاح التلقائي الشامل';
     console.error('Error in auto-fix-all API:', error);
     return NextResponse.json(
-      { error: error.message || 'حدث خطأ أثناء الإصلاح التلقائي الشامل' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

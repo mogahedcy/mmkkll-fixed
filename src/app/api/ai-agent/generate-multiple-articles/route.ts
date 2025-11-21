@@ -51,10 +51,11 @@ export async function POST(request: NextRequest) {
       failedCount,
       results
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء توليد المقالات';
     console.error('Error in generate-multiple-articles API:', error);
     return NextResponse.json(
-      { error: error.message || 'حدث خطأ أثناء توليد المقالات' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

@@ -31,10 +31,11 @@ export async function POST(request: NextRequest) {
         error: result.message
       }, { status: 400 });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء الإصلاح التلقائي';
     console.error('Error in auto-fix API:', error);
     return NextResponse.json(
-      { error: error.message || 'حدث خطأ أثناء الإصلاح التلقائي' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

@@ -41,10 +41,11 @@ export async function POST(request: NextRequest) {
       success: true,
       images
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء اقتراح الصور';
     console.error('Error in suggest-images API:', error);
     return NextResponse.json(
-      { error: error.message || 'حدث خطأ أثناء اقتراح الصور' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

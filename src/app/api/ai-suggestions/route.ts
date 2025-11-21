@@ -17,7 +17,15 @@ export async function POST(request: NextRequest) {
 
     console.log('🤖 طلب اقتراحات AI:', { title, category, location, type });
 
-    const suggestions: any = {
+    interface Suggestions {
+      keywords: string[];
+      titleSuggestions: string[];
+      descriptionSuggestions: string[];
+      metaTags: { title: string; description: string; og_title: string; og_description: string; twitter_title: string; twitter_description: string } | null;
+      contentSuggestions: string | null;
+    }
+
+    const suggestions: Suggestions = {
       keywords: [],
       titleSuggestions: [],
       descriptionSuggestions: [],

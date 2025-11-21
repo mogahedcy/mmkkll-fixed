@@ -63,10 +63,11 @@ export async function POST(request: NextRequest) {
         mediaCount: result.article.mediaItems.length
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء توليد المقال';
     console.error('Error in generate-article API:', error);
     return NextResponse.json(
-      { error: error.message || 'حدث خطأ أثناء توليد المقال' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [isLoadingAI, setIsLoadingAI] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState<any>(null);
+  const [aiSuggestions, setAiSuggestions] = useState<{ title: string; description: string; keywords: string[] } | null>(null);
   const [projectInput, setProjectInput] = useState('');
 
   const stats = [
