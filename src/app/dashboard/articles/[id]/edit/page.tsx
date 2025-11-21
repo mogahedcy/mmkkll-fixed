@@ -105,7 +105,15 @@ export default function EditArticlePage() {
         
         // Load existing media
         if (article.mediaItems && article.mediaItems.length > 0) {
-          const existingMedia = article.mediaItems.map((item: any, index: number) => ({
+          interface MediaItemData {
+            id: string;
+            type: string;
+            thumbnail?: string;
+            src: string;
+            title?: string;
+            description?: string;
+          }
+          const existingMedia = article.mediaItems.map((item: MediaItemData, index: number) => ({
             id: item.id || `existing-${index}`,
             type: item.type === 'VIDEO' ? 'video' : 'image',
             preview: item.thumbnail || item.src,
@@ -119,7 +127,11 @@ export default function EditArticlePage() {
         
         // Load tags
         if (article.tags && article.tags.length > 0) {
-          setTags(article.tags.map((t: any) => t.name || t));
+          interface TagData {
+            name?: string;
+            [key: string]: unknown;
+          }
+          setTags(article.tags.map((t: TagData) => t.name || t));
         }
         
         setLoading(false);

@@ -28,7 +28,7 @@ interface AuditResult {
     [key: string]: {
       score: number;
       status: string;
-      details: any;
+      details: Record<string, unknown>;
       issues: string[];
       warnings: string[];
     }

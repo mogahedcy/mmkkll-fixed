@@ -71,7 +71,7 @@ export default function AutomationClient() {
   });
 
   const [scheduleLoading, setScheduleLoading] = useState(false);
-  const [scheduleLogs, setScheduleLogs] = useState<any[]>([]);
+  const [scheduleLogs, setScheduleLogs] = useState<Array<Record<string, unknown>>>([]);
   const [logsLoading, setLogsLoading] = useState(false);
 
   const [smartNiche, setSmartNiche] = useState('');
@@ -131,7 +131,7 @@ export default function AutomationClient() {
       } else {
         alert(data.error || 'حدث خطأ أثناء التوليد');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       alert('حدث خطأ في الاتصال');
       console.error(error);
     } finally {
@@ -158,7 +158,7 @@ export default function AutomationClient() {
       } else {
         alert(data.error || 'حدث خطأ أثناء الإصلاح');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       alert('حدث خطأ في الاتصال');
       console.error(error);
     } finally {

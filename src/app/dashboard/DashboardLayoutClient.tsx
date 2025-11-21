@@ -144,7 +144,19 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
     }
   ];
 
-  const NavLink = ({ link, onClick }: { link: any; onClick?: () => void }) => {
+  interface NavLinkItem {
+    href: string;
+    icon: string;
+    label: string;
+    hoverColor: string;
+    activeColor: string;
+    badge?: string;
+    badgeColor?: string;
+    target?: string;
+    external?: boolean;
+  }
+
+  const NavLink = ({ link, onClick }: { link: NavLinkItem; onClick?: () => void }) => {
     const active = isActive(link.href);
     
     return (

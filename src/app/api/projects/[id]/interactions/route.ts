@@ -32,7 +32,7 @@ export async function POST(
       );
     }
 
-    let result: any = {};
+    let result: Record<string, unknown> = {};
 
     if (type === 'view') {
       // تسجيل المشاهدة

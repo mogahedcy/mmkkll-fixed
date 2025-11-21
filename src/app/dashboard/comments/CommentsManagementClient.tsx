@@ -183,11 +183,11 @@ export default function CommentsManagementClient() {
       filtered = filtered.filter(c =>
         c.name.toLowerCase().includes(query) ||
         c.message.toLowerCase().includes(query) ||
-        c.project.title.toLowerCase().includes(query)
+        (c.project && typeof c.project === 'object' && 'title' in c.project && typeof c.project.title === 'string' && c.project.title.toLowerCase().includes(query))
       );
     }
 
-    const sorted = [...filtered].sort((a, b) => {
+    const sorted = [...filtered].sort((a: Comment, b: Comment) => {
       switch (sortBy) {
         case 'newest':
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();

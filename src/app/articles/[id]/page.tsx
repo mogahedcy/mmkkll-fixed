@@ -52,7 +52,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       };
     }
 
-    const mainImage = article.mediaItems?.find((item: any) => item.type === 'IMAGE');
+    interface MediaItem {
+      type: string;
+      src: string;
+      [key: string]: unknown;
+    }
+    const mainImage = article.mediaItems?.find((item: MediaItem) => item.type === 'IMAGE');
     const seoTitle = `${article.title} | محترفين الديار العالمية`;
     const seoDescription = article.excerpt || article.content.substring(0, 160);
 
@@ -64,7 +69,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         'محترفين الديار',
         'جدة',
         'السعودية',
-        ...(article.tags || []).map((t: any) => t.name)
+        ...(article.tags || []).map((t: { name?: string; [key: string]: unknown }) => t.name)
       ].join(', '),
       openGraph: {
         title: seoTitle,
@@ -108,9 +113,14 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const mainImage = article.mediaItems?.find((item: any) => item.type === 'IMAGE');
+  interface MediaItemType {
+    type: string;
+    src: string;
+    [key: string]: unknown;
+  }
+  const mainImage = article.mediaItems?.find((item: MediaItemType) => item.type === 'IMAGE');
   const allImages = article.mediaItems
-    ?.filter((item: any) => item.type === 'IMAGE')
+    ?.filter((item: MediaItemType) => item.type === 'IMAGE')
     .map((item: Record<string, unknown>) => item.src) || [];
   
   const articleUrl = `https://www.aldeyarksa.tech/articles/${article.slug || article.id}`;
@@ -119,7 +129,7 @@ export default async function ArticlePage({ params }: Props) {
     'محترفين الديار',
     'جدة',
     'السعودية',
-    ...(article.tags || []).map((t: any) => t.name)
+    ...(article.tags || []).map((t: { name?: string; [key: string]: unknown }) => t.name)
   ];
 
   const plainTextContent = article.content

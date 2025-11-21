@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     // Search FAQs
     if (type === 'all' || type === 'faqs') {
       try {
-        const faqWhereClause: any = { status: 'PUBLISHED' };
+        const faqWhereClause: Prisma.faqsWhereInput = { status: 'PUBLISHED' };
         
         if (q || category) {
           faqWhereClause.AND = [];
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     if (type === 'all' || type === 'projects') {
       try {
         // Build simpler where clause
-        const whereClause: any = { status: 'PUBLISHED' };
+        const whereClause: Prisma.projectsWhereInput = { status: 'PUBLISHED' };
         
         // Add search conditions
         if (q || category || location || minRating > 0 || dateFrom || dateTo || featured) {

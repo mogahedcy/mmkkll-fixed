@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const whereCondition = rating ? { rating: Number.parseInt(rating) } : {};
 
     // إعداد الترتيب
-    let orderBy: any = { createdAt: 'desc' };
+    let orderBy: { createdAt?: 'desc' | 'asc'; rating?: 'desc' | 'asc' } = { createdAt: 'desc' };
     if (sortBy === 'oldest') {
       orderBy = { createdAt: 'asc' };
     } else if (sortBy === 'rating') {

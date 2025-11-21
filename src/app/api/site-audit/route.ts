@@ -365,7 +365,7 @@ async function auditDatabase() {
     await prisma.$connect();
     
     // فحص الجداول
-    const tables = await prisma.$queryRawUnsafe<any[]>("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
+    const tables = await prisma.$queryRawUnsafe<Array<{ table_name: string }>>("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
     if (Array.isArray(tables) && tables.length < 3) {
       warnings.push('عدد جداول قليل في قاعدة البيانات');
       score -= 10;

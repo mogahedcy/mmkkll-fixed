@@ -19,7 +19,15 @@ async function checkAuth() {
   }
 }
 
-async function analyzeSimilarityWithAI(faqs: Record<string, unknown>[]): Promise<any[]> {
+interface DuplicateGroup {
+  group: number;
+  similarityReason: string;
+  questionIds: string[];
+  recommendation: string;
+  suggestedMergedQuestion: string;
+}
+
+async function analyzeSimilarityWithAI(faqs: Record<string, unknown>[]): Promise<DuplicateGroup[]> {
   try {
     const groqApiKey = process.env.GROQ_API_KEY;
     if (!groqApiKey) throw new Error('Groq API key غير محدد');

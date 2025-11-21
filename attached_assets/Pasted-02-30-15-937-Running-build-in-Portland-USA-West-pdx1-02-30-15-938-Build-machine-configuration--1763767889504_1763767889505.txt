@@ -1,0 +1,232 @@
+02:30:15.937 Running build in Portland, USA (West) – pdx1
+02:30:15.938 Build machine configuration: 2 cores, 8 GB
+02:30:16.049 Cloning github.com/mogahedcy/mmkkll-fixed (Branch: main, Commit: 78cb2ce)
+02:30:20.935 Cloning completed: 4.886s
+02:30:21.156 Found .vercelignore
+02:30:21.186 Removed 133 ignored files defined in .vercelignore
+02:30:21.186   /.git/logs/HEAD
+02:30:21.187   /.git/logs/refs/heads/master
+02:30:21.187   /.next-dev/build/chunks/[root-of-the-server]__51225daf._.js
+02:30:21.187   /.next-dev/build/chunks/[root-of-the-server]__51225daf._.js.map
+02:30:21.187   /.next-dev/build/chunks/[root-of-the-server]__974941ed._.js
+02:30:21.187   /.next-dev/build/chunks/[root-of-the-server]__974941ed._.js.map
+02:30:21.187   /.next-dev/build/chunks/[turbopack-node]_transforms_postcss_ts_5260e9fa._.js
+02:30:21.187   /.next-dev/build/chunks/[turbopack-node]_transforms_postcss_ts_5260e9fa._.js.map
+02:30:21.187   /.next-dev/build/chunks/[turbopack]_runtime.js
+02:30:21.188   /.next-dev/build/chunks/[turbopack]_runtime.js.map
+02:30:21.285 Restored build cache from previous deployment (9Nj44bGeYLNrq5oNtu4mYbC8eTVG)
+02:30:22.119 Running "vercel build"
+02:30:22.514 Vercel CLI 48.10.5
+02:30:23.042 Running "install" command: `npm install`...
+02:30:30.536 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+02:30:32.232 
+02:30:32.233 > aldeyar-global-jeddah@0.1.0 postinstall
+02:30:32.233 > prisma generate
+02:30:32.233 
+02:30:33.501 Prisma schema loaded from prisma/schema.prisma
+02:30:34.121 
+02:30:34.121 ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 398ms
+02:30:34.121 
+02:30:34.121 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+02:30:34.122 
+02:30:34.122 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+02:30:34.122 
+02:30:34.143 
+02:30:34.144 changed 107 packages, and audited 687 packages in 11s
+02:30:34.144 
+02:30:34.145 195 packages are looking for funding
+02:30:34.145   run `npm fund` for details
+02:30:34.147 
+02:30:34.147 2 vulnerabilities (1 moderate, 1 high)
+02:30:34.147 
+02:30:34.147 To address all issues, run:
+02:30:34.147   npm audit fix
+02:30:34.147 
+02:30:34.147 Run `npm audit` for details.
+02:30:34.181 Detected Next.js version: 15.5.0
+02:30:34.182 Running "npm run vercel-build"
+02:30:34.290 
+02:30:34.290 > aldeyar-global-jeddah@0.1.0 vercel-build
+02:30:34.291 > prisma generate && next build
+02:30:34.291 
+02:30:35.270 Prisma schema loaded from prisma/schema.prisma
+02:30:35.832 ┌─────────────────────────────────────────────────────────┐
+02:30:35.833 │  Update available 6.18.0 -> 7.0.0                       │
+02:30:35.833 │                                                         │
+02:30:35.833 │  This is a major update - please follow the guide at    │
+02:30:35.833 │  https://pris.ly/d/major-version-upgrade                │
+02:30:35.834 │                                                         │
+02:30:35.834 │  Run the following to update                            │
+02:30:35.834 │    npm i --save-dev prisma@latest                       │
+02:30:35.834 │    npm i @prisma/client@latest                          │
+02:30:35.835 └─────────────────────────────────────────────────────────┘
+02:30:35.835 
+02:30:35.835 ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 347ms
+02:30:35.835 
+02:30:35.835 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+02:30:35.835 
+02:30:35.836 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+02:30:35.836 
+02:30:36.622    ▲ Next.js 15.5.0
+02:30:36.627    - Environments: .env.production
+02:30:36.628 
+02:30:36.738    Creating an optimized production build ...
+02:31:00.025 
+02:31:00.026 [1m[33mwarn[39m[22m - You have enabled experimental features: [33moptimizeUniversalDefaults[39m
+02:31:00.026 [1m[33mwarn[39m[22m - Experimental features in Tailwind CSS are not covered by semver, may introduce breaking changes, and can change at any time.
+02:31:07.988  ✓ Compiled successfully in 30.4s
+02:31:07.993    Linting and checking validity of types ...
+02:31:24.368 
+02:31:24.379 Failed to compile.
+02:31:24.379 
+02:31:24.379 ./src/app/api/faqs/analyze-duplicates/route.ts
+02:31:24.379 22:82  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.379 
+02:31:24.379 ./src/app/api/projects/[id]/interactions/route.ts
+02:31:24.379 35:17  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.379 
+02:31:24.379 ./src/app/api/reviews/route.ts
+02:31:24.380 14:18  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 
+02:31:24.380 ./src/app/api/search/route.ts
+02:31:24.380 31:31  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 82:28  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 
+02:31:24.380 ./src/app/api/site-audit/route.ts
+02:31:24.380 368:49  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 
+02:31:24.380 ./src/app/articles/[id]/page.tsx
+02:31:24.380 55:55  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 67:41  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 111:53  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 113:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 122:37  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.380 
+02:31:24.380 ./src/app/audit/page.tsx
+02:31:24.395 31:16  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.396 
+02:31:24.396 ./src/app/dashboard/DashboardLayoutClient.tsx
+02:31:24.396 147:47  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.396 
+02:31:24.396 ./src/app/dashboard/articles/[id]/edit/page.tsx
+02:31:24.397 108:63  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.397 122:40  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.397 264:23  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.397 336:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.397 
+02:31:24.397 ./src/app/dashboard/articles/add/page.tsx
+02:31:24.398 215:23  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.398 278:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.398 
+02:31:24.398 ./src/app/dashboard/articles/page.tsx
+02:31:24.398 105:6  Warning: React Hook useEffect has a missing dependency: 'fetchArticles'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.399 
+02:31:24.399 ./src/app/dashboard/automation/AutomationClient.tsx
+02:31:24.399 74:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.399 134:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.404 161:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.404 235:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.404 277:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.404 317:55  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.404 498:57  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.405 
+02:31:24.405 ./src/app/dashboard/comments/CommentsManagementClient.tsx
+02:31:24.405 91:6  Warning: React Hook useEffect has a missing dependency: 'fetchComments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.410 377:66  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.410 403:60  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.410 
+02:31:24.411 ./src/app/dashboard/faqs/[id]/edit/page.tsx
+02:31:24.411 61:6  Warning: React Hook useEffect has a missing dependency: 'fetchFAQ'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.411 
+02:31:24.411 ./src/app/dashboard/faqs/page.tsx
+02:31:24.411 72:6  Warning: React Hook useEffect has a missing dependency: 'fetchFAQs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.411 
+02:31:24.412 ./src/app/dashboard/page.tsx
+02:31:24.412 157:15  Error: Do not use an `<a>` element to navigate to `/dashboard/projects/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+02:31:24.412 179:15  Error: Do not use an `<a>` element to navigate to `/dashboard/projects/add/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+02:31:24.412 
+02:31:24.412 ./src/app/dashboard/projects/[id]/edit/page.tsx
+02:31:24.412 107:6  Warning: React Hook useEffect has a missing dependency: 'checkAuthentication'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.413 400:70  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.413 
+02:31:24.413 ./src/app/dashboard/projects/[id]/page.tsx
+02:31:24.413 86:6  Warning: React Hook useEffect has a missing dependency: 'checkAuthentication'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.413 338:70  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.413 
+02:31:24.413 ./src/app/dashboard/projects/add/ProjectAddClient.tsx
+02:31:24.413 71:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.414 
+02:31:24.414 ./src/app/dashboard/projects/analysis/ProjectAnalysisClient.tsx
+02:31:24.414 35:15  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.414 59:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.421 60:18  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.422 
+02:31:24.422 ./src/app/dashboard/projects/page.tsx
+02:31:24.422 119:6  Warning: React Hook useEffect has a missing dependency: 'fetchProjects'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.422 
+02:31:24.422 ./src/app/dashboard/seo-agent/SEOAgentClient.tsx
+02:31:24.422 222:42  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.423 607:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.423 626:48  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.423 
+02:31:24.423 ./src/app/dashboard/settings/page.tsx
+02:31:24.423 39:6  Warning: React Hook useEffect has a missing dependency: 'checkAuthentication'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.423 
+02:31:24.424 ./src/app/portfolio/[id]/ProjectDetailsClient.tsx
+02:31:24.424 132:6  Warning: React Hook useEffect has missing dependencies: 'commentsCount', 'likesCount', and 'viewsCount'. Either include them or remove the dependency array. You can also do a functional update 'setLikesCount(l => ...)' if you only need 'likesCount' in the 'setLikesCount' call.  react-hooks/exhaustive-deps
+02:31:24.424 176:34  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.424 
+02:31:24.424 ./src/app/portfolio/[id]/page.tsx
+02:31:24.424 69:53  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.424 107:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.425 109:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.425 148:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.425 149:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.425 164:31  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.425 171:31  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.425 
+02:31:24.426 ./src/app/portfolio/[id]/video/[videoId]/page.tsx
+02:31:24.426 33:51  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.426 124:56  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.426 237:12  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.427 238:10  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.427 
+02:31:24.434 ./src/app/search/page.tsx
+02:31:24.434 71:35  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.435 90:44  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.435 101:6  Warning: React Hook useEffect has missing dependencies: 'filters' and 'performSearch'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+02:31:24.435 149:55  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.435 
+02:31:24.435 ./src/app/seo-monitor/page.tsx
+02:31:24.435 148:85  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.436 
+02:31:24.436 ./src/app/sitemap-articles.xml/route.ts
+02:31:24.436 7:17  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.436 65:69  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.436 
+02:31:24.436 ./src/app/sitemap-faqs.xml/route.ts
+02:31:24.436 7:13  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.437 
+02:31:24.437 ./src/app/sitemap-images.xml/route.ts
+02:31:24.437 69:22  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.437 137:40  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.437 
+02:31:24.437 ./src/app/sitemap-projects.xml/route.ts
+02:31:24.437 7:17  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.438 65:61  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.438 
+02:31:24.438 ./src/app/sitemap-videos.xml/route.ts
+02:31:24.444 6:40  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.444 
+02:31:24.444 ./src/components/AIChat.tsx
+02:31:24.444 151:63  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.445 
+02:31:24.445 ./src/components/AdvancedFilters.tsx
+02:31:24.445 34:50  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.445 103:11  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+02:31:24.445 
+02:31:24.445 ./src/components/HomePageBreadcrumb.tsx
+02:31:24.445 10:15  Error: Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+02:31:24.446 
+02:31:24.446 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+02:31:24.493 Error: Command "npm run vercel-build" exited with 1
