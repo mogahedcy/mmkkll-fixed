@@ -273,9 +273,10 @@ export default function EditArticlePage() {
           const errorData = await response.json();
           throw new Error(errorData.error || 'فشل في رفع الملف');
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('خطأ في رفع الملف:', error);
-        throw new Error(`فشل في رفع الملف: ${mediaFile.file.name} - ${error.message}`);
+        const msg = error instanceof Error ? error.message : 'خطأ غير معروف';
+        throw new Error(`فشل في رفع الملف: ${mediaFile.file.name} - ${msg}`);
       }
     }
 
@@ -345,9 +346,10 @@ export default function EditArticlePage() {
         const message = (result && (result.error || result.message)) || 'فشل في تحديث المقال';
         alert(`خطأ: ${message}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('❌ خطأ في تحديث المقال:', error);
-      alert(`خطأ في تحديث المقال: ${error.message}`);
+      const msg = error instanceof Error ? error.message : 'خطأ غير معروف';
+      alert(`خطأ في تحديث المقال: ${msg}`);
     } finally {
       setIsSubmitting(false);
     }
