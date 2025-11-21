@@ -114,10 +114,25 @@ async function VideoPage({ params }: { params: Promise<{ id: string; videoId: st
   const { project, video } = data;
   const projectUrl = `/portfolio/${project.slug || id}`;
   const fullUrl = `https://www.aldeyarksa.tech/portfolio/${project.slug || id}/video/${videoId}`;
+  
+  // الحصول على صورة مصغرة: استخدام صورة الفيديو أو أول صورة من المشروع
+  const getThumbnail = () => {
+    if (video.thumbnail) {
+      return video.thumbnail.startsWith('http') ? video.thumbnail : `https://www.aldeyarksa.tech${video.thumbnail}`;
+    }
+    // استخدام أول صورة من المشروع إذا لم يكن للفيديو صورة مصغرة
+    const firstImage = project.mediaItems?.find((item: any) => item.type === 'IMAGE');
+    if (firstImage?.src) {
+      return firstImage.src.startsWith('http') ? firstImage.src : `https://www.aldeyarksa.tech${firstImage.src}`;
+    }
+    return 'https://www.aldeyarksa.tech/favicon.svg';
+  };
+  
+  const thumbnailUrl = getThumbnail();
 
   return (
     <>
-      <VideoStructuredData project={project} video={video} videoUrl={fullUrl} />
+      <VideoStructuredData project={project} video={video} videoUrl={fullUrl} thumbnailUrl={thumbnailUrl} />
       <BreadcrumbSchema items={[
         { name: 'الرئيسية', url: 'https://www.aldeyarksa.tech' },
         { name: 'المحفظة', url: 'https://www.aldeyarksa.tech/portfolio' },
@@ -222,15 +237,17 @@ interface VideoStructuredDataProps {
   project: any;
   video: any;
   videoUrl: string;
+  thumbnailUrl: string;
 }
 
-function VideoStructuredData({ project, video, videoUrl }: VideoStructuredDataProps) {
+function VideoStructuredData({ project, video, videoUrl, thumbnailUrl }: VideoStructuredDataProps) {
+  // تنسيق الصورة المصغرة كـ array من الصور (مطلوب من Google)
   const videoSchema = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
     "name": video.title || `${project.category} - ${project.title}`,
     "description": video.description || `فيديو ${project.category} - ${project.title} في ${project.location}`,
-    "thumbnailUrl": video.thumbnail || "https://www.aldeyarksa.tech/favicon.svg",
+    "thumbnailUrl": [thumbnailUrl],
     "uploadDate": new Date().toISOString(),
     "duration": video.duration || "PT2M",
     "url": videoUrl,
@@ -242,7 +259,9 @@ function VideoStructuredData({ project, video, videoUrl }: VideoStructuredDataPr
       "url": "https://www.aldeyarksa.tech",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.aldeyarksa.tech/favicon.svg"
+        "url": "https://www.aldeyarksa.tech/favicon.svg",
+        "width": 250,
+        "height": 250
       }
     },
     "keywords": [project.category, project.location, project.title].filter(Boolean).join(", "),
