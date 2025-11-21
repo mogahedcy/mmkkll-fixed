@@ -104,7 +104,7 @@ export default function CommentsManagementClient() {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [fetchComments]);
 
   const calculateStats = (allComments: Comment[]) => {
     const now = new Date();
@@ -374,7 +374,7 @@ export default function CommentsManagementClient() {
             {/* Status Filter */}
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as 'ALL' | 'APPROVED' | 'PENDING' | 'REJECTED')}
+              onChange={(e) => setStatusFilter(e.target.value as unknown as 'ALL' | 'APPROVED' | 'PENDING' | 'REJECTED')}
               className="h-12 border-2 border-gray-300 rounded-lg px-4 font-medium focus:ring-4 focus:ring-blue-200"
             >
               <option value="ALL">جميع الحالات</option>
@@ -400,7 +400,7 @@ export default function CommentsManagementClient() {
             {/* Sort */}
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as 'newest' | 'oldest' | 'rating' | 'popular')}
+              onChange={(e) => setSortBy(e.target.value as unknown as 'newest' | 'oldest' | 'rating' | 'popular')}
               className="h-12 border-2 border-gray-300 rounded-lg px-4 font-medium focus:ring-4 focus:ring-blue-200"
             >
               <option value="newest">الأحدث</option>

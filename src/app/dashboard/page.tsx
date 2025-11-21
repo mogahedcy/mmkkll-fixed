@@ -157,7 +157,7 @@ export default async function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               <Link
                 href="/dashboard/projects"
-                className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100/50 hover:from-blue-100 hover:to-blue-200/50"
+                className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100/50 hover:from-blue-100 hover:to-blue-200/50 block"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
@@ -179,7 +179,7 @@ export default async function DashboardPage() {
 
               <Link
                 href="/dashboard/projects/add"
-                className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-green-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100/50 hover:from-green-100 hover:to-green-200/50"
+                className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-green-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100/50 hover:from-green-100 hover:to-green-200/50 block"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">

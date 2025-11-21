@@ -121,7 +121,7 @@ export default function EditProjectPage() {
 
   useEffect(() => {
     checkAuthentication();
-  }, []);
+  }, [checkAuthentication]);
 
   useEffect(() => {
     if (project) {
@@ -397,7 +397,7 @@ export default function EditProjectPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => router.push(`/portfolio/${(project && 'slug' in project && project.slug) || projectId}`)}
+                onClick={() => router.push(`/portfolio/${project.slug || projectId}`)}
                 className="flex items-center gap-2"
               >
                 <Eye className="h-4 w-4" />

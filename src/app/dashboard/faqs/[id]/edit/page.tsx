@@ -58,7 +58,7 @@ export default function EditFAQPage() {
 
   useEffect(() => {
     fetchFAQ();
-  }, [faqId]);
+  }, [faqId, fetchFAQ]);
 
   const fetchFAQ = async () => {
     try {

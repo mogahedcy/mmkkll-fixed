@@ -102,7 +102,7 @@ export default function ArticlesPage() {
 
   useEffect(() => {
     fetchArticles();
-  }, [selectedStatus, selectedCategory, sortBy]);
+  }, [selectedStatus, selectedCategory, sortBy, fetchArticles]);
 
   const fetchArticles = async () => {
     try {

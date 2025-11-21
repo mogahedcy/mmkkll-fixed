@@ -69,7 +69,7 @@ export default function FAQsPage() {
 
   useEffect(() => {
     fetchFAQs();
-  }, [selectedCategory, selectedStatus]);
+  }, [selectedCategory, selectedStatus, fetchFAQs]);
 
   const fetchFAQs = async () => {
     try {

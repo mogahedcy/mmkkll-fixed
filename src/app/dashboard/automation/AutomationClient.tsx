@@ -345,7 +345,7 @@ export default function AutomationClient() {
             return (
               <Button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as 'smart' | 'generate' | 'fix' | 'schedule')}
+                onClick={() => setActiveTab(tab.id as 'smart' | 'generate' | 'fix' | 'schedule' )}
                 variant={activeTab === tab.id ? 'default' : 'outline'}
                 className={`flex items-center gap-2 ${
                   activeTab === tab.id
