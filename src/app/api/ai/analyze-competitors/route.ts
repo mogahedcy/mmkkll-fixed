@@ -7,7 +7,7 @@ import { GoogleGenAI } from '@google/genai';
  */
 
 // تهيئة Gemini AI
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY || '' });
 
 export interface CompetitorAnalysisRequest {
   projectTitle: string;
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     // التحقق من توفر مفتاح Gemini API
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GOOGLE_AI_API_KEY) {
       return NextResponse.json(
         { success: false, error: 'مفتاح Gemini API غير متوفر' },
         { status: 500 }
@@ -113,10 +113,15 @@ export async function POST(request: NextRequest) {
 
     console.log('🤖 بدء تحليل المنافسين باستخدام Gemini AI...');
 
-    // استدعاء Gemini AI
+    // استدعاء Gemini AI بالطريقة الصحيحة
     const result = await genAI.models.generateContent({
       model: 'gemini-2.0-flash-exp',
-      contents: prompt
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }]
+        }
+      ]
     });
     
     const analysisText = result.text;
