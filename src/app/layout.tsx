@@ -78,51 +78,25 @@ export const viewport = {
   maximumScale: 5,
 };
 
-const faqPageSchema = {
+const organizationSchema = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "ما هي الخدمات التي تقدمها شركة محترفين الديار؟",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "نقدم 8 خدمات متخصصة شاملة: مظلات سيارات، برجولات حدائق، سواتر خصوصية، ساندوتش بانل، ترميم ملحقات، تنسيق حدائق، بيوت شعر تراثية، وخيام ملكية. جميع خدماتنا متاحة في جدة والمناطق المحيطة."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "كم تبلغ مدة الضمان على مظلات السيارات؟",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "نقدم ضمان شامل لمدة 10 سنوات على جميع مظلات السيارات، يشمل الهيكل المعدني والقماش والتركيب. كما نوفر صيانة دورية مجانية خلال السنة الأولى."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "كم تستغرق عملية تركيب المظلات أو البرجولات؟",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "عادة ما تستغرق عملية التركيب من يوم إلى 3 أيام حسب حجم المشروع وتعقيده. مظلات السيارات العادية تحتاج يوم واحد، بينما البرجولات الكبيرة قد تحتاج إلى 2-3 أيام."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "هل ساندوتش بانل مناسب للمناخ الحار في جدة؟",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "نعم، ساندوتش بانل مثالي للمناخ الحار في جدة. يوفر عزل حراري ممتاز يقلل استهلاك الكهرباء بنسبة تصل إلى 40%، ومقاوم للرطوبة والحرارة العالية."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "هل تقدمون عروض أسعار مجانية؟",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "نعم، نقدم عروض أسعار مجانية ومفصلة لجميع خدماتنا. يمكنكم طلب الزيارة المجانية عبر الواتساب أو الاتصال المباشر، وسيقوم مهندسنا بالزيارة وأخذ القياسات وتقديم العرض."
-      }
-    }
-  ]
+  "@type": "Organization",
+  "name": "محترفين الديار العالمية",
+  "description": "شركة متخصصة في المظلات والبرجولات والسواتر في جدة بضمان 10 سنوات",
+  "url": "https://www.aldeyarksa.tech",
+  "logo": "https://www.aldeyarksa.tech/logo.png",
+  "telephone": "+966553719009",
+  "email": "ksaaldeyar@gmail.com",
+  "sameAs": [
+    "https://www.facebook.com/aldeyarksa",
+    "https://www.instagram.com/aldeyarksa",
+    "https://wa.me/966553719009"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "جدة",
+    "addressCountry": "SA"
+  }
 };
 
 export default function RootLayout({
