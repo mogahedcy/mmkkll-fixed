@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     }
 
     // جلب المراجعات مع بيانات المشروع
-    const reviews = await prisma.comment.findMany({
+    const reviews = await prisma.comments.findMany({
       where: whereCondition,
       orderBy,
       include: {
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     });
 
     // تنسيق البيانات
-    const formattedReviews = reviews.map(review => ({
+    const formattedReviews = reviews.map((review: { id: string; name: string; message: string; rating: number; createdAt: Date; project?: { title?: string; id?: string } | null }) => ({
       id: review.id,
       name: review.name,
       message: review.message,

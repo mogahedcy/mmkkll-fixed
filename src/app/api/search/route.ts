@@ -169,39 +169,46 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const projectResults = projects.map((p) => ({
-      id: String(p.id),
-      type: 'project' as const,
-      title: p.title,
-      description: p.description,
-      category: p.category,
-      location: p.location,
-      image: p.media_items?.[0]?.thumbnail || p.media_items?.[0]?.src || '/favicon.svg',
-      slug: p.slug || String(p.id),
-      url: `/portfolio/${p.slug || p.id}`,
-      createdAt: p.createdAt ? new Date(p.createdAt).getTime() : 0,
-      featured: Boolean(p.featured),
-      rating: p.rating || 0,
-      views: p.views || 0
-    }));
+    const projectResults = projects.map((p: Record<string, unknown>) => {
+      const mediaItems = Array.isArray(p.media_items) ? p.media_items : [];
+      const firstMediaItem = mediaItems.length > 0 ? (mediaItems[0] as Record<string, unknown>) : null;
+      return {
+        id: String(p.id),
+        type: 'project' as const,
+        title: p.title,
+        description: p.description,
+        category: p.category,
+        location: p.location,
+        image: firstMediaItem ? (firstMediaItem.thumbnail || firstMediaItem.src) : '/favicon.svg',
+        slug: p.slug || String(p.id),
+        url: `/portfolio/${p.slug || p.id}`,
+        createdAt: p.createdAt ? new Date(p.createdAt as string | number | Date).getTime() : 0,
+        featured: Boolean(p.featured),
+        rating: p.rating as number || 0,
+        views: p.views as number || 0
+      };
+    });
 
-    const faqResults = faqs.map((f) => ({
-      id: String(f.id),
-      type: 'faq' as const,
-      title: f.question,
-      description: f.answer.substring(0, 200) + (f.answer.length > 200 ? '...' : ''),
-      category: f.category || 'عام',
-      location: '',
-      image: '/favicon.svg',
-      slug: String(f.id),
-      url: `/faq?id=${f.id}#question-${f.id}`,
-      createdAt: f.createdAt ? new Date(f.createdAt).getTime() : 0,
-      featured: false,
-      views: f.views || 0,
-      rating: 0,
-      question: f.question,
-      answer: f.answer
-    }));
+    const faqResults = faqs.map((f: Record<string, unknown>) => {
+      const answer = String(f.answer || '');
+      return {
+        id: String(f.id),
+        type: 'faq' as const,
+        title: f.question,
+        description: answer.substring(0, 200) + (answer.length > 200 ? '...' : ''),
+        category: f.category || 'عام',
+        location: '',
+        image: '/favicon.svg',
+        slug: String(f.id),
+        url: `/faq?id=${f.id}#question-${f.id}`,
+        createdAt: f.createdAt ? new Date(f.createdAt as string | number | Date).getTime() : 0,
+        featured: false,
+        views: f.views as number || 0,
+        rating: 0,
+        question: f.question,
+        answer: answer
+      };
+    });
 
     const filteredArticles = (type === 'all' || type === 'articles')
       ? articlesIndex.filter((a) => {
@@ -229,20 +236,20 @@ export async function GET(request: NextRequest) {
     const articleSliceEnd = type === 'articles' ? skip + limit : sortedArticles.length;
     const pagedArticles = sortedArticles.slice(articleSliceStart, articleSliceEnd);
 
-    const articleResults = pagedArticles.map((a) => ({
+    const articleResults = pagedArticles.map((a: Record<string, unknown>) => ({
       id: String(a.id),
       type: 'article' as const,
-      title: a.title,
-      description: a.excerpt,
-      category: a.category,
+      title: String(a.title || ''),
+      description: String(a.excerpt || ''),
+      category: String(a.category || ''),
       location: 'جدة',
-      image: a.image,
-      slug: a.slug,
-      url: `/articles/${a.slug}`,
+      image: String(a.image || '/favicon.svg'),
+      slug: String(a.slug || ''),
+      url: `/articles/${a.slug || ''}`,
       createdAt: 0,
       featured: false,
-      rating: a.rating || 0,
-      views: a.views || 0
+      rating: 0,
+      views: 0
     }));
 
     // Merge results

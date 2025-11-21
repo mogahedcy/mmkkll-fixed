@@ -176,7 +176,7 @@ export default function AddArticlePage() {
 
   // Upload media files
   const uploadMediaFiles = async (): Promise<Array<{ type: string; src: string; thumbnail?: string; title: string; description: string }>> => {
-    const uploadedMedia = [];
+    const uploadedMedia: Array<{ type: string; src: string; thumbnail?: string; title: string; description: string }> = [];
 
     for (const mediaFile of mediaFiles) {
       const formData = new FormData();
@@ -237,7 +237,7 @@ export default function AddArticlePage() {
       console.log('🚀 بدء إضافة المقال...');
 
       // Upload media files first if any
-      let uploadedMedia = [];
+      let uploadedMedia: Array<{ type: string; src: string; thumbnail?: string; title: string; description: string }> = [];
       if (mediaFiles.length > 0) {
         uploadedMedia = await uploadMediaFiles();
         console.log('📁 الملفات المرفوعة:', uploadedMedia);

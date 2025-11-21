@@ -39,9 +39,9 @@ export async function GET(request: NextRequest) {
 }
 
 // فحص السيو
-async function auditSEO() {
-  const issues = [];
-  const warnings = [];
+async function auditSEO(): Promise<{ score: number; status: string; details: Record<string, unknown>; issues: string[]; warnings: string[] }> {
+  const issues: string[] = [];
+  const warnings: string[] = [];
   let score = 90;
 
   // فحص ملفات السيو الأساسية
@@ -96,9 +96,9 @@ async function auditSEO() {
 }
 
 // فحص الأداء
-async function auditPerformance() {
-  const issues = [];
-  const warnings = [];
+async function auditPerformance(): Promise<{ score: number; status: string; details: Record<string, unknown>; issues: string[]; warnings: string[] }> {
+  const issues: string[] = [];
+  const warnings: string[] = [];
   let score = 80;
 
   // فحص إعدادات Next.js
@@ -121,9 +121,10 @@ async function auditPerformance() {
   let unoptimizedImages = 0;
 
   if (fs.existsSync('public/images')) {
-    const images = fs.readdirSync('public/images', { recursive: true });
+    const images = fs.readdirSync('public/images', { recursive: true }) as (string | Buffer)[];
     images.forEach(img => {
-      if (typeof img === 'string' && img.endsWith('.jpg') && !images.includes(img.replace('.jpg', '.webp'))) {
+      const imgStr = typeof img === 'string' ? img : img.toString();
+      if (imgStr.endsWith('.jpg') && !images.map(i => typeof i === 'string' ? i : i.toString()).includes(imgStr.replace('.jpg', '.webp'))) {
         unoptimizedImages++;
       }
     });
@@ -149,9 +150,9 @@ async function auditPerformance() {
 }
 
 // فحص إمكانية الوصول
-async function auditAccessibility() {
-  const issues = [];
-  const warnings = [];
+async function auditAccessibility(): Promise<{ score: number; status: string; details: Record<string, unknown>; issues: string[]; warnings: string[] }> {
+  const issues: string[] = [];
+  const warnings: string[] = [];
   let score = 85;
 
   // فحص دعم RTL
@@ -198,10 +199,10 @@ async function auditAccessibility() {
 }
 
 // فحص المحتوى
-async function auditContent() {
+async function auditContent(): Promise<{ score: number; status: string; details: Record<string, unknown>; issues: string[]; warnings: string[] }> {
   let score = 80;
-  const issues = [];
-  const warnings = [];
+  const issues: string[] = [];
+  const warnings: string[] = [];
 
   try {
     // فحص المقالات
@@ -253,9 +254,9 @@ async function auditContent() {
 }
 
 // فحص تقني
-async function auditTechnical() {
-  const issues = [];
-  const warnings = [];
+async function auditTechnical(): Promise<{ score: number; status: string; details: Record<string, unknown>; issues: string[]; warnings: string[] }> {
+  const issues: string[] = [];
+  const warnings: string[] = [];
   let score = 85;
 
   // فحص الاعتمادات
@@ -313,9 +314,9 @@ async function auditTechnical() {
 }
 
 // فحص الأمان
-async function auditSecurity() {
-  const issues = [];
-  const warnings = [];
+async function auditSecurity(): Promise<{ score: number; status: string; details: Record<string, unknown>; issues: string[]; warnings: string[] }> {
+  const issues: string[] = [];
+  const warnings: string[] = [];
   let score = 90;
 
   // فحص ملف الأمان
@@ -355,10 +356,10 @@ async function auditSecurity() {
 }
 
 // فحص قاعدة البيانات
-async function auditDatabase() {
+async function auditDatabase(): Promise<{ score: number; status: string; details: Record<string, unknown>; issues: string[]; warnings: string[] }> {
   let score = 85;
-  const issues = [];
-  const warnings = [];
+  const issues: string[] = [];
+  const warnings: string[] = [];
 
   try {
     // فحص اتصال قاعدة البيانات

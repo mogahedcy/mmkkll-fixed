@@ -143,8 +143,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: unknown) {
     console.error('Error analyzing duplicates with AI:', error);
+    const msg = error instanceof Error ? error.message : 'خطأ غير معروف';
     return NextResponse.json(
-      { success: false, error: 'فشل تحليل التكرار بواسطة الذكاء الاصطناعي: ' + error.message },
+      { success: false, error: 'فشل تحليل التكرار بواسطة الذكاء الاصطناعي: ' + msg },
       { status: 500 }
     );
   }

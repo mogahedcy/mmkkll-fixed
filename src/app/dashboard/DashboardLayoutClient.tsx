@@ -149,7 +149,7 @@ export default function DashboardLayoutClient({ admin, children }: DashboardLayo
     icon: string;
     label: string;
     hoverColor: string;
-    activeColor: string;
+    activeColor?: string;
     badge?: string;
     badgeColor?: string;
     target?: string;

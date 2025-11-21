@@ -62,7 +62,7 @@ export default function AuditPage() {
   }, []);
 
   const getCategoryIcon = (category: string) => {
-    const icons = {
+    const icons: Record<string, JSX.Element> = {
       seo: <Globe className="w-5 h-5" />,
       performance: <Zap className="w-5 h-5" />,
       accessibility: <Eye className="w-5 h-5" />,
