@@ -54,8 +54,8 @@ export async function submitUrlForIndexing(url: string): Promise<IndexingResult>
       result.engines.indexnow.error = `HTTP ${response.status}`;
       console.warn('⚠️ فشل الإرسال إلى IndexNow:', response.status, response.statusText);
     }
-  } catch (error: any) {
-    result.engines.indexnow.error = error.message;
+  } catch (error: unknown) {
+    result.engines.indexnow.error = error instanceof Error ? error.message : 'خطأ غير معروف';
     console.error('❌ خطأ في IndexNow:', error);
   }
 
@@ -106,8 +106,8 @@ export async function submitMultipleUrlsForIndexing(urls: string[]): Promise<Ind
       result.engines.indexnow.error = `HTTP ${response.status}`;
       console.warn('⚠️ فشل الإرسال إلى IndexNow:', response.status);
     }
-  } catch (error: any) {
-    result.engines.indexnow.error = error.message;
+  } catch (error: unknown) {
+    result.engines.indexnow.error = error instanceof Error ? error.message : 'خطأ غير معروف';
     console.error('❌ خطأ في IndexNow:', error);
   }
 

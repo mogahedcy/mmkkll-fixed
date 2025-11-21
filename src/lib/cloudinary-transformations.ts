@@ -173,8 +173,8 @@ export function getWatermarkedImageUrl(
   const transformation = getImageTransformation(options);
   
   // بناء URL يدوياً
-  const transformationStr = transformation.map((t: any) => {
-    const parts = [];
+  const transformationStr = transformation.map((t: Record<string, unknown>) => {
+    const parts: string[] = [];
     
     if (t.width) parts.push(`w_${t.width}`);
     if (t.height) parts.push(`h_${t.height}`);
@@ -182,9 +182,10 @@ export function getWatermarkedImageUrl(
     if (t.quality) parts.push(`q_${t.quality}`);
     if (t.fetch_format) parts.push(`f_${t.fetch_format}`);
     
-    if (t.overlay) {
-      const overlayText = t.overlay.text.replace(/\+/g, '%2B');
-      parts.push(`l_text:${t.overlay.font_family}_${t.overlay.font_size}_${t.overlay.font_weight}:${overlayText}`);
+    if (t.overlay && typeof t.overlay === 'object' && t.overlay !== null) {
+      const overlay = t.overlay as Record<string, unknown>;
+      const overlayText = String(overlay.text).replace(/\+/g, '%2B');
+      parts.push(`l_text:${overlay.font_family}_${overlay.font_size}_${overlay.font_weight}:${overlayText}`);
     }
     
     if (t.gravity) parts.push(`g_${t.gravity}`);
@@ -209,8 +210,8 @@ export function getWatermarkedVideoUrl(
   const transformation = getVideoTransformation(options);
   
   // بناء URL يدوياً
-  const transformationStr = transformation.map((t: any) => {
-    const parts = [];
+  const transformationStr = transformation.map((t: Record<string, unknown>) => {
+    const parts: string[] = [];
     
     if (t.width) parts.push(`w_${t.width}`);
     if (t.height) parts.push(`h_${t.height}`);
@@ -220,9 +221,10 @@ export function getWatermarkedVideoUrl(
     if (t.audio_codec) parts.push(`ac_${t.audio_codec}`);
     if (t.bit_rate) parts.push(`br_${t.bit_rate}`);
     
-    if (t.overlay) {
-      const overlayText = t.overlay.text.replace(/\+/g, '%2B');
-      parts.push(`l_text:${t.overlay.font_family}_${t.overlay.font_size}_${t.overlay.font_weight}:${overlayText}`);
+    if (t.overlay && typeof t.overlay === 'object' && t.overlay !== null) {
+      const overlay = t.overlay as Record<string, unknown>;
+      const overlayText = String(overlay.text).replace(/\+/g, '%2B');
+      parts.push(`l_text:${overlay.font_family}_${overlay.font_size}_${overlay.font_weight}:${overlayText}`);
     }
     
     if (t.gravity) parts.push(`g_${t.gravity}`);

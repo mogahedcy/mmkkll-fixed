@@ -110,7 +110,7 @@ export async function uploadToCloudinary(
     folder?: string;
     public_id?: string;
     resource_type?: 'auto' | 'image' | 'video' | 'raw';
-    transformation?: any;
+    transformation?: Record<string, unknown>;
     timeout?: number;
     applyWatermark?: boolean;
   } = {}
@@ -282,7 +282,7 @@ export async function uploadToCloudinary(
 export async function deleteFromCloudinary(
   publicId: string,
   resourceType: 'image' | 'video' | 'raw' = 'image'
-): Promise<any> {
+): Promise<Record<string, unknown>> {
   try {
     console.log('🗑️ حذف ملف من Cloudinary:', publicId);
 

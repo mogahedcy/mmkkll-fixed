@@ -412,7 +412,7 @@ export async function generateOptimizedMetaTags(
   }
 }
 
-async function groqGenerateContent(config: any): Promise<any> {
+async function groqGenerateContent(config: Record<string, unknown>): Promise<Record<string, unknown>> {
   const groqApiKey = process.env.GROQ_API_KEY;
   if (!groqApiKey) throw new Error('Groq API key غير محدد');
 

@@ -26,7 +26,7 @@ export function normalizeCategoryName(category: string | null | undefined): Cate
 
   const trimmedCategory = category.trim();
 
-  if (PROJECT_CATEGORIES.includes(trimmedCategory as any)) {
+  if (PROJECT_CATEGORIES.includes(trimmedCategory as typeof PROJECT_CATEGORIES[number])) {
     return {
       isValid: true,
       normalizedCategory: trimmedCategory,
@@ -89,7 +89,7 @@ export function normalizeArticleCategoryName(category: string | null | undefined
 
   const trimmedCategory = category.trim();
 
-  if (ARTICLE_CATEGORIES.includes(trimmedCategory as any)) {
+  if (ARTICLE_CATEGORIES.includes(trimmedCategory as typeof ARTICLE_CATEGORIES[number])) {
     return {
       isValid: true,
       normalizedCategory: trimmedCategory,

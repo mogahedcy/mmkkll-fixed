@@ -1,0 +1,67 @@
+01:15:20.194 
+22:43  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.194 
+01:15:20.194 
+./src/lib/auto-indexing.ts
+01:15:20.194 
+57:19  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.194 
+109:19  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.194 
+01:15:20.194 
+./src/lib/categoryNormalizer.ts
+01:15:20.195 
+29:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.195 
+92:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.195 
+01:15:20.195 
+./src/lib/cloudinary-transformations.ts
+01:15:20.195 
+176:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.196 
+212:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.196 
+01:15:20.196 
+./src/lib/cloudinary.ts
+01:15:20.196 
+113:22  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.196 
+285:12  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.196 
+01:15:20.196 
+./src/lib/competitor-analyzer.ts
+01:15:20.197 
+415:44  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.197 
+415:58  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+01:15:20.197 
+01:15:20.197 
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+01:15:20.222 
+Error: Command "npm run vercel-build" exited with 1
+Deployment Summary
+Deployment Checks
+Assigning Custom Domains
+Runtime Logs
+
+View and debug runtime logs & errors
+
+Observability
+
+Monitor app health & performance
+
+Speed Insights
+
+Not Enabled
+Performance metrics from real users
+
+Web Analytics
+
+Not Enabled
+Analyze visitors & traffic in real-time
+
+Home
+Docs
+Guides
+Aca
