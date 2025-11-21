@@ -5,7 +5,7 @@ export interface ValidationResult {
   valid: boolean;
   errors: string[];
   warnings: string[];
-  sanitized?: any;
+  sanitized?: Record<string, unknown>;
 }
 
 // Field validation rules
@@ -14,7 +14,7 @@ export interface ValidationRule {
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;
-  custom?: (value: any) => boolean | string;
+  custom?: (value: unknown) => boolean | string;
   sanitize?: boolean;
   escape?: boolean;
 }
@@ -64,8 +64,8 @@ export const projectValidationSchema = {
     escape: true
   },
   budget: {
-    custom: (value: any) => {
-      const num = Number.parseFloat(value);
+    custom: (value: unknown) => {
+      const num = Number.parseFloat(String(value));
       return (!isNaN(num) && num >= 0 && num <= 10000000) || 'الميزانية يجب أن تكون رقم موجب أقل من 10 مليون';
     }
   },
@@ -200,15 +200,15 @@ export const commentValidationSchema = {
     escape: true
   },
   rating: {
-    custom: (value: any) => {
-      const num = Number.parseInt(value);
+    custom: (value: unknown) => {
+      const num = Number.parseInt(String(value));
       return (!isNaN(num) && num >= 1 && num <= 5) || 'التقييم يجب أن يكون بين 1 و 5';
     }
   }
 };
 
 // Generic validator function
-export function validateField(value: any, rules: ValidationRule): ValidationResult {
+export function validateField(value: unknown, rules: ValidationRule): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
   let sanitizedValue = value;
@@ -278,10 +278,10 @@ export function validateField(value: any, rules: ValidationRule): ValidationResu
 }
 
 // Validate entire object against schema
-export function validateObject(data: any, schema: Record<string, ValidationRule>): ValidationResult {
+export function validateObject(data: Record<string, unknown>, schema: Record<string, ValidationRule>): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
-  const sanitized: any = {};
+  const sanitized: Record<string, unknown> = {};
 
   for (const [field, rules] of Object.entries(schema)) {
     const fieldResult = validateField(data[field], rules);
@@ -313,19 +313,19 @@ export function validateObject(data: any, schema: Record<string, ValidationRule>
 }
 
 // Specific validation functions
-export const validateProject = (data: any): ValidationResult => {
+export const validateProject = (data: Record<string, unknown>): ValidationResult => {
   return validateObject(data, projectValidationSchema);
 };
 
-export const validateAdmin = (data: any): ValidationResult => {
+export const validateAdmin = (data: Record<string, unknown>): ValidationResult => {
   return validateObject(data, adminValidationSchema);
 };
 
-export const validateMedia = (data: any): ValidationResult => {
+export const validateMedia = (data: Record<string, unknown>): ValidationResult => {
   return validateObject(data, mediaValidationSchema);
 };
 
-export const validateComment = (data: any): ValidationResult => {
+export const validateComment = (data: Record<string, unknown>): ValidationResult => {
   return validateObject(data, commentValidationSchema);
 };
 
@@ -415,7 +415,7 @@ export const validateFiles = (files: FileList | File[]): ValidationResult => {
   };
 };
 
-export default {
+const validation = {
   patterns,
   validateField,
   validateObject,
@@ -426,3 +426,5 @@ export default {
   validateFile,
   validateFiles
 };
+
+export default validation;

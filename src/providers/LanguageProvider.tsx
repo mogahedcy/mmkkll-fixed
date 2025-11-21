@@ -16,17 +16,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('ar');
   const [isMounted, setIsMounted] = useState(false);
 
-  // Load language from localStorage on mount
-  useEffect(() => {
-    setIsMounted(true);
-    const savedLanguage = localStorage.getItem('language') as Language | null;
-    const browserLang = navigator.language.startsWith('en') ? 'en' : 'ar';
-    
-    const initialLanguage = savedLanguage || browserLang || 'ar';
-    setLanguageState(initialLanguage);
-    applyLanguage(initialLanguage);
-  }, []);
-
   // Apply language changes
   const applyLanguage = (lang: Language) => {
     document.documentElement.lang = lang;
@@ -41,13 +30,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const currentUrl = window.location.pathname;
     
     // Update canonical
-    let canonicalLink = document.querySelector("link[rel='canonical']") as HTMLLinkElement;
+    let canonicalLink = document.querySelector("link[rel='canonical']") as HTMLLinkElement | null;
     if (!canonicalLink) {
-      canonicalLink = document.createElement('link');
-      (canonicalLink as HTMLLinkElement).rel = 'canonical';
+      canonicalLink = document.createElement('link') as HTMLLinkElement;
+      canonicalLink.rel = 'canonical';
       document.head.appendChild(canonicalLink);
     }
-    (canonicalLink as HTMLLinkElement).href = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}${currentUrl}?lang=${lang}`;
+    canonicalLink.href = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}${currentUrl}?lang=${lang}`;
     
     // Update alternate links
     const languages = [
@@ -56,26 +45,37 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     ];
     
     languages.forEach(({ code, hreflang }) => {
-      let altLink = document.querySelector(`link[hreflang="${hreflang}"]`) as HTMLLinkElement;
+      let altLink = document.querySelector(`link[hreflang="${hreflang}"]`) as HTMLLinkElement | null;
       if (!altLink) {
-        altLink = document.createElement('link');
-        (altLink as HTMLLinkElement).rel = 'alternate';
-        (altLink as any).hreflang = hreflang;
+        altLink = document.createElement('link') as HTMLLinkElement;
+        altLink.rel = 'alternate';
+        (altLink as unknown as Record<string, string>).hreflang = hreflang;
         document.head.appendChild(altLink);
       }
-      (altLink as HTMLLinkElement).href = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}${currentUrl}?lang=${code}`;
+      altLink.href = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}${currentUrl}?lang=${code}`;
     });
 
     // Add x-default
-    let xDefaultLink = document.querySelector("link[hreflang='x-default']") as HTMLLinkElement;
+    let xDefaultLink = document.querySelector("link[hreflang='x-default']") as HTMLLinkElement | null;
     if (!xDefaultLink) {
-      xDefaultLink = document.createElement('link');
-      (xDefaultLink as HTMLLinkElement).rel = 'alternate';
-      (xDefaultLink as any).hreflang = 'x-default';
+      xDefaultLink = document.createElement('link') as HTMLLinkElement;
+      xDefaultLink.rel = 'alternate';
+      (xDefaultLink as unknown as Record<string, string>).hreflang = 'x-default';
       document.head.appendChild(xDefaultLink);
     }
-    (xDefaultLink as HTMLLinkElement).href = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}${currentUrl}`;
+    xDefaultLink.href = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}${currentUrl}`;
   };
+
+  // Load language from localStorage on mount and apply
+  useEffect(() => {
+    setIsMounted(true);
+    const savedLanguage = localStorage.getItem('language') as Language | null;
+    const browserLang = navigator.language.startsWith('en') ? 'en' : 'ar';
+    
+    const initialLanguage = savedLanguage || browserLang || 'ar';
+    setLanguageState(initialLanguage);
+    applyLanguage(initialLanguage);
+  }, []);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

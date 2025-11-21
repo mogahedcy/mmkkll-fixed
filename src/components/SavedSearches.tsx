@@ -28,7 +28,7 @@ interface SavedSearch {
 }
 
 export default function SavedSearches() {
-  const [savedSearches, setSavedSearches] = useState<Array<{ id: string; name: string; query: string; date: string }>>([]);
+  const [savedSearches, setSavedSearches] = useState<SavedSearch[]>([]);
   const [showSaved, setShowSaved] = useState(false);
   const [showSaveForm, setShowSaveForm] = useState(false);
   const [searchName, setSearchName] = useState('');
