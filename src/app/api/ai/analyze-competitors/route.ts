@@ -6,9 +6,6 @@ import { GoogleGenAI } from '@google/genai';
  * POST /api/ai/analyze-competitors
  */
 
-// تهيئة Gemini AI
-const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY || '' });
-
 export interface CompetitorAnalysisRequest {
   projectTitle: string;
   category: string;
@@ -52,6 +49,9 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // تهيئة Gemini AI - يتم إنشاء instance جديد في كل طلب لضمان قراءة المفتاح الصحيح
+    const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
 
     // بناء prompt متقدم لتحليل المنافسين
     const prompt = `أنت خبير SEO ومحلل منافسين متخصص في مجال ${category} في السعودية، وخاصةً في ${location || 'جدة'}.
