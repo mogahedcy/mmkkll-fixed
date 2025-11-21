@@ -30,7 +30,7 @@ export default function WatermarkOverlay({
   return (
     <div
       className={`absolute ${positions[position]} ${sizes[size]} pointer-events-none z-10`}
-      style={{ opacity }}
+      className="[CLASS]"
     >
       <div className="relative w-full h-full">
         <Image

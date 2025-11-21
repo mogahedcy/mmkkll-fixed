@@ -52,7 +52,7 @@ export default function HeroSection() {
               src={slide.url}
               alt={slide.alt}
               fill
-              style={{ objectFit: 'cover' }}
+              className="[CLASS]"
               quality={index === 0 ? 75 : 65}
               priority={index === 0}
               fetchPriority={index === 0 ? 'high' : 'low'}

@@ -165,8 +165,8 @@ export default function HowItWorksSection() {
       {/* Animated Background Pattern */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-96 h-96 -top-48 -right-48 bg-accent/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute w-96 h-96 -bottom-48 -left-48 bg-blue-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute w-96 h-96 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute w-96 h-96 -bottom-48 -left-48 bg-blue-500/20 rounded-full blur-3xl animate-pulse" className="[CLASS]" />
+        <div className="absolute w-96 h-96 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-500/10 rounded-full blur-3xl animate-pulse" className="[CLASS]" />
       </div>
 
       {/* Grid Pattern Overlay */}

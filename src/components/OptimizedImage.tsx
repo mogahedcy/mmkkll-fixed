@@ -35,7 +35,7 @@ export default function OptimizedImage({
           'bg-gray-200 flex items-center justify-center',
           className
         )}
-        style={{ width, height }}
+        className="[CLASS]"
       >
         <span className="text-gray-500 text-sm">صورة غير متوفرة</span>
       </div>
