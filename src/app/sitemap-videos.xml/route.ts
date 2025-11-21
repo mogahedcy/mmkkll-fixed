@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
+  const baseUrl = 'https://www.aldeyarksa.tech'; // الدومين المفضل الموحد
   
   let videosByPage = new Map<string, any[]>();
 

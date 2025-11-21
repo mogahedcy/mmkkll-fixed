@@ -140,7 +140,7 @@ export default function RootLayout({
         <link rel="prefetch" href="/contact" />
         <link rel="prefetch" href="/api/projects?limit=50&sort=newest" />
         
-        <StructuredDataScript data={faqPageSchema} />
+        <StructuredDataScript data={organizationSchema} />
         <LocalBusinessSchema />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>

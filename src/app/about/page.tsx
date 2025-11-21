@@ -132,7 +132,7 @@ export default function AboutPage() {
     "@type": "Organization",
     "name": "محترفين الديار العالمية",
     "description": "شركة رائدة في خدمات المظلات والسواتر في جدة منذ 15 عاماً",
-    "url": "https://www.aldeyarksa.tech",
+    "url": "https://www.www.aldeyarksa.tech",
     "logo": "https://www.aldeyarksa.tech/logo.png",
     "foundingDate": "2009",
     "founder": "المهندس أحمد السعيد",
