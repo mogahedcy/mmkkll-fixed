@@ -14,6 +14,8 @@ import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 import LocalBusinessSchemaOptimized from "@/components/LocalBusinessSchemaOptimized";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { LanguageProvider } from "@/providers/LanguageProvider";
+import { LanguageSEO } from "@/components/LanguageSEO";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -146,21 +148,30 @@ export default function RootLayout({
         <StructuredDataScript data={organizationSchema} />
         <LocalBusinessSchema />
       <LocalBusinessSchemaOptimized />
+      
+      {/* Language SEO - Hreflang links */}
+      <link rel="alternate" hrefLang="ar" href="https://www.aldeyarksa.tech?lang=ar" />
+      <link rel="alternate" hrefLang="en" href="https://www.aldeyarksa.tech?lang=en" />
+      <link rel="alternate" hrefLang="x-default" href="https://www.aldeyarksa.tech" />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
         <ThemeProvider>
-          <ErrorBoundary>
-            <GoogleAnalytics />
-            <ServiceWorkerRegister />
-            <WebVitals />
-            <ClientBody>{children}</ClientBody>
-            <WhatsAppWidget />
-            <FloatingCallButton />
-            <BottomNavigation />
-          </ErrorBoundary>
+          <LanguageProvider>
+            <ErrorBoundary>
+              <GoogleAnalytics />
+              <ServiceWorkerRegister />
+              <WebVitals />
+              <ClientBody>{children}</ClientBody>
+              <WhatsAppWidget />
+              <FloatingCallButton />
+              <BottomNavigation />
+            </ErrorBoundary>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
   );
 }
 
+
+// SEO: Add hreflang links in head for language alternates

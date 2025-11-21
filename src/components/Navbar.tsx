@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageToggle } from '@/components/LanguageToggle';
 import {
   Phone,
   Mail,
@@ -253,6 +254,9 @@ export default function Navbar() {
               >
                 <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
+
+              {/* Language Toggle */}
+              <LanguageToggle />
 
               {/* Dark Mode Toggle */}
               <ThemeToggle />
