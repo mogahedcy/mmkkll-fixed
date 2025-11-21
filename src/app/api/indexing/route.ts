@@ -52,7 +52,6 @@ export async function POST(request: NextRequest) {
         console.error('❌ فشل إرسال الروابط إلى IndexNow:', results.indexnow.error);
       }
     } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
       results.indexnow.error = error.message;
       console.error('❌ خطأ في الاتصال بـ IndexNow:', error);
     }
@@ -70,7 +69,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في معالجة طلب الأرشفة:', error);
     return NextResponse.json(
       { 

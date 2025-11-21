@@ -44,7 +44,6 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(result);
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('خطأ في الإصلاح التلقائي:', error);
     return NextResponse.json({
       success: false,
@@ -94,7 +93,6 @@ async function fixMissingAltText(mediaId: string, type: 'project' | 'article'): 
       return { success: true, message: `تم إضافة نص بديل: "${generatedAlt}"` };
     }
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     return { success: false, message: error.message };
   }
 }
@@ -158,7 +156,6 @@ async function fixMetaTags(targetId: string, type: 'project' | 'article'): Promi
       };
     }
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     return { success: false, message: error.message };
   }
 }
@@ -200,7 +197,6 @@ async function fixDuplicateContent(targetId: string, type: 'project' | 'article'
     
     return { success: false, message: 'نوع الهدف غير مدعوم' };
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     return { success: false, message: error.message };
   }
 }

@@ -64,7 +64,6 @@ export async function POST(request: NextRequest) {
       }
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء توليد المقال';
     console.error('Error in generate-article API:', error);
     return NextResponse.json(
       { error: errorMessage },

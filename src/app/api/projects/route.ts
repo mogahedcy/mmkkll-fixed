@@ -181,7 +181,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في جلب المشاريع:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في جلب المشاريع' },
@@ -326,7 +325,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, project: formatted, message: 'تم إضافة المشروع بنجاح' });
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في إضافة المشروع:', error);
     return NextResponse.json(
       { 

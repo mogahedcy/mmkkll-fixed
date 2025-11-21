@@ -86,7 +86,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('خطأ في إبلاغ محركات البحث بالمشاريع:', error);
     return NextResponse.json(
       { 

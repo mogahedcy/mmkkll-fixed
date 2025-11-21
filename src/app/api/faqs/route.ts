@@ -60,7 +60,6 @@ export async function GET(request: NextRequest) {
       total: faqs.length
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error fetching FAQs:', error);
     return NextResponse.json(
       { success: false, error: error.message },
@@ -139,7 +138,6 @@ export async function POST(request: NextRequest) {
       faq
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error creating FAQ:', error);
     return NextResponse.json(
       { success: false, error: error.message },

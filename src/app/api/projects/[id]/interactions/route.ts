@@ -157,7 +157,6 @@ export async function POST(
     return NextResponse.json(result);
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في تسجيل التفاعل:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في تسجيل التفاعل' },
@@ -222,7 +221,6 @@ export async function GET(
     });
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في جلب إحصائيات التفاعل:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في جلب الإحصائيات' },

@@ -52,7 +52,6 @@ export async function POST(request: NextRequest) {
       results
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء توليد المقالات';
     console.error('Error in generate-multiple-articles API:', error);
     return NextResponse.json(
       { error: errorMessage },

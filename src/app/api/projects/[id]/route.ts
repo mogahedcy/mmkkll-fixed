@@ -215,7 +215,6 @@ export async function PUT(
     });
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في تحديث المشروع:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في تحديث المشروع' },
@@ -302,7 +301,6 @@ export async function DELETE(
     });
 
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في حذف المشروع:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في حذف الم��روع' },

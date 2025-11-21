@@ -1,0 +1,93 @@
+01:42:48.521 Running build in Portland, USA (West) – pdx1
+01:42:48.521 Build machine configuration: 2 cores, 8 GB
+01:42:48.645 Cloning github.com/mogahedcy/mmkkll-fixed (Branch: main, Commit: 20b47e9)
+01:42:53.319 Cloning completed: 4.674s
+01:42:53.551 Found .vercelignore
+01:42:53.580 Removed 129 ignored files defined in .vercelignore
+01:42:53.580   /.git/logs/HEAD
+01:42:53.580   /.git/logs/refs/heads/master
+01:42:53.581   /.next-dev/build/chunks/[root-of-the-server]__51225daf._.js
+01:42:53.581   /.next-dev/build/chunks/[root-of-the-server]__51225daf._.js.map
+01:42:53.581   /.next-dev/build/chunks/[root-of-the-server]__974941ed._.js
+01:42:53.581   /.next-dev/build/chunks/[root-of-the-server]__974941ed._.js.map
+01:42:53.581   /.next-dev/build/chunks/[turbopack-node]_transforms_postcss_ts_5260e9fa._.js
+01:42:53.582   /.next-dev/build/chunks/[turbopack-node]_transforms_postcss_ts_5260e9fa._.js.map
+01:42:53.582   /.next-dev/build/chunks/[turbopack]_runtime.js
+01:42:53.582   /.next-dev/build/chunks/[turbopack]_runtime.js.map
+01:42:53.641 Restored build cache from previous deployment (AXHfu98NgiWJqQznqqtGMwbAksds)
+01:42:54.480 Running "vercel build"
+01:42:54.896 Vercel CLI 48.10.5
+01:42:55.388 Running "install" command: `npm install`...
+01:43:01.828 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+01:43:03.309 
+01:43:03.310 > aldeyar-global-jeddah@0.1.0 postinstall
+01:43:03.310 > prisma generate
+01:43:03.310 
+01:43:04.586 Prisma schema loaded from prisma/schema.prisma
+01:43:05.223 
+01:43:05.224 ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 394ms
+01:43:05.224 
+01:43:05.224 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+01:43:05.224 
+01:43:05.224 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+01:43:05.224 
+01:43:05.258 
+01:43:05.258 changed 107 packages, and audited 687 packages in 10s
+01:43:05.258 
+01:43:05.258 195 packages are looking for funding
+01:43:05.258   run `npm fund` for details
+01:43:05.261 
+01:43:05.261 2 vulnerabilities (1 moderate, 1 high)
+01:43:05.261 
+01:43:05.261 To address all issues, run:
+01:43:05.261   npm audit fix
+01:43:05.261 
+01:43:05.261 Run `npm audit` for details.
+01:43:05.295 Detected Next.js version: 15.5.0
+01:43:05.295 Running "npm run vercel-build"
+01:43:05.405 
+01:43:05.406 > aldeyar-global-jeddah@0.1.0 vercel-build
+01:43:05.406 > prisma generate && next build
+01:43:05.406 
+01:43:06.437 Prisma schema loaded from prisma/schema.prisma
+01:43:07.026 ┌─────────────────────────────────────────────────────────┐
+01:43:07.026 │  Update available 6.18.0 -> 7.0.0                       │
+01:43:07.027 │                                                         │
+01:43:07.027 │  This is a major update - please follow the guide at    │
+01:43:07.027 │  https://pris.ly/d/major-version-upgrade                │
+01:43:07.027 │                                                         │
+01:43:07.027 │  Run the following to update                            │
+01:43:07.028 │    npm i --save-dev prisma@latest                       │
+01:43:07.028 │    npm i @prisma/client@latest                          │
+01:43:07.028 └─────────────────────────────────────────────────────────┘
+01:43:07.028 
+01:43:07.029 ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 371ms
+01:43:07.029 
+01:43:07.029 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+01:43:07.029 
+01:43:07.032 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+01:43:07.032 
+01:43:07.790    ▲ Next.js 15.5.0
+01:43:07.791    - Environments: .env.production
+01:43:07.792 
+01:43:07.880    Creating an optimized production build ...
+01:43:30.884 Failed to compile.
+01:43:30.884 
+01:43:30.884 ./src/app/api/projects/[id]/analysis/route.ts
+01:43:30.885 Module parse failed: Identifier 'errorMessage' has already been declared (35:12)
+01:43:30.885 File was processed with these loaders:
+01:43:30.885  * ./node_modules/next/dist/build/webpack/loaders/next-flight-loader/index.js
+01:43:30.885  * ./node_modules/next/dist/build/webpack/loaders/next-swc-loader.js
+01:43:30.885 You may need an additional loader to handle the result of these loaders.
+01:43:30.886 |         const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
+01:43:30.886 |         console.error('خطأ في حفظ التحليل:', error);
+01:43:30.886 >         let errorMessage = 'حدث خطأ في حفظ التحليل';
+01:43:30.886 |         let statusCode = 500;
+01:43:30.886 |         if (error.code === 'P2025') {
+01:43:30.886 
+01:43:30.886 Import trace for requested module:
+01:43:30.886 ./src/app/api/projects/[id]/analysis/route.ts
+01:43:30.887 
+01:43:30.943 
+01:43:30.950 > Build failed because of webpack errors
+01:43:31.053 Error: Command "npm run vercel-build" exited with 1

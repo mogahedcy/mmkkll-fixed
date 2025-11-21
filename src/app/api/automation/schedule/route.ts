@@ -42,7 +42,6 @@ export async function GET(request: NextRequest) {
       }
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error fetching schedule:', error);
     return NextResponse.json(
       { error: 'فشل في جلب إعدادات الجدولة' },
@@ -127,7 +126,6 @@ export async function POST(request: NextRequest) {
       }
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error saving schedule:', error);
     return NextResponse.json(
       { error: 'فشل في حفظ إعدادات الجدولة' },
