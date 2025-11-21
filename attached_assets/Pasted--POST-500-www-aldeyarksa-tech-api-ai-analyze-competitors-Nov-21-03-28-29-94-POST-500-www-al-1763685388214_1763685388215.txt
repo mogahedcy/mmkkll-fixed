@@ -1,0 +1,612 @@
+
+POST
+500
+www.aldeyarksa.tech
+/api/ai/analyze-competitors
+Nov 21 03:28:29.94
+POST
+500
+www.aldeyarksa.tech
+/api/ai/analyze-competitors
+Nov 21 03:28:28.40
+POST
+500
+www.aldeyarksa.tech
+/api/ai/analyze-competitors
+Nov 21 03:28:24.60
+GET
+200
+www.aldeyarksa.tech
+/api/projects/list
+Nov 21 03:28:24.01
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/analyze
+Nov 21 03:28:20.57
+GET
+200
+www.aldeyarksa.tech
+/dashboard/settings
+Nov 21 03:28:20.55
+GET
+200
+www.aldeyarksa.tech
+/portfolio
+Nov 21 03:28:09.47
+GET
+200
+www.aldeyarksa.tech
+/portfolio/%D9%85%D8%B8%D9%84%D8%A7%D8%AA-%D9%85%D9%88%D8%A7%D9%82%D9%81-%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A8%D9%85%D8%AF%D9%8A%D9%86%D8%A9-%D8%A7%D9%84%D9%85%D9%84%D9%83-%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D9%84%D9%87-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6%D9%8A%D8%A9-
+Nov 21 03:28:09.31
+GET
+200
+www.aldeyarksa.tech
+/dashboard/indexing-status
+Nov 21 03:28:09.31
+GET
+200
+www.aldeyarksa.tech
+/dashboard/automation
+Nov 21 03:28:09.31
+GET
+200
+www.aldeyarksa.tech
+/dashboard/seo-health
+Nov 21 03:28:09.02
+GET
+200
+www.aldeyarksa.tech
+/dashboard/seo-agent
+Nov 21 03:28:08.89
+GET
+200
+www.aldeyarksa.tech
+/dashboard/comments
+Nov 21 03:28:08.31
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/add
+Nov 21 03:28:04.71
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/add
+Nov 21 03:28:02.15
+GET
+200
+www.aldeyarksa.tech
+/android-chrome-512x512.png
+Nov 21 03:28:02.15
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/add
+Nov 21 03:28:02.13
+GET
+401
+www.aldeyarksa.tech
+/api/database/stats
+Nov 21 03:28:02.10
+GET
+200
+www.aldeyarksa.tech
+/dashboard/faqs
+Nov 21 03:28:02.07
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/analysis
+Nov 21 03:28:02.07
+GET
+200
+www.aldeyarksa.tech
+/dashboard/articles
+Nov 21 03:28:02.07
+GET
+200
+www.aldeyarksa.tech
+/dashboard/articles/add
+Nov 21 03:28:02.07
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/analyze
+Nov 21 03:27:56.55
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/add
+Nov 21 03:27:56.30
+GET
+200
+www.aldeyarksa.tech
+/android-chrome-192x192.png
+Nov 21 03:27:56.27
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects
+Nov 21 03:27:56.27
+GET
+200
+www.aldeyarksa.tech
+/dashboard
+Nov 21 03:27:56.27
+GET
+200
+www.aldeyarksa.tech
+/api/dashboard/stats
+Nov 21 03:27:55.73
+GET
+200
+www.aldeyarksa.tech
+/dashboard
+Nov 21 03:27:55.02
+GET
+200
+www.aldeyarksa.tech
+/dashboard
+Nov 21 03:27:52.64
+POST
+200
+www.aldeyarksa.tech
+/api/auth/login
+Nov 21 03:27:46.51
+GET
+304
+www.aldeyarksa.tech
+/sw.js
+Nov 21 03:27:45.02
+GET
+304
+www.aldeyarksa.tech
+/favicon-16x16.png
+Nov 21 03:27:44.66
+GET
+200
+www.aldeyarksa.tech
+/favicon-32x32.png
+Nov 21 03:27:44.66
+GET
+401
+www.aldeyarksa.tech
+/api/auth/verify
+Nov 21 03:27:44.66
+GET
+304
+www.aldeyarksa.tech
+/portfolio
+Nov 21 03:27:44.66
+GET
+304
+www.aldeyarksa.tech
+/
+Nov 21 03:27:44.66
+GET
+304
+www.aldeyarksa.tech
+/sw.js
+Nov 21 03:27:44.66
+GET
+200
+www.aldeyarksa.tech
+/apple-touch-icon.png
+Nov 21 03:27:44.66
+GET
+304
+www.aldeyarksa.tech
+/contact
+Nov 21 03:27:43.92
+GET
+304
+www.aldeyarksa.tech
+/login
+Nov 21 03:27:43.92
+GET
+304
+www.aldeyarksa.tech
+/sw.js
+Nov 21 03:27:43.48
+GET
+200
+www.aldeyarksa.tech
+/offline.html
+Nov 21 03:27:43.37
+GET
+200
+www.aldeyarksa.tech
+/favicon-16x16.png
+Nov 21 03:27:42.83
+GET
+200
+www.aldeyarksa.tech
+/contact
+Nov 21 03:27:42.83
+GET
+200
+www.aldeyarksa.tech
+/portfolio
+Nov 21 03:27:42.83
+GET
+200
+www.aldeyarksa.tech
+/
+Nov 21 03:27:42.82
+GET
+200
+www.aldeyarksa.tech
+/favicon.svg
+Nov 21 03:27:42.76
+GET
+200
+www.aldeyarksa.tech
+/sw.js
+Nov 21 03:27:42.75
+GET
+401
+www.aldeyarksa.tech
+/api/auth/verify
+Nov 21 03:27:40.71
+GET
+200
+www.aldeyarksa.tech
+/contact
+Nov 21 03:27:40.71
+GET
+200
+www.aldeyarksa.tech
+/api/projects
+Nov 21 03:27:40.63
+GET
+200
+www.aldeyarksa.tech
+/portfolio
+Nov 21 03:27:39.99
+GET
+200
+www.aldeyarksa.tech
+/login
+Nov 21 03:27:22.33
+GET
+304
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/sw.js
+Nov 21 03:27:21.88
+GET
+---
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/contact
+Nov 21 03:27:21.88
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/search
+Nov 21 03:27:21.88
+GET
+304
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/articles
+Nov 21 03:27:21.87
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/portfolio
+Nov 21 03:27:21.81
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/about
+Nov 21 03:27:21.81
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/api/faqs
+Nov 21 03:27:21.22
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/api/projects
+Nov 21 03:27:21.22
+GET
+304
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/portfolio
+Nov 21 03:27:21.22
+GET
+304
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/contact
+Nov 21 03:27:21.17
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/services/pergolas
+Nov 21 03:27:21.12
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/services/mazallat
+Nov 21 03:27:21.08
+GET
+304
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/
+Nov 21 03:27:21.08
+GET
+304
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/sw.js
+Nov 21 03:27:20.99
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/offline.html
+Nov 21 03:27:20.99
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/favicon-16x16.png
+Nov 21 03:27:20.98
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/search
+Nov 21 03:27:20.98
+GET
+304
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/sw.js
+Nov 21 03:27:20.98
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/about
+Nov 21 03:27:20.98
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/portfolio
+Nov 21 03:27:20.97
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/articles
+Nov 21 03:27:20.97
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/contact
+Nov 21 03:27:20.91
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/sw.js
+Nov 21 03:27:20.90
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/api/faqs
+Nov 21 03:27:20.82
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/offline.html
+Nov 21 03:27:20.78
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/favicon.svg
+Nov 21 03:27:20.77
+GET
+---
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/contact
+Nov 21 03:27:20.77
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/articles
+Nov 21 03:27:20.77
+GET
+---
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/search
+Nov 21 03:27:20.76
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/portfolio
+Nov 21 03:27:20.71
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/about
+Nov 21 03:27:20.68
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/sw.js
+Nov 21 03:27:20.67
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/api/faqs
+Nov 21 03:27:20.59
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/favicon.svg
+Nov 21 03:27:19.81
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/contact
+Nov 21 03:27:19.81
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/api/projects
+Nov 21 03:27:19.80
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/portfolio
+Nov 21 03:27:19.78
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/api/projects
+Nov 21 03:27:19.78
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/contact
+Nov 21 03:27:19.78
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/portfolio
+Nov 21 03:27:19.67
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/
+Nov 21 03:27:19.60
+GET
+---
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/
+Nov 21 03:27:19.02
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/
+Nov 21 03:27:19.02
+GET
+200
+mmkkl2828-q6l8cnqc5-mogahedcys-projects.vercel.app
+/
+Nov 21 03:24:07.04
+GET
+304
+www.aldeyarksa.tech
+/sw.js
+Nov 21 03:24:05.06
+GET
+200
+www.aldeyarksa.tech
+/contact
+Nov 21 03:24:04.99
+GET
+200
+www.aldeyarksa.tech
+/portfolio
+Nov 21 03:24:04.97
+GET
+304
+www.aldeyarksa.tech
+/sw.js
+Nov 21 03:24:03.99
+GET
+200
+www.aldeyarksa.tech
+/
+Nov 21 03:24:02.23
+GET
+200
+www.aldeyarksa.tech
+/services/sandwich-panel
+Nov 21 03:24:02.22
+GET
+200
+www.aldeyarksa.tech
+/services/sawater
+Nov 21 03:24:02.22
+GET
+200
+www.aldeyarksa.tech
+/services/pergolas
+Nov 21 03:24:02.21
+GET
+200
+www.aldeyarksa.tech
+/services/mazallat
+Nov 21 03:23:53.45
+POST
+200
+www.aldeyarksa.tech
+/api/indexing/auto
+⚠️ فشل الإرسال - HTTP 400
+Nov 21 03:23:48.70
+GET
+200
+www.aldeyarksa.tech
+/dashboard/indexing-status
+Nov 21 03:23:47.64
+GET
+200
+www.aldeyarksa.tech
+/dashboard/settings
+Nov 21 03:23:42.21
+POST
+500
+www.aldeyarksa.tech
+/api/ai/analyze-competitors
+Nov 21 03:23:38.74
+GET
+200
+www.aldeyarksa.tech
+/api/projects/list
+Nov 21 03:23:38.27
+GET
+200
+www.aldeyarksa.tech
+/dashboard/projects/analyze
+Nov 21 03:23:34.97
+GET
+200
+www.aldeyarksa.tech
+/dashboard/indexing-status
+Nov 21 03:23:30.04
+GET
+304
+www.aldeyarksa.tech
+/sw.js
+Nov 21 03:23:28.10
+GET
+200
+www.aldeyarksa.tech
+/contact
+Nov 21 03:23:28.09
+GET
+200
+www.aldeyarksa.tech
+/portfolio
+Nov 21 03:23:28.08
+GET
+200
+www.aldeyarksa.tech
+/
+Nov 21 03:23:28.06
+GET
+200
+www.aldeyarksa.tech
+/dashboard/automation
+Nov 21 03:23:27.82
+GET
+200
+www.aldeyarksa.tech
+/dashboard/seo-health
+Nov 21 03:23:27.80
+GET
+200
+www.aldeyarksa.tech
+/dashboard/seo-agent
+Nov 21 03:23:27.80
+GET
+200
+www.aldeyarksa.tech
+/dashboard/comments
+mmkkl2828 – Logs – Vercel
