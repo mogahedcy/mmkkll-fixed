@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import BreadcrumbSchema from './BreadcrumbSchema';
 
 export default function HomePageBreadcrumb() {
@@ -7,9 +8,9 @@ export default function HomePageBreadcrumb() {
         <div className="max-w-7xl mx-auto">
           <ol className="flex items-center space-x-2 space-x-reverse text-sm sm:text-base">
             <li className="flex items-center">
-              <a href="/" className="text-primary hover:text-accent transition-colors font-medium">
+              <Link href="/" className="text-primary hover:text-accent transition-colors font-medium">
                 الرئيسية
-              </a>
+              </Link>
             </li>
           </ol>
         </div>

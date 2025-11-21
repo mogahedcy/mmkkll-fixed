@@ -4,7 +4,33 @@ import { safeEncodeUrl, createImageTags, createVideoTags } from '@/lib/sitemap-u
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
 
-  let projects: any[] = [];
+  let projects: Array<{
+    id: string;
+    slug: string | null;
+    title: string;
+    description: string;
+    category: string;
+    location: string;
+    featured: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    publishedAt: Date | null;
+    views: number;
+    likes: number;
+    rating: number;
+    metaTitle: string | null;
+    metaDescription: string | null;
+    keywords: string | null;
+    media_items: Array<{
+      type: string;
+      src: string;
+      alt: string | null;
+      title: string | null;
+      description: string | null;
+      thumbnail: string | null;
+    }>;
+    project_tags: Array<{ name: string }>;
+  }> = [];
 
   // جلب المشاريع مع معالجة الأخطاء
   try {
@@ -62,7 +88,7 @@ export async function GET() {
       const encodedSlug = encodeURIComponent(project.slug || project.id);
       const projectUrl = `${baseUrl}/portfolio/${encodedSlug}`;
       
-      const mediaContent = project.media_items?.map((media: any) => {
+      const mediaContent = project.media_items?.map((media: { type: string; src: string; alt: string | null; title: string | null; description: string | null; thumbnail: string | null }) => {
         if (media.type === 'IMAGE') {
           const imageUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
           return createImageTags({

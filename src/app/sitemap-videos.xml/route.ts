@@ -3,7 +3,20 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   const baseUrl = 'https://www.aldeyarksa.tech'; // الدومين المفضل الموحد
   
-  const videosByPage = new Map<string, any[]>();
+  const videosByPage = new Map<string, Array<{
+    src: string;
+    title: string | null;
+    description: string | null;
+    thumbnail: string | null;
+    duration: string | null;
+    project: {
+      title: string;
+      category: string;
+      location: string;
+      description: string;
+    };
+    index: number;
+  }>>();
 
   try {
     // جلب جميع المشاريع المنشورة مع الفيديوهات

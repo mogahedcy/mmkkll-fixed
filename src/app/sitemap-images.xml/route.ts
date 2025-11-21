@@ -66,7 +66,16 @@ export async function GET() {
     }
   ];
 
-  let projectImages: any[] = [];
+  let projectImages: Array<{
+    url: string;
+    caption: string;
+    title: string;
+    alt: string;
+    location: string;
+    project_url: string;
+    category: string;
+    uploadDate: string | Date;
+  }> = [];
 
   try {
     // جلب صور المشاريع من قاعدة البيانات
@@ -134,7 +143,16 @@ export async function GET() {
   const allImages = [...staticImages, ...serviceImages, ...projectImages];
 
   // تجميع الصور حسب صفحة المشروع
-  const imagesByPage = new Map<string, any[]>();
+  const imagesByPage = new Map<string, Array<{
+    url: string;
+    caption: string;
+    title: string;
+    alt: string;
+    location: string;
+    project_url?: string;
+    category: string;
+    uploadDate: string | Date;
+  }>>();
   
   allImages.forEach(image => {
     const pageUrl = image.project_url || `${baseUrl}/portfolio`;

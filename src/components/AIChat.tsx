@@ -148,7 +148,7 @@ export function AIChat() {
             <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
               <select
                 value={context}
-                onChange={(e) => setContext(e.target.value as any)}
+                onChange={(e) => setContext(e.target.value as 'عام' | 'خدمات' | 'اسعار' | 'مشاريع')}
                 className="w-full px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-800"
               >
                 <option value="عام">🌐 عام</option>

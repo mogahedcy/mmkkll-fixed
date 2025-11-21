@@ -31,7 +31,7 @@ interface FiltersState {
 interface AdvancedFiltersProps {
   filters: FiltersState;
   onFiltersChange: (filters: Partial<FiltersState>) => void;
-  categories?: { id: string; name: string; icon: any }[];
+  categories?: { id: string; name: string; icon: React.ComponentType<{ className: string }> }[];
 }
 
 const locations = [
@@ -100,7 +100,7 @@ export default function AdvancedFilters({ filters, onFiltersChange, categories =
   }: { 
     id: string; 
     title: string; 
-    icon: any; 
+    icon: React.ComponentType<{ className: string }>; 
     children: React.ReactNode; 
   }) => (
     <div className="border-b border-gray-200 last:border-b-0">
