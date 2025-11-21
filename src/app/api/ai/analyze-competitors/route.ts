@@ -193,6 +193,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
     console.error('❌ خطأ في تحليل المنافسين:', error);
+    const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء تحليل المنافسين';
     
     return NextResponse.json(
       { 
