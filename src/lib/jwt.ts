@@ -10,7 +10,7 @@ function getJWTSecret(): string {
   return secret;
 }
 
-export function verifyToken(token: string): any {
+export function verifyToken(token: string): unknown {
   return jwt.verify(token, getJWTSecret());
 }
 

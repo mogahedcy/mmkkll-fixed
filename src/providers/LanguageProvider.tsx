@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useEffect, useState, type ReactNode } from 'react';
+import React, { createContext, useEffect, useState, useCallback, type ReactNode } from 'react';
 
 type Language = 'ar' | 'en';
 
@@ -16,17 +16,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('ar');
   const [isMounted, setIsMounted] = useState(false);
 
-  // Apply language changes
-  const applyLanguage = (lang: Language) => {
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    localStorage.setItem('language', lang);
-    
-    // Update canonical and alternate links for SEO
-    updateCanonicalLinks(lang);
-  };
-
-  const updateCanonicalLinks = (lang: Language) => {
+  const updateCanonicalLinks = useCallback((lang: Language) => {
     const currentUrl = window.location.pathname;
     
     // Update canonical
@@ -64,7 +54,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       document.head.appendChild(xDefaultLink);
     }
     xDefaultLink.href = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech'}${currentUrl}`;
-  };
+  }, []);
+
+  // Apply language changes
+  const applyLanguage = useCallback((lang: Language) => {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    localStorage.setItem('language', lang);
+    
+    // Update canonical and alternate links for SEO
+    updateCanonicalLinks(lang);
+  }, [updateCanonicalLinks]);
 
   // Load language from localStorage on mount and apply
   useEffect(() => {

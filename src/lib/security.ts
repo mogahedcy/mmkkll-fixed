@@ -111,7 +111,7 @@ export const comparePassword = async (password: string, hash: string): Promise<b
 };
 
 // إنتاج JWT token مع أمان محسن
-export const generateToken = (payload: any, expiresIn = '24h'): string => {
+export const generateToken = (payload: Record<string, unknown>, expiresIn = '24h'): string => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error('JWT_SECRET is not defined');
@@ -134,7 +134,7 @@ export const generateToken = (payload: any, expiresIn = '24h'): string => {
 };
 
 // التحقق من JWT token
-export const verifyToken = (token: string): any => {
+export const verifyToken = (token: string): unknown => {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error('JWT_SECRET is not defined');
@@ -334,7 +334,7 @@ interface AuditLog {
   ipAddress: string;
   userAgent: string;
   success: boolean;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 class AuditLogger {
@@ -376,7 +376,7 @@ class AuditLogger {
 export const auditLogger = new AuditLogger();
 
 // مساعد التحقق من المصادقة
-export const authenticateAdmin = async (request: NextRequest): Promise<any> => {
+export const authenticateAdmin = async (request: NextRequest): Promise<Record<string, unknown>> => {
   const token = request.cookies.get('admin-token')?.value;
 
   if (!token) {
@@ -412,7 +412,7 @@ export const securityHeaders = {
   'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; media-src 'self' https:;"
 };
 
-export default {
+const security = {
   validatePassword,
   hashPassword,
   comparePassword,
@@ -429,3 +429,5 @@ export default {
   loginRateLimit,
   apiRateLimit
 };
+
+export default security;

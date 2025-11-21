@@ -1,15 +1,10 @@
 import { sanitizeHTML, validateURL } from './sanitizer';
 
-export function renderSafeHTML(html: string, className?: string) {
-  if (typeof window === 'undefined') return null;
+export function renderSafeHTML(html: string, className?: string): string {
+  if (typeof window === 'undefined') return '';
   
   const clean = sanitizeHTML(html);
-  return (
-    <div
-      className={className}
-      dangerouslySetInnerHTML={{ __html: clean }}
-    />
-  );
+  return clean;
 }
 
 export function createSafeLink(href: string, label: string) {
