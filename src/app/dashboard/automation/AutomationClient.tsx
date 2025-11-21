@@ -45,6 +45,37 @@ interface FixResult {
   error?: string;
 }
 
+interface SmartResults {
+  success: boolean;
+  analysis?: {
+    stats?: {
+      successCount?: number;
+      averageSeoScore?: number;
+    };
+    competitorInsights?: {
+      targetAudience?: string;
+      toneAndStyle?: string;
+      topKeywords?: string[];
+    };
+  };
+  results?: Array<{
+    success: boolean;
+    title?: string;
+    seoScore?: number;
+    error?: string;
+  }>;
+}
+
+interface ScheduleLog {
+  id: string | number;
+  status: 'SUCCESS' | 'FAILED';
+  taskType: string;
+  executedAt: string | number | Date;
+  message?: string;
+  successCount?: number;
+  failureCount?: number;
+}
+
 export default function AutomationClient() {
   const [activeTab, setActiveTab] = useState<'smart' | 'generate' | 'fix' | 'schedule'>('smart');
   
@@ -71,14 +102,14 @@ export default function AutomationClient() {
   });
 
   const [scheduleLoading, setScheduleLoading] = useState(false);
-  const [scheduleLogs, setScheduleLogs] = useState<Array<Record<string, unknown>>>([]);
+  const [scheduleLogs, setScheduleLogs] = useState<ScheduleLog[]>([]);
   const [logsLoading, setLogsLoading] = useState(false);
 
   const [smartNiche, setSmartNiche] = useState('');
   const [smartCount, setSmartCount] = useState(5);
   const [smartAutoPublish, setSmartAutoPublish] = useState(false);
   const [smartLoading, setSmartLoading] = useState(false);
-  const [smartResults, setSmartResults] = useState<Record<string, unknown> | null>(null);
+  const [smartResults, setSmartResults] = useState<SmartResults | null>(null);
   const [smartProgress, setSmartProgress] = useState(0);
 
   const addTopic = () => {
@@ -232,7 +263,7 @@ export default function AutomationClient() {
       } else {
         alert(data.error || 'حدث خطأ في الحفظ');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       alert('حدث خطأ في الاتصال');
       console.error(error);
     } finally {
@@ -266,15 +297,15 @@ export default function AutomationClient() {
         })
       });
 
-      const data = await response.json();
+      const data: SmartResults = await response.json();
 
       if (data.success) {
         setSmartResults(data);
         setSmartProgress(100);
       } else {
-        alert(data.error || 'حدث خطأ أثناء التوليد الذكي');
+        alert('حدث خطأ أثناء التوليد الذكي');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       alert('حدث خطأ في الاتصال');
       console.error(error);
     } finally {
@@ -455,34 +486,34 @@ export default function AutomationClient() {
                       <div className="bg-white rounded p-2">
                         <p className="text-gray-600">نجح</p>
                         <p className="text-2xl font-bold text-green-600">
-                          {smartResults.analysis?.stats?.successCount || 0}
+                          {(smartResults as SmartResults)?.analysis?.stats?.successCount || 0}
                         </p>
                       </div>
                       <div className="bg-white rounded p-2">
                         <p className="text-gray-600">متوسط SEO</p>
                         <p className="text-2xl font-bold text-purple-600">
-                          {smartResults.analysis?.stats?.averageSeoScore || 0}
+                          {(smartResults as SmartResults)?.analysis?.stats?.averageSeoScore || 0}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  {smartResults.analysis?.competitorInsights && (
+                  {(smartResults as SmartResults)?.analysis?.competitorInsights && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <h4 className="font-bold text-blue-900 mb-2">🔍 رؤى المنافسين</h4>
                       <div className="text-sm text-blue-800 space-y-2">
                         <div>
                           <p className="font-semibold">الجمهور المستهدف:</p>
-                          <p className="text-blue-700">{smartResults.analysis.competitorInsights.targetAudience}</p>
+                          <p className="text-blue-700">{((smartResults as SmartResults).analysis?.competitorInsights as Record<string, unknown>)?.targetAudience}</p>
                         </div>
                         <div>
                           <p className="font-semibold">الأسلوب:</p>
-                          <p className="text-blue-700">{smartResults.analysis.competitorInsights.toneAndStyle}</p>
+                          <p className="text-blue-700">{((smartResults as SmartResults).analysis?.competitorInsights as Record<string, unknown>)?.toneAndStyle}</p>
                         </div>
                         <div>
                           <p className="font-semibold">أهم الكلمات المفتاحية:</p>
                           <div className="flex flex-wrap gap-1 mt-1">
-                            {smartResults.analysis.competitorInsights.topKeywords?.slice(0, 5).map((kw: string, i: number) => (
+                            {(((smartResults as SmartResults).analysis?.competitorInsights as Record<string, unknown>)?.topKeywords as string[] | undefined)?.slice(0, 5).map((kw: string, i: number) => (
                               <Badge key={i} variant="outline" className="text-xs">
                                 {kw}
                               </Badge>
@@ -495,7 +526,7 @@ export default function AutomationClient() {
 
                   <div className="space-y-2">
                     <h4 className="font-bold text-gray-800">المقالات المولّدة:</h4>
-                    {smartResults.results?.map((result: any, index: number) => (
+                    {((smartResults as SmartResults)?.results as Array<{success: boolean; title?: string; seoScore?: number; error?: string}> | undefined)?.map((result, index: number) => (
                       <div
                         key={index}
                         className={`border rounded-lg p-3 ${
@@ -1038,49 +1069,58 @@ export default function AutomationClient() {
 
               {!logsLoading && scheduleLogs.length > 0 && (
                 <div className="space-y-3 max-h-[600px] overflow-y-auto">
-                  {scheduleLogs.map((log) => (
-                    <div
-                      key={log.id}
-                      className={`border rounded-lg p-4 ${
-                        log.status === 'SUCCESS'
-                          ? 'bg-green-50 border-green-200'
-                          : 'bg-red-50 border-red-200'
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        {log.status === 'SUCCESS' ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5" />
-                        ) : (
-                          <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
-                        )}
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-bold text-gray-900">
-                              {log.taskType === 'GENERATE_ARTICLES' ? '📝 توليد مقالات' : '🔧 إصلاح SEO'}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {new Date(log.executedAt).toLocaleString('ar-SA')}
-                            </span>
-                          </div>
-                          
-                          {log.message && (
-                            <p className="text-sm text-gray-700 mb-2">{log.message}</p>
+                  {scheduleLogs.map((log: ScheduleLog) => {
+                    const logId = String(log.id);
+                    const logStatus = log.status || 'FAILED';
+                    const logTaskType = String(log.taskType || '');
+                    const logDate = typeof log.executedAt === 'string' ? new Date(log.executedAt) : typeof log.executedAt === 'number' ? new Date(log.executedAt) : log.executedAt instanceof Date ? log.executedAt : new Date();
+                    const successCount = log.successCount !== null && log.successCount !== undefined ? log.successCount : null;
+                    const failureCount = log.failureCount !== null && log.failureCount !== undefined ? log.failureCount : null;
+                    
+                    return (
+                      <div
+                        key={logId}
+                        className={`border rounded-lg p-4 ${
+                          logStatus === 'SUCCESS'
+                            ? 'bg-green-50 border-green-200'
+                            : 'bg-red-50 border-red-200'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          {logStatus === 'SUCCESS' ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5" />
+                          ) : (
+                            <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                           )}
-                          
-                          {(log.successCount !== null || log.failureCount !== null) && (
-                            <div className="flex gap-4 text-sm">
-                              {log.successCount !== null && (
-                                <span className="text-green-700">✅ نجح: {log.successCount}</span>
-                              )}
-                              {log.failureCount !== null && log.failureCount > 0 && (
-                                <span className="text-red-700">❌ فشل: {log.failureCount}</span>
-                              )}
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-bold text-gray-900">
+                                {logTaskType === 'GENERATE_ARTICLES' ? '📝 توليد مقالات' : '🔧 إصلاح SEO'}
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                {logDate.toLocaleString('ar-SA')}
+                              </span>
                             </div>
-                          )}
+                            
+                            {log.message && (
+                              <p className="text-sm text-gray-700 mb-2">{log.message}</p>
+                            )}
+                            
+                            {(successCount !== null || failureCount !== null) && (
+                              <div className="flex gap-4 text-sm">
+                                {successCount !== null && (
+                                  <span className="text-green-700">✅ نجح: {successCount}</span>
+                                )}
+                                {failureCount !== null && failureCount > 0 && (
+                                  <span className="text-red-700">❌ فشل: {failureCount}</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </Card>
