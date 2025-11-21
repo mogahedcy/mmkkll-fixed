@@ -211,79 +211,80 @@
 :root.dark {
   --background: #0a0a0a;
   --foreground: #fafafa;
+  color-scheme: dark;
 }
 
 :root.dark body {
-  @apply bg-gray-950 text-gray-50;
-}
-
-:root.dark {
-  color-scheme: dark;
+  background-color: #0a0a0a;
+  color: #fafafa;
 }
 
 /* Dark mode specific styles */
 :root.dark header {
-  @apply bg-gray-900 border-gray-800;
+  background-color: #1a1a1a;
+  border-color: #2a2a2a;
 }
 
 :root.dark nav {
-  @apply bg-gray-900;
+  background-color: #1a1a1a;
 }
 
 :root.dark .bg-white {
-  @apply dark:bg-gray-900;
+  background-color: #1a1a1a;
 }
 
 :root.dark .bg-gray-50 {
-  @apply dark:bg-gray-800;
+  background-color: #2a2a2a;
 }
 
 :root.dark .bg-gray-100 {
-  @apply dark:bg-gray-700;
+  background-color: #3a3a3a;
 }
 
 :root.dark .text-gray-900 {
-  @apply dark:text-gray-100;
+  color: #e5e5e5;
 }
 
 :root.dark .text-gray-700 {
-  @apply dark:text-gray-300;
+  color: #d1d1d1;
 }
 
 :root.dark .text-gray-600 {
-  @apply dark:text-gray-400;
+  color: #b8b8b8;
 }
 
 :root.dark .text-gray-500 {
-  @apply dark:text-gray-500;
+  color: #a0a0a0;
 }
 
 :root.dark .border-gray-200 {
-  @apply dark:border-gray-700;
+  border-color: #3a3a3a;
 }
 
 :root.dark .border-gray-300 {
-  @apply dark:border-gray-600;
+  border-color: #4a4a4a;
 }
 
 :root.dark .shadow-lg {
-  @apply dark:shadow-2xl;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
 :root.dark input,
 :root.dark textarea,
 :root.dark select {
-  @apply dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700;
+  background-color: #2a2a2a;
+  color: #e5e5e5;
+  border-color: #3a3a3a;
 }
 
 :root.dark .card {
-  @apply dark:bg-gray-800;
+  background-color: #2a2a2a;
 }
 
 :root.dark .hover\:bg-gray-50:hover {
-  @apply dark:hover:bg-gray-800;
+  background-color: #2a2a2a;
 }
 
 :root.dark .hover\:bg-gray-100:hover {
-  @apply dark:hover:bg-gray-700;
+  background-color: #3a3a3a;
 }
