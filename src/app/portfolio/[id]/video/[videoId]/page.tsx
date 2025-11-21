@@ -30,7 +30,7 @@ const getProjectWithVideo = cache(async (id: string, videoId: string) => {
     const project = await response.json();
     
     // البحث عن الفيديو المطلوب
-    const video = project.mediaItems?.find((item: any) => 
+    const video = project.mediaItems?.find((item: { type: string; id: string }) => 
       item.type === 'VIDEO' && item.id === videoId
     );
     
@@ -121,7 +121,7 @@ async function VideoPage({ params }: { params: Promise<{ id: string; videoId: st
       return video.thumbnail.startsWith('http') ? video.thumbnail : `https://www.aldeyarksa.tech${video.thumbnail}`;
     }
     // استخدام أول صورة من المشروع إذا لم يكن للفيديو صورة مصغرة
-    const firstImage = project.mediaItems?.find((item: any) => item.type === 'IMAGE');
+    const firstImage = project.mediaItems?.find((item: { type: string; src?: string }) => item.type === 'IMAGE');
     if (firstImage?.src) {
       return firstImage.src.startsWith('http') ? firstImage.src : `https://www.aldeyarksa.tech${firstImage.src}`;
     }
@@ -234,8 +234,8 @@ async function VideoPage({ params }: { params: Promise<{ id: string; videoId: st
 }
 
 interface VideoStructuredDataProps {
-  project: any;
-  video: any;
+  project: { category: string; title: string; location: string };
+  video: { title?: string; description?: string; src: string; duration?: string };
   videoUrl: string;
   thumbnailUrl: string;
 }

@@ -34,10 +34,6 @@ export default function SettingsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  useEffect(() => {
-    checkAuthentication();
-  }, []);
-
   const checkAuthentication = async () => {
     try {
       const response = await fetch('/api/auth/verify');
@@ -55,6 +51,10 @@ export default function SettingsPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

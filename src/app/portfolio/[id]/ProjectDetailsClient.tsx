@@ -118,9 +118,9 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
         if (res.ok) {
           const data = await res.json();
           if (data?.success && data.interactions) {
-            setLikesCount(data.interactions.likes ?? likesCount);
-            setViewsCount(data.interactions.views ?? viewsCount);
-            setCommentsCount(data.interactions.comments ?? commentsCount);
+            setLikesCount(l => data.interactions.likes ?? l);
+            setViewsCount(v => data.interactions.views ?? v);
+            setCommentsCount(c => data.interactions.comments ?? c);
             setIsLiked(!!data.interactions.isLiked);
           }
         }
@@ -173,8 +173,8 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
   };
 
   // دالة لمعالجة أخطاء الفيديو
-  const handleVideoError = (err: any) => {
-    const error = err as Error;
+  const handleVideoError = (err: Event) => {
+    const error = err as Event;
     console.error('خطأ في تشغيل الفيديو:', error);
     setVideoError('لا يمكن تشغيل هذا الفيديو. يرجى المحاولة لاحقاً.');
     setVideoLoading(false);

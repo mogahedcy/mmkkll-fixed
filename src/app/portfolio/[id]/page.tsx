@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
   }
 
-  const mainImage = project.mediaItems?.find((item: any) => item.type === 'IMAGE');
+  const mainImage = project.mediaItems?.find((item: { type: string; src?: string }) => item.type === 'IMAGE');
   const imageUrl = mainImage?.src || 'https://www.aldeyarksa.tech/favicon.svg';
   const seoTitle = `${project.title} في ${project.location} | محترفين الديار العالمية جدة`;
   const seoDescription = `${project.description.substring(0, 150)}... مشروع ${project.category} في ${project.location} من محترفين الديار العالمية - أفضل شركة مظلات وسواتر في جدة`;
@@ -104,9 +104,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       modifiedTime: project.updatedAt || project.createdAt,
       authors: ['محترفين الديار العالمية'],
       images: (project.mediaItems || [])
-        .filter((item: any) => item.type === 'IMAGE')
+        .filter((item: { type: string; src: string; title?: string }) => item.type === 'IMAGE')
         .slice(0, 4)
-        .map((item: any) => ({
+        .map((item: { type: string; src: string; title?: string }) => ({
           url: item.src,
           width: 1200,
           height: 630,
@@ -145,8 +145,8 @@ export default async function ProjectDetailsPage({ params }: Props) {
   }
 
   // إعداد structured data
-  const images = project.mediaItems?.filter((item: any) => item.type === 'IMAGE') || [];
-  const videos = project.mediaItems?.filter((item: any) => item.type === 'VIDEO') || [];
+  const images = project.mediaItems?.filter((item: { type: string; src: string; description?: string; title?: string; alt?: string }) => item.type === 'IMAGE') || [];
+  const videos = project.mediaItems?.filter((item: { type: string; src: string; thumbnail?: string; description?: string; title?: string; duration?: string }) => item.type === 'VIDEO') || [];
 
   const breadcrumbItems = [
     { label: 'المشاريع', href: '/portfolio' },
@@ -161,14 +161,14 @@ export default async function ProjectDetailsPage({ params }: Props) {
     location: project.location,
     dateCreated: project.createdAt,
     dateModified: project.updatedAt,
-    images: images.map((item: any, idx: number) => ({
+    images: images.map((item: { type: string; src: string; description?: string; title?: string; alt?: string }, idx: number) => ({
       url: item.src,
       caption: item.description || item.title || `${project.title} - صورة ${idx + 1}`,
       alt: item.alt || `${project.title} - ${project.category} في ${project.location} - صورة ${idx + 1}`,
       title: item.title || `${project.category} - ${project.title}`,
       description: item.description || `صورة من مشروع ${project.title} - ${project.category} في ${project.location}`
     })),
-    videos: videos.map((item: any, idx: number) => ({
+    videos: videos.map((item: { type: string; src: string; thumbnail?: string; description?: string; title?: string; duration?: string }, idx: number) => ({
       name: item.title || `${project.title} - فيديو ${idx + 1}`,
       description: item.description || `فيديو توضيحي لمشروع ${project.title} - ${project.category} في ${project.location}. تنفيذ محترفين الديار العالمية`,
       contentUrl: item.src,

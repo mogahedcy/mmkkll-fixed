@@ -1,0 +1,23 @@
+./src/app/dashboard/faqs/page.tsx
+72:6  Warning: React Hook useEffect has a missing dependency: 'fetchFAQs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+./src/app/dashboard/page.tsx
+157:15  Error: Do not use an `<a>` element to navigate to `/dashboard/projects/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+179:15  Error: Do not use an `<a>` element to navigate to `/dashboard/projects/add/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+./src/app/dashboard/projects/[id]/edit/page.tsx
+107:6  Warning: React Hook useEffect has a missing dependency: 'checkAuthentication'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+400:70  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/app/dashboard/projects/[id]/page.tsx
+86:6  Warning: React Hook useEffect has a missing dependency: 'checkAuthentication'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+338:70  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/app/dashboard/projects/add/ProjectAddClient.tsx
+71:52  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/app/dashboard/projects/analysis/ProjectAnalysisClient.tsx
+35:15  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+59:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+60:18  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/app/dashboard/projects/page.tsx
+119:6  Warning: React Hook useEffect has a missing dependency: 'fetchProjects'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+./src/app/dashboard/seo-agent/SEOAgentClient.tsx
+222:42  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+607:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+626:48  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
