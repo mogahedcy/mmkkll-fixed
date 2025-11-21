@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { BarChart3, Star, MessageSquare, Eye, TrendingUp, Users } from 'lucide-react';
+import { BarChart3, Star, MessageSquare, Eye, TrendingUp, Users, Loader, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<any>(null);
+  const [projectInput, setProjectInput] = useState('');
 
   const stats = [
     { label: 'إجمالي المشاهدات', value: '15.2K', icon: Eye, color: 'bg-blue-500' },
@@ -49,12 +52,12 @@ export default function AdminDashboard() {
 
         {/* Tabs */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700">
-            {['overview', 'projects', 'articles', 'reviews'].map((tab) => (
+          <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+            {['overview', 'projects', 'articles', 'reviews', 'ai'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-3 px-4 font-medium transition-colors ${
+                className={`pb-3 px-4 font-medium transition-colors whitespace-nowrap ${
                   activeTab === tab
                     ? 'border-b-2 border-primary text-primary'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
@@ -64,6 +67,7 @@ export default function AdminDashboard() {
                 {tab === 'projects' && 'المشاريع'}
                 {tab === 'articles' && 'المقالات'}
                 {tab === 'reviews' && 'التقييمات'}
+                {tab === 'ai' && '✨ أدوات AI'}
               </button>
             ))}
           </div>
@@ -129,6 +133,89 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 <h3 className="text-lg font-bold">التقييمات الأخيرة</h3>
                 <p className="text-gray-600 dark:text-gray-400">متوسط التقييم: 4.8/5 ⭐ من 150+ تقييم</p>
+              </div>
+            )}
+
+            {activeTab === 'ai' && (
+              <div className="space-y-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-6 h-6 text-primary" />
+                  <h3 className="text-lg font-bold">أدوات AI الذكية</h3>
+                </div>
+
+                {/* AI Project Suggestions */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 p-6 rounded-lg border-2 border-blue-200 dark:border-blue-800">
+                  <h4 className="font-bold mb-3">💡 اقتراحات ذكية للمشاريع</h4>
+                  <div className="space-y-3">
+                    <textarea
+                      placeholder="وصف المشروع (نوع، موقع، ميزانية...)"
+                      value={projectInput}
+                      onChange={(e) => setProjectInput(e.target.value)}
+                      className="w-full px-4 py-2 border-2 border-blue-300 rounded-lg dark:bg-gray-700 dark:border-blue-700"
+                      rows={3}
+                    />
+                    <button
+                      onClick={async () => {
+                        if (!projectInput) return;
+                        setIsLoadingAI(true);
+                        try {
+                          const res = await fetch('/api/ai/project-suggestions', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              projectType: 'مظلات',
+                              location: 'جدة',
+                              budget: '5000',
+                              description: projectInput,
+                            }),
+                          });
+                          const data = await res.json();
+                          setAiSuggestions(data.suggestions);
+                        } finally {
+                          setIsLoadingAI(false);
+                        }
+                      }}
+                      disabled={isLoadingAI || !projectInput}
+                      className="w-full bg-primary text-white py-2 rounded-lg font-bold hover:bg-primary/90 disabled:opacity-50 flex items-center justify-center gap-2"
+                    >
+                      {isLoadingAI ? <Loader className="animate-spin w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+                      احصل على الاقتراحات
+                    </button>
+                  </div>
+
+                  {aiSuggestions && (
+                    <div className="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg space-y-2">
+                      <p><strong>العنوان:</strong> {aiSuggestions.title}</p>
+                      <p><strong>الوصف:</strong> {aiSuggestions.description}</p>
+                      <div>
+                        <strong>الكلمات المفتاحية:</strong>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {(aiSuggestions.keywords || []).map((kw: string) => (
+                            <span key={kw} className="px-3 py-1 bg-primary text-white rounded-full text-sm">
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* AI Features Info */}
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-lg border-l-4 border-green-500">
+                    <p className="font-bold">📝 مولد المقالات</p>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">اذهب لـ /admin/ai-tools لكتابة مقالات بناء على المنافسين</p>
+                  </div>
+                  <div className="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-lg border-l-4 border-purple-500">
+                    <p className="font-bold">🖼️ اختيار الصور</p>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">اختر صور مناسبة تلقائياً للمحتوى</p>
+                  </div>
+                </div>
+
+                <Link href="/admin/ai-tools" className="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90">
+                  🚀 لوحة أدوات AI المتقدمة
+                </Link>
               </div>
             )}
           </div>
