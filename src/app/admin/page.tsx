@@ -53,7 +53,7 @@ export default function AdminDashboard() {
         {/* Tabs */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
           <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
-            {['overview', 'projects', 'articles', 'reviews', 'ai'].map((tab) => (
+            {['overview', 'projects', 'articles', 'reviews', 'ai', 'google'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -68,6 +68,7 @@ export default function AdminDashboard() {
                 {tab === 'articles' && 'المقالات'}
                 {tab === 'reviews' && 'التقييمات'}
                 {tab === 'ai' && '✨ أدوات AI'}
+                {tab === 'google' && '🔍 Google API'}
               </button>
             ))}
           </div>
@@ -216,6 +217,64 @@ export default function AdminDashboard() {
                 <Link href="/admin/ai-tools" className="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90">
                   🚀 لوحة أدوات AI المتقدمة
                 </Link>
+              </div>
+            )}
+
+            {activeTab === 'google' && (
+              <div className="space-y-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Eye className="w-6 h-6 text-primary" />
+                  <h3 className="text-lg font-bold">🔍 Google API Tools</h3>
+                </div>
+
+                {/* Google API Status */}
+                <div className="bg-blue-50 dark:bg-blue-900/30 p-6 rounded-lg border-2 border-blue-200 dark:border-blue-800">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold">Google API Key</span>
+                      <span className={`px-3 py-1 rounded-full text-sm font-bold ${process.env.GOOGLE_API_KEY ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        {process.env.GOOGLE_API_KEY ? '✅ متصل' : '❌ غير متصل'}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      تُستخدم لـ: بحث الصور، Gemini AI، معالجة الصور الذكية
+                    </p>
+                  </div>
+                </div>
+
+                {/* Google Services Grid */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg border-l-4 border-blue-500">
+                    <p className="font-bold text-lg">📸 بحث الصور</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                      ابحث عن صور عالية الجودة باستخدام Google Custom Search
+                    </p>
+                    <button className="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-600">
+                      بحث الصور
+                    </button>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border-l-4 border-purple-500">
+                    <p className="font-bold text-lg">🤖 Gemini AI</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                      استخدم Gemini للمحادثات الذكية وتحليل المحتوى
+                    </p>
+                    <button className="mt-3 w-full bg-purple-500 text-white py-2 rounded-lg text-sm font-bold hover:bg-purple-600">
+                      Gemini Chat
+                    </button>
+                  </div>
+                </div>
+
+                {/* Setup Instructions */}
+                <div className="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-lg border-l-4 border-amber-500">
+                  <p className="font-bold text-amber-900 dark:text-amber-200 mb-2">⚙️ إعداد Google API</p>
+                  <ol className="text-sm space-y-1 text-amber-800 dark:text-amber-300 list-decimal list-inside">
+                    <li>اذهب إلى: <a href="https://console.cloud.google.com" target="_blank" className="underline">Google Cloud Console</a></li>
+                    <li>أنشئ مشروع جديد</li>
+                    <li>فعّل Gemini API و Custom Search API</li>
+                    <li>أنسخ المفاتيح إلى Secrets</li>
+                  </ol>
+                </div>
               </div>
             )}
           </div>
