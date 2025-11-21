@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { headers } from 'next/headers';
 import { randomUUID } from 'crypto';
 import { normalizeArticleCategoryName } from '@/lib/categoryNormalizer';
@@ -19,8 +20,8 @@ export async function GET(request: NextRequest) {
     const skip = page ? (Number.parseInt(page) - 1) * (limit ? Number.parseInt(limit) : 12) : 0;
     const take = limit ? Number.parseInt(limit) : 12;
 
-    const where: Record<string, unknown> = {
-      status: status
+    const where: Prisma.articlesWhereInput = {
+      status: status as 'PUBLISHED' | 'DRAFT'
     };
 
     if (category && category !== 'all') {
@@ -59,9 +60,7 @@ export async function GET(request: NextRequest) {
     }
 
     // تحديد ترتيب المقالات
-    // @ts-expect-error - Prisma orderBy type
-
-    let orderBy: Array<Record<string, unknown>> = [];
+    let orderBy: Prisma.articlesOrderByWithRelationInput[] = [];
     switch (sort) {
       case 'newest':
         orderBy = [{ publishedAt: 'desc' }, { createdAt: 'desc' }];
@@ -75,7 +74,6 @@ export async function GET(request: NextRequest) {
       case 'popular':
         orderBy = [
           { views: 'desc' },
-          // @ts-expect-error - Prisma orderBy type compatibility
           { article_likes: { _count: 'desc' } }
         ];
         break;
@@ -83,7 +81,6 @@ export async function GET(request: NextRequest) {
         orderBy = [
           { article_likes: { _count: 'desc' } },
           { views: 'desc' }
-          // @ts-expect-error - Prisma orderBy type compatibility
         ];
         break;
       case 'highest-rated':
@@ -123,29 +120,18 @@ export async function GET(request: NextRequest) {
     });
 
     // تحسين البيانات المُرجعة
-    // @ts-expect-error - Prisma type compatibility
-
-    const formattedArticles = articles.map((article: Record<string, unknown>) => {
-    // @ts-expect-error - Prisma result type compatibility
-      const _count = article._count as Record<string, unknown> | undefined;
-      const content = article.content as string | undefined;
-      const excerpt = article.excerpt as string | undefined;
-      const title = article.title as string;
-      const id = article.id as string;
-      
-      return {
-        ...article,
-        mediaItems: article.article_media_items || [],
-        tags: article.article_tags || [],
-        views: _count?.article_views || 0,
-        likes: _count?.article_likes || 0,
-        commentsCount: _count?.article_comments || 0,
-        mediaCount: _count?.article_media_items || 0,
-        excerpt: excerpt || (content || '').substring(0, 200) + '...',
-        readTime: Math.ceil((content || '').length / 1000),
-        slug: article.slug || generateSlug(title, id)
-      };
-    });
+    const formattedArticles = articles.map((article) => ({
+      ...article,
+      mediaItems: article.article_media_items || [],
+      tags: article.article_tags || [],
+      views: article._count?.article_views || 0,
+      likes: article._count?.article_likes || 0,
+      commentsCount: article._count?.article_comments || 0,
+      mediaCount: article._count?.article_media_items || 0,
+      excerpt: article.excerpt || (article.content || '').substring(0, 200) + '...',
+      readTime: Math.ceil((article.content || '').length / 1000),
+      slug: article.slug || generateSlug(article.title, article.id)
+    }));
 
     const totalCount = await prisma.articles.count({ where });
 
@@ -253,26 +239,32 @@ export async function POST(request: NextRequest) {
         publishedAt: status === 'PUBLISHED' ? new Date() : null,
         updatedAt: new Date(),
         article_media_items: {
-          // @ts-expect-error - Dynamic media properties
-
-          create: mediaItems?.map((item: unknown, index: number) => {
-            const mediaItem = item as Record<string, unknown>;
-            // @ts-expect-error - Dynamic media item properties
-            return {
-              id: randomUUID(),
-              type: mediaItem.type as string,
-              src: (mediaItem.src || mediaItem.url) as string,
-              thumbnail: (mediaItem.thumbnail || mediaItem.src || mediaItem.url) as string,
-              title: (mediaItem.title || `ملف ${index + 1}`) as string,
-              description: (mediaItem.description || '') as string,
-              duration: (mediaItem.duration || null) as number | null,
-              fileSize: (mediaItem.fileSize || null) as number | null,
-              mimeType: (mediaItem.mimeType || null) as string | null,
-              alt: (mediaItem.alt || title) as string,
-              caption: (mediaItem.caption || '') as string,
-              order: index
-            };
-          }) || []
+          create: (mediaItems as Array<{
+            type: string;
+            src?: string;
+            url?: string;
+            thumbnail?: string;
+            title?: string;
+            description?: string;
+            duration?: number | null;
+            fileSize?: number | null;
+            mimeType?: string | null;
+            alt?: string;
+            caption?: string;
+          }> | undefined)?.map((item, index) => ({
+            id: randomUUID(),
+            type: item.type,
+            src: item.src || item.url || '',
+            thumbnail: item.thumbnail || item.src || item.url || '',
+            title: item.title || `ملف ${index + 1}`,
+            description: item.description || '',
+            duration: item.duration ? String(item.duration) : null,
+            fileSize: item.fileSize || null,
+            mimeType: item.mimeType || null,
+            alt: item.alt || title,
+            caption: item.caption || '',
+            order: index
+          })) || []
         },
         article_tags: {
           create: tags?.map((tag: string | { name: string }) => ({

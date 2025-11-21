@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { normalizeCategoryName } from '@/lib/categoryNormalizer';
 
@@ -41,11 +42,11 @@ export async function GET(
 
     return NextResponse.json({
       ...project,
-      mediaItems: (project as any).media_items,
-      tags: (project as any).project_tags || [],
-      materials: (project as any).project_materials || [],
+      mediaItems: (project ).media_items,
+      tags: (project ).project_tags || [],
+      materials: (project ).project_materials || [],
       views: (project.views || 0) + 1,
-      likes: (project._count as any)?.project_likes || 0,
+      likes: (project._count )?.project_likes || 0,
       rating: project.rating || 0
     });
 
@@ -212,7 +213,7 @@ export async function PUT(
 
     return NextResponse.json({
       success: true,
-      project: { ...updatedProject, mediaItems: (updatedProject as any).media_items },
+      project: { ...updatedProject, mediaItems: (updatedProject ).media_items },
       message: 'تم تحديث المشروع بنجاح'
     });
 

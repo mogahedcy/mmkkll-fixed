@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import { randomUUID } from 'crypto';
@@ -19,8 +20,8 @@ export async function GET(request: NextRequest) {
     const skip = page ? (Number.parseInt(page) - 1) * (limit ? Number.parseInt(limit) : 12) : 0;
     const take = limit ? Number.parseInt(limit) : 12;
 
-    const where: Record<string, unknown> = {
-      status: status
+    const where: Prisma.projectsWhereInput = {
+      status: status as 'PUBLISHED' | 'DRAFT'
     };
 
     if (category && category !== 'all') {
@@ -44,23 +45,15 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      const searchLower = search.toLowerCase();
       where.OR = [
         { title: { contains: search } },
         { description: { contains: search } },
-        { location: { contains: search } },
-        {
-          tags: {
-            some: {
-              name: { contains: search }
-            }
-          }
-        }
+        { location: { contains: search } }
       ];
     }
 
     // تحديد ترتيب المشاريع
-    let orderBy: Array<Record<string, string>> = [];
+    let orderBy: Prisma.projectsOrderByWithRelationInput[] = [];
     switch (sort) {
       case 'newest':
         orderBy = [{ publishedAt: 'desc' }, { createdAt: 'desc' }];
@@ -74,13 +67,12 @@ export async function GET(request: NextRequest) {
       case 'popular':
         orderBy = [
           { views: 'desc' },
-          // ترتيب ثانوي حسب عدد الإعجابات الفعلية
-          { project_likes: { _count: 'desc' } } as any
+          { project_likes: { _count: 'desc' } }
         ];
         break;
       case 'most-liked':
         orderBy = [
-          { project_likes: { _count: 'desc' } } as any,
+          { project_likes: { _count: 'desc' } },
           { views: 'desc' }
         ];
         break;
@@ -94,10 +86,7 @@ export async function GET(request: NextRequest) {
         orderBy = [{ featured: 'desc' }, { publishedAt: 'desc' }];
     }
 
-    const db = prisma as Record<string, unknown>;
-    const Project = db.projects || db.project;
-
-    if (!Project || !process.env.DATABASE_URL) {
+    if (!process.env.DATABASE_URL) {
       return NextResponse.json({
         success: true,
         projects: [],
@@ -113,7 +102,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const projects = await Project.findMany({
+    const projects = await prisma.projects.findMany({
       where,
       include: {
         media_items: {
@@ -140,7 +129,7 @@ export async function GET(request: NextRequest) {
     });
 
     // تحسين البيانات المُرجعة
-    const formattedProjects = projects.map((project: Record<string, unknown>) => ({
+    const formattedProjects = projects.map((project) => ({
       ...project,
       mediaItems: project.media_items || [],
       tags: project.project_tags || [],
@@ -153,13 +142,13 @@ export async function GET(request: NextRequest) {
       slug: project.slug || generateSlug(project.title, project.id)
     }));
 
-    const totalCount = await Project.count({ where });
+    const totalCount = await prisma.projects.count({ where });
 
     // إحصائيات إضافية
     const stats = {
       total: totalCount,
-      featured: await Project.count({ where: { ...where, featured: true } }),
-      categories: await Project.groupBy({
+      featured: await prisma.projects.count({ where: { ...where, featured: true } }),
+      categories: await prisma.projects.groupBy({
         by: ['category'],
         where,
         _count: { category: true }
@@ -251,16 +240,26 @@ export async function POST(request: NextRequest) {
         publishedAt: status === 'PUBLISHED' ? new Date() : null,
         updatedAt: new Date(),
         media_items: {
-          // @ts-expect-error - Dynamic media properties
-
-          create: mediaItems?.map((item: unknown, index: number) => ({
+          create: (mediaItems as Array<{
+            type: string;
+            src?: string;
+            url?: string;
+            thumbnail?: string;
+            title?: string;
+            description?: string;
+            duration?: number | null;
+            fileSize?: number | null;
+            mimeType?: string | null;
+            alt?: string;
+            caption?: string;
+          }> | undefined)?.map((item, index) => ({
             id: randomUUID(),
-            type: item.type,
-            src: item.src || item.url,
-            thumbnail: item.thumbnail || item.src || item.url,
+            type: item.type as 'IMAGE' | 'VIDEO',
+            src: item.src || item.url || '',
+            thumbnail: item.thumbnail || item.src || item.url || '',
             title: item.title || `ملف ${index + 1}`,
             description: item.description || '',
-            duration: item.duration || null,
+            duration: item.duration ? String(item.duration) : null,
             fileSize: item.fileSize || null,
             mimeType: item.mimeType || null,
             alt: item.alt || title,
@@ -319,7 +318,7 @@ export async function POST(request: NextRequest) {
 
     const formatted = {
       ...project,
-      mediaItems: project.media_items,
+      mediaItems: (project as { media_items?: unknown[] }).media_items || [],
       views: 1,
       likes: 0,
       commentsCount: 0

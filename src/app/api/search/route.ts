@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { articlesIndex } from '@/data/articles-index';
 
@@ -217,7 +218,7 @@ export async function GET(request: NextRequest) {
       const title = a.title.toLowerCase();
       const ql = q.toLowerCase();
       const score = q ? (title.startsWith(ql) ? 3 : title.includes(ql) ? 2 : 1) : 1;
-      return { ...a, _score: score } as any;
+      return { ...a, _score: score } ;
     });
 
     const sortedArticles = scoredArticles.sort((a, b) => b._score - a._score);

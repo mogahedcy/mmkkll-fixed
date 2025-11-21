@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { randomUUID } from 'crypto';
 import { normalizeArticleCategoryName } from '@/lib/categoryNormalizer';
@@ -204,8 +205,8 @@ export async function PUT(
       success: true,
       article: { 
         ...updatedArticle, 
-        mediaItems: (updatedArticle as any).article_media_items,
-        tags: (updatedArticle as any).article_tags
+        mediaItems: (updatedArticle ).article_media_items,
+        tags: (updatedArticle ).article_tags
       },
       message: 'تم تحديث المقالة بنجاح'
     });
