@@ -133,32 +133,48 @@ export async function GET() {
   // دمج جميع الصور
   const allImages = [...staticImages, ...serviceImages, ...projectImages];
 
-  const imagesSitemap = allImages
-    .map(image => {
-      const imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
-      const pageUrl = image.project_url || `${baseUrl}/portfolio`;
-      const uploadDate = image.uploadDate ? new Date(image.uploadDate).toISOString() : new Date().toISOString();
+  // تجميع الصور حسب صفحة المشروع
+  const imagesByPage = new Map<string, any[]>();
+  
+  allImages.forEach(image => {
+    const pageUrl = image.project_url || `${baseUrl}/portfolio`;
+    const cleanPageUrl = pageUrl.replace(/\s+/g, '');
+    if (!imagesByPage.has(cleanPageUrl)) {
+      imagesByPage.set(cleanPageUrl, []);
+    }
+    imagesByPage.get(cleanPageUrl)!.push(image);
+  });
+
+  const imagesSitemap = Array.from(imagesByPage.entries())
+    .map(([pageUrl, images]) => {
+      const uploadDate = images[0]?.uploadDate ? new Date(images[0].uploadDate).toISOString() : new Date().toISOString();
       
-      // تنظيف URL من المسافات
-      const cleanImageUrl = imageUrl.replace(/\s+/g, '');
-      const cleanPageUrl = pageUrl.replace(/\s+/g, '');
-      
-      // إضافة معلومات محسّنة للصور (بدون image:description لأنه غير مدعوم)
-      const imageXml = `<url>
-    <loc>${cleanPageUrl}</loc>
-    <image:image>
+      // إنشاء عنصر واحد لكل URL يتضمن جميع الصور المرتبطة به
+      const imageElements = images
+        .map(image => {
+          const imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
+          const cleanImageUrl = imageUrl.replace(/\s+/g, '');
+          
+          return `<image:image>
       <image:loc>${cleanImageUrl}</image:loc>
       <image:caption><![CDATA[${image.caption}]]></image:caption>
       <image:title><![CDATA[${image.title}]]></image:title>
+      <image:alt><![CDATA[${image.alt || image.title}]]></image:alt>
       <image:geo_location><![CDATA[${image.location}]]></image:geo_location>
       <image:license><![CDATA[${baseUrl}/terms]]></image:license>
-    </image:image>
+    </image:image>`;
+        })
+        .join('\n    ');
+
+      const urlXml = `<url>
+    <loc>${pageUrl}</loc>
+    ${imageElements}
     <lastmod>${uploadDate}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>`;
       
-      return imageXml;
+      return urlXml;
     })
     .join('\n  ');
 
@@ -173,14 +189,16 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=1800, s-maxage=1800, stale-while-revalidate=43200',
-      'CDN-Cache-Control': 'max-age=1800',
-      'Vercel-CDN-Cache-Control': 'max-age=1800',
-      'X-Robots-Tag': 'index, follow, all',
-      'X-Images-Count': allImages.length.toString(),
+      'Cache-Control': 'public, max-age=900, s-maxage=900, stale-while-revalidate=3600',
+      'CDN-Cache-Control': 'max-age=900',
+      'Vercel-CDN-Cache-Control': 'max-age=900',
+      'X-Robots-Tag': 'index, follow, all, noarchive',
+      'X-Total-Images': allImages.length.toString(),
+      'X-Total-Pages': imagesByPage.size.toString(),
       'X-Last-Updated': new Date().toISOString(),
+      'X-Generator': 'aldeyarksa-image-sitemap-v2',
       'Vary': 'Accept-Encoding',
-      'ETag': `"images-sitemap-${Date.now()}"`,
+      'ETag': `"images-sitemap-${new Date().getTime()}"`,
     },
   });
 }
