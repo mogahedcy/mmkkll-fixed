@@ -7,7 +7,7 @@ import { GoogleGenAI } from '@google/genai';
  */
 
 // تهيئة Gemini AI
-const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY || '' });
+const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY || '' });
 
 export interface CompetitorAnalysisRequest {
   projectTitle: string;
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     // التحقق من توفر مفتاح Gemini API
-    if (!process.env.GOOGLE_AI_API_KEY) {
+    if (!process.env.GOOGLE_API_KEY) {
       return NextResponse.json(
         { success: false, error: 'مفتاح Gemini API غير متوفر' },
         { status: 500 }

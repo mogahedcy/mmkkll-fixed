@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 
 // Initialize Google Gemini AI client with API key
 const ai = new GoogleGenAI({ 
-  apiKey: process.env.GOOGLE_AI_API_KEY || "" 
+  apiKey: process.env.GOOGLE_API_KEY || "" 
 });
 
 // Use Gemini 2.5 Flash for fast, cost-effective responses
