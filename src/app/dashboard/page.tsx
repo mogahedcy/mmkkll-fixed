@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/jwt';
@@ -154,7 +155,7 @@ export default async function DashboardPage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              <a
+              <Link
                 href="/dashboard/projects"
                 className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100/50 hover:from-blue-100 hover:to-blue-200/50"
               >
@@ -174,9 +175,9 @@ export default async function DashboardPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </div>
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/dashboard/projects/add"
                 className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-green-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100/50 hover:from-green-100 hover:to-green-200/50"
               >
@@ -196,7 +197,7 @@ export default async function DashboardPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </div>
-              </a>
+              </Link>
 
               <a
                 href="/portfolio"
