@@ -283,27 +283,27 @@ export default function AddProjectPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-6">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">إضافة مشروع جديد</h1>
-          <p className="text-gray-600">أضف مشروع جديد إلى معرض الأعمال</p>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">إضافة مشروع جديد</h1>
+          <p className="text-sm sm:text-base text-gray-600">أضف مشروع جديد إلى معرض الأعمال</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 lg:space-y-8">
           {/* Basic Info */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Save className="w-5 h-5" />
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <Save className="w-4 h-4 sm:w-5 sm:h-5" />
                 المعلومات الأساسية
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CardContent className="space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">عنوان المشروع *</label>
+                  <label className="block text-sm font-medium mb-1.5 sm:mb-2">عنوان المشروع *</label>
                   <Input
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -312,7 +312,7 @@ export default function AddProjectPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">الفئة *</label>
+                  <label className="block text-sm font-medium mb-1.5 sm:mb-2">الفئة *</label>
                   <CategorySelect
                     value={category}
                     onChange={setCategory}
@@ -322,19 +322,20 @@ export default function AddProjectPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">وصف المشروع *</label>
+                <label className="block text-sm font-medium mb-1.5 sm:mb-2">وصف المشروع *</label>
                 <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="وصف تفصيلي عن المشروع وما تم إنجازه..."
                   rows={4}
+                  className="text-sm sm:text-base"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">الموقع *</label>
+                  <label className="block text-sm font-medium mb-1.5 sm:mb-2">الموقع *</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
@@ -347,7 +348,7 @@ export default function AddProjectPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">تاريخ الإنجاز</label>
+                  <label className="block text-sm font-medium mb-1.5 sm:mb-2">تاريخ الإنجاز</label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
@@ -358,13 +359,13 @@ export default function AddProjectPage() {
                     />
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <label className="flex items-center space-x-2 space-x-reverse">
+                <div className="flex items-center sm:justify-center">
+                  <label className="flex items-center space-x-2 space-x-reverse cursor-pointer">
                     <input
                       type="checkbox"
                       checked={featured}
                       onChange={(e) => setFeatured(e.target.checked)}
-                      className="rounded"
+                      className="rounded w-4 h-4"
                     />
                     <span className="text-sm font-medium flex items-center gap-1">
                       <Star className="w-4 h-4" />
@@ -374,9 +375,9 @@ export default function AddProjectPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">العميل</label>
+                  <label className="block text-sm font-medium mb-1.5 sm:mb-2">العميل</label>
                   <Input
                     value={client}
                     onChange={(e) => setClient(e.target.value)}
@@ -384,7 +385,7 @@ export default function AddProjectPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">مدة التنفيذ</label>
+                  <label className="block text-sm font-medium mb-1.5 sm:mb-2">مدة التنفيذ</label>
                   <Input
                     value={projectDuration}
                     onChange={(e) => setProjectDuration(e.target.value)}
@@ -392,7 +393,7 @@ export default function AddProjectPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">تكلفة المشروع</label>
+                  <label className="block text-sm font-medium mb-1.5 sm:mb-2">تكلفة المشروع</label>
                   <Input
                     value={projectCost}
                     onChange={(e) => setProjectCost(e.target.value)}
@@ -405,16 +406,16 @@ export default function AddProjectPage() {
 
           {/* Media Upload */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ImageIcon className="w-5 h-5" />
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <ImageIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 الصور والفيديوهات
               </CardTitle>
             </CardHeader>
             <CardContent>
               {/* Upload Area */}
               <div
-                className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                className={`border-2 border-dashed rounded-lg p-4 sm:p-6 lg:p-8 text-center transition-colors ${
                   dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
                 }`}
                 onDragOver={handleDragOver}
@@ -430,17 +431,18 @@ export default function AddProjectPage() {
                   className="hidden"
                 />
 
-                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+                <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">
                   اسحب الملفات هنا أو اختر ملفات
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-sm sm:text-base text-gray-600 mb-4">
                   يدعم الصور والفيديوهات (JPG, PNG, MP4, MOV)
                 </p>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
+                  className="text-sm sm:text-base"
                 >
                   <Plus className="w-4 h-4 ml-2" />
                   اختر ملفات
@@ -449,7 +451,7 @@ export default function AddProjectPage() {
 
               {/* Media Files */}
               {mediaFiles.length > 0 && (
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="mt-4 sm:mt-6 grid grid-cols-1 gap-4 sm:gap-6">
                   {mediaFiles.map((mediaFile, index) => (
                     <div key={mediaFile.id} className="bg-white border rounded-lg p-4">
                       <div className="relative aspect-video mb-4 bg-gray-100 rounded-lg overflow-hidden">
@@ -506,14 +508,14 @@ export default function AddProjectPage() {
 
           {/* Tags */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Tag className="w-5 h-5" />
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <Tag className="w-4 h-4 sm:w-5 sm:h-5" />
                 الكلمات المفتاحية
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex gap-2">
                   <Input
                     value={tagInput}
@@ -546,7 +548,7 @@ export default function AddProjectPage() {
 
                 {/* Suggested tags */}
                 <div>
-                  <p className="text-sm font-medium mb-2">اقتراحات:</p>
+                  <p className="text-xs sm:text-sm font-medium mb-2">اقتراحات:</p>
                   <div className="flex flex-wrap gap-2">
                     {SUGGESTED_TAGS.filter(tag => !tags.includes(tag)).map((tag) => (
                       <Button
@@ -567,11 +569,11 @@ export default function AddProjectPage() {
 
           {/* Materials */}
           <Card>
-            <CardHeader>
-              <CardTitle>المواد المستخدمة</CardTitle>
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-lg sm:text-xl">المواد المستخدمة</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div className="flex gap-2">
                   <Input
                     value={materialInput}
@@ -605,18 +607,19 @@ export default function AddProjectPage() {
           </Card>
 
           {/* Submit */}
-          <div className="flex justify-end gap-4">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 sticky bottom-0 sm:static bg-white sm:bg-transparent p-4 sm:p-0 -mx-3 sm:mx-0 border-t sm:border-0 shadow-lg sm:shadow-none">
             <Button
               type="button"
               variant="outline"
               onClick={() => router.back()}
+              className="w-full sm:w-auto text-sm sm:text-base py-3 sm:py-2"
             >
               إلغاء
             </Button>
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="min-w-[120px]"
+              className="w-full sm:w-auto sm:min-w-[120px] text-sm sm:text-base py-3 sm:py-2"
             >
               {isSubmitting ? (
                 <>
