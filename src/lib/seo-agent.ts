@@ -1,4 +1,6 @@
-import ai, { GEMINI_MODEL } from './gemini-client';
+/**
+ * SEO Agent - استخدام Groq AI لتحليل وتحسين SEO
+ */
 
 export interface KeywordAnalysis {
   primary_keywords: string[];
@@ -30,6 +32,29 @@ export interface CompetitorInsight {
   improvement_areas: string[];
 }
 
+async function groqGenerateContent(config: any): Promise<any> {
+  const groqApiKey = process.env.GROQ_API_KEY;
+  if (!groqApiKey) throw new Error('Groq API key غير محدد');
+
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${groqApiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'mixtral-8x7b-32768',
+      messages: [{ role: 'user', content: config.contents }],
+      max_tokens: 2000,
+      temperature: 0.7,
+    }),
+  });
+
+  if (!response.ok) throw new Error('Groq API error');
+  const data = await response.json();
+  return { text: data.choices[0]?.message?.content || '' };
+}
+
 export class SEOAgent {
   async analyzeKeywords(content: string, targetKeywords: string[], language: string = 'ar'): Promise<KeywordAnalysis> {
     try {
@@ -51,11 +76,6 @@ export class SEOAgent {
 تأكد من أن الكلمات المفتاحية متوافقة مع السوق السعودي واللهجة المحلية.`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير SEO محترف متخصص في تحسين محركات البحث للسوق السعودي. قدم استجابة JSON دقيقة ومفصلة.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -90,11 +110,6 @@ ${url ? `الرابط: ${url}` : ''}
 ركز على تقنيات SEO القوية والفعالة.`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير SEO استراتيجي متخصص في تحليل وتحسين المحتوى لمحركات البحث.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -142,11 +157,6 @@ ${url ? `الرابط: ${url}` : ''}
 - tags: 5-8 وسوم ذات صلة`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت كاتب محتوى SEO خبير تنشئ محتوى عالي الجودة محسّن لمحركات البحث.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -175,11 +185,6 @@ ${url ? `الرابط: ${url}` : ''}
 ركز على الاستراتيجيات القوية والفعالة للتفوق على المنافسين.`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير تحليل تنافسي في SEO متخصص في إيجاد الفرص الاستراتيجية.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -210,11 +215,6 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 اختر 3-5 روابط داخلية ذات صلة قوية فقط. تأكد من أن نص الرابط (anchor text) طبيعي ومناسب.`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير في استراتيجيات الربط الداخلي لتحسين SEO.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -255,11 +255,6 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 3. استخدام أفعال دعوة للعمل حيثما أمكن`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير في كتابة meta tags محسّنة تزيد من نسبة النقر والظهور في محركات البحث.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -296,11 +291,6 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 جمّع الكلمات المتشابهة في المعنى والنية معاً.`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير في تجميع وتنظيم الكلمات المفتاحية لإنشاء استراتيجية محتوى فعالة.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -329,10 +319,6 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 قدم فقط نص الـ Alt Text بدون أي شرح إضافي.`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير في كتابة نصوص بديلة للصور محسّنة لمحركات البحث وإمكانية الوصول.",
-        },
         contents: prompt,
       });
 

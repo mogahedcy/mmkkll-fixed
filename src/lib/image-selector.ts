@@ -1,11 +1,35 @@
-import ai, { GEMINI_MODEL } from './gemini-client';
-import { googleImageSearch } from './google-image-search';
+/**
+ * Image Selector - استخدام Groq AI لاختيار الصور
+ */
 
 export interface ImageSuggestion {
   query: string;
   relevance_score: number;
   alt_text: string;
   description: string;
+}
+
+async function groqGenerateContent(config: any): Promise<any> {
+  const groqApiKey = process.env.GROQ_API_KEY;
+  if (!groqApiKey) throw new Error('Groq API key غير محدد');
+
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${groqApiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'mixtral-8x7b-32768',
+      messages: [{ role: 'user', content: config.contents }],
+      max_tokens: 2000,
+      temperature: 0.7,
+    }),
+  });
+
+  if (!response.ok) throw new Error('Groq API error');
+  const data = await response.json();
+  return { text: data.choices[0]?.message?.content || '' };
 }
 
 export class ImageSelector {
@@ -42,11 +66,6 @@ export class ImageSelector {
 }`;
 
       const response = await groqGenerateContent({
-        model: GEMINI_MODEL,
-        config: {
-          systemInstruction: "أنت خبير في اختيار الصور المناسبة للمحتوى التسويقي والتعليمي.",
-          responseMimeType: "application/json",
-        },
         contents: prompt,
       });
 
@@ -74,66 +93,21 @@ export class ImageSelector {
     const images: Array<{ src: string; alt: string; description: string; type: 'IMAGE' | 'VIDEO' }> = [];
     
     for (const suggestion of suggestions) {
-      let imageFound = false;
+      console.log(`🖼️ إضافة صورة: ${suggestion.alt_text}`);
+      
+      // استخدام Unsplash للصور
+      const unsplashUrl = `https://images.unsplash.com/random?${new URLSearchParams({
+        q: suggestion.query,
+        w: '800',
+        h: '600'
+      }).toString()}`;
 
-      console.log(`🔍 البحث عن صورة: ${suggestion.query}`);
-
-      const rightsOptions: Array<string | null> = [
-        'cc_publicdomain,cc_attribute,cc_sharealike,cc_noncommercial',
-        'cc_publicdomain,cc_attribute',
-        null,
-      ];
-
-      for (let attemptIndex = 0; attemptIndex < rightsOptions.length && !imageFound; attemptIndex++) {
-        try {
-          const rights = rightsOptions[attemptIndex];
-          const rightsLabel = rights === null ? 'جميع الصور' : rights;
-          
-          console.log(`  🔄 المحاولة ${attemptIndex + 1}: البحث في (${rightsLabel})`);
-
-          const searchResults = await googleImageSearch.searchImages(suggestion.query, {
-            num: 3,
-            imageSize: 'large',
-            imageType: 'photo',
-            safe: 'active',
-            rights: rights,
-          });
-
-          if (searchResults.length > 0) {
-            for (const result of searchResults) {
-              try {
-                const uploadedUrl = await googleImageSearch.downloadAndUploadImage(
-                  result.url,
-                  suggestion.alt_text
-                );
-
-                if (uploadedUrl) {
-                  images.push({
-                    src: uploadedUrl,
-                    alt: suggestion.alt_text,
-                    description: suggestion.description,
-                    type: 'IMAGE' as const
-                  });
-                  console.log(`  ✅ تمت إضافة الصورة من (${rightsLabel}): ${suggestion.alt_text}`);
-                  imageFound = true;
-                  break;
-                }
-              } catch (uploadError) {
-                console.warn(`  ⚠️ فشل رفع صورة، جرب التالية...`);
-                continue;
-              }
-            }
-          } else {
-            console.log(`  ⚠️ لم يتم العثور على نتائج في هذه الفئة`);
-          }
-        } catch (error) {
-          console.error(`  ❌ خطأ في المحاولة ${attemptIndex + 1}:`, error);
-        }
-      }
-
-      if (!imageFound) {
-        console.warn(`❌ فشل الحصول على صورة لـ: ${suggestion.query} بعد كل المحاولات`);
-      }
+      images.push({
+        src: unsplashUrl,
+        alt: suggestion.alt_text,
+        description: suggestion.description,
+        type: 'IMAGE' as const
+      });
     }
 
     if (images.length === 0) {
