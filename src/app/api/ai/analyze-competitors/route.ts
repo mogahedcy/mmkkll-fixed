@@ -117,22 +117,23 @@ export async function POST(request: NextRequest) {
 
     console.log('🤖 بدء تحليل المنافسين باستخدام Gemini AI...');
 
-    // استدعاء Gemini AI بالطريقة الصحيحة مع timeout أطول
-    const result = await genAI.models.generateContent({
-      model: 'gemini-2.5-flash',
+    // استدعاء Gemini AI بالطريقة الصحيحة
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    
+    const result = await model.generateContent({
       contents: [
         {
           role: 'user',
           parts: [{ text: prompt }]
         }
       ],
-      config: {
+      generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 8192,
       }
     });
     
-    const analysisText = result.text;
+    const analysisText = result.response?.text();
 
     if (!analysisText) {
       return NextResponse.json(
