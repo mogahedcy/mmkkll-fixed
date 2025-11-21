@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
       success: true,
       helpfulness: newHelpfulness
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error tracking FAQ helpfulness:', error);
     return NextResponse.json(
       { success: false, error: error.message },

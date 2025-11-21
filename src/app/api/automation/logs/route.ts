@@ -25,7 +25,8 @@ export async function GET(request: NextRequest) {
       success: true,
       logs
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error fetching automation logs:', error);
     return NextResponse.json(
       { error: 'فشل في جلب سجل المهام' },

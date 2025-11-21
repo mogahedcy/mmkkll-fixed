@@ -13,7 +13,7 @@ interface CommentRequest {
 }
 
 // دالة التحقق من صحة البيانات
-function validateComment(data: any): { valid: boolean; errors: string[] } {
+function validateComment(data: unknown): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
   // التحقق من الاسم

@@ -26,7 +26,8 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'View tracked successfully'
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error tracking FAQ view:', error);
     return NextResponse.json(
       { success: false, error: error.message },

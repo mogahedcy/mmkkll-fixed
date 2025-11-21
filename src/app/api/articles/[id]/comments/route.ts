@@ -11,7 +11,7 @@ interface CommentRequest {
   rating: number;
 }
 
-function validateComment(data: any): { valid: boolean; errors: string[] } {
+function validateComment(data: unknown): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
   if (!data.name || typeof data.name !== 'string' || !data.name.trim()) {

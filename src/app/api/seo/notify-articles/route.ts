@@ -85,7 +85,8 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString()
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('خطأ في إبلاغ محركات البحث بالمقالات:', error);
     return NextResponse.json(
       { 

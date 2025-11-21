@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     // إضافة الوسائط إذا كانت متوفرة
     if (data.mediaItems && data.mediaItems.length > 0) {
       await prisma.media_items.createMany({
-        data: data.mediaItems.map((item: any, index: number) => ({
+        data: data.mediaItems.map((item: unknown, index: number) => ({
           id: randomUUID(),
           projectId: project.id,
           type: item.type || 'IMAGE',

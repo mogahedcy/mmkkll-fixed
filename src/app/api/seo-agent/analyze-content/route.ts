@@ -28,7 +28,8 @@ export async function POST(request: NextRequest) {
     );
 
     return NextResponse.json({ success: true, data: analysis });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error in analyze-content API:', error);
     return NextResponse.json(
       { error: error.message || 'حدث خطأ أثناء تحليل المحتوى' },

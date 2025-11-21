@@ -29,7 +29,8 @@ export async function POST(request: NextRequest) {
     const result = await seoAgent.generateMetaTags(content, keywords, pageType);
 
     return NextResponse.json({ success: true, data: result });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error in generate-meta-tags API:', error);
     return NextResponse.json(
       { error: error.message || 'حدث خطأ أثناء توليد meta tags' },

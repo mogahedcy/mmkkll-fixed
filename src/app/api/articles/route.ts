@@ -160,6 +160,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في جلب المقالات:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في جلب المقالات' },
@@ -238,7 +239,7 @@ export async function POST(request: NextRequest) {
         publishedAt: status === 'PUBLISHED' ? new Date() : null,
         updatedAt: new Date(),
         article_media_items: {
-          create: mediaItems?.map((item: any, index: number) => ({
+          create: mediaItems?.map((item: unknown, index: number) => ({
             id: randomUUID(),
             type: item.type,
             src: item.src || item.url,
@@ -309,6 +310,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, article: formatted, message: 'تم إضافة المقالة بنجاح' });
 
   } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في إضافة المقالة:', error);
     return NextResponse.json(
       { 

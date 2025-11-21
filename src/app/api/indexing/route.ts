@@ -51,7 +51,8 @@ export async function POST(request: NextRequest) {
         results.indexnow.error = `خطأ ${indexNowResponse.status}: ${indexNowResponse.statusText}`;
         console.error('❌ فشل إرسال الروابط إلى IndexNow:', results.indexnow.error);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
       results.indexnow.error = error.message;
       console.error('❌ خطأ في الاتصال بـ IndexNow:', error);
     }
@@ -68,7 +69,8 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString()
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في معالجة طلب الأرشفة:', error);
     return NextResponse.json(
       { 

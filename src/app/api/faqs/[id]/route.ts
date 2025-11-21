@@ -42,7 +42,8 @@ export async function GET(
       success: true,
       faq
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error fetching FAQ:', error);
     return NextResponse.json(
       { success: false, error: error.message },
@@ -100,7 +101,8 @@ export async function PATCH(
       success: true,
       faq
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error updating FAQ:', error);
     return NextResponse.json(
       { success: false, error: error.message },
@@ -132,7 +134,8 @@ export async function DELETE(
       success: true,
       message: 'FAQ deleted successfully'
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error deleting FAQ:', error);
     return NextResponse.json(
       { success: false, error: error.message },

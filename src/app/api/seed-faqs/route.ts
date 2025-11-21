@@ -68,7 +68,8 @@ export async function GET() {
       message: `تم إضافة ${created.count} سؤال بنجاح!`,
       count: created.count
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('Error seeding FAQs:', error);
     return NextResponse.json(
       { success: false, error: error.message },

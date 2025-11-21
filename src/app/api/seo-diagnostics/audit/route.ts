@@ -19,7 +19,8 @@ export async function GET(request: NextRequest) {
       success: true,
       data: auditResult
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('خطأ في فحص SEO:', error);
     return NextResponse.json({
       success: false,
@@ -64,7 +65,8 @@ export async function POST(request: NextRequest) {
       success: true,
       data: { issues, count: issues.length }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('خطأ في الفحص المحدد:', error);
     return NextResponse.json({
       success: false,

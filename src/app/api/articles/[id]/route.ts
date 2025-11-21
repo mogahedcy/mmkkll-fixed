@@ -209,6 +209,7 @@ export async function PUT(
     });
 
   } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في تحديث المقالة:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في تحديث المقالة' },
@@ -298,6 +299,7 @@ export async function DELETE(
     });
 
   } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في حذف المقالة:', error);
     return NextResponse.json(
       { error: 'حدث خطأ في حذف المقالة' },

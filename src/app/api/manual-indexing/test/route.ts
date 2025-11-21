@@ -181,7 +181,7 @@ function analyzeSearchResults(engine: string, responseText: string, originalUrl:
   return result;
 }
 
-function generateRecommendations(result: any, engine: string, url: string) {
+function generateRecommendations(result: unknown, engine: string, url: string) {
   const recommendations = [];
 
   if (!result.indexed) {

@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
         mediaItems: mediaItemsCount,
         articleMedia: articleMediaCount
       },
-      tables: tableStats.map((table: any) => ({
+      tables: tableStats.map((table: unknown) => ({
         name: table.tablename,
         size: table.size,
         sizeBytes: Number(table.size_bytes)

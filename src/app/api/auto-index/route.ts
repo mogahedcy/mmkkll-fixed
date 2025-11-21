@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
       data: result
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "حدث خطأ غير متوقع";
     console.error('❌ خطأ في API الفهرسة التلقائية:', error);
     return NextResponse.json({
       success: false,
