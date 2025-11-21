@@ -29,7 +29,7 @@ interface AvailablePages {
 export default function SEOAgentClient({ availablePages }: { availablePages: AvailablePages }) {
   const [activeTab, setActiveTab] = useState<'analyze' | 'generate' | 'competitor' | 'links' | 'cluster'>('analyze');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -64,7 +64,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
       } else {
         setError(data.error);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError('حدث خطأ أثناء تحليل المحتوى');
     } finally {
       setLoading(false);
@@ -94,7 +94,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
       } else {
         setError(data.error);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError('حدث خطأ أثناء توليد المحتوى');
     } finally {
       setLoading(false);
@@ -122,7 +122,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
       } else {
         setError(data.error);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError('حدث خطأ أثناء تحليل المنافس');
     } finally {
       setLoading(false);
@@ -151,7 +151,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
       } else {
         setError(data.error);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError('حدث خطأ أثناء اقتراح الروابط');
     } finally {
       setLoading(false);
@@ -178,7 +178,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
       } else {
         setError(data.error);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError('حدث خطأ أثناء تجميع الكلمات المفتاحية');
     } finally {
       setLoading(false);

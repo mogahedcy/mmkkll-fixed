@@ -13,7 +13,7 @@ async function requireAdmin() {
   const token = (await cookies()).get('admin-token')?.value
   if (!token) return null
   try {
-    const decoded = verifyToken(token) as any
+    const decoded = verifyToken(token) as { adminId?: string; [key: string]: unknown }
     return { id: decoded.adminId, username: decoded.username }
   } catch {
     return null

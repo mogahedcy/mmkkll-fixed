@@ -25,7 +25,7 @@ interface ReviewStats {
 
 export default function OverviewClient() {
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
   const [trends, setTrends] = useState<TrendPoint[]>([]);
   const [sources, setSources] = useState<Record<string, number>>({});
   const [topProjects, setTopProjects] = useState<TopProject[]>([]);

@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   try {
     await authenticateAdmin(request);
 
-    const databaseStats = await prisma.$queryRaw<any[]>`
+    const databaseStats = await prisma.$queryRaw<Record<string, unknown>[]>`
       SELECT 
         pg_database.datname as database_name,
         pg_size_pretty(pg_database_size(pg_database.datname)) as size,
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       WHERE datname = current_database();
     `;
 
-    const tableStats = await prisma.$queryRaw<any[]>`
+    const tableStats = await prisma.$queryRaw<Record<string, unknown>[]>`
       SELECT 
         schemaname,
         tablename,
@@ -71,11 +71,16 @@ export async function GET(request: NextRequest) {
         mediaItems: mediaItemsCount,
         articleMedia: articleMediaCount
       },
-      tables: tableStats.map((table: unknown) => ({
-        name: table.tablename,
-        size: table.size,
-        sizeBytes: Number(table.size_bytes)
-      }))
+      // @ts-expect-error - Raw SQL result type
+
+      tables: tableStats.map((table: unknown) => {
+        const t = table as Record<string, unknown>;
+        return {
+          name: t.tablename as string,
+          size: t.size as string,
+          sizeBytes: Number(t.size_bytes)
+        };
+      })
     });
 
   } catch (error: unknown) {

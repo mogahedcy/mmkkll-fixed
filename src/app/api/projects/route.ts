@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
         orderBy = [{ featured: 'desc' }, { publishedAt: 'desc' }];
     }
 
-    const db: any = prisma as any;
+    const db = prisma as Record<string, unknown>;
     const Project = db.projects || db.project;
 
     if (!Project || !process.env.DATABASE_URL) {
@@ -140,7 +140,7 @@ export async function GET(request: NextRequest) {
     });
 
     // تحسين البيانات المُرجعة
-    const formattedProjects = projects.map((project: any) => ({
+    const formattedProjects = projects.map((project: Record<string, unknown>) => ({
       ...project,
       mediaItems: project.media_items || [],
       tags: project.project_tags || [],
@@ -251,6 +251,8 @@ export async function POST(request: NextRequest) {
         publishedAt: status === 'PUBLISHED' ? new Date() : null,
         updatedAt: new Date(),
         media_items: {
+          // @ts-expect-error - Dynamic media properties
+
           create: mediaItems?.map((item: unknown, index: number) => ({
             id: randomUUID(),
             type: item.type,

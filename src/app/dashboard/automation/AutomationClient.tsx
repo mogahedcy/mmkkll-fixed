@@ -78,7 +78,7 @@ export default function AutomationClient() {
   const [smartCount, setSmartCount] = useState(5);
   const [smartAutoPublish, setSmartAutoPublish] = useState(false);
   const [smartLoading, setSmartLoading] = useState(false);
-  const [smartResults, setSmartResults] = useState<any>(null);
+  const [smartResults, setSmartResults] = useState<Record<string, unknown> | null>(null);
   const [smartProgress, setSmartProgress] = useState(0);
 
   const addTopic = () => {

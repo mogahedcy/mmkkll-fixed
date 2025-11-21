@@ -13,7 +13,7 @@ async function checkAuth() {
       return null;
     }
     
-    const decoded = verifyToken(token) as any;
+    const decoded = verifyToken(token) as { adminId?: string; [key: string]: unknown };
     return decoded;
   } catch (error) {
     return null;
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const limit = Number.parseInt(searchParams.get('limit') || '50');
 
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     
     if (status && status !== 'all') {
       where.status = status;

@@ -20,7 +20,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [admin, setAdmin] = useState<any>(null);
+  const [admin, setAdmin] = useState<Record<string, unknown> | null>(null);
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',

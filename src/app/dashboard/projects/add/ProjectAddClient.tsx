@@ -64,7 +64,7 @@ export default function ProjectAddClient() {
   const [newMaterial, setNewMaterial] = useState('');
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [aiSuggestions, setAiSuggestions] = useState<any>(null);
+  const [aiSuggestions, setAiSuggestions] = useState<Record<string, unknown> | null>(null);
   const [loadingAI, setLoadingAI] = useState(false);
   const [showAISuggestions, setShowAISuggestions] = useState(false);
 

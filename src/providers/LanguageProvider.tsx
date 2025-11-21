@@ -79,13 +79,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    applyLanguage(lang);
+    if (isMounted) {
+      applyLanguage(lang);
+    }
   };
-
-  // Prevent flash of unstyled content
-  if (!isMounted) {
-    return <>{children}</>;
-  }
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, isRTL: language === 'ar' }}>

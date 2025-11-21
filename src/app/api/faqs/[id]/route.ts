@@ -13,7 +13,7 @@ async function checkAuth() {
       return null;
     }
     
-    const decoded = verifyToken(token) as any;
+    const decoded = verifyToken(token) as { adminId?: string; [key: string]: unknown };
     return decoded;
   } catch (error) {
     return null;

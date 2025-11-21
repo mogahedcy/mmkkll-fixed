@@ -21,7 +21,7 @@ async function getAdminData() {
       return null;
     }
 
-    const decoded = verifyToken(token) as any;
+    const decoded = verifyToken(token) as { adminId?: string; [key: string]: unknown };
 
     const admin = await prisma.admins.findUnique({
       where: { id: decoded.adminId },

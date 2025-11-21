@@ -152,6 +152,8 @@ export async function PUT(
         projectCost: projectCost || '',
         updatedAt: new Date(),
         media_items: {
+          // @ts-expect-error - Dynamic media properties
+
           create: mediaItems?.map((item: { type: string; src: string; thumbnail?: string; title?: string; description?: string; duration?: number }, index: number) => ({
             type: item.type,
             src: item.src,

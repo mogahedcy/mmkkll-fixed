@@ -36,7 +36,7 @@ async function checkPath(path: string) {
     const res = await fetch(url.toString(), { cache: 'no-store' })
     const textSnippet = await res.text().then(t => t.slice(0, 120)).catch(() => '')
     return { path, status: res.status, ok: res.ok, ms: Date.now() - start, snippet: textSnippet }
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { path, status: 0, ok: false, ms: Date.now() - start, error: String(err && err.message || err) }
   }
 }
@@ -45,7 +45,7 @@ export async function GET() {
   const results = await Promise.all(STATIC_PATHS.map(checkPath))
 
   // Try dynamic example for portfolio project if available
-  let dynamic: any = null
+  let dynamic: Record<string, unknown> | null = null
   try {
     const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'
     const apiRes = await fetch(`${base}/api/projects?limit=1&sort=newest`, { cache: 'no-store' })
@@ -58,7 +58,7 @@ export async function GET() {
     } else {
       dynamic = { path: '/portfolio/[id]', status: apiRes.status, ok: false }
     }
-  } catch (e: any) {
+  } catch (e: unknown) {
     dynamic = { path: '/portfolio/[id]', status: 0, ok: false, error: String(e?.message || e) }
   }
 

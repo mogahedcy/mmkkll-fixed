@@ -19,9 +19,9 @@ export async function GET(request: NextRequest) {
     const minRating = searchParams.get('minRating') ? Number.parseFloat(searchParams.get('minRating')!) : 0;
     const featured = searchParams.get('featured') === 'true';
 
-    let projects: any[] = [];
+    let projects: Record<string, unknown>[] = [];
     let projectsTotal = 0;
-    let faqs: any[] = [];
+    let faqs: Record<string, unknown>[] = [];
     let faqsTotal = 0;
 
     // Search FAQs

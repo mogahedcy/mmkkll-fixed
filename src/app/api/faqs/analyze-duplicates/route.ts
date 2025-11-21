@@ -12,14 +12,14 @@ async function checkAuth() {
       return null;
     }
     
-    const decoded = verifyToken(token) as any;
+    const decoded = verifyToken(token) as { adminId?: string; [key: string]: unknown };
     return decoded;
   } catch (error) {
     return null;
   }
 }
 
-async function analyzeSimilarityWithAI(faqs: any[]): Promise<any[]> {
+async function analyzeSimilarityWithAI(faqs: Record<string, unknown>[]): Promise<any[]> {
   try {
     const groqApiKey = process.env.GROQ_API_KEY;
     if (!groqApiKey) throw new Error('Groq API key غير محدد');

@@ -15,11 +15,11 @@ export async function GET(request: NextRequest) {
     }
 
     // فك تشفير الـ token
-    const decoded = verifyToken(token) as any;
+    const decoded = verifyToken(token) as { adminId?: string; [key: string]: unknown };
 
     // البحث عن المدير
     const admin = await prisma.admins.findUnique({
-      where: { id: decoded.adminId },
+      where: { id: decoded.adminId as string },
       select: {
         id: true,
         username: true,

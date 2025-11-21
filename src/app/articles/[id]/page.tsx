@@ -111,7 +111,7 @@ export default async function ArticlePage({ params }: Props) {
   const mainImage = article.mediaItems?.find((item: any) => item.type === 'IMAGE');
   const allImages = article.mediaItems
     ?.filter((item: any) => item.type === 'IMAGE')
-    .map((item: any) => item.src) || [];
+    .map((item: Record<string, unknown>) => item.src) || [];
   
   const articleUrl = `https://www.aldeyarksa.tech/articles/${article.slug || article.id}`;
   const articleKeywords = [
