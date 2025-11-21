@@ -11,6 +11,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import ReviewSchema from "@/components/ReviewSchema";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
+import LocalBusinessSchemaOptimized from "@/components/LocalBusinessSchemaOptimized";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const notoSansArabic = Noto_Sans_Arabic({
@@ -143,6 +144,7 @@ export default function RootLayout({
         
         <StructuredDataScript data={organizationSchema} />
         <LocalBusinessSchema />
+      <LocalBusinessSchemaOptimized />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
         <ErrorBoundary>
@@ -158,3 +160,6 @@ export default function RootLayout({
     </html>
   );
 }
+
+// Add LocalBusinessSchema component
+import LocalBusinessSchemaOptimized from '@/components/LocalBusinessSchemaOptimized';
