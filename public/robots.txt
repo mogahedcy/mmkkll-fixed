@@ -1,0 +1,46 @@
+# Google, Bing, and other search engines
+User-agent: *
+Allow: /
+Allow: /api/
+Allow: /sitemap*.xml
+Allow: /robots.txt
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/admin/
+Disallow: /.next/
+
+# Specify sitemap location
+Sitemap: https://www.aldeyarksa.tech/sitemap.xml
+Sitemap: https://www.aldeyarksa.tech/sitemap-articles.xml
+Sitemap: https://www.aldeyarksa.tech/sitemap-portfolio.xml
+Sitemap: https://www.aldeyarksa.tech/sitemap-videos.xml
+
+# Crawl delay (optional, in seconds)
+Crawl-delay: 0
+
+# Request rate (pages per second)
+Request-rate: 10/1s
+
+# Specific search engines optimizations
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: baiduspider
+Allow: /
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
