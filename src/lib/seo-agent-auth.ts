@@ -13,7 +13,7 @@ export async function requireAdminAuth(request: NextRequest): Promise<{ adminId:
       );
     }
 
-    const decoded = verifyToken(token) as any;
+    const decoded = verifyToken(token) as unknown as { adminId: string };
 
     if (!decoded || !decoded.adminId) {
       return NextResponse.json(
@@ -44,7 +44,7 @@ export async function requireAdminAuth(request: NextRequest): Promise<{ adminId:
   }
 }
 
-export function validateStringInput(input: any, fieldName: string, minLength = 10, maxLength = 50000): string | null {
+export function validateStringInput(input: unknown, fieldName: string, minLength = 10, maxLength = 50000): string | null {
   if (!input || typeof input !== 'string') {
     return `${fieldName} يجب أن يكون نصاً`;
   }
@@ -62,7 +62,7 @@ export function validateStringInput(input: any, fieldName: string, minLength = 1
   return null;
 }
 
-export function validateKeywordsArray(keywords: any, fieldName = 'الكلمات المفتاحية'): string | null {
+export function validateKeywordsArray(keywords: unknown, fieldName = 'الكلمات المفتاحية'): string | null {
   if (!Array.isArray(keywords)) {
     return `${fieldName} يجب أن تكون قائمة`;
   }

@@ -75,7 +75,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const initialLanguage = savedLanguage || browserLang || 'ar';
     setLanguageState(initialLanguage);
     applyLanguage(initialLanguage);
-  }, []);
+  }, [applyLanguage]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

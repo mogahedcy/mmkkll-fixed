@@ -116,7 +116,7 @@ export const projectValidationSchema = {
     escape: true
   },
   featured: {
-    custom: (value: any) => typeof value === 'boolean' || 'يجب أن تكون القيمة true أو false'
+    custom: (value: unknown) => typeof value === 'boolean' || 'يجب أن تكون القيمة true أو false'
   }
 };
 
