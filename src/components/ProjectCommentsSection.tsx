@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -68,11 +68,7 @@ export default function ProjectCommentsSection({
   const [filterByRating, setFilterByRating] = useState<number | null>(null);
 
   // جلب التعليقات عند تحميل المكون
-  useEffect(() => {
-    fetchComments();
-  }, [projectId]);
-
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/projects/${projectId}/comments`);
@@ -85,7 +81,11 @@ export default function ProjectCommentsSection({
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId]);
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -247,7 +247,7 @@ export default function ProjectCommentsSection({
           <div className="relative">
             <motion.div
               animate={{ rotate: [0, 5, 0, -5, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
               className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-xl opacity-30"
             />
             <MessageCircle className="w-10 h-10 text-blue-600 ml-4 relative z-10" />

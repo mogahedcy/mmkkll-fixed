@@ -1,4 +1,4 @@
-export default function StructuredDataScript({ data }: { data?: any | any[] }) {
+export default function StructuredDataScript({ data }: { data?: Record<string, unknown> | Record<string, unknown>[] }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
 
   const organizationData = {

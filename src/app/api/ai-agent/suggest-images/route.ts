@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { imageSelector } from '@/lib/image-selector';
 import { requireAdminAuth, validateStringInput, validateKeywordsArray } from '@/lib/seo-agent-auth';
 

@@ -1,4 +1,4 @@
-import { BreadcrumbItem } from './Breadcrumb';
+import type { BreadcrumbItem } from './Breadcrumb';
 
 interface BreadcrumbSchemaProps {
   items: BreadcrumbItem[];

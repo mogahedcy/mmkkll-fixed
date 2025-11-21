@@ -163,7 +163,7 @@ export function generateImageSitemapEntry(
   imageUrl: string,
   metadata: ImageMetadata,
   pageUrl: string,
-  location: string = 'جدة، السعودية'
+  location = 'جدة، السعودية'
 ) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
   const fullImageUrl = imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`;
@@ -227,8 +227,8 @@ export function processImagesBatch(
 export function generateCategoryBasedAlt(
   category: string,
   projectTitle: string,
-  location: string = 'جدة',
-  imageIndex: number = 0
+  location = 'جدة',
+  imageIndex = 0
 ): string {
   // التأكد من وجود قيم صالحة
   const safeCategory = category || 'مشروع';

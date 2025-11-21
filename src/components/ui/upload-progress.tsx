@@ -13,7 +13,7 @@ interface UploadProgressProps {
 export function UploadProgress({ files, onUploadComplete, onCancel }: UploadProgressProps) {
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const [uploadStatus, setUploadStatus] = useState<Record<string, 'pending' | 'uploading' | 'success' | 'error'>>({});
-  const [uploadResults, setUploadResults] = useState<any[]>([]);
+  const [uploadResults, setUploadResults] = useState<Array<Record<string, unknown>>>([]);
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function UploadProgress({ files, onUploadComplete, onCancel }: UploadProg
 
   const startUpload = async () => {
     setIsUploading(true);
-    const results: any[] = [];
+    const results: Array<Record<string, unknown>> = [];
 
     // تهيئة حالة الملفات
     const initialStatus: Record<string, 'pending'> = {};

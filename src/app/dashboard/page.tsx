@@ -201,7 +201,7 @@ export default async function DashboardPage() {
               <a
                 href="/portfolio"
                 target="_blank"
-                className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-purple-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-purple-50 to-purple-100/50 hover:from-purple-100 hover:to-purple-200/50"
+                className="group relative overflow-hidden rounded-xl border border-gray-200 p-6 hover:border-purple-300 hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-purple-50 to-purple-100/50 hover:from-purple-100 hover:to-purple-200/50" rel="noreferrer"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">

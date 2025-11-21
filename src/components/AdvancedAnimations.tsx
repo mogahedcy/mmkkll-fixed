@@ -31,7 +31,7 @@ const floatingVariants = {
     y: [-10, 10, -10],
     transition: {
       duration: 4,
-      repeat: Infinity,
+      repeat: Number.POSITIVE_INFINITY,
       ease: 'easeInOut',
     },
   },
@@ -44,7 +44,7 @@ const pulseVariants = {
     opacity: [0.8, 1, 0.8],
     transition: {
       duration: 2,
-      repeat: Infinity,
+      repeat: Number.POSITIVE_INFINITY,
     },
   },
 };

@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import ProjectAnalysisClient from './ProjectAnalysisClient';
 
 export const metadata: Metadata = {

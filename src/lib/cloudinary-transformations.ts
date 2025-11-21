@@ -243,7 +243,7 @@ export function getWatermarkedVideoUrl(
 export function estimateProcessedSize(
   originalSize: number,
   type: 'image' | 'video',
-  quality: number = 85
+  quality = 85
 ): number {
   if (type === 'image') {
     // الصور عادةً تنخفض بنسبة 30-50% بعد التحسين
@@ -272,7 +272,7 @@ export interface ProcessingInfo {
 export function getProcessingInfo(
   originalSize: number,
   processedSize: number,
-  watermarkApplied: boolean = true,
+  watermarkApplied = true,
   processingTime?: number
 ): ProcessingInfo {
   return {

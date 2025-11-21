@@ -104,7 +104,7 @@ export function getAllRelatedCategories(serviceSlug: string): string[] {
  * @param serviceSlug - slug الخدمة
  * @param searchInDescription - البحث في حقل description (للمشاريع فقط، المقالات تستخدم excerpt)
  */
-export function buildCategoryWhereClause(serviceSlug: string, searchInDescription: boolean = true) {
+export function buildCategoryWhereClause(serviceSlug: string, searchInDescription = true) {
   const mapping = getServiceMapping(serviceSlug);
   if (!mapping) return {};
 

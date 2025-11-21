@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { requireAdminAuth } from '@/lib/seo-agent-auth';
 import { prisma } from '@/lib/prisma';
 

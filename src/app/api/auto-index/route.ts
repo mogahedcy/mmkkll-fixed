@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { submitUrlForIndexing, submitMultipleUrlsForIndexing } from '@/lib/auto-indexing';
 import { requireAdmin } from '@/lib/auth-middleware';
 

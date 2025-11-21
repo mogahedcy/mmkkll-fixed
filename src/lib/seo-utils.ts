@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
 const SITE_NAME = 'محترفين الديار العالمية';

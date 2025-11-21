@@ -26,7 +26,7 @@ class GroqClient {
 
   async chat(
     messages: Array<{ role: 'user' | 'system'; content: string }>,
-    maxTokens: number = 1000
+    maxTokens = 1000
   ): Promise<GroqResponse> {
     try {
       if (!this.apiKey) {

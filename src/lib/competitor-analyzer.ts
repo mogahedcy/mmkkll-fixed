@@ -84,7 +84,7 @@ export async function searchCompetitorContent(
 
 export async function analyzeCompetitors(
   searchQuery: string,
-  useWebSearch: boolean = true
+  useWebSearch = true
 ): Promise<CompetitorAnalysis> {
   try {
     let competitorContent = '';
@@ -208,7 +208,7 @@ ${competitorContent}
 export async function generateSmartArticleIdeas(
   analysis: CompetitorAnalysis,
   niche: string,
-  count: number = 5
+  count = 5
 ): Promise<GeneratedArticleIdea[]> {
   try {
     const prompt = `أنت كاتب محتوى خبير ومتخصص في SEO للسوق السعودي.

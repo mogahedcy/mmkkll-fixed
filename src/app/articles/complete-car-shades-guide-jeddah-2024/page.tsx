@@ -1,5 +1,5 @@
 
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Car, Shield, Sun, Star, CheckCircle, Phone } from 'lucide-react';
 

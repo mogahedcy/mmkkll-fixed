@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   const baseUrl = 'https://www.aldeyarksa.tech'; // الدومين المفضل الموحد
   
-  let videosByPage = new Map<string, any[]>();
+  const videosByPage = new Map<string, any[]>();
 
   try {
     // جلب جميع المشاريع المنشورة مع الفيديوهات
@@ -81,7 +81,7 @@ export async function GET() {
           
           // استخراج المدة من الصيغة ISO 8601 (PT2M مثلاً)
           const durationMatch = duration.match(/PT(\d+)M/);
-          const durationSeconds = durationMatch ? parseInt(durationMatch[1]) * 60 : 120;
+          const durationSeconds = durationMatch ? Number.parseInt(durationMatch[1]) * 60 : 120;
           
           return `  <url>
     <loc>${cleanVideoPageUrl}</loc>

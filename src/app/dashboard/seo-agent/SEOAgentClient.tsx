@@ -331,7 +331,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
                     max="2000"
                     step="100"
                     value={formData.wordCount}
-                    onChange={(e) => setFormData({ ...formData, wordCount: parseInt(e.target.value) })}
+                    onChange={(e) => setFormData({ ...formData, wordCount: Number.parseInt(e.target.value) })}
                     className="w-full"
                   />
                 </div>

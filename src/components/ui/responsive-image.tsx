@@ -40,7 +40,6 @@ export default function ResponsiveImage({
         loading={priority ? 'eager' : 'lazy'}
         quality={75}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        className="[CLASS]"
         onLoad={() => setIsLoading(false)}
         className={`transition-opacity duration-300 ${
           isLoading ? 'opacity-0' : 'opacity-100'

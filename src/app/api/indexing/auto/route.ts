@@ -4,7 +4,7 @@
  * يُستخدم للإشعار الفوري بالتحديثات الجديدة
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { indexURL, indexMultipleURLs, notifyURLDeleted } from '@/lib/indexing/unified-indexing-service';
 
 export async function POST(request: NextRequest) {

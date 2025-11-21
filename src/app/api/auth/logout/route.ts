@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { sessionManager, auditLogger, getClientIP } from '@/lib/security';
 
 export async function POST(request: NextRequest) {

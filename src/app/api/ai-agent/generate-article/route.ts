@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { aiArticleAgent } from '@/lib/ai-article-agent';
 import { requireAdminAuth, validateStringInput, validateKeywordsArray } from '@/lib/seo-agent-auth';
 

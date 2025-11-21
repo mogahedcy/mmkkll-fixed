@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from './jwt';
 import { prisma } from './prisma';
 
@@ -44,7 +44,7 @@ export async function requireAdminAuth(request: NextRequest): Promise<{ adminId:
   }
 }
 
-export function validateStringInput(input: any, fieldName: string, minLength: number = 10, maxLength: number = 50000): string | null {
+export function validateStringInput(input: any, fieldName: string, minLength = 10, maxLength = 50000): string | null {
   if (!input || typeof input !== 'string') {
     return `${fieldName} يجب أن يكون نصاً`;
   }
@@ -62,7 +62,7 @@ export function validateStringInput(input: any, fieldName: string, minLength: nu
   return null;
 }
 
-export function validateKeywordsArray(keywords: any, fieldName: string = 'الكلمات المفتاحية'): string | null {
+export function validateKeywordsArray(keywords: any, fieldName = 'الكلمات المفتاحية'): string | null {
   if (!Array.isArray(keywords)) {
     return `${fieldName} يجب أن تكون قائمة`;
   }

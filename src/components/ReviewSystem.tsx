@@ -79,7 +79,7 @@ export function ReviewSystem() {
                 <Star
                   key={i}
                   className={`w-5 h-5 ${
-                    i < Math.round(parseFloat(avgRating))
+                    i < Math.round(Number.parseFloat(avgRating))
                       ? 'fill-amber-400 text-amber-400'
                       : 'text-gray-300'
                   }`}

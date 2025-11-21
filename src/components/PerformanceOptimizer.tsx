@@ -119,7 +119,7 @@ class MemoryManager {
 
   monitorMemory() {
     if (typeof window !== 'undefined' && 'memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as unknown as { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
       const used = memory.usedJSHeapSize / 1048576; // MB
       const total = memory.totalJSHeapSize / 1048576; // MB
       const limit = memory.jsHeapSizeLimit / 1048576; // MB
@@ -177,7 +177,7 @@ export const preloadCriticalResources = (resources: string[]) => {
 };
 
 // Virtualization helper for large lists
-export const useVirtualization = (items: any[], containerHeight: number, itemHeight: number) => {
+export const useVirtualization = (items: unknown[], containerHeight: number, itemHeight: number) => {
   const [scrollTop, setScrollTop] = useState(0);
   const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
 
@@ -269,7 +269,7 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
     // Monitor memory usage
     const monitorMemory = () => {
       if ('memory' in performance) {
-        const memory = (performance as any).memory;
+        const memory = (performance as unknown as { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
         const used = (memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
         const total = (memory.totalJSHeapSize / 1024 / 1024).toFixed(2);
         const limit = (memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2);
@@ -279,7 +279,7 @@ export default function PerformanceOptimizer({ children }: PerformanceOptimizerP
         }
 
         // Auto cleanup if memory usage is high
-        if (parseFloat(used) / parseFloat(limit) > 0.8) {
+        if (Number.parseFloat(used) / Number.parseFloat(limit) > 0.8) {
           memoryManager.performCleanup();
           imageCache.clearCache();
         }

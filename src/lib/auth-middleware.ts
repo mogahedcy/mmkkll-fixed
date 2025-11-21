@@ -2,7 +2,7 @@
  * Middleware للتحقق من صلاحية المستخدم Admin
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from './jwt';
 
 export async function requireAdmin(request: NextRequest): Promise<{ authorized: boolean; admin?: any; response?: NextResponse }> {

@@ -1,5 +1,5 @@
 
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 const AUTO_REFRESH_SECRET = process.env.AUTO_REFRESH_SECRET || 'default-secret-change-me';
 

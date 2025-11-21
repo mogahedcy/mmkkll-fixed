@@ -472,7 +472,7 @@ export default function FAQsPage() {
                   <Input
                     type="number"
                     value={formData.order}
-                    onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => setFormData({ ...formData, order: Number.parseInt(e.target.value) || 0 })}
                     placeholder="0"
                     className="text-sm md:text-base"
                   />

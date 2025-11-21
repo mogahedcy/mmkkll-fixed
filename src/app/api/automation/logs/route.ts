@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { requireAdminAuth } from '@/lib/seo-agent-auth';
 import { prisma } from '@/lib/prisma';
 
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const limit = Number.parseInt(searchParams.get('limit') || '20');
     const taskType = searchParams.get('taskType');
 
     const where = taskType ? { taskType } : {};
