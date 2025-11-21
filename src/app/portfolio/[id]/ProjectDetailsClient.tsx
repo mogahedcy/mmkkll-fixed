@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Breadcrumb from '@/components/Breadcrumb';
+import { generateCategoryBasedAlt, generateImageObjectSchema } from '@/lib/image-seo-utils';
 import {
   ArrowLeft,
   Calendar,
@@ -261,13 +262,29 @@ export default function ProjectDetailsClient({ project, projectId }: Props) {
                           <Image
                             key={`image-${selectedMediaIndex}`}
                             src={currentMedia.src}
-                            alt={`${currentMedia.title || project.title} - مشروع ${project.category} في ${project.location} من محترفين الديار العالمية جدة`}
+                            alt={generateCategoryBasedAlt(project.category, project.title, project.location, selectedMediaIndex)}
                             fill
                             className="object-cover cursor-pointer transition-opacity duration-300"
                             onClick={() => setIsLightboxOpen(true)}
                             priority={selectedMediaIndex === 0}
                           />
                           <WatermarkOverlay position="bottom-right" opacity={0.5} size="medium" />
+                          <script
+                            type="application/ld+json"
+                            dangerouslySetInnerHTML={{
+                              __html: JSON.stringify(generateImageObjectSchema(
+                                currentMedia.src,
+                                {
+                                  alt: generateCategoryBasedAlt(project.category, project.title, project.location, selectedMediaIndex),
+                                  title: currentMedia.title || `${project.category} - ${project.title}`,
+                                  description: currentMedia.description || `صورة من مشروع ${project.title} - ${project.category} في ${project.location}`,
+                                  keywords: [project.category, project.location, 'محترفين الديار'],
+                                  context: 'project'
+                                },
+                                window.location.href
+                              ))
+                            }}
+                          />
                         </>
                       ) : (
                         <div className="relative w-full h-full">
