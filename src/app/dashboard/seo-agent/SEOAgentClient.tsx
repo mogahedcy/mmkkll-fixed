@@ -219,7 +219,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
               <Button
                 key={tab.id}
                 onClick={() => {
-                  setActiveTab(tab.id as any);
+                  setActiveTab(tab.id as 'analyze' | 'generate' | 'competitor' | 'links' | 'cluster');
                   setResult(null);
                   setError(null);
                 }}
@@ -604,7 +604,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
             {result && activeTab === 'links' && result.suggestions && (
               <div className="space-y-3">
                 <h3 className="font-bold mb-3">الروابط الداخلية المقترحة</h3>
-                {result.suggestions.map((suggestion: any, index: number) => (
+                {result.suggestions.map((suggestion: { anchor_text: string; relevance_score: number; target_url: string; position: string }, index: number) => (
                   <div key={index} className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-200">
                     <div className="flex items-start justify-between mb-2">
                       <div className="font-medium text-blue-900">{suggestion.anchor_text}</div>
@@ -623,7 +623,7 @@ export default function SEOAgentClient({ availablePages }: { availablePages: Ava
 
             {result && activeTab === 'cluster' && result.clusters && (
               <div className="space-y-4">
-                {result.clusters.map((cluster: any, index: number) => (
+                {result.clusters.map((cluster: { cluster_name: string; priority_score: number; keywords: string[]; search_intent: string; content_ideas?: string[] }, index: number) => (
                   <div key={index} className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="font-bold text-purple-900">{cluster.cluster_name}</h4>

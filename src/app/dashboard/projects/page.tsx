@@ -116,7 +116,7 @@ export default function ProjectsPage() {
   useEffect(() => {
     fetchProjects();
     fetchStats();
-  }, [selectedStatus, selectedCategory, sortBy]);
+  }, [selectedStatus, selectedCategory, sortBy, fetchProjects, fetchStats]);
 
   const fetchProjects = async () => {
     try {

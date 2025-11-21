@@ -81,6 +81,23 @@ export default function EditProjectPage() {
   const categories = ['مظلات سيارات', 'سواتر', 'خيم ملكية', 'بيوت شعر ملكي', 'برجولات', 'تنسيق حدائق', 'هناجر', 'شبوك', 'قراميد', 'ساندوتش بانل'];
   const statuses = ['مكتمل', 'قيد التنفيذ', 'متوقف', 'ملغي'];
 
+  const checkAuthentication = async () => {
+    try {
+      const response = await fetch('/api/auth/verify');
+      if (response.ok) {
+        setIsAuthenticated(true);
+        await loadProject();
+      } else {
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error('Authentication error:', error);
+      router.push('/login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     checkAuthentication();
   }, []);
@@ -106,23 +123,6 @@ export default function EditProjectPage() {
       });
     }
   }, [project]);
-
-  const checkAuthentication = async () => {
-    try {
-      const response = await fetch('/api/auth/verify');
-      if (response.ok) {
-        setIsAuthenticated(true);
-        await loadProject();
-      } else {
-        router.push('/login');
-      }
-    } catch (error) {
-      console.error('Authentication error:', error);
-      router.push('/login');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const loadProject = async () => {
     try {
@@ -335,7 +335,7 @@ export default function EditProjectPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => router.push(`/portfolio/${(project as any)?.slug || projectId}`)}
+                onClick={() => router.push(`/portfolio/${project.slug || projectId}`)}
                 className="flex items-center gap-2"
               >
                 <Eye className="h-4 w-4" />

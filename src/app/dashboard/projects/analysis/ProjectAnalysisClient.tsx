@@ -32,7 +32,7 @@ interface ProjectAnalysis {
   title: string;
   category: string;
   location: string;
-  aiAnalysis: any;
+  aiAnalysis: Record<string, unknown>;
   suggestedKeywords: string;
   lastAnalyzedAt: string;
   seo_score?: number;
@@ -56,8 +56,8 @@ export default function ProjectAnalysisClient() {
       const data = await response.json();
       
       const analyzedProjects = data
-        .filter((p: any) => p.aiAnalysis)
-        .map((p: any) => ({
+        .filter((p: { aiAnalysis?: Record<string, unknown> }) => p.aiAnalysis)
+        .map((p: { id: string; title: string; category: string; location: string; aiAnalysis?: string; suggestedKeywords?: string; lastAnalyzedAt?: string }) => ({
           id: p.id,
           title: p.title,
           category: p.category,

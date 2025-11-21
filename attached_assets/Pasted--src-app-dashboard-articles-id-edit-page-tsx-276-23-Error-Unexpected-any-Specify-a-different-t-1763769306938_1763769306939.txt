@@ -1,0 +1,21 @@
+/src/app/dashboard/articles/[id]/edit/page.tsx
+276:23  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+348:21  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/app/dashboard/articles/page.tsx
+105:6  Warning: React Hook useEffect has a missing dependency: 'fetchArticles'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+./src/app/dashboard/automation/AutomationClient.tsx
+348:55  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/app/dashboard/comments/CommentsManagementClient.tsx
+91:6  Warning: React Hook useEffect has a missing dependency: 'fetchComments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+377:66  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+403:60  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+./src/app/dashboard/faqs/[id]/edit/page.tsx
+61:6  Warning: React Hook useEffect has a missing dependency: 'fetchFAQ'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+./src/app/dashboard/faqs/page.tsx
+72:6  Warning: React Hook useEffect has a missing dependency: 'fetchFAQs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+./src/app/dashboard/page.tsx
+157:15  Error: Do not use an `<a>` element to navigate to `/dashboard/projects/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+179:15  Error: Do not use an `<a>` element to navigate to `/dashboard/projects/add/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+./src/app/dashboard/projects/[id]/edit/page.tsx
+107:6  Warning: React Hook useEffect has a missing dependency: 'checkAuthentication'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+400:70  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
