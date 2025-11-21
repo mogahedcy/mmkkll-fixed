@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenAI } from '@google/genai';
+import ai, { GEMINI_MODEL } from '@/lib/gemini-client';
 
 /**
  * API لتحليل المنافسين باستخدام Gemini AI
@@ -41,21 +41,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    // التحقق من توفر مفتاح Gemini API
-    const apiKey = process.env.GOOGLE_API_KEY;
-    console.log('🔑 GOOGLE_API_KEY exists:', !!apiKey);
-    console.log('🔑 GOOGLE_API_KEY length:', apiKey?.length || 0);
-    
-    if (!apiKey) {
-      return NextResponse.json(
-        { success: false, error: 'مفتاح Gemini API غير متوفر' },
-        { status: 500 }
-      );
-    }
-
-    // تهيئة Gemini AI - يتم إنشاء instance جديد في كل طلب لضمان قراءة المفتاح الصحيح
-    const genAI = new GoogleGenAI({ apiKey });
 
     // بناء prompt متقدم لتحليل المنافسين
     const prompt = `أنت خبير SEO ومحلل منافسين متخصص في مجال ${category} في السعودية، وخاصةً في ${location || 'جدة'}.
@@ -118,22 +103,17 @@ export async function POST(request: NextRequest) {
     console.log('🤖 بدء تحليل المنافسين باستخدام Gemini AI...');
 
     // استدعاء Gemini AI بالطريقة الصحيحة
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-    
-    const result = await model.generateContent({
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: prompt }]
-        }
-      ],
-      generationConfig: {
+    const result = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      config: {
         temperature: 0.7,
         maxOutputTokens: 8192,
-      }
+        responseMimeType: 'application/json',
+      },
+      contents: prompt,
     });
     
-    const analysisText = result.response?.text();
+    const analysisText = result.text;
 
     if (!analysisText) {
       return NextResponse.json(
