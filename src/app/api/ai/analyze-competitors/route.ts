@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ai, { GEMINI_MODEL } from '@/lib/gemini-client';
 
 /**
- * API لتحليل المنافسين باستخدام Gemini AI
+ * API لتحليل المنافسين باستخدام Groq AI
  * POST /api/ai/analyze-competitors
  */
 
@@ -100,20 +99,37 @@ export async function POST(request: NextRequest) {
 - كن محدداً وعملياً في التوصيات
 - ركز على السوق السعودي وخاصة جدة`;
 
-    console.log('🤖 بدء تحليل المنافسين باستخدام Gemini AI...');
+    console.log('🤖 بدء تحليل المنافسين باستخدام Groq AI...');
 
-    // استدعاء Gemini AI بالطريقة الصحيحة
-    const result = await ai.models.generateContent({
-      model: GEMINI_MODEL,
-      config: {
-        temperature: 0.7,
-        maxOutputTokens: 8192,
-        responseMimeType: 'application/json',
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      return NextResponse.json(
+        { success: false, error: 'Groq API key غير محدد' },
+        { status: 500 }
+      );
+    }
+
+    // استدعاء Groq API
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${groqApiKey}`,
+        'Content-Type': 'application/json',
       },
-      contents: prompt,
+      body: JSON.stringify({
+        model: 'mixtral-8x7b-32768',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 8192,
+        temperature: 0.7,
+      }),
     });
-    
-    const analysisText = result.text;
+
+    if (!response.ok) {
+      throw new Error('Groq API error');
+    }
+
+    const data = await response.json();
+    const analysisText = data.choices[0]?.message?.content;
 
     if (!analysisText) {
       return NextResponse.json(
@@ -122,7 +138,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ تم الحصول على التحليل من Gemini AI');
+    console.log('✅ تم الحصول على التحليل من Groq AI');
 
     // تنظيف النص وإزالة markdown code blocks إذا وجدت
     let cleanedText = analysisText.trim();

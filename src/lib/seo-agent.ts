@@ -50,7 +50,7 @@ export class SEOAgent {
 
 تأكد من أن الكلمات المفتاحية متوافقة مع السوق السعودي واللهجة المحلية.`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير SEO محترف متخصص في تحسين محركات البحث للسوق السعودي. قدم استجابة JSON دقيقة ومفصلة.",
@@ -89,7 +89,7 @@ ${url ? `الرابط: ${url}` : ''}
 
 ركز على تقنيات SEO القوية والفعالة.`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير SEO استراتيجي متخصص في تحليل وتحسين المحتوى لمحركات البحث.",
@@ -141,7 +141,7 @@ ${url ? `الرابط: ${url}` : ''}
 - meta_description: وصف meta محسّن (150-160 حرف)
 - tags: 5-8 وسوم ذات صلة`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت كاتب محتوى SEO خبير تنشئ محتوى عالي الجودة محسّن لمحركات البحث.",
@@ -174,7 +174,7 @@ ${url ? `الرابط: ${url}` : ''}
 
 ركز على الاستراتيجيات القوية والفعالة للتفوق على المنافسين.`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير تحليل تنافسي في SEO متخصص في إيجاد الفرص الاستراتيجية.",
@@ -209,7 +209,7 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 
 اختر 3-5 روابط داخلية ذات صلة قوية فقط. تأكد من أن نص الرابط (anchor text) طبيعي ومناسب.`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير في استراتيجيات الربط الداخلي لتحسين SEO.",
@@ -254,7 +254,7 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 2. جعل الأوصاف جذابة لزيادة نسبة النقر (CTR)
 3. استخدام أفعال دعوة للعمل حيثما أمكن`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير في كتابة meta tags محسّنة تزيد من نسبة النقر والظهور في محركات البحث.",
@@ -295,7 +295,7 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 
 جمّع الكلمات المتشابهة في المعنى والنية معاً.`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير في تجميع وتنظيم الكلمات المفتاحية لإنشاء استراتيجية محتوى فعالة.",
@@ -328,7 +328,7 @@ ${availablePages.map(p => `- ${p.title} (${p.url}): ${p.keywords.join(', ')}`).j
 
 قدم فقط نص الـ Alt Text بدون أي شرح إضافي.`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير في كتابة نصوص بديلة للصور محسّنة لمحركات البحث وإمكانية الوصول.",

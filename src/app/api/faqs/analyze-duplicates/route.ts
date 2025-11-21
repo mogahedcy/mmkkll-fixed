@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyToken } from '@/lib/jwt';
 import { cookies } from 'next/headers';
-import ai, { GEMINI_MODEL } from '@/lib/gemini-client';
 
 async function checkAuth() {
   try {
@@ -22,44 +21,48 @@ async function checkAuth() {
 
 async function analyzeSimilarityWithAI(faqs: any[]): Promise<any[]> {
   try {
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) throw new Error('Groq API key غير محدد');
+
     const faqList = faqs.map((faq, index) => 
       `${index + 1}. ${faq.question} (الفئة: ${faq.category}, المعرف: ${faq.id})`
     ).join('\n');
 
-    const prompt = `أنت خبير في تحليل الأسئلة المتشابهة. قم بتحليل القائمة التالية من الأسئلة الشائعة واكتشف الأسئلة المتشابهة دلالياً (حتى لو كانت الصياغة مختلفة):
+    const prompt = `أنت خبير في تحليل الأسئلة المتشابهة. قم بتحليل القائمة التالية من الأسئلة الشائعة واكتشف الأسئلة المتشابهة دلالياً:
 
 ${faqList}
 
-قم بتحديد مجموعات الأسئلة المتشابهة والتي تعالج نفس الموضوع أو الاستفسار. اعتبر الأسئلة متشابهة إذا كانت:
-1. تسأل عن نفس المعلومة بصياغة مختلفة
-2. تتعلق بنفس الموضوع بشكل وثيق
-3. يمكن دمجها في سؤال واحد شامل
-
-قدم النتيجة بصيغة JSON كما يلي:
+قدم النتيجة بصيغة JSON فقط:
 {
   "duplicateGroups": [
     {
       "group": 1,
-      "similarityReason": "السبب الدلالي للتشابه",
-      "questionIds": ["id1", "id2", "id3"],
-      "recommendation": "توصية بكيفية دمج الأسئلة",
-      "suggestedMergedQuestion": "صياغة السؤال المدمج المقترح"
+      "similarityReason": "السبب",
+      "questionIds": ["id1", "id2"],
+      "recommendation": "التوصية",
+      "suggestedMergedQuestion": "السؤال المدمج"
     }
   ]
-}
+}`;
 
-ملاحظة: قم فقط بإرجاع مجموعات الأسئلة المتشابهة (لا تدرج الأسئلة الفريدة).`;
-
-    const response = await ai.models.generateContent({
-      model: GEMINI_MODEL,
-      config: {
-        systemInstruction: "أنت خبير في تحليل النصوص العربية والكشف عن التشابه الدلالي. قدم استجابة JSON دقيقة ومفصلة.",
-        responseMimeType: "application/json",
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${groqApiKey}`,
+        'Content-Type': 'application/json',
       },
-      contents: prompt,
+      body: JSON.stringify({
+        model: 'mixtral-8x7b-32768',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 2000,
+        temperature: 0.7,
+      }),
     });
 
-    const result = JSON.parse(response.text || '{"duplicateGroups":[]}');
+    if (!response.ok) throw new Error('Groq API error');
+    
+    const data = await response.json();
+    const result = JSON.parse(data.choices[0]?.message?.content || '{"duplicateGroups":[]}');
     return result.duplicateGroups || [];
   } catch (error) {
     console.error('Error analyzing with AI:', error);
@@ -128,7 +131,7 @@ export async function POST(request: NextRequest) {
       message: enrichedGroups.length > 0 
         ? `تم العثور على ${enrichedGroups.length} مجموعة من الأسئلة المتشابهة بواسطة الذكاء الاصطناعي`
         : 'لا توجد أسئلة متشابهة',
-      analyzedWith: 'Google Gemini AI'
+      analyzedWith: 'Groq AI'
     });
   } catch (error: any) {
     console.error('Error analyzing duplicates with AI:', error);

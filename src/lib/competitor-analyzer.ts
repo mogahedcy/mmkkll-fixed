@@ -1,4 +1,6 @@
-import ai, { GEMINI_MODEL } from './gemini-client';
+/**
+ * Competitor Analyzer - يستخدم Groq AI
+ */
 
 export interface CompetitorAnalysis {
   topKeywords: string[];
@@ -176,8 +178,8 @@ ${competitorContent}
   "contentGaps": ["ثغرة1", "ثغرة2", ...]
 }`;
 
-    const result = await ai.models.generateContent({
-      model: GEMINI_MODEL,
+    const result = await groqGenerateContent({
+      model: "mixtral-8x7b-32768",
       config: {
         systemInstruction: "أنت خبير تحليل SEO ومنافسين في السوق السعودي. قدم استجابة JSON دقيقة ومفصلة.",
         responseMimeType: "application/json",
@@ -247,8 +249,8 @@ export async function generateSmartArticleIdeas(
   }
 ]`;
 
-    const result = await ai.models.generateContent({
-      model: GEMINI_MODEL,
+    const result = await groqGenerateContent({
+      model: "mixtral-8x7b-32768",
       config: {
         systemInstruction: "أنت خبير تحليل SEO ومنافسين في السوق السعودي. قدم استجابة JSON دقيقة ومفصلة.",
         responseMimeType: "application/json",
@@ -336,8 +338,8 @@ export async function generateHumanLikeContent(
 
 ابدأ مباشرة بالمحتوى بدون أي نص تمهيدي:`;
 
-    const result = await ai.models.generateContent({
-      model: GEMINI_MODEL,
+    const result = await groqGenerateContent({
+      model: "mixtral-8x7b-32768",
       config: {
         systemInstruction: "أنت كاتب محتوى محترف ومتخصص في كتابة مقالات SEO بأسلوب بشري طبيعي وجذاب.",
       },
@@ -387,8 +389,8 @@ export async function generateOptimizedMetaTags(
   "metaDescription": "الوصف المحسن"
 }`;
 
-    const result = await ai.models.generateContent({
-      model: GEMINI_MODEL,
+    const result = await groqGenerateContent({
+      model: "mixtral-8x7b-32768",
       config: {
         systemInstruction: "أنت خبير تحليل SEO ومنافسين في السوق السعودي. قدم استجابة JSON دقيقة ومفصلة.",
         responseMimeType: "application/json",
@@ -408,4 +410,28 @@ export async function generateOptimizedMetaTags(
     console.error('Error generating meta tags:', error);
     throw error;
   }
+}
+
+async function groqGenerateContent(config: any): Promise<any> {
+  const groqApiKey = process.env.GROQ_API_KEY;
+  if (!groqApiKey) throw new Error('Groq API key غير محدد');
+
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${groqApiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: config.model,
+      messages: [{ role: 'user', content: config.contents }],
+      max_tokens: 8192,
+      temperature: 0.7,
+    }),
+  });
+
+  if (!response.ok) throw new Error('Groq API error');
+  
+  const data = await response.json();
+  return { text: data.choices[0]?.message?.content || '' };
 }

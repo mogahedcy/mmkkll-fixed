@@ -41,7 +41,7 @@ export class ImageSelector {
   ]
 }`;
 
-      const response = await ai.models.generateContent({
+      const response = await groqGenerateContent({
         model: GEMINI_MODEL,
         config: {
           systemInstruction: "أنت خبير في اختيار الصور المناسبة للمحتوى التسويقي والتعليمي.",
