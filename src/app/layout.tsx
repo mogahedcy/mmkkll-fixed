@@ -11,6 +11,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import ReviewSchema from "@/components/ReviewSchema";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -144,13 +145,15 @@ export default function RootLayout({
         <LocalBusinessSchema />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
-        <GoogleAnalytics />
-        <ServiceWorkerRegister />
-        <WebVitals />
-        <ClientBody>{children}</ClientBody>
-        <WhatsAppWidget />
-        <FloatingCallButton />
-        <BottomNavigation />
+        <ErrorBoundary>
+          <GoogleAnalytics />
+          <ServiceWorkerRegister />
+          <WebVitals />
+          <ClientBody>{children}</ClientBody>
+          <WhatsAppWidget />
+          <FloatingCallButton />
+          <BottomNavigation />
+        </ErrorBoundary>
       </body>
     </html>
   );
