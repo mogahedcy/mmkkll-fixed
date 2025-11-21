@@ -83,13 +83,6 @@ export default function PortfolioPage() {
   return (
     <>
       <StructuredDataScript data={portfolioStructuredData} />
-      <VideoObjectSchema 
-        name="جولة في معرض أعمال محترفين الديار - مشاريع المظلات والبرجولات"
-        description="شاهد أفضل مشاريعنا المنجزة في جدة من مظلات سيارات وبرجولات وسواتر بجودة عالية"
-        thumbnailUrl="https://www.aldeyarksa.tech/uploads/mazallat-1.webp"
-        uploadDate={new Date().toISOString()}
-        duration="PT3M"
-      />
       <Navbar />
       <Suspense fallback={
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
