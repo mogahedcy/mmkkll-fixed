@@ -185,3 +185,105 @@
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+
+/* Dark Mode Styles */
+@media (prefers-color-scheme: dark) {
+  :root.dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8.6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 180 83.1% 53.9%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 180 83.1% 53.9%;
+    --radius: 0.5rem;
+  }
+}
+
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+}
+
+:root.dark body {
+  @apply bg-gray-950 text-gray-50;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+/* Dark mode specific styles */
+:root.dark header {
+  @apply bg-gray-900 border-gray-800;
+}
+
+:root.dark nav {
+  @apply bg-gray-900;
+}
+
+:root.dark .bg-white {
+  @apply dark:bg-gray-900;
+}
+
+:root.dark .bg-gray-50 {
+  @apply dark:bg-gray-800;
+}
+
+:root.dark .bg-gray-100 {
+  @apply dark:bg-gray-700;
+}
+
+:root.dark .text-gray-900 {
+  @apply dark:text-gray-100;
+}
+
+:root.dark .text-gray-700 {
+  @apply dark:text-gray-300;
+}
+
+:root.dark .text-gray-600 {
+  @apply dark:text-gray-400;
+}
+
+:root.dark .text-gray-500 {
+  @apply dark:text-gray-500;
+}
+
+:root.dark .border-gray-200 {
+  @apply dark:border-gray-700;
+}
+
+:root.dark .border-gray-300 {
+  @apply dark:border-gray-600;
+}
+
+:root.dark .shadow-lg {
+  @apply dark:shadow-2xl;
+}
+
+:root.dark input,
+:root.dark textarea,
+:root.dark select {
+  @apply dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700;
+}
+
+:root.dark .card {
+  @apply dark:bg-gray-800;
+}
+
+:root.dark .hover\:bg-gray-50:hover {
+  @apply dark:hover:bg-gray-800;
+}
+
+:root.dark .hover\:bg-gray-100:hover {
+  @apply dark:hover:bg-gray-700;
+}

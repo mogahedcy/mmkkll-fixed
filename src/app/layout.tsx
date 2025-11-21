@@ -13,6 +13,7 @@ import ReviewSchema from "@/components/ReviewSchema";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 import LocalBusinessSchemaOptimized from "@/components/LocalBusinessSchemaOptimized";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
@@ -147,15 +148,17 @@ export default function RootLayout({
       <LocalBusinessSchemaOptimized />
       </head>
       <body className="antialiased font-arabic pb-16 lg:pb-0" suppressHydrationWarning={true}>
-        <ErrorBoundary>
-          <GoogleAnalytics />
-          <ServiceWorkerRegister />
-          <WebVitals />
-          <ClientBody>{children}</ClientBody>
-          <WhatsAppWidget />
-          <FloatingCallButton />
-          <BottomNavigation />
-        </ErrorBoundary>
+        <ThemeProvider>
+          <ErrorBoundary>
+            <GoogleAnalytics />
+            <ServiceWorkerRegister />
+            <WebVitals />
+            <ClientBody>{children}</ClientBody>
+            <WhatsAppWidget />
+            <FloatingCallButton />
+            <BottomNavigation />
+          </ErrorBoundary>
+        </ThemeProvider>
       </body>
     </html>
   );
