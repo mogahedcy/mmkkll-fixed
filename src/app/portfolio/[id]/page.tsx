@@ -168,11 +168,15 @@ export default async function ProjectDetailsPage({ params }: Props) {
       title: item.title || `${project.category} - ${project.title}`,
       description: item.description || `صورة من مشروع ${project.title} - ${project.category} في ${project.location}`
     })),
-    videos: videos.map((item: any) => ({
-      name: item.title || project.title,
-      description: item.description || project.description,
+    videos: videos.map((item: any, idx: number) => ({
+      name: item.title || `${project.title} - فيديو ${idx + 1}`,
+      description: item.description || `فيديو توضيحي لمشروع ${project.title} - ${project.category} في ${project.location}. تنفيذ محترفين الديار العالمية`,
       contentUrl: item.src,
-      uploadDate: project.createdAt
+      thumbnailUrl: item.thumbnail || imageUrl,
+      embedUrl: item.src,
+      duration: item.duration || 'PT2M',
+      uploadDate: project.createdAt || new Date().toISOString(),
+      inLanguage: 'ar-SA'
     })),
     aggregateRating: project._count?.comments > 0 && project.rating > 0 ? {
       ratingValue: project.rating,

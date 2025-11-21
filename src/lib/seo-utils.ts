@@ -278,7 +278,7 @@ export function generateCreativeWorkSchema(data: {
   dateCreated?: string;
   dateModified?: string;
   images?: Array<{ url: string; caption?: string; alt?: string; title?: string; description?: string }>;
-  videos?: Array<{ name: string; description: string; contentUrl: string; uploadDate?: string }>;
+  videos?: Array<{ name: string; description: string; contentUrl: string; thumbnailUrl?: string; embedUrl?: string; duration?: string; uploadDate?: string; inLanguage?: string }>;
   aggregateRating?: {
     ratingValue: number;
     reviewCount: number;
@@ -327,8 +327,19 @@ export function generateCreativeWorkSchema(data: {
         "name": video.name,
         "description": video.description,
         "contentUrl": video.contentUrl,
+        ...(video.thumbnailUrl && { "thumbnailUrl": video.thumbnailUrl }),
+        ...(video.embedUrl && { "embedUrl": video.embedUrl }),
+        ...(video.duration && { "duration": video.duration }),
         "uploadDate": video.uploadDate || data.dateCreated,
-        "inLanguage": "ar-SA"
+        "inLanguage": "ar-SA",
+        "publisher": {
+          "@type": "Organization",
+          "name": SITE_NAME,
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${BASE_URL}/favicon.svg`
+          }
+        }
       }))
     }),
     ...(data.aggregateRating && {
