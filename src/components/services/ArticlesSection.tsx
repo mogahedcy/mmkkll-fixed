@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar, Eye, ThumbsUp, BookOpen, Sparkles } from 'lucide-react';
+import { generateCategoryBasedAlt } from '@/lib/image-seo-utils';
 
 interface Article {
   id: string | number;
@@ -96,7 +97,7 @@ export default function ArticlesSection({ articles, categoryName }: ArticlesSect
                     <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
                       <Image
                         src={article.article_media_items[0].src}
-                        alt={article.article_media_items[0].alt || article.title}
+                        alt={article.article_media_items[0].alt || generateCategoryBasedAlt(categoryName, article.title, 'جدة', 0)}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover group-hover:scale-110 transition-transform duration-700"

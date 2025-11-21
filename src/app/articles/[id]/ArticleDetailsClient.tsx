@@ -292,7 +292,7 @@ export default function ArticleDetailsClient({ article }: Props) {
                   >
                     <Image
                       src={media.thumbnail || media.src}
-                      alt={`صورة ${index + 1}`}
+                      alt={generateCategoryBasedAlt(article.category, article.title, 'جدة', index)}
                       fill
                       className="object-cover"
                     />
