@@ -175,3 +175,4 @@ export default function RootLayout({
 
 
 // SEO: Add hreflang links in head for language alternates
+// TODO: Import AIChat component when Groq API is configured
