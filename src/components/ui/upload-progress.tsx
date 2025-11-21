@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, AlertCircle, Upload, X } from 'lucide-react';
 
@@ -16,13 +16,7 @@ export function UploadProgress({ files, onUploadComplete, onCancel }: UploadProg
   const [uploadResults, setUploadResults] = useState<Array<Record<string, unknown>>>([]);
   const [isUploading, setIsUploading] = useState(false);
 
-  useEffect(() => {
-    if (files.length > 0 && !isUploading) {
-      startUpload();
-    }
-  }, [files]);
-
-  const startUpload = async () => {
+  const startUpload = useCallback(async () => {
     setIsUploading(true);
     const results: Array<Record<string, unknown>> = [];
 
@@ -84,7 +78,13 @@ export function UploadProgress({ files, onUploadComplete, onCancel }: UploadProg
     setUploadResults(results);
     setIsUploading(false);
     onUploadComplete(results);
-  };
+  }, [files, onUploadComplete]);
+
+  useEffect(() => {
+    if (files.length > 0 && !isUploading) {
+      startUpload();
+    }
+  }, [files, isUploading, startUpload]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {

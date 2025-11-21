@@ -10,21 +10,21 @@ interface InternalLinkingProps {
   location?: string;
 }
 
-export default function InternalLinking({ currentPage, category, location }: InternalLinkingProps) {
-  const serviceLinks = [
-    { href: '/services/mazallat', text: 'مظلات السيارات', keywords: ['مظلات', 'سيارات'] },
-    { href: '/services/pergolas', text: 'البرجولات', keywords: ['برجولات', 'حدائق'] },
-    { href: '/services/sawater', text: 'السواتر', keywords: ['سواتر', 'خصوصية'] },
-    { href: '/services/landscaping', text: 'تنسيق الحدائق', keywords: ['تنسيق', 'حدائق'] }
-  ];
+const SERVICE_LINKS = [
+  { href: '/services/mazallat', text: 'مظلات السيارات', keywords: ['مظلات', 'سيارات'] },
+  { href: '/services/pergolas', text: 'البرجولات', keywords: ['برجولات', 'حدائق'] },
+  { href: '/services/sawater', text: 'السواتر', keywords: ['سواتر', 'خصوصية'] },
+  { href: '/services/landscaping', text: 'تنسيق الحدائق', keywords: ['تنسيق', 'حدائق'] }
+];
 
-  const portfolioLinks = [
-    { href: '/portfolio', text: 'معرض الأعمال', keywords: ['أعمال', 'مشاريع'] },
-    { href: '/portfolio/reviews', text: 'آراء العملاء', keywords: ['آراء', 'تقييمات'] }
-  ];
+const PORTFOLIO_LINKS = [
+  { href: '/portfolio', text: 'معرض الأعمال', keywords: ['أعمال', 'مشاريع'] },
+  { href: '/portfolio/reviews', text: 'آراء العملاء', keywords: ['آراء', 'تقييمات'] }
+];
 
+export default function InternalLinking({ currentPage, category }: InternalLinkingProps) {
   const relevantLinks = useMemo(() => {
-    const allLinks = [...serviceLinks, ...portfolioLinks];
+    const allLinks = [...SERVICE_LINKS, ...PORTFOLIO_LINKS];
     return allLinks.filter(link => 
       link.href !== currentPage &&
       (!category || !link.keywords.some(keyword => 

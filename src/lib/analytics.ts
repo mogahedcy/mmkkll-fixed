@@ -1,7 +1,7 @@
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
+    dataLayer: Array<Record<string, unknown>>;
+    gtag: (...args: Array<string | Record<string, unknown>>) => void;
   }
 }
 
@@ -21,7 +21,7 @@ export const event = (
     category?: string;
     label?: string;
     value?: number;
-    [key: string]: any;
+    [key: string]: unknown;
   }
 ) => {
   if (!GA_MEASUREMENT_ID || typeof window === 'undefined') return;

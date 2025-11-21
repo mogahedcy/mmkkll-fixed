@@ -5,7 +5,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from './jwt';
 
-export async function requireAdmin(request: NextRequest): Promise<{ authorized: boolean; admin?: any; response?: NextResponse }> {
+export async function requireAdmin(request: NextRequest): Promise<{ authorized: boolean; admin?: { id: string; username: string }; response?: NextResponse }> {
   const token = request.cookies.get('admin-token')?.value;
 
   if (!token) {
@@ -19,7 +19,7 @@ export async function requireAdmin(request: NextRequest): Promise<{ authorized: 
   }
 
   try {
-    const decoded = verifyToken(token) as any;
+    const decoded = verifyToken(token) as unknown as { adminId: string; username: string };
     return {
       authorized: true,
       admin: { id: decoded.adminId, username: decoded.username }

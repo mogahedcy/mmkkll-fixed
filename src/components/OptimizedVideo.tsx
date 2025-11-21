@@ -100,7 +100,6 @@ export default function OptimizedVideo({
       onCanPlay={handleCanPlay}
       onError={onError}
       onMouseEnter={onMouseEnter}
-      className="[CLASS]"
     >
       <source src={src} type="video/mp4" />
       <source src={src} type="video/webm" />
