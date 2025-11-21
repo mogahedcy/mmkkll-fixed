@@ -164,5 +164,3 @@ export default function RootLayout({
   );
 }
 
-// Add LocalBusinessSchema component
-import LocalBusinessSchemaOptimized from '@/components/LocalBusinessSchemaOptimized';

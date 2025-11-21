@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import {
   Phone,
   Mail,
@@ -236,7 +237,7 @@ export default function Navbar() {
               {/* اتصال سريع */}
               <Link
                 href="tel:+966553719009"
-                className="p-2 sm:p-2.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                className="p-2 sm:p-2.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800"
                 aria-label="اتصال"
               >
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -245,7 +246,7 @@ export default function Navbar() {
               {/* واتساب */}
               <Link
                 href="https://wa.me/966553719009"
-                className="p-2 sm:p-2.5 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 transition-colors"
+                className="p-2 sm:p-2.5 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 transition-colors dark:bg-green-900 dark:text-green-200 dark:hover:bg-green-800"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="واتساب"
@@ -253,13 +254,16 @@ export default function Navbar() {
                 <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
 
+              {/* Dark Mode Toggle */}
+              <ThemeToggle />
+
               {/* زر القائمة */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="القائمة"
-                className="w-10 h-10 sm:w-11 sm:h-11 p-0 hover:bg-gray-100"
+                className="w-10 h-10 sm:w-11 sm:h-11 p-0 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 {isMenuOpen ? 
                   <X className="w-5 h-5 sm:w-6 sm:h-6" /> : 
