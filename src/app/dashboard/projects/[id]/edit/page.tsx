@@ -102,6 +102,23 @@ export default function EditProjectPage() {
     'ساندوتش بانل'
   ];
 
+  const checkAuthentication = async () => {
+    try {
+      const response = await fetch('/api/auth/verify');
+      if (response.ok) {
+        setIsAuthenticated(true);
+        await loadProject();
+      } else {
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error('Authentication error:', error);
+      router.push('/login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     checkAuthentication();
   }, []);
@@ -124,23 +141,6 @@ export default function EditProjectPage() {
       setMaterials(project.materials?.map(material => material.name) || []);
     }
   }, [project]);
-
-  const checkAuthentication = async () => {
-    try {
-      const response = await fetch('/api/auth/verify');
-      if (response.ok) {
-        setIsAuthenticated(true);
-        await loadProject();
-      } else {
-        router.push('/login');
-      }
-    } catch (error) {
-      console.error('Authentication error:', error);
-      router.push('/login');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const loadProject = async () => {
     try {
@@ -397,7 +397,7 @@ export default function EditProjectPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => router.push(`/portfolio/${(project as any)?.slug || projectId}`)}
+                onClick={() => router.push(`/portfolio/${(project && 'slug' in project && project.slug) || projectId}`)}
                 className="flex items-center gap-2"
               >
                 <Eye className="h-4 w-4" />
