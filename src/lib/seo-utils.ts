@@ -277,7 +277,7 @@ export function generateCreativeWorkSchema(data: {
   location?: string;
   dateCreated?: string;
   dateModified?: string;
-  images?: Array<{ url: string; caption?: string }>;
+  images?: Array<{ url: string; caption?: string; alt?: string; title?: string; description?: string }>;
   videos?: Array<{ name: string; description: string; contentUrl: string; uploadDate?: string }>;
   aggregateRating?: {
     ratingValue: number;
@@ -301,6 +301,7 @@ export function generateCreativeWorkSchema(data: {
         "addressCountry": "SA"
       }
     },
+    "inLanguage": "ar-SA",
     ...(data.dateCreated && { "dateCreated": data.dateCreated }),
     ...(data.dateModified && { "dateModified": data.dateModified }),
     ...(data.location && {
@@ -311,10 +312,13 @@ export function generateCreativeWorkSchema(data: {
     }),
     ...(data.category && { "category": data.category }),
     ...(data.images && data.images.length > 0 && {
-      "image": data.images.map((img) => ({
+      "image": data.images.map((img, idx) => ({
         "@type": "ImageObject",
         "url": img.url,
-        "caption": img.caption || data.name
+        "name": img.title || `${data.name} - صورة ${idx + 1}`,
+        "caption": img.caption || img.description || data.name,
+        "description": img.description || img.caption,
+        "alternateName": img.alt
       }))
     }),
     ...(data.videos && data.videos.length > 0 && {
@@ -323,7 +327,8 @@ export function generateCreativeWorkSchema(data: {
         "name": video.name,
         "description": video.description,
         "contentUrl": video.contentUrl,
-        "uploadDate": video.uploadDate || data.dateCreated
+        "uploadDate": video.uploadDate || data.dateCreated,
+        "inLanguage": "ar-SA"
       }))
     }),
     ...(data.aggregateRating && {

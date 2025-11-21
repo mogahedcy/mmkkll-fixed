@@ -102,7 +102,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       type: 'article',
       publishedTime: project.createdAt,
       modifiedTime: project.updatedAt || project.createdAt,
-      authors: ['محترفين الديار العالمية']
+      authors: ['محترفين الديار العالمية'],
+      images: (project.mediaItems || [])
+        .filter((item: any) => item.type === 'IMAGE')
+        .slice(0, 4)
+        .map((item: any) => ({
+          url: item.src,
+          width: 1200,
+          height: 630,
+          alt: item.title || `${project.title} - محترفين الديار العالمية`
+        }))
     },
     twitter: generateTwitterMetadata({
       title: seoTitle,
@@ -152,9 +161,12 @@ export default async function ProjectDetailsPage({ params }: Props) {
     location: project.location,
     dateCreated: project.createdAt,
     dateModified: project.updatedAt,
-    images: images.map((item: any) => ({
+    images: images.map((item: any, idx: number) => ({
       url: item.src,
-      caption: item.title || project.title
+      caption: item.description || item.title || `${project.title} - صورة ${idx + 1}`,
+      alt: item.alt || `${project.title} - ${project.category} في ${project.location} - صورة ${idx + 1}`,
+      title: item.title || `${project.category} - ${project.title}`,
+      description: item.description || `صورة من مشروع ${project.title} - ${project.category} في ${project.location}`
     })),
     videos: videos.map((item: any) => ({
       name: item.title || project.title,
