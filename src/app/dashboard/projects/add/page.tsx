@@ -202,7 +202,8 @@ export default function AddProjectPage() {
         }
       } catch (error) {
         console.error('خطأ في رفع الملف:', error);
-        throw new Error(`فشل في رفع الملف: ${mediaFile.file.name} - ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : 'خطأ غير معروف';
+        throw new Error(`فشل في رفع الملف: ${mediaFile.file.name} - ${errorMessage}`);
       }
     }
 
@@ -276,7 +277,8 @@ export default function AddProjectPage() {
       }
     } catch (error) {
       console.error('❌ خطأ في إضافة المشروع:', error);
-      alert(`خطأ في إضافة المشروع: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'خطأ غير معروف';
+      alert(`خطأ في إضافة المشروع: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
