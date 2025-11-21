@@ -67,9 +67,10 @@ function SearchContent() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [sortBy, setSortBy] = useState<'relevance' | 'date' | 'name' | 'views' | 'rating'>('relevance');
-  const [type, setType] = useState<'all' | 'projects' | 'articles' | 'faqs'>(
-    (searchParams?.get('type') as any) || 'all'
-  );
+  const [type, setType] = useState<'all' | 'projects' | 'articles' | 'faqs'>(() => {
+    const typeValue = searchParams?.get('type');
+    return (typeValue === 'all' || typeValue === 'projects' || typeValue === 'articles' || typeValue === 'faqs') ? typeValue : 'all';
+  }());
   const [searchText, setSearchText] = useState(searchParams?.get('q') || '');
   const [facets, setFacets] = useState({ types: { articles: 0, projects: 0, faqs: 0 } });
   const [filters, setFilters] = useState<FiltersState>({
@@ -87,7 +88,9 @@ function SearchContent() {
 
   useEffect(() => {
     // مزامنة النوع مع URL
-    setType(((searchParams?.get('type') as any) || 'all'));
+    const typeValue = searchParams?.get('type');
+    const validType = (typeValue === 'all' || typeValue === 'projects' || typeValue === 'articles' || typeValue === 'faqs') ? typeValue : 'all';
+    setType(validType);
   }, [searchParams]);
 
   useEffect(() => {
@@ -98,7 +101,7 @@ function SearchContent() {
       setResults([]);
       setHasMore(false);
     }
-  }, [query, type, sortBy, filters.category, filters.location, filters.minRating, filters.featured, filters.dateRange, filters.hasVideo, filters.priceRange]);
+  }, [query, type, sortBy, filters, results]);
 
   const updateUrl = (params: Record<string, string | undefined>) => {
     const sp = new URLSearchParams(searchParams?.toString() || '');
@@ -146,7 +149,7 @@ function SearchContent() {
         setFacets(data.facets);
       }
 
-      const mapped: ArticleShape[] = (data.results as any[] | undefined)?.map((r, idx) => ({
+      const mapped: ArticleShape[] = (data.results as Array<Record<string, unknown>> | undefined)?.map((r: Record<string, unknown>, idx: number) => ({
         id: Number.parseInt(r.id) || idx + 1 + (pageNum - 1) * limit,
         slug: r.slug,
         title: r.title,

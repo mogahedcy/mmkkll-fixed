@@ -145,7 +145,7 @@ export default function SEOMonitorPage() {
       const data = await response.json();
       
       if (data.success) {
-        alert(`✅ ${data.message}\n\nتفاصيل الإشعارات:\n${data.notifications.map((n: any) => `${n.engine}: ${n.message}`).join('\n')}`);
+        alert(`✅ ${data.message}\n\nتفاصيل الإشعارات:\n${(data.notifications as Array<{engine: string; message: string}>).map((n) => `${n.engine}: ${n.message}`).join('\n')}`);
         checkIndexingStatus();
       } else {
         alert(`❌ ${data.message}`);
