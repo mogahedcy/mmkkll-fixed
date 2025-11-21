@@ -76,13 +76,17 @@ export async function GET() {
           // حساب المدة (افتراضي PT2M إذا لم تكن موجودة)
           const duration = video.duration || 'PT2M';
           
+          // استخراج المدة من الصيغة ISO 8601 (PT2M مثلاً)
+          const durationMatch = duration.match(/PT(\d+)M/);
+          const durationSeconds = durationMatch ? parseInt(durationMatch[1]) * 60 : 120;
+          
           return `<video:video>
         <video:thumbnail_loc>${cleanThumbnailUrl}</video:thumbnail_loc>
         <video:title><![CDATA[${video.title || `${video.project.category} - ${video.project.title}`}]]></video:title>
         <video:description><![CDATA[${video.description || `فيديو توضيحي لمشروع ${video.project.title} - ${video.project.category} في ${video.project.location}. تنفيذ محترفين الديار العالمية بجودة عالية وضمان 10 سنوات`}]]></video:description>
         <video:content_loc>${cleanVideoUrl}</video:content_loc>
-        <video:player_loc>${pageUrl}</video:player_loc>
-        <video:duration>${duration.replace('PT', '').replace('M', '').split('').map(c => isNaN(Number(c)) ? '' : c).join('') || '120'}</video:duration>
+        <video:player_loc>${cleanVideoUrl}</video:player_loc>
+        <video:duration>${durationSeconds}</video:duration>
         <video:expiration_date>${new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}</video:expiration_date>
         <video:publication_date>${new Date().toISOString()}</video:publication_date>
         <video:tag>محترفين الديار</video:tag>
