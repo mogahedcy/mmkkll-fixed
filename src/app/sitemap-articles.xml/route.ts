@@ -1,10 +1,41 @@
 import { NextResponse } from 'next/server';
 import { safeEncodeUrl, createImageTags, createVideoTags } from '@/lib/sitemap-utils';
 
+interface ArticleMediaItem {
+  type: string;
+  src: string;
+  alt: string | null;
+  title: string | null;
+  description: string | null;
+  thumbnail: string | null;
+}
+
+interface Article {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  excerpt: string | null;
+  author: string | null;
+  category: string;
+  featured: boolean;
+  views: number;
+  likes: number;
+  rating: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  keywords: string | null;
+  article_media_items: ArticleMediaItem[];
+  article_tags: Array<{ name: string }>;
+}
+
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
 
-  let articles: any[] = [];
+  let articles: Article[] = [];
 
   // جلب المقالات من قاعدة البيانات
   try {
@@ -62,7 +93,7 @@ export async function GET() {
       const encodedSlug = encodeURIComponent(article.slug || article.id);
       const articleUrl = `${baseUrl}/articles/${encodedSlug}`;
       
-      const mediaContent = article.article_media_items?.map((media: any) => {
+      const mediaContent = article.article_media_items?.map((media: ArticleMediaItem) => {
         if (media.type === 'IMAGE') {
           const imageUrl = media.src.startsWith('http') ? media.src : `${baseUrl}${media.src}`;
           return createImageTags({

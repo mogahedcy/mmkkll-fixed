@@ -1,10 +1,23 @@
 import { NextResponse } from 'next/server';
 import { safeEncodeUrl } from '@/lib/sitemap-utils';
 
+interface FAQ {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+  slug: string;
+  keywords: string | null;
+  featured: boolean;
+  views: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aldeyarksa.tech';
 
-  let faqs: any[] = [];
+  let faqs: FAQ[] = [];
 
   try {
     const { prisma } = await import('@/lib/prisma');
