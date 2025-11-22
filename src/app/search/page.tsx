@@ -70,7 +70,7 @@ function SearchContent() {
   const [type, setType] = useState<'all' | 'projects' | 'articles' | 'faqs'>(() => {
     const typeValue = searchParams?.get('type');
     return (typeValue === 'all' || typeValue === 'projects' || typeValue === 'articles' || typeValue === 'faqs') ? typeValue : 'all';
-  }());
+  });
   const [searchText, setSearchText] = useState(searchParams?.get('q') || '');
   const [facets, setFacets] = useState({ types: { articles: 0, projects: 0, faqs: 0 } });
   const [filters, setFilters] = useState<FiltersState>({
