@@ -6,8 +6,9 @@ channel = "stable-25_05"
 packages = ["openssl", "imagemagick", "librsvg"]
 
 [deployment]
-run = ["sh", "-c", "npm start"]
-build = ["sh", "-c", "npm install && npx prisma generate && npm run build"]
+run = ["bun", "run", "start"]
+build = ["sh", "-c", "bun install && bun run build"]
+deploymentTarget = "autoscale"
 
 [[ports]]
 localPort = 3000
@@ -229,3 +230,9 @@ outputType = "webview"
 [agent]
 expertMode = true
 integrations = ["javascript_openai:1.0.0"]
+
+[userenv]
+
+[userenv.production]
+NODE_ENV = "production"
+NEXT_PUBLIC_BASE_URL = "https://www.aldeyarksa.tech"
