@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 63, "column": 0}, "map": {"version":3,"sources":["file:///app/code/src/middleware.ts"],"sourcesContent":["import { NextResponse } from 'next/server'\nimport type { NextRequest } from 'next/server'\n\nexport const runtime = 'nodejs';\n\nexport function middleware(request: NextRequest) {\n  // تبسيط middleware لتجنب الأخطاء\n  console.log('Middleware path:', request.nextUrl.pathname)\n  const response = NextResponse.next()\n\n  // Security headers\n  response.headers.set('X-Frame-Options', 'DENY')\n  response.headers.set('X-Content-Type-Options', 'nosniff')\n  response.headers.set('Referrer-Policy', 'origin-when-cross-origin')\n\n  return response\n}\n\nexport const config = {\n  matcher: ['/:path*'],\n}\n"],"names":[],"mappings":";;;;;AAAA;;AAGO,MAAM,UAAU;AAEhB,SAAS,WAAW,OAAoB;IAC7C,iCAAiC;IACjC,QAAQ,GAAG,CAAC,oBAAoB,QAAQ,OAAO,CAAC,QAAQ;IACxD,MAAM,WAAW,8HAAA,CAAA,eAAY,CAAC,IAAI;IAElC,mBAAmB;IACnB,SAAS,OAAO,CAAC,GAAG,CAAC,mBAAmB;IACxC,SAAS,OAAO,CAAC,GAAG,CAAC,0BAA0B;IAC/C,SAAS,OAAO,CAAC,GAAG,CAAC,mBAAmB;IAExC,OAAO;AACT;AAEO,MAAM,SAAS;IACpB,SAAS;QAAC;KAAU;AACtB","debugId":null}}]
-}

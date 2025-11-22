@@ -1,9 +1,0 @@
-{
-  "[project]/src/components/PerformanceOptimizer.tsx [app-client] (ecmascript, next/dynamic entry)": {
-    "id": "[project]/src/components/PerformanceOptimizer.tsx [app-client] (ecmascript, next/dynamic entry)",
-    "files": [
-      "static/chunks/_2dff2bcd._.js",
-      "static/chunks/src_components_PerformanceOptimizer_tsx_4d861d9d._.js"
-    ]
-  }
-}
