@@ -43,7 +43,7 @@ export async function POST(request: Request) {
 
     // Unsplash images
     const imageUrls = (imageData.searchTerms || [query]).slice(0, count).map(
-      (term: string) => `https://images.unsplash.com/random?${new URLSearchParams({ q: term, w: 800, h: 600 }).toString()}`
+      (term: string) => `https://images.unsplash.com/random?${new URLSearchParams({ q: term, w: '800', h: '600' }).toString()}`
     );
 
     return NextResponse.json({
